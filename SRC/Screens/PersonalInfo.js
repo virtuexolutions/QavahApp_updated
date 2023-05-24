@@ -1,0 +1,376 @@
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import CustomStatusBar from '../Components/CustomStatusBar';
+import Header from '../Components/Header';
+import Color from '../Assets/Utilities/Color';
+import {moderateScale, ScaledSheet} from 'react-native-size-matters';
+import {windowHeight, windowWidth} from '../Utillity/utils';
+import CustomText from '../Components/CustomText';
+import TextInputWithTitle from '../Components/TextInputWithTitle';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import SortableGrid from 'react-native-sortable-grid';
+import DatePicker from 'react-native-date-picker';
+import moment from 'moment';
+import {Icon} from 'native-base';
+import CustomButton from '../Components/CustomButton';
+import ImagePickerModal from '../Components/ImagePickerModal';
+import ImageContainer from '../Components/ImageContainer';
+
+const PersonalInfo = () => {
+  const [email, setEmail] = useState('');
+  const [number, setNumber] = useState('');
+  const [dob, setDob] = useState(new Date());
+  const [open, setOpen] = useState(false);
+  const [gender, setGender] = useState('Male');
+  const [profileName, setProfileName] = useState('');
+  const [multiImages, setMultiImages] = useState([
+    {id: 1, image: require('../Assets/Images/image1.jpeg')},
+    {id: 2, image: require('../Assets/Images/image2.jpeg')},
+    {id: 3, image: require('../Assets/Images/image3.jpeg')},
+    {id: 4, image: require('../Assets/Images/image4.jpeg')},
+    {id: 5, image: require('../Assets/Images/image4.jpeg')},
+    {id: 6, image: require('../Assets/Images/image5.jpeg')},
+  ]);
+  const [tempMultiImages, setTempMultiImages] = useState([]);
+  console.log("🚀 ~ file: PersonalInfo.js:36 ~ PersonalInfo ~ tempMultiImages:", tempMultiImages)
+  const [multiImagesEmpty, setMultiImagesEmpty] = useState([]);
+  const [currentIndex, setIndex] = useState('');
+  const [showMultiImageModal, setShowMultiImageModal] = useState(false);
+  const [scrollEnabled , setScrollEnabled] = useState(true)
+
+    // useEffect(() => {
+    //   setTempMultiImages([])
+    //     if(multiImages.length >0){
+    //       setTempMultiImages(multiImages)
+    //     }
+    
+    // }, [multiImages])
+    
+    
+    const onDragRelease = (itemOrder) => {
+      setScrollEnabled(true)
+      console.log(value)
+      // setMultiImages([])
+      // // value?.itemOrder.map((item, index) => {
+        // //   return ( setMultiImages((prev)=>[...prev , tempMultiImages[item?.key] ]))
+        // // });
+        const newItems = value?.itemOrder.map((item) => multiImages[item.key]);
+        console.log("🚀 ~ file: PersonalInfo.js:59 ~ onDragRelease ~ newItems:", newItems)
+        setMultiImages(newItems)
+        console.log("🚀 ~ file: PersonalInfo.js:35 ~ PersonalInfo ~ multiImages:", multiImages)
+      };
+      
+  return (
+
+    <>
+      <CustomStatusBar
+        backgroundColor={Color.white}
+        barStyle={'dark-content'}
+      />
+      <Header
+        showLeft={true}
+        title={'Personal Info'}
+        leftName={'left'}
+        textStyle={{
+          color: Color.veryLightGray,
+        }}
+      />
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{
+          alignItems: 'center',
+          paddingBottom: moderateScale(20, 0.6),
+        }}
+        scrollEnabled={scrollEnabled}
+        showsVerticalScrollIndicator={false}>
+        <CustomText
+          style={{
+            marginTop: moderateScale(20, 0.3),
+            fontSize: moderateScale(11, 0.6),
+            color: Color.themeBlack,
+            width: windowWidth * 0.8,
+            textAlign: 'center',
+          }}>
+          Provide personal information for the security of your account, do not
+          give personal information to anyone.
+        </CustomText>
+        <TextInputWithTitle
+          rightIcon
+          iconName={'user'}
+          iconType={FontAwesome}
+          title={'Profile name'}
+          titleText={`Profile name`}
+          secureText={false}
+          placeholder={`Profile name`}
+          setText={setProfileName}
+          value={profileName}
+          viewHeight={0.06}
+          viewWidth={0.85}
+          inputWidth={0.75}
+          borderColor={Color.veryLightGray}
+          backgroundColor={'transparent'}
+          placeholderColor={Color.themeLightGray}
+          borderRadius={moderateScale(0, 0.3)}
+          titleStlye={{
+            color: Color.veryLightGray,
+            fontSize: moderateScale(11, 0.6),
+            marginTop: moderateScale(40, 0.3),
+          }}
+          border={1}
+          color={Color.veryLightGray}
+        />
+        <TextInputWithTitle
+          rightIcon
+          iconName={'envelope'}
+          iconType={FontAwesome}
+          title={'Email address'}
+          titleText={`Email address`}
+          secureText={false}
+          placeholder={`Email address`}
+          setText={setEmail}
+          value={email}
+          viewHeight={0.06}
+          viewWidth={0.85}
+          inputWidth={0.75}
+          borderColor={Color.veryLightGray}
+          backgroundColor={'transparent'}
+          placeholderColor={Color.themeLightGray}
+          borderRadius={moderateScale(0, 0.3)}
+          titleStlye={{
+            color: Color.veryLightGray,
+            fontSize: moderateScale(11, 0.6),
+            marginTop: moderateScale(20, 0.3),
+          }}
+          border={1}
+          color={Color.veryLightGray}
+          disable
+        />
+        <TextInputWithTitle
+          rightIcon
+          iconName={'phone'}
+          iconType={FontAwesome}
+          title={'Number Phone'}
+          titleText={`Number Phone`}
+          secureText={false}
+          placeholder={`Number Phone`}
+          setText={setNumber}
+          value={number}
+          viewHeight={0.06}
+          viewWidth={0.85}
+          inputWidth={0.75}
+          borderColor={Color.veryLightGray}
+          backgroundColor={'white'}
+          placeholderColor={Color.themeLightGray}
+          borderRadius={moderateScale(0, 0.3)}
+          titleStlye={{
+            color: Color.veryLightGray,
+            fontSize: moderateScale(11, 0.6),
+            marginTop: moderateScale(20, 0.3),
+          }}
+          border={1}
+          color={Color.veryLightGray}
+          disable
+        />
+        <TextInputWithTitle
+          rightIcon
+          iconName={'calendar'}
+          iconType={FontAwesome}
+          title={'Birthday'}
+          titleText={`Birthday`}
+          secureText={false}
+          placeholder={`Birthday`}
+          setText={setDob}
+          value={moment(dob).format('ll')}
+          viewHeight={0.06}
+          viewWidth={0.85}
+          inputWidth={0.75}
+          borderColor={Color.veryLightGray}
+          backgroundColor={'transparent'}
+          placeholderColor={Color.themeLightGray}
+          borderRadius={moderateScale(0, 0.3)}
+          titleStlye={{
+            color: Color.veryLightGray,
+            fontSize: moderateScale(11, 0.6),
+            marginTop: moderateScale(20, 0.3),
+          }}
+          border={1}
+          color={Color.veryLightGray}
+          onPressLeft={() => {
+            setOpen(true);
+          }}
+          disable
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: windowWidth * 0.85,
+            marginTop: moderateScale(20, 0.3),
+          }}>
+          <TouchableOpacity
+            // onPress={() => {
+            //   setGender('Male');
+            // }}
+            style={[
+              styles.cont,
+              gender == 'Male' && {borderColor: Color.themeColor},
+            ]}
+            activeOpacity={0.7}>
+            <Icon
+              name={'male'}
+              as={Ionicons}
+              color={gender == 'Male' ? Color.themeColor : Color.veryLightGray}
+            />
+
+            <CustomText
+              isBold
+              style={[
+                styles.txt6,
+                gender == 'Male' && {color: Color.themeColor},
+              ]}>
+              {' '}
+              Male
+            </CustomText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            // onPress={() => {
+            //   setGender('FeMale');
+            // }}
+            style={[
+              styles.cont,
+              gender == 'FeMale' && {borderColor: Color.themeColor},
+            ]}
+            activeOpacity={0.7}>
+            <Icon
+              name={'female'}
+              as={Ionicons}
+              color={
+                gender == 'FeMale' ? Color.themeColor : Color.veryLightGray
+              }
+            />
+
+            <CustomText
+              isBold
+              style={[
+                styles.txt6,
+                gender == 'FeMale' && {color: Color.themeColor},
+              ]}>
+              {' '}
+              FeMale
+            </CustomText>
+          </TouchableOpacity>
+        </View>
+        <CustomText
+          style={[styles.heading, {marginTop: moderateScale(15, 0.3)}]}>
+          Media
+        </CustomText>
+
+        <View style={styles.imageView}>
+          <SortableGrid
+            itemsPerRow={3}
+           onDragStart={() => setScrollEnabled(false)}
+            onDragRelease={value => {
+              setScrollEnabled(true)
+              console.log(value)
+              // setMultiImages([])
+              // // value?.itemOrder.map((item, index) => {
+                // //   return ( setMultiImages((prev)=>[...prev , tempMultiImages[item?.key] ]))
+                // // });
+                const newItems = value?.itemOrder.map((item) => multiImages[item.key-1]);
+                // console.log("🚀 ~ file: PersonalInfo.js:59 ~ onDragRelease ~ newItems:", newItems)
+                setMultiImages(newItems)
+                console.log("🚀 ~ file: PersonalInfo.js:35 ~ PersonalInfo ~ multiImages:", multiImages)
+            }}>
+            {multiImages.map((item, index) => {
+              return (
+                <ImageContainer
+                  data={multiImages}
+                  setData={setMultiImages}
+                  item={item}
+                  setIndex={setIndex}
+                  index={Math.random}
+                  showMultiImageModal={showMultiImageModal}
+                  setShowMultiImageModal={setShowMultiImageModal}
+                  key={item?.id}
+                />
+              );
+            })}
+          </SortableGrid>
+        </View>
+        <CustomButton
+          text={'Save'}
+          textColor={Color.white}
+          width={windowWidth * 0.85}
+          height={windowHeight * 0.07}
+          marginTop={moderateScale(20, 0.3)}
+          bgColor={Color.themeColor}
+          borderRadius={moderateScale(15, 0.3)}
+          elevation
+        />
+      </ScrollView>
+      <DatePicker
+        maximumDate={new Date()}
+        modal
+        open={open}
+        date={dob}
+        onConfirm={date => {
+          setOpen(false);
+          setDob(date);
+        }}
+        onCancel={() => {
+          setOpen(false);
+        }}
+        mode={'date'}
+        androidVariant="iosClone"
+        style={{}}
+        theme={'light'}
+      />
+      <ImagePickerModal
+        show={showMultiImageModal}
+        setShow={setShowMultiImageModal}
+        setMultiImages={setMultiImages}
+        images={multiImages}
+        index={currentIndex}
+      />
+    </>
+  );
+};
+const styles = ScaledSheet.create({
+  container: {
+    width: windowWidth,
+    // height: windowHeight,
+    backgroundColor: Color.white,
+  },
+  cont: {
+    alignSelf: 'center',
+    height: windowHeight * 0.07,
+    width: windowWidth * 0.35,
+    borderRadius: moderateScale(10, 0.3),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: Color.veryLightGray,
+    marginVertical: moderateScale(5, 0.3),
+    flexDirection: 'row',
+  },
+  txt6: {
+    fontSize: moderateScale(14, 0.6),
+    color: Color.veryLightGray,
+  },
+  imageView: {
+    width: windowWidth * 0.9,
+    // flexDirection: 'row',
+    // flexWrap: 'wrap',
+    marginTop: moderateScale(5, 0.3),
+    height: windowHeight * 0.35,
+    // backgroundColor : 'red',
+    // justifyContent: 'space-between',
+  },
+  heading: {
+    marginTop: moderateScale(20, 0.3),
+    fontSize: moderateScale(16, 0.6),
+    color: Color.themeBlack,
+  },
+});
+export default PersonalInfo;
