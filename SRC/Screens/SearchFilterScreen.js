@@ -17,12 +17,14 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import Color from '../Assets/Utilities/Color';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from '../Components/CustomText';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import {Icon} from 'native-base';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
+import { Post } from '../Axios/AxiosInterceptorFunction';
+import { useSelector } from 'react-redux';
 
 const SearchFilterScreen = () => {
   const [location, setLocation] = useState('Jakarta, Indonesia');
@@ -518,6 +520,99 @@ const SearchFilterScreen = () => {
       setInnerOptions(valuesArray);
     }
   }, [nestedOptions, step]);
+
+  const token = useSelector((state)=> state.authReducer.token)
+
+  const getSearchResult =async()=>{
+    const url = 'search-filter';
+    const body = {
+      uid :'',
+      filters:[{ 
+        seeking:'woman'
+      },{
+        age:[20,30]
+      },
+      {
+        miles:15
+      },
+      { 
+        zipcode:'12121'
+      },
+      {
+        doYouWantMoreChildren:'No'
+      },
+      {
+         doYouHaveChildren: 'Yes- they live at home'
+      },
+      {
+        doYouDrink : `Don't drink`
+      },
+      {
+        doYouSmoke: `I don't smoke`
+      },
+      {
+        howOftenDoYouExercise : 'no answer'
+      },
+      {
+        havePets:'Fish'
+      },
+      {
+        relationshipIAmSeeking:'Frienship'
+      },
+      {
+        bodyType : 'Average'
+      },
+      {
+        height : ['6','10']
+      },
+      {
+        maritalStatus : 'Never married'
+      },
+      {
+        livingSituation : 'Live with friends'
+      },
+      {
+        willingToRelocate : 'Not sure about relocating'
+      },
+      {
+        iBelieveIAM : 'Grafted in'
+      },
+      {
+        studyBible : 'King james Version'
+      },
+      {
+        studyHabits : '66 only'
+      },
+      {
+        spiritualValue : 'Non-Messianic'
+      },
+      {
+        maritalBeliefSystem : 'Polygyny'
+      },
+      {
+        yearsInTruth : '3 year'
+      },
+      {
+        anyAffiliation : 'i am a member of an online org'
+      },
+      {
+        spiritualBackground : 'i did not believe in anything'
+      },
+
+      ],
+      from : 1,
+      lat : '40.5689',
+      lag : '-73.96',
+
+
+    }
+    const response = await Post(url, body,apiHeader(token));
+    if(response != null){
+
+      console.log('Search result Response', response);
+      
+    }
+  }
 
   return (
     <>
@@ -1261,7 +1356,11 @@ const SearchFilterScreen = () => {
             width={windowWidth * 0.25}
             height={windowHeight * 0.05}
             marginTop={moderateScale(40, 0.3)}
-            onPress={() => {}}
+            onPress={() => {
+              setIsLoading(true);
+              getSearchResult()
+              setIsLoading(false)
+            }}
             fontSize={moderateScale(12, 0.6)}
             bgColor={Color.themeColor}
             // borderColor={Color.white}

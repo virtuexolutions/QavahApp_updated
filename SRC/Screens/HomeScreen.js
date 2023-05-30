@@ -48,7 +48,7 @@ const HomeScreen = () => {
     const response = await Get(url, token);
     setIsLoadingApi(false);
     if (response != undefined) {
-     
+     console.log('users data============>>>>',response?.data?.peoples)
       setPhotoCards(response?.data?.peoples);
       // console.log(response?.data?.peoples[0]?.profile_images[0]?.url);
     }
@@ -82,6 +82,10 @@ const HomeScreen = () => {
     }
 
   };
+ 
+  
+  
+  //  let obj = array.find(o => o.name === 'string 1');
 
   const notificaitonArray = [
     {

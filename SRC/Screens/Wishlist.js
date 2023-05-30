@@ -1,17 +1,36 @@
 import {Text, View , FlatList} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Icon} from 'native-base';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Color from '../Assets/Utilities/Color';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from '../Components/CustomText';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
 import UserCard from '../Components/UserCard';
+import { useSelector } from 'react-redux';
+import { Get } from '../Axios/AxiosInterceptorFunction';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
 const Wishlist = () => {
   const [selected, setSelected] = useState('Favored You');
+  const token = useSelector((state) => state.authReducer.token);
+  const [favoredYouPost, setFavoredYouPost] = useState([]);
+
+
+  const getFavouredYouPosts = async (id) => {
+      console.log('get favoured posts')
+      const url = 'favoured/who-likes-me';
+      const response = await Post(url, {},apiHeader(token));
+      if(response != undefined){
+        // console.log('response data=>>>>>>>>>>>>>>', response?.data?.peoples);
+        setFavoredYouPost(response?.data?.peoples);
+      }
+  }
+  useEffect(() => {
+    getFavouredYouPosts(); // Fetch data when the component mounts
+  }, []);
  
   const [photoCards, setPhotoCards] = useState([
     {
@@ -226,6 +245,8 @@ const Wishlist = () => {
       ],
     },
   ]);
+
+
   return (
     <>
       <CustomStatusBar
@@ -250,6 +271,7 @@ const Wishlist = () => {
         <CustomText
           onPress={() => {
             setSelected('Favored You');
+            // getFavouredYouPosts();
           }}
           style={[
             styles.text,
@@ -277,7 +299,7 @@ const Wishlist = () => {
         </CustomText>
       </View> 
        <FlatList 
-      data={photoCards}
+      data={favoredYouPost}
       numColumns = {2}
       showsVerticalScrollIndicator = {false}
       style={{
@@ -305,6 +327,13 @@ const Wishlist = () => {
 
         }
         ]}
+        onPress={ 
+          () => {
+            // navigationService.navigate('UserDetail', {
+            //   item,
+            // });
+          }
+        }
           />
         )
       }}
