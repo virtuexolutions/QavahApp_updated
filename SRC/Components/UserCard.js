@@ -25,13 +25,15 @@ const UserCard = ({onClosePress, onheartPress, style , item}) => {
         onPress={() => {
           navigationService.navigate('UserDetail', {item: item , fromSearch : true});
         }}
-        source={item?.photo}
+        source={require('../Assets/Images/woman2.jpeg')}
         style={[
           {
             width: '100%',
             height: '100%',
+            resizeMode: 'cover',
           },
         ]}
+        
       />
       {/* <View
         style={[
@@ -74,7 +76,7 @@ const UserCard = ({onClosePress, onheartPress, style , item}) => {
             width : '90%'
 
           }}>
-        {`${item?.name}, ${item?.age}`}
+        {`${item?.profileName}, ${item?.age}`}
         </CustomText>
         <View
             style={{

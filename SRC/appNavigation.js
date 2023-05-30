@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Image} from 'react-native'
+import {Image} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import navigationService from './navigationService';
@@ -71,8 +71,7 @@ const AppNavigator = () => {
         <RootNav.Navigator
           headerMode="none"
           initialRouteName={firstScreen}
-          screenOptions={{headerShown: false}}
-        >
+          screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LandingPage" component={LandingPage} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="CreatePortfolio" component={CreatePortfolio} />
@@ -81,8 +80,6 @@ const AppNavigator = () => {
           <RootNav.Screen name="EnterPhone" component={EnterPhone} />
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
-
-          
 
           <RootNav.Screen
             name="IsraeliteFilters"
@@ -99,11 +96,6 @@ const AppNavigator = () => {
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
           <RootNav.Screen name="WhoViewedMe" component={WhoViewedMe} />
           <RootNav.Screen name="Subscription" component={Subscription} />
-
-
-
-
-
 
           {/* // options={()=>{
           //   options
@@ -163,18 +155,18 @@ export const TabNavigation = () => {
             color = focused ? Color.themeColor : Color.themeLightGray;
             size = focused ? moderateScale(25, 0.3) : moderateScale(20, 0.3);
           }
-          return route.name === 'SpotLight'?
-            <Image 
-            source={require('./Assets/Images/setting.png')}
-            style={{
-              width : size,
-              height : size,
-              tintColor : color
-
-            }}
+          return route.name === 'SpotLight' ? (
+            <Image
+              source={require('./Assets/Images/setting.png')}
+              style={{
+                width: size,
+                height: size,
+                tintColor: color,
+              }}
             />
-          :
-           <Icon name={iconName} as={type} color={color} size={size} />;
+          ) : (
+            <Icon name={iconName} as={type} color={color} size={size} />
+          );
         },
         tabBarShowLabel: false,
         tabBarStyle: {
@@ -191,8 +183,7 @@ export const TabNavigation = () => {
           // borderTopLeftRadius : moderateScale(15,0.6),
           height: windowHeight * 0.07,
         },
-      })}
-    >
+      })}>
       <Tabs.Screen name={'HomeScreen'} component={HomeScreen} />
       <Tabs.Screen name={'SearchFilterScreen'} component={SearchFilterScreen} />
       <Tabs.Screen name={'Wishlist'} component={Wishlist} />
