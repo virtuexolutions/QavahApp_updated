@@ -36,6 +36,33 @@ const SearchFilterScreen = () => {
   const [option, setOption] = useState('shortcuts');
   const [isLoading, setIsLoading] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(true);
+  // const [visibility , setVisibility] = useState('');
+  // const [keywords , setKeywords] = useState('');
+  // const [routine , setRoutine] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+  // const [visibility , setVisibility] = useState('');
+
+  const [body, setBody] = useState([]);
+  console.log(
+    '🚀 ~ file: SearchFilterScreen.js:61 ~ SearchFilterScreen ~ body:',
+    body,
+  );
+
   const [nestedOptions, setNestedOptions] = useState([
     (Visibility = true),
     (Keywords = false),
@@ -54,12 +81,20 @@ const SearchFilterScreen = () => {
     (Values = false),
   ]);
   const [innerOptions, setInnerOptions] = useState([]);
-  const [step, setSteps] = useState(1);
   console.log(
-    '🚀 ~ file: SearchFilterScreen.js:55 ~ SearchFilterScreen ~ step:',
-    step,
+    '🚀 ~ file: SearchFilterScreen.js:57 ~ SearchFilterScreen ~ innerOptions:',
+    innerOptions,
   );
+  const [step, setSteps] = useState(1);
+  // console.log(
+  //   '🚀 ~ file: SearchFilterScreen.js:55 ~ SearchFilterScreen ~ step:',
+  //   step,
+  // );
   const [selectedIndex, setIndex] = useState(0);
+  // console.log(
+  //   '🚀 ~ file: SearchFilterScreen.js:64 ~ SearchFilterScreen ~ selectedIndex:',
+  //   selectedIndex,
+  // );
   const [summary, setSummary] = useState('');
 
   //step 1
@@ -97,13 +132,11 @@ const SearchFilterScreen = () => {
         'i drink socially',
         'on special occasions',
         'i will drink by myself',
-        
       ],
     },
     {
       text: 'Smoke',
       array: [
-        
         'i dont smoke',
         'occasionally smoke',
         'only cannabis',
@@ -114,17 +147,11 @@ const SearchFilterScreen = () => {
   const ChildrenArray = [
     {
       text: 'want children',
-      array: [
-        'yes',
-        'not sure',
-        'no',
-
-      ],
+      array: ['yes', 'not sure', 'no'],
     },
     {
       text: 'have children',
       array: [
-       
         'yes-they dont live at home',
         'yes-they sometimes live at home',
         'yes-they live at home',
@@ -1177,7 +1204,15 @@ const SearchFilterScreen = () => {
                       <TouchableOpacity
                         activeOpacity={0.8}
                         onPress={() => {
-                          setIndex(index);
+                        
+                          console.log( 'data index jey --------------------    ',item.text)
+                          const index = body.findIndex((data , index)=>data.hasOwnProperty(item.text));
+                          console.log("🚀 ~ file: SearchFilterScreen.js:1220 ~ {item?.array.map ~ index:", index)
+                          if (index > -1) {
+                            setBody(prev => [...prev],(body[index] = {[item.text]: x}));
+                          } else {
+                            setBody(prev => [...prev, {[item.text]: x}]);
+                          }
                         }}
                         key={index}
                         style={{
@@ -1187,16 +1222,23 @@ const SearchFilterScreen = () => {
                           marginTop: moderateScale(8, 0.3),
                         }}>
                         <Icon
-                          name={index == selectedIndex ? 'square' : 'square-o'}
+                          name={body.findIndex((data , index)=>data[item.text] == x) > -1  ? 'square' : 'square-o'}
                           as={FontAwesome}
                           size={moderateScale(12, 0.6)}
                           color={
-                            selectedIndex == index
+                            body.findIndex((data , index)=>data[item.text] == x) > -1 
                               ? Color.themeColor
                               : Color.veryLightGray
                           }
                           onPress={() => {
-                            setIndex(index);
+                            console.log( 'data index jey --------------------    ',item.text)
+                          const index = body.findIndex((data , index)=>data.hasOwnProperty(item.text));
+                          console.log("🚀 ~ file: SearchFilterScreen.js:1220 ~ {item?.array.map ~ index:", index)
+                          if (index > -1) {
+                            setBody(prev => [...prev],(body[index] = {[item.text]: x}));
+                          } else {
+                            setBody(prev => [...prev, {[item.text]: x}]);
+                          }
                           }}
                         />
                         <CustomText style={styles.text}>{x}</CustomText>
@@ -1404,11 +1446,11 @@ const Silder = ({
   max,
   setScrollEnabled,
 }) => {
-  console.log(
-    '🚀 ~ file: SearchFilterScreen.js:89 ~ Silder ~ multi:',
-    multi,
-    single,
-  );
+  // console.log(
+  //   '🚀 ~ file: SearchFilterScreen.js:89 ~ Silder ~ multi:',
+  //   multi,
+  //   single,
+  // );
 
   return (
     <View
@@ -1445,7 +1487,7 @@ const Silder = ({
           // unselectedStyle={{
           //   width : windowWidth * 0.8
           // }}
-          sliderLength={windowWidth *0.8}
+          sliderLength={windowWidth * 0.8}
           onValuesChangeStart={() => {
             setScrollEnabled(false);
           }}
@@ -1466,12 +1508,12 @@ const Silder = ({
           max={max}
           values={!multi ? [state1] : [state1, state2]}
           onValuesChange={low => {
-            console.log(low);
+            // console.log(low);
             single ? setState1(low) : (setState1(low[0]), setState2(low[1]));
           }}
           containerStyle={{
             // backgroundColor : 'red',
-            width : windowWidth * 0.8
+            width: windowWidth * 0.8,
           }}
         />
         <CustomText
