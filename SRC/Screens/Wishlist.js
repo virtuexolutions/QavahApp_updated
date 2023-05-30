@@ -12,8 +12,10 @@ import UserCard from '../Components/UserCard';
 import { useSelector } from 'react-redux';
 import { Get } from '../Axios/AxiosInterceptorFunction';
 import { Post } from '../Axios/AxiosInterceptorFunction';
+import { useIsFocused } from '@react-navigation/native';
 
 const Wishlist = () => {
+  const isFocused = useIsFocused()
   const [selected, setSelected] = useState('Favored You');
   const token = useSelector((state) => state.authReducer.token);
   const [favoredYouPost, setFavoredYouPost] = useState([]);
@@ -24,13 +26,13 @@ const Wishlist = () => {
       const url = 'favoured/who-likes-me';
       const response = await Post(url, {},apiHeader(token));
       if(response != undefined){
-        // console.log('response data=>>>>>>>>>>>>>>', response?.data?.peoples);
+        console.log('response data=>>>>>>>>>>>>>>', response?.data?.peoples);
         setFavoredYouPost(response?.data?.peoples);
       }
   }
   useEffect(() => {
     getFavouredYouPosts(); // Fetch data when the component mounts
-  }, []);
+  }, [isFocused]);
  
   const [photoCards, setPhotoCards] = useState([
     {
