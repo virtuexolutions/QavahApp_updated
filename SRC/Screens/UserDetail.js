@@ -22,31 +22,24 @@ import navigationService from '../navigationService';
 import IconWithName from '../Components/IconWithName';
 import ImageView from 'react-native-image-viewing';
 import CustomButton from '../Components/CustomButton';
+import {useSelector} from 'react-redux';
 
 const UserDetail = props => {
+  const user = useSelector(state => state.commonReducer.userData);
   const item = props?.route?.params?.item;
+  // console.log('data =============>>>>>>>>>>', item?.gallery_images[0]);
   const fromSearch = props?.route?.params?.fromSearch;
-  console.log(
-    '🚀 ~ file: UserDetail.js:27 ~ UserDetail ~ fromSearch:',
-    fromSearch,
-  );
+
   const [isVisible, setIsVisible] = useState(false);
-  console.log(
-    '🚀 ~ file: UserDetail.js:25 ~ UserDetail ~ isVisible:',
-    isVisible,
-  );
+  const [userData, setUserData] = useState(fromSearch ? item : user);
+  console.log("🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:", userData)
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [images, setImages] = useState(
-    fromSearch
-      ? item?.images.slice(0, 5)
-      : [
-          require('../Assets/Images/image1.jpeg'),
-          require('../Assets/Images/image2.jpeg'),
-          require('../Assets/Images/image3.jpeg'),
-          require('../Assets/Images/image4.jpeg'),
-          require('../Assets/Images/image5.jpeg'),
-        ],
+    userData?.gallery_images.length > 5
+      ? userData?.gallery_images.slice(0, 5)
+      : userData?.gallery_images,
   );
+  console.log('🚀 ~ file: UserDetail.js:50 ~ UserDetail ~ images:', images);
   return (
     <>
       <CustomStatusBar
@@ -72,7 +65,9 @@ const UserDetail = props => {
               height: '100%',
             }}
             source={
-              fromSearch ? item?.photo : require('../Assets/Images/image1.jpeg')
+              // fromSearch
+                {uri: userData?.profile_images[0].url}
+                // : require('../Assets/Images/image1.jpeg')
             }
             resizeMode={'contain'}
           />
@@ -98,26 +93,26 @@ const UserDetail = props => {
         <View style={styles.container}>
           <View style={styles.row}>
             {/* {fromSearch && ( */}
-              <BtnContainer
-                backgroundColor={fromSearch ? 'white' : Color.themeColor}
-                color={!fromSearch ? 'white' :  Color.veryLightGray}
-                name={fromSearch ? 'close-sharp' : 'pencil'}
-                type={fromSearch ?Ionicons : FontAwesome}
-                style={{
-                  width: moderateScale(55, 0.6),
-                  height: moderateScale(55, 0.6),
-                  borderRadius: moderateScale(27, 0.6),
-                  // backgroundColor : 'red'
-                  justifyContent : 'center',
-                  alignItems : 'center'
-                  // marginTop: moderateScale(-5, 0.3),
-                }}
-                onPress={()=>{
-                  !fromSearch &&   navigationService.navigate('PersonalInfo')
-                }}
-                iconSize={moderateScale(30, 0.6)}
-              />
-             {/* )} */}
+            <BtnContainer
+              backgroundColor={fromSearch ? 'white' : Color.themeColor}
+              color={!fromSearch ? 'white' : Color.veryLightGray}
+              name={fromSearch ? 'close-sharp' : 'pencil'}
+              type={fromSearch ? Ionicons : FontAwesome}
+              style={{
+                width: moderateScale(55, 0.6),
+                height: moderateScale(55, 0.6),
+                borderRadius: moderateScale(27, 0.6),
+                // backgroundColor : 'red'
+                justifyContent: 'center',
+                alignItems: 'center',
+                // marginTop: moderateScale(-5, 0.3),
+              }}
+              onPress={() => {
+                !fromSearch && navigationService.navigate('PersonalInfo');
+              }}
+              iconSize={moderateScale(30, 0.6)}
+            />
+            {/* )} */}
             {fromSearch && (
               <BtnContainer
                 backgroundColor={Color.themeColor}
@@ -195,7 +190,7 @@ const UserDetail = props => {
             </View>
           )}
           <CustomText style={styles.heading}>
-            {fromSearch ? `${item?.name}` : 'Austin'}
+            {fromSearch ? `${userData?.governmentName}` : 'Austin'}
           </CustomText>
           <View
             style={{
@@ -208,7 +203,7 @@ const UserDetail = props => {
             <IconWithName
               iconName={'briefcase'}
               iconType={FontAwesome}
-              text={'Model Fashion'}
+              text={userData?.employmentStatus}
               imageStyle={{
                 marginRight: moderateScale(15, 0.3),
               }}
@@ -217,7 +212,7 @@ const UserDetail = props => {
             <IconWithName
               iconName={'building'}
               iconType={FontAwesome}
-              text={'Fashion Center'}
+              text={userData?.state}
               imageStyle={{
                 marginRight: moderateScale(15, 0.3),
               }}
@@ -226,7 +221,7 @@ const UserDetail = props => {
             <IconWithName
               iconName={'md-location-sharp'}
               iconType={Ionicons}
-              text={'Jakarta, Indonesia'}
+              text={userData?.city}
               imageStyle={{
                 marginRight: moderateScale(15, 0.3),
               }}
@@ -241,10 +236,10 @@ const UserDetail = props => {
               }}
               width={windowWidth * 0.41}
             />
-              <IconWithName
+            <IconWithName
               iconName={'calendar'}
               iconType={FontAwesome}
-              text={item?.age ? `${item?.age} years` : '18 years'}
+              text={userData?.age ? `${userData?.age} years` : '-'}
               imageStyle={{
                 marginRight: moderateScale(15, 0.3),
               }}
@@ -267,9 +262,7 @@ const UserDetail = props => {
                 // backgroundColor : 'red'
               },
             ]}>
-            {
-              'I really like dancing. Dancing is a part of my life. Do you want to dance with me? I will teach you to dance, you will not regret doing it. See You tomorrow !'
-            }
+            {userData?.aboutMe}
           </CustomText>
           <View
             style={{
@@ -291,7 +284,7 @@ const UserDetail = props => {
               onPress={() => {
                 fromSearch
                   ? navigationService.navigate('Profile', {
-                      data: item,
+                      data: userData,
                       fromSearch: fromSearch,
                     })
                   : navigationService.navigate('Profile');
@@ -322,7 +315,8 @@ const UserDetail = props => {
               alignSelf: 'center',
               width: windowWidth * 0.9,
             }}>
-            {images.slice(0, 5).map((item, index) => {
+            {images.map((item, index) => {
+              console.log('data image =====>>>>', item?.url);
               return (
                 <TouchableOpacity
                   onPress={() => {
@@ -347,7 +341,7 @@ const UserDetail = props => {
                       setSelectedIndex(index);
                       setIsVisible(true);
                     }}
-                    source={item}
+                    source={{uri: item?.url}}
                     // resizeMode={'contain'}
                     style={{
                       width: '100%',

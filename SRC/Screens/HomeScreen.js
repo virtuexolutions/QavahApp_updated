@@ -18,9 +18,6 @@ import Modal from 'react-native-modal';
 import CustomText from '../Components/CustomText';
 import {Icon} from 'native-base';
 import NotificationComponent from '../Components/NotificationComponent';
-// import navigationService from '../navigationService';
-// import DrawerOptions from '../Components/DrawerOptions';
-// import {setUserLogoutAuth} from '../Store/slices/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import SuperLikeModal from '../Components/SuperLikeModal';
 import SpotLightModal from '../Components/SpotlightModal';
@@ -30,7 +27,7 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.commonReducer.userData);
   const token = useSelector(state => state.authReducer.token);
-  // console.log("🚀 ~ file: HomeScreen.js:37 ~ HomeScreen ~ user:", user)
+  console.log("🚀 ~ file: HomeScreen.js:37 ~ HomeScreen ~ user:", user)
   // const useSwiper = useRef().current
   const [swiperRef, setSwiperRef] = useState();
   const [xAxis, setXAxis] = useState(0);
@@ -292,7 +289,16 @@ const HomeScreen = () => {
             />
           </View>
         </>
-        : <CustomText>no data found</CustomText>
+        : 
+        <View style={{
+          width : windowWidth ,
+          height : windowHeight * 0.6 ,
+          justifyContent : 'center',
+          alignItems : 'center',
+        }}>
+
+          <CustomText isBold >no data found</CustomText>
+        </View>
       )}
       <SuperLikeModal
         isVisible={isSuperLikeVisible}
