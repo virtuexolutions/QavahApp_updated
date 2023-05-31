@@ -32,15 +32,13 @@ const UserDetail = props => {
 
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setUserData] = useState(fromSearch ? item : user);
-  console.log("🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:", userData)
+  console.log("🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:", userData?.profile_images[0]?.url)
   const [selectedIndex, setSelectedIndex] = useState(0);
-  // const [images, setImages] = useState(
-  //   userData?.gallery_images.length > 5
-  //     ? userData?.gallery_images.slice(0, 5)
-  //     : userData?.gallery_images,
-  // );
-
-  const images = [require('../Assets/Images/woman1.png')] ;
+  const [images, setImages] = useState(
+    userData?.profile_images.length > 5
+      ? userData?.profile_images.slice(0, 5)
+      : userData?.profile_images,
+  );
   console.log('🚀 ~ file: UserDetail.js:50 ~ UserDetail ~ images:', images);
   return (
     <>

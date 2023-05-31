@@ -40,6 +40,8 @@ import CustomImage from './Components/CustomImage';
 import EnterPhone from './Screens/EnterPhone';
 import VerifyNumber from './Screens/VerifyNumber';
 import ResetPassword from './Screens/ResetPassword';
+import TermsAndConditions from './Screens/TermsAndConditions';
+import Support from './Screens/Support';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -96,6 +98,8 @@ const AppNavigator = () => {
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
           <RootNav.Screen name="WhoViewedMe" component={WhoViewedMe} />
           <RootNav.Screen name="Subscription" component={Subscription} />
+          <RootNav.Screen name= "TermsAndConditions" component={TermsAndConditions} />
+          <RootNav.Screen name="Support" component={Support} />
 
           {/* // options={()=>{
           //   options

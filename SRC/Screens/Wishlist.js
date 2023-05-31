@@ -1,4 +1,4 @@
-import {Text, View , FlatList} from 'react-native';
+import {Text, View, FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Icon} from 'native-base';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
@@ -9,32 +9,43 @@ import CustomText from '../Components/CustomText';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
 import UserCard from '../Components/UserCard';
-import { useSelector } from 'react-redux';
-import { Get } from '../Axios/AxiosInterceptorFunction';
-import { Post } from '../Axios/AxiosInterceptorFunction';
-import { useIsFocused } from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {Get} from '../Axios/AxiosInterceptorFunction';
+import {Post} from '../Axios/AxiosInterceptorFunction';
+import {useIsFocused} from '@react-navigation/native';
 import NullDataComponent from '../Components/NullDataComponent';
 
 const Wishlist = () => {
-  const isFocused = useIsFocused()
+  const isFocused = useIsFocused();
   const [selected, setSelected] = useState('Favored You');
-  const token = useSelector((state) => state.authReducer.token);
+  const token = useSelector(state => state.authReducer.token);
   const [favoredYouPost, setFavoredYouPost] = useState([]);
+  const [youFavoured, setYouFavoured] = useState([]);
+  const [hideBtns, sethideBtns] = useState(false)
 
-
-  const getFavouredYouPosts = async (id) => {
-      console.log('get favoured posts')
-      const url = 'favoured/who-likes-me';
-      const response = await Post(url, {},apiHeader(token));
-      if(response != undefined){
-        console.log('response data=>>>>>>>>>>>>>>', response?.data?.peoples);
-        setFavoredYouPost(response?.data?.peoples);
-      }
-  }
+  const getFavouredYouPosts = async id => {
+    console.log('get favoured posts');
+    const url = 'favoured/who-likes-me';
+    const response = await Post(url, {}, apiHeader(token));
+    if (response != undefined) {
+      console.log('response data=>>>>>>>>>>>>>>', response?.data?.peoples);
+      setFavoredYouPost(response?.data?.peoples);
+    }
+  };
+  const getYouFavouredPosts = async id => {
+    console.log('get you favoured posts');
+    const url = 'favoured/who-i-like';
+    const response = await Post(url, {}, apiHeader(token));
+    if (response != undefined) {
+      console.log('response data=>>>>>>>>>>>>>>', response?.data?.peoples);
+      setYouFavoured(response?.data?.peoples);
+    }
+  };
   useEffect(() => {
-    getFavouredYouPosts(); // Fetch data when the component mounts
+    getFavouredYouPosts();
+    getYouFavouredPosts();
   }, [isFocused]);
- 
+
   const [photoCards, setPhotoCards] = useState([
     {
       name: 'Austin Wade',
@@ -249,14 +260,13 @@ const Wishlist = () => {
     },
   ]);
 
-
   return (
     <>
       <CustomStatusBar
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-    <Header
+      <Header
         showLeft={true}
         showRight={true}
         rightName={'bell'}
@@ -266,14 +276,13 @@ const Wishlist = () => {
         textStyle={{
           color: Color.veryLightGray,
         }}
-     
-  
       />
 
       <View style={styles.selector}>
         <CustomText
           onPress={() => {
             setSelected('Favored You');
+            sethideBtns(false);
             // getFavouredYouPosts();
           }}
           style={[
@@ -289,6 +298,7 @@ const Wishlist = () => {
         <CustomText
           onPress={() => {
             setSelected('You Favored');
+            sethideBtns(true)
           }}
           style={[
             styles.text,
@@ -300,52 +310,54 @@ const Wishlist = () => {
           ]}>
           You Favored
         </CustomText>
-      </View>{favoredYouPost.length <= 0 ?<View style={{
-          width : windowWidth ,
-          height : windowHeight * 0.6 ,
-          justifyContent : 'center',
-          alignItems : 'center',}}><NullDataComponent /></View>:
-       <FlatList 
-      data={favoredYouPost}
-      numColumns = {2}
-      showsVerticalScrollIndicator = {false}
-      style={{
-        width : windowWidth ,
-        // backgroundColor : 'red'
-
-      }}
-      contentContainerStyle={{
-        alignItems : 'center'
-      }}
-      renderItem={({item , index})=>{
-        return(
-          <UserCard 
-          item={item}
-          style={[
-            index % 2 == 0 ?{
-            marginRight :   moderateScale(10,0.3) 
-
-          }
-        : {
-            marginLeft : moderateScale(10,0.3)
-
-        },{
-
-
-        }
-        ]}
-        onPress={ 
-          () => {
-            // navigationService.navigate('UserDetail', {
-            //   item,
-            // });
+      </View>
+     
+        <FlatList
+          data={selected=='Favored You'?favoredYouPost:youFavoured}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+          style={{
+            width: windowWidth,
+            // backgroundColor : 'red'
+          }}
+          contentContainerStyle={{
+            alignItems: 'center',
+          }}
+          renderItem={({item, index}) => {
+            return (
+              <UserCard
+                item={item}
+                style={[
+                  index % 2 == 0
+                    ? {
+                        marginRight: moderateScale(10, 0.3),
+                      }
+                    : {
+                        marginLeft: moderateScale(10, 0.3),
+                      },
+                  {},
+                ]}
+                onPress={() => {}}
+                hideBtns={hideBtns}
+              />
+            );
           }
         }
-          />
-        )
-      }}
-      />
-    }
+        ListEmptyComponent={() => {
+          return (
+          <View
+          style={{
+            width: windowWidth,
+            height: windowHeight * 0.6,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <NullDataComponent />
+        </View>
+          )
+        }}
+        />
+      
     </>
   );
 };

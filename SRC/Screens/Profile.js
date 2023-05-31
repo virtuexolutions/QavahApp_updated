@@ -34,8 +34,8 @@ const Profile = props => {
   console.log("🚀 ~ file: Profile.js:26 ~ Profile ~ fromSearch:", fromSearch)
   const [type, setType] = useState('photos');
   const [isVisible, setIsVisible] = useState(false);
-  const [postRef , setPostRef] = useState(null
-  )
+  const [postRef , setPostRef] = useState(null)
+  // const images = props?.route?.params?.images;
   const [images , setImages] = useState(data ? data.images :  [
     require('../Assets/Images/image1.jpeg'),
     require('../Assets/Images/image2.jpeg'),
@@ -81,7 +81,7 @@ const Profile = props => {
       />
       <Header
         showLeft={true}
-        title={fromSearch ? `${data?.name} Gallery` : 'Austin gallery'}
+        title={fromSearch ? `${data?.profileName} Gallery` : 'Austin gallery'}
         leftName={'left'}
         textStyle={{
           color: Color.veryLightGray,
@@ -136,7 +136,7 @@ const Profile = props => {
           </View>
           }
         <CustomText style={styles.heading}>
-         {fromSearch ?`${data?.name},${data?.age}` : 'Austin,21'}
+         {fromSearch ?`${data?.profileName}, ${data?.age}` : 'Austin,21'}
         </CustomText>
         <CustomText
           style={[

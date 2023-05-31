@@ -24,9 +24,11 @@ import SpotLightModal from '../Components/SpotlightModal';
 import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import CustomImage from '../Components/CustomImage';
 import NullDataComponent from '../Components/NullDataComponent';
+import { useIsFocused } from '@react-navigation/native';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
+  const focused = useIsFocused()
   const user = useSelector(state => state.commonReducer.userData);
   const token = useSelector(state => state.authReducer.token);
   // console.log("🚀 ~ file: HomeScreen.js:37 ~ HomeScreen ~ user:", user)
@@ -50,7 +52,7 @@ const HomeScreen = () => {
     const response = await Get(url, token);
     setIsLoadingApi(false);
     if (response != undefined) {
-     console.log('users data============>>>>',response?.data?.peoples)
+     console.log('users data============>>>>',response?.data?.peoples[0].gallery_images)
       setPhotoCards(response?.data?.peoples);
       // console.log(response?.data?.peoples[0]?.profile_images[0]?.url);
     }
@@ -122,7 +124,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [focused]);
 
   return (
     <>
@@ -304,7 +306,7 @@ const HomeScreen = () => {
           alignItems : 'center',
         }}>
 
-        <CustomText >No data Found</CustomText>
+       
           <NullDataComponent/>
         </View>
       )}
