@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import { Get } from '../Axios/AxiosInterceptorFunction';
 import { Post } from '../Axios/AxiosInterceptorFunction';
 import { useIsFocused } from '@react-navigation/native';
+import NullDataComponent from '../Components/NullDataComponent';
 
 const Wishlist = () => {
   const isFocused = useIsFocused()
@@ -299,7 +300,11 @@ const Wishlist = () => {
           ]}>
           You Favored
         </CustomText>
-      </View> 
+      </View>{favoredYouPost.length <= 0 ?<View style={{
+          width : windowWidth ,
+          height : windowHeight * 0.6 ,
+          justifyContent : 'center',
+          alignItems : 'center',}}><NullDataComponent /></View>:
        <FlatList 
       data={favoredYouPost}
       numColumns = {2}
@@ -340,6 +345,7 @@ const Wishlist = () => {
         )
       }}
       />
+    }
     </>
   );
 };

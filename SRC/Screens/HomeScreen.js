@@ -22,6 +22,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import SuperLikeModal from '../Components/SuperLikeModal';
 import SpotLightModal from '../Components/SpotlightModal';
 import {Get, Post} from '../Axios/AxiosInterceptorFunction';
+import CustomImage from '../Components/CustomImage';
+import NullDataComponent from '../Components/NullDataComponent';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -297,11 +299,13 @@ const HomeScreen = () => {
         <View style={{
           width : windowWidth ,
           height : windowHeight * 0.6 ,
+          marginTop:moderateScale(30,0.3),
           justifyContent : 'center',
           alignItems : 'center',
         }}>
 
-          <CustomText isBold >no data found</CustomText>
+        <CustomText >No data Found</CustomText>
+          <NullDataComponent/>
         </View>
       )}
       <SuperLikeModal
