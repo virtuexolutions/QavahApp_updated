@@ -12,7 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 import BtnContainer from '../Components/BtnContainer';
@@ -27,18 +27,21 @@ import {useSelector} from 'react-redux';
 const UserDetail = props => {
   const user = useSelector(state => state.commonReducer.userData);
   const item = props?.route?.params?.item;
+  console.log("🚀 ~ file: UserDetail.js:30 ~ UserDetail ~ item:", item)
   // console.log('data =============>>>>>>>>>>', item?.gallery_images[0]);
   const fromSearch = props?.route?.params?.fromSearch;
 
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setUserData] = useState(fromSearch ? item : user);
-  console.log("🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:", userData?.profile_images[0]?.url)
+  // console.log("🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:", userData)
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [images, setImages] = useState(
-    userData?.profile_images.length > 5
-      ? userData?.profile_images.slice(0, 5)
-      : userData?.profile_images,
-  );
+  // const [images, setImages] = useState(
+  //   userData?.gallery_images.length > 5
+  //     ? userData?.gallery_images.slice(0, 5)
+  //     : userData?.gallery_images,
+  // );
+
+  const images = [require('../Assets/Images/woman1.jpeg')] ;
   console.log('🚀 ~ file: UserDetail.js:50 ~ UserDetail ~ images:', images);
   return (
     <>
@@ -190,7 +193,7 @@ const UserDetail = props => {
             </View>
           )}
           <CustomText style={styles.heading}>
-            {fromSearch ? `${userData?.governmentName}` : 'Austin'}
+            {`${userData?.governmentName}`}
           </CustomText>
           <View
             style={{
@@ -228,9 +231,9 @@ const UserDetail = props => {
               width={windowWidth * 0.41}
             />
             <IconWithName
-              iconName={'user-graduate'}
-              iconType={FontAwesome5}
-              text={'Fashion School'}
+              iconName={'human-male-child'}
+              iconType={MaterialCommunityIcons}
+              text={userData?.livingSituation}
               imageStyle={{
                 marginRight: moderateScale(15, 0.3),
               }}
@@ -287,7 +290,10 @@ const UserDetail = props => {
                       data: userData,
                       fromSearch: fromSearch,
                     })
-                  : navigationService.navigate('Profile');
+                  : navigationService.navigate('Profile'  , {
+                    data: userData,
+                    fromSearch: fromSearch,
+                  });
               }}>
               <CustomText
                 style={{
@@ -315,7 +321,7 @@ const UserDetail = props => {
               alignSelf: 'center',
               width: windowWidth * 0.9,
             }}>
-            {images.map((item, index) => {
+            {userData?.gallery_images.map((item, index) => {
               console.log('data image =====>>>>', item?.url);
               return (
                 <TouchableOpacity

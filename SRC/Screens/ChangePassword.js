@@ -1,10 +1,16 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Platform,
+  ToastAndroid,
+} from 'react-native';
 import React, {useState} from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
 import Color from '../Assets/Utilities/Color';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from '../Components/CustomText';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -12,13 +18,63 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
-import { Icon } from 'native-base';
+import {Icon} from 'native-base';
 import CustomButton from '../Components/CustomButton';
+import {Post} from '../Axios/AxiosInterceptorFunction';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 const ChangePassword = () => {
+  const navigation = useNavigation()
+  const token = useSelector((State)=>State.authReducer.token)
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPass, setNewPass] = useState('');
+  const [isLoading, setisLoading] = useState(false);
+
   const [confirmNewPass, setConfirmNewPass] = useState('');
+
+  const handleChangePassword = async () => {
+    const url = 'setting/change-password';
+
+    const body = {
+      old_password: currentPassword,
+      new_password: newPass,
+      confirm_password: confirmNewPass,
+    };
+
+    for (let key in body) {
+      if (body[key] == '') {
+        return Platform.OS == 'android'
+          ? ToastAndroid.show(`${key} is empty`, ToastAndroid.SHORT)
+          : alert(`${key} is empty`);
+      }
+    }
+
+    if (newPass != confirmNewPass) {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show(`New Password much be matched`, ToastAndroid.SHORT)
+        : alert(`New Password much be matched`);
+    }
+    if (newPass.length < 8) {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show(
+            `password much be atleast 8 digit`,
+            ToastAndroid.SHORT,
+          )
+        : alert(`password much be atleast 8 digit`);
+    }
+
+    setisLoading(true);
+    const response = await Post(url, body, apiHeader(token));
+    setisLoading(false);
+    if (response != undefined) {
+      Platform.OS == 'android'
+        ? ToastAndroid.show(`Password has been changed successfully`, ToastAndroid.SHORT)
+        : alert(`Password has been changed successfully`);
+        navigation.goBack();
+    }
+  };
+
   return (
     <>
       <CustomStatusBar
@@ -34,7 +90,6 @@ const ChangePassword = () => {
         }}
       />
       <View style={styles.container}>
-       
         <TextInputWithTitle
           title={'Current Password'}
           titleText={`Current Password`}
@@ -57,7 +112,7 @@ const ChangePassword = () => {
           border={1}
           color={Color.veryLightGray}
         />
-         <TextInputWithTitle
+        <TextInputWithTitle
           title={'new Password'}
           titleText={`new Password`}
           secureText={true}
@@ -79,7 +134,7 @@ const ChangePassword = () => {
           border={1}
           color={Color.veryLightGray}
         />
-         <TextInputWithTitle
+        <TextInputWithTitle
           title={'Confirm New password'}
           titleText={`Confirm New password`}
           secureText={true}
@@ -101,18 +156,19 @@ const ChangePassword = () => {
           border={1}
           color={Color.veryLightGray}
         />
-      <CustomButton
+        <CustomButton
           text={'Save'}
           textColor={Color.white}
           width={windowWidth * 0.85}
           height={windowHeight * 0.07}
-         marginTop={moderateScale(50,0.3)}
+          marginTop={moderateScale(50, 0.3)}
           bgColor={Color.themeColor}
+          onPress={handleChangePassword}
           borderRadius={moderateScale(15, 0.3)}
           elevation
+          disabled={isLoading}
         />
       </View>
-    
     </>
   );
 };

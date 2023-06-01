@@ -27,16 +27,20 @@ import ImagePickerModal from '../Components/ImagePickerModal';
 import CustomModal from '../Components/CustomModal';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomButton from '../Components/CustomButton';
+import { useSelector } from 'react-redux';
 
 const Profile = props => {
   const data = props?.route?.params?.data;
+  const user = useSelector(state => state.commonReducer.userData);
+  console.log("🚀 ~ file: Profile.js:33 ~ Profile ~ data:", data)
   const fromSearch = props?.route?.params?.fromSearch ;
   console.log("🚀 ~ file: Profile.js:26 ~ Profile ~ fromSearch:", fromSearch)
   const [type, setType] = useState('photos');
   const [isVisible, setIsVisible] = useState(false);
-  const [postRef , setPostRef] = useState(null)
-  // const images = props?.route?.params?.images;
-  const [images , setImages] = useState(data ? data.images :  [
+  const [userData, setUserData] = useState(fromSearch ? data : user);
+  const [postRef , setPostRef] = useState(null
+  )
+  const [images , setImages] = useState(userData ? userData.gallery_images :  [
     require('../Assets/Images/image1.jpeg'),
     require('../Assets/Images/image2.jpeg'),
     require('../Assets/Images/image3.jpeg'),
@@ -56,7 +60,7 @@ const Profile = props => {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedImage , setSelectedImage] = useState(null)
-  const [image, setImage] = useState({});
+  const [image, setImage] = useState(userData?.profile_images[0]);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [postImage , setPostImage] = useState({});
@@ -103,7 +107,7 @@ const Profile = props => {
             fromSearch ?
             <CustomImage
               style={styles.image}
-              source={require('../Assets/Images/woman1.jpeg')}
+              source={{uri : image?.url}}
             />
             :
             <View>
@@ -136,18 +140,29 @@ const Profile = props => {
           </View>
           }
         <CustomText style={styles.heading}>
-         {fromSearch ?`${data?.profileName}, ${data?.age}` : 'Austin,21'}
+         {fromSearch ?`${fromSearch ? userData?.governmentName : userData?.profileName},${userData?.age}` : 'Austin,21'}
         </CustomText>
         <CustomText
           style={[
             {
               color: Color.veryLightGray,
-              fontSize: moderateScale(16, 0.6),
-              marginTop: moderateScale(10, 0.3),
+              fontSize: moderateScale(11, 0.6),
+              marginTop: moderateScale(6, 0.3),
             },
           ]}>
-          Model Fashion
+      {userData?.spiritualBackground}
         </CustomText>
+        <CustomText
+          style={[
+            {
+              color: Color.veryLightGray,
+              fontSize: moderateScale(11, 0.6),
+              marginTop: moderateScale(2, 0.3),
+            },
+          ]}>
+      {userData?.spiritualValue}
+        </CustomText>
+        
         <View style={styles.row}>
           <View
             style={{

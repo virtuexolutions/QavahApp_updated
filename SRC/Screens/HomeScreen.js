@@ -26,13 +26,13 @@ import CustomImage from '../Components/CustomImage';
 import NullDataComponent from '../Components/NullDataComponent';
 import { useIsFocused } from '@react-navigation/native';
 
+
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const focused = useIsFocused()
   const user = useSelector(state => state.commonReducer.userData);
   const token = useSelector(state => state.authReducer.token);
-  // console.log("🚀 ~ file: HomeScreen.js:37 ~ HomeScreen ~ user:", user)
-  // const useSwiper = useRef().current
+  console.log("🚀 ~ file: HomeScreen.js:37 ~ HomeScreen ~ user:", user)
   const [swiperRef, setSwiperRef] = useState();
   const [xAxis, setXAxis] = useState(0);
   const [yAxis, setYAxis] = useState(0);
@@ -42,9 +42,7 @@ const HomeScreen = () => {
   const [isSuperLikeVisible, setSuperLikeVisible] = useState(false);
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [selectedId , setSelectedId] = useState(0)
-  // console.log("🚀 ~ file: HomeScreen.js:44 ~ HomeScreen ~ selectedId:", selectedId)
   const [photoCards, setPhotoCards] = useState([]);
-  // console.log("🚀 ~ file: HomeScreen.js:45 ~ HomeScreen ~ photoCards:", photoCards)
   const [drawerType, setDrawerType] = useState('notification');
   const getUsers = async () => {
     const url = `discover/getPeople/${user?.uid}/${user?.seeking}/${user?.location?.latitude}/${user?.location?.longitude}/${user?.location?.city}/${user?.location?.zipcode}`;
