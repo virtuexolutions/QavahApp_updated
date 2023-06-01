@@ -265,7 +265,7 @@ const IsraeliteFilters = props => {
         
         navigationService.navigate('ProfileCreated',{
           token : response?.data?.token ,
-          userData : response?.data?.user
+          userData : response?.data?.user,
         })
       }
     }

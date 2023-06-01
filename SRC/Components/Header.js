@@ -11,7 +11,7 @@ import {DrawerActions, useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from './CustomText';
 import CustomImage from './CustomImage';
 const {height, width} = Dimensions.get('window');
@@ -27,9 +27,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import navigationService from '../navigationService';
 import DrawerOptions from './DrawerOptions';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { Post } from '../Axios/AxiosInterceptorFunction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setUserData } from '../Store/slices/common';
 
 const Header = props => {
+
   const dispatch = useDispatch();
+  const token = useSelector(state=>state.authReducer.token);
   const notification = useSelector(state => state.commonReducer.notification);
   const navigationN = useNavigation();
   const [isModalVisible, setModalVisible] = useState(false);
@@ -102,7 +107,7 @@ const Header = props => {
       key: 9,
       title: 'set Account visibility to global',
       onPress: (data) => {
-       console.log('hello' , data)
+        setAccountVisible()
       },
       switch : true,
       switchEnabled :switchEnabled ,
@@ -110,6 +115,16 @@ const Header = props => {
     },
   ];
   const [isVisible, setIsVisible] = useState(false);
+
+
+  const setAccountVisible =async()=>{
+    const url = 'user/update-my-profile-app';
+    const response = await Post(url , {} , apiHeader(token))
+    if(response != undefined){
+      // return console.log('data ======= = = = = = ' , response?.data)
+      dispatch(setUserData(response?.data))
+    }
+  }
 
   const notificaitonArray = [
     {
@@ -161,7 +176,6 @@ const Header = props => {
   const [searchText, setSearchText] = useState('');
   const user = useSelector(state => state.commonReducer.userData);
   const userRole = useSelector(state => state.commonReducer.selectedRole);
-  const token = useSelector(state => state.authReducer.token);
 
   return (
     <View style={styles.header2}>

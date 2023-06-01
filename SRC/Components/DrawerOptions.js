@@ -1,14 +1,17 @@
-import {  Text, View , TouchableOpacity} from 'react-native'
+import {  Text, View , TouchableOpacity , Switch} from 'react-native'
 import React, { useState } from 'react'
 import { moderateScale, ScaledSheet } from 'react-native-size-matters'
 import CustomText from './CustomText';
-import { Icon, Switch } from 'native-base';
+import { Icon } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { windowWidth } from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
+import { useSelector } from 'react-redux';
 
 const DrawerOptions = ({item}) => {
     const [openNested , setOpenNested] = useState(false);
+    const userData = useSelector((State)=>State.commonReducer.userData);
+    console.log("🚀 ~ file: DrawerOptions.js:14 ~ DrawerOptions ~ userData:", userData?.prefrences?.global)
     const datachane=()=>{
         console.log('dasdasasd')
       }
@@ -36,14 +39,25 @@ const DrawerOptions = ({item}) => {
         >{item?.title}</CustomText>
         {
             item?.switch ?
+            // <Switch
+            // onThumbColor={Color.white}
+            // onTrackColor={Color.themeColor}
+            // onToggle={()=>{
+            //     item?.onPress()
+            //     console.log('fdfasdsdas')
+            // }}
+            // isChecked={userData?.prefrences?.global}
+            // // onToggle={datachane}
+            // // onValueChange={()=>{item?.setSwitchEnabled(prev=>!prev)}}
+            // // value={item?.switchEnabled}
+            // />
             <Switch
-            onThumbColor={Color.white}
-            onTrackColor={Color.themeColor}
-
-            // onToggle={datachane}
-            // onValueChange={()=>{item?.setSwitchEnabled(prev=>!prev)}}
-            // value={item?.switchEnabled}
-            />
+            trackColor={userData?.prefrences?.global ? 'red': '#81b0ff'}
+            thumbColor={userData?.prefrences?.global ? Color.themeColor : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={ item?.onPress}
+            value={userData?.prefrences?.global}
+          />
  :       
         <Icon 
         name={openNested ? 'down' : 'right'}

@@ -1,16 +1,19 @@
 import {StyleSheet, Text, View, ScrollView, FlatList} from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
 import Color from '../Assets/Utilities/Color';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomButton from '../Components/CustomButton';
 import CustomText from '../Components/CustomText';
 import { Icon } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import { Get, Post } from '../Axios/AxiosInterceptorFunction';
+import { useSelector } from 'react-redux';
 
 const Subscription = () => {
+  const token = useSelector((State)=>State.authReducer.token)
   const [index, setIndex] = useState(0);
 
   const subscriptions = [
@@ -53,6 +56,24 @@ const Subscription = () => {
     // Do stuff
   };
   const viewabilityConfigCallbackPairs = useRef([{onViewableItemsChanged}]);
+
+
+
+
+
+  const getSubscriptionPlan = async()=>{
+    const url = 'packages' ;
+    const response = await Get(url , token)
+    if(response != undefined){
+      console.log(JSON.stringify(response?.data , null ,2))
+    }
+  }
+
+
+  useEffect(() => {
+    getSubscriptionPlan()
+  }, [])
+  
   return (
     <>
       <CustomStatusBar
