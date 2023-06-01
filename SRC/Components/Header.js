@@ -39,7 +39,7 @@ const Header = props => {
   const navigationN = useNavigation();
   const [isModalVisible, setModalVisible] = useState(false);
   const [drawerModal, setDrawerModal] = useState(false);
-  const [switchEnabled , setSwitchEnabled] = useState(false)
+  const [switchEnabled, setSwitchEnabled] = useState(false);
   const DrawerArray = [
     {
       key: 1,
@@ -60,25 +60,29 @@ const Header = props => {
             navigationService.navigate('ChangePassword'), setDrawerModal(false);
           },
         },
-       { key: 4,
-        title: 'Portfolio',
-        onPress: () => {
-          navigationService.navigate('UserDetail'), setDrawerModal(false);
+        {
+          key: 4,
+          title: 'Portfolio',
+          onPress: () => {
+            navigationService.navigate('UserDetail'), setDrawerModal(false);
+          },
         },
-      },
-      { key: 11,
-        title: 'Israelite Info',
-        onPress: () => {
-          navigationService.navigate('IsraeliteFilters',{edit : true}), setDrawerModal(false);
+        {
+          key: 11,
+          title: 'Israelite Info',
+          onPress: () => {
+            navigationService.navigate('IsraeliteFilters', {edit: true}),
+              setDrawerModal(false);
+          },
         },
-      }
-      ,
-      { key: 12,
-        title: 'More About Me',
-        onPress: () => {
-          navigationService.navigate('MoreAboutme',{edit : true}), setDrawerModal(false);
+        {
+          key: 12,
+          title: 'More About Me',
+          onPress: () => {
+            navigationService.navigate('MoreAboutme', {edit: true}),
+              setDrawerModal(false);
+          },
         },
-      }
       ],
     },
     {key: 4, title: 'Legal', onPress: () => alert('Action needed')},
@@ -93,9 +97,17 @@ const Header = props => {
     {
       key: 7,
       title: 'terms & conditions',
-      onPress: () => alert('Action needed'),
+      onPress: () => {
+        navigationService.navigate('TermsAndConditions'), setDrawerModal(false);
+      },
     },
-    {key: 8, title: 'Help', onPress: () => alert('Action needed')},
+    {
+      key: 8,
+      title: 'Help',
+      onPress: () => {
+        navigationService.navigate('Support'), setDrawerModal(false);
+      },
+    },
     {
       key: 9,
       title: 'Who Viewed Me?',
@@ -109,9 +121,9 @@ const Header = props => {
       onPress: (data) => {
         setAccountVisible()
       },
-      switch : true,
-      switchEnabled :switchEnabled ,
-      setSwitchEnabled : setSwitchEnabled , 
+      switch: true,
+      switchEnabled: switchEnabled,
+      setSwitchEnabled: setSwitchEnabled,
     },
   ];
   const [isVisible, setIsVisible] = useState(false);
@@ -157,8 +169,6 @@ const Header = props => {
     },
   ];
 
- 
-
   const {
     title,
     textStyle,
@@ -200,9 +210,7 @@ const Header = props => {
               ? () => {
                   setDrawerModal(true);
                 }
-              :
-              
-              leftPress
+              : leftPress
               ? leftPress
               : () => {
                   navigationN.goBack();
@@ -221,8 +229,13 @@ const Header = props => {
             as={rightType ? rightType : FontAwesome}
             size={moderateScale(22, 0.3)}
             color={Color.themeLightGray}
-            onPress={rightName == 'bell' ?
-            ()=>{setIsVisible(true)} : rightPress}
+            onPress={
+              rightName == 'bell'
+                ? () => {
+                    setIsVisible(true);
+                  }
+                : rightPress
+            }
             style={{
               position: 'absolute',
               right: moderateScale(10, 0.3),
@@ -317,10 +330,7 @@ const Header = props => {
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}>
         <ScrollView
-          style={[
-            styles.modalContainer1,
-           
-          ]}
+          style={[styles.modalContainer1]}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             alignItems: 'center',

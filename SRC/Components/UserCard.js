@@ -9,23 +9,38 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomText from './CustomText';
 import CustomTextWithMask from './CustomTextWithMask';
-import { Icon } from 'native-base';
+import {Icon} from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import navigationService from '../navigationService';
 
-const UserCard = ({onClosePress, onheartPress, style , item}) => {
+const UserCard = ({onClosePress, onheartPress, style, item, hideBtns}) => {
+  // console.log("🚀 ~ file: UserCard.js:17 ~ UserCard ~ item:", item?.profile_images[0]?.url)
+  const profile_image = item?.profile_images[0]?.url;
+  console.log(
+    '🚀 ~ file: UserCard.js:19 ~ UserCard ~ profile_image:',
+    profile_image,
+  );
+
   return (
-    <TouchableOpacity style={[styles.card, style && style]} activeOpacity={0.9}
+    <TouchableOpacity
+      style={[styles.card, style && style]}
+      activeOpacity={0.9}
       onPress={() => {
-        navigationService.navigate('UserDetail', {item: item , fromSearch : true});
-      }}
-    
-    >
+        !hideBtns &&
+          navigationService.navigate('UserDetail', {
+            item: item,
+            fromSearch: true,
+          });
+      }}>
       <CustomImage
         onPress={() => {
-          navigationService.navigate('UserDetail', {item: item , fromSearch : true});
+          !hideBtns &&
+          navigationService.navigate('UserDetail', {
+            item: item,
+            fromSearch: true,
+          });
         }}
-        source={require('../Assets/Images/woman2.jpeg')}
+        source={{uri: item?.profile_images[0]?.url}}
         style={[
           {
             width: '100%',
@@ -33,7 +48,6 @@ const UserCard = ({onClosePress, onheartPress, style , item}) => {
             resizeMode: 'cover',
           },
         ]}
-        
       />
       {/* <View
         style={[
@@ -49,85 +63,86 @@ const UserCard = ({onClosePress, onheartPress, style , item}) => {
            
           },
         ]}> */}
-             <LinearGradient
-      start={{x: 0, y: 0}}
-      end={{x: 0, y: 0.9}}
-      colors={['#000000' , '#ffffff00']}
-      style={{
-        position: 'absolute',
-        top: 0,
-        // justifyContent: 'flex-end',
-        shadowOffset: {height: 2, width: 0},
-        shadowOpacity: 1,
-        shadowRadius: 4,
-        width: '100%',
-        paddingBottom: moderateScale(60, 0.6),
-        justifyContent : 'center' ,
-        paddingLeft : moderateScale(10,0.6),
-        paddingTop : moderateScale(10,0.6)
-        
-      }}
-    >
-
+      <LinearGradient
+        start={{x: 0, y: 0}}
+        end={{x: 0, y: 0.9}}
+        colors={['#000000', '#ffffff00']}
+        style={{
+          position: 'absolute',
+          top: 0,
+          // justifyContent: 'flex-end',
+          shadowOffset: {height: 2, width: 0},
+          shadowOpacity: 1,
+          shadowRadius: 4,
+          width: '100%',
+          paddingBottom: moderateScale(60, 0.6),
+          justifyContent: 'center',
+          paddingLeft: moderateScale(10, 0.6),
+          paddingTop: moderateScale(10, 0.6),
+        }}>
         <CustomText
           style={{
             color: Color.white,
-            fontSize : moderateScale(15,0.6),
-            width : '90%'
-
+            fontSize: moderateScale(15, 0.6),
+            width: '90%',
           }}>
-        {`${item?.profileName}, ${item?.age}`}
+          {`${item?.profileName}, ${item?.age}`}
         </CustomText>
         <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Icon
+            name={'location-outline'}
+            as={Ionicons}
+            size={moderateScale(14, 0.6)}
+            color={Color.white}
+          />
+          <CustomText
+            isBold
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
-            <Icon
-              name={'location-outline'}
-              as={Ionicons}
-              size={moderateScale(14, 0.6)}
-              color={Color.white}
-            />
-            <CustomText isBold style={{
-               color: Color.white,
-               fontSize : moderateScale(11,0.6),
+              color: Color.white,
+              fontSize: moderateScale(11, 0.6),
             }}>{`5 Ml`}</CustomText>
-          </View>
-          </LinearGradient>
-       
-      {/* </View> */}
-      <View style={styles.absoluteContainer}>
-        <BtnContainer
-          backgroundColor={Color.white}
-          color={Color.veryLightGray}
-          name={'close-sharp'}
-          type={Ionicons}
-          style={{
-            width: moderateScale(40, 0.6),
-            height: moderateScale(40, 0.6),
-            borderRadius: moderateScale(20, 0.6),
+        </View>
+      </LinearGradient>
 
-            //    marginTop: moderateScale(-15, 0.3),
-          }}
-          iconSize={moderateScale(20, 0.6)}
-        />
-        <BtnContainer
-          backgroundColor={Color.themeColor}
-          color={Color.white}
-          name={'heart-o'}
-          type={FontAwesome}
-          style={{
-            width: moderateScale(40, 0.6),
-            height: moderateScale(40, 0.6),
-            borderRadius: moderateScale(20, 0.6),
+      {hideBtns ? (
+        <></>
+      ) : (
+        <View style={styles.absoluteContainer}>
+          <BtnContainer
+            backgroundColor={Color.white}
+            color={Color.veryLightGray}
+            name={'close-sharp'}
+            type={Ionicons}
+            style={{
+              width: moderateScale(40, 0.6),
+              height: moderateScale(40, 0.6),
+              borderRadius: moderateScale(20, 0.6),
 
-            //    marginTop: moderateScale(-15, 0.3),
-          }}
-          iconSize={moderateScale(20, 0.6)}
-        />
-      </View>
+              //    marginTop: moderateScale(-15, 0.3),
+            }}
+            iconSize={moderateScale(20, 0.6)}
+            onPress={() => {}}
+          />
+          <BtnContainer
+            backgroundColor={Color.themeColor}
+            color={Color.white}
+            name={'heart-o'}
+            type={FontAwesome}
+            style={{
+              width: moderateScale(40, 0.6),
+              height: moderateScale(40, 0.6),
+              borderRadius: moderateScale(20, 0.6),
+
+              //    marginTop: moderateScale(-15, 0.3),
+            }}
+            iconSize={moderateScale(20, 0.6)}
+          />
+        </View>
+      )}
     </TouchableOpacity>
   );
 };
@@ -143,15 +158,15 @@ const styles = ScaledSheet.create({
     overflow: 'hidden',
     // marginLeft : moderateScale(10,0.3),
     alignSelf: 'center',
-    shadowColor: "#000",
-shadowOffset: {
-	width: 0,
-	height: 3,
-},
-shadowOpacity: 0.27,
-shadowRadius: 4.65,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
 
-elevation: 6,
+    elevation: 6,
   },
   absoluteContainer: {
     position: 'absolute',

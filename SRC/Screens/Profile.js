@@ -85,7 +85,7 @@ const Profile = props => {
       />
       <Header
         showLeft={true}
-        title={fromSearch ? `${data?.name} Gallery` : 'Austin gallery'}
+        title={fromSearch ? `${data?.profileName} Gallery` : 'Austin gallery'}
         leftName={'left'}
         textStyle={{
           color: Color.veryLightGray,

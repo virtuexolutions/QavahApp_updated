@@ -27,6 +27,11 @@ import { Post } from '../Axios/AxiosInterceptorFunction';
 import { useSelector } from 'react-redux';
 
 const SearchFilterScreen = () => {
+  const token = useSelector((state)=> state.authReducer.token)
+  console.log("🚀 ~ file: SearchFilterScreen.js:31 ~ token:", token)
+  const user = useSelector((state)=>state.commonReducer.userData)
+  console.log("🚀 ~ file: SearchFilterScreen.js:32 ~ user:", user)
+  
   const [location, setLocation] = useState('Jakarta, Indonesia');
   const [distance, setDistance] = useState(0);
   console.log(
@@ -34,8 +39,10 @@ const SearchFilterScreen = () => {
     distance,
   );
   const [age1, setAge] = useState(0);
+  console.log("🚀 ~ file: SearchFilterScreen.js:38 ~ age1:", age1)
   const [age2, setAge2] = useState(0);
   const [option, setOption] = useState('shortcuts');
+  console.log("🚀 ~ file: SearchFilterScreen.js:41 ~ option:", option)
   const [isLoading, setIsLoading] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(true);
   // const [visibility , setVisibility] = useState('');
@@ -83,10 +90,10 @@ const SearchFilterScreen = () => {
     (Values = false),
   ]);
   const [innerOptions, setInnerOptions] = useState([]);
-  console.log(
-    '🚀 ~ file: SearchFilterScreen.js:57 ~ SearchFilterScreen ~ innerOptions:',
-    innerOptions,
-  );
+  // console.log(
+  //   '🚀 ~ file: SearchFilterScreen.js:57 ~ SearchFilterScreen ~ innerOptions:',
+  //   innerOptions,
+  // );
   const [step, setSteps] = useState(1);
   // console.log(
   //   '🚀 ~ file: SearchFilterScreen.js:55 ~ SearchFilterScreen ~ step:',
@@ -521,93 +528,108 @@ const SearchFilterScreen = () => {
     }
   }, [nestedOptions, step]);
 
-  const token = useSelector((state)=> state.authReducer.token)
-
+  
   const getSearchResult =async()=>{
-    const url = 'search-filter';
-    const body = {
-      uid :'',
-      filters:[{ 
-        seeking:'woman'
-      },{
-        age:[20,30]
-      },
-      {
-        miles:15
-      },
-      { 
-        zipcode:'12121'
-      },
-      {
-        doYouWantMoreChildren:'No'
-      },
-      {
-         doYouHaveChildren: 'Yes- they live at home'
-      },
-      {
-        doYouDrink : `Don't drink`
-      },
-      {
-        doYouSmoke: `I don't smoke`
-      },
-      {
-        howOftenDoYouExercise : 'no answer'
-      },
-      {
-        havePets:'Fish'
-      },
-      {
-        relationshipIAmSeeking:'Frienship'
-      },
-      {
-        bodyType : 'Average'
-      },
-      {
-        height : ['6','10']
-      },
-      {
-        maritalStatus : 'Never married'
-      },
-      {
-        livingSituation : 'Live with friends'
-      },
-      {
-        willingToRelocate : 'Not sure about relocating'
-      },
-      {
-        iBelieveIAM : 'Grafted in'
-      },
-      {
-        studyBible : 'King james Version'
-      },
-      {
-        studyHabits : '66 only'
-      },
-      {
-        spiritualValue : 'Non-Messianic'
-      },
-      {
-        maritalBeliefSystem : 'Polygyny'
-      },
-      {
-        yearsInTruth : '3 year'
-      },
-      {
-        anyAffiliation : 'i am a member of an online org'
-      },
-      {
-        spiritualBackground : 'i did not believe in anything'
-      },
+    const url = 'seeking/seeking';
+    // console.log('submit clicked')
+    // return console.log("location in the search screen",location);
 
-      ],
-      from : 1,
-      lat : '40.5689',
-      lag : '-73.96',
+    body.push(
+      {age:[age1,age2]},
+      {miles:distance},
+      {zipcode:'11230'})
 
-
+    const dataBody = {
+      uid : user?.uid,
+      filters:[...body],
+      from: 1,
+      lat:user?.latitude,
+      lng:user?.longitude,
     }
-    const response = await Post(url, body,apiHeader(token));
-    if(response != null){
+    console.log('Databosy filters===========????',dataBody.filters)
+    // const oldBody = {
+    //   uid :'',
+    //   filters:[{ 
+    //     seeking:'woman'
+    //   },{
+    //     age:[20,30]
+    //   },
+    //   {
+    //     miles:15
+    //   },
+    //   { 
+    //     zipcode:'12121'
+    //   },
+    //   {
+    //     doYouWantMoreChildren:'No'
+    //   },
+    //   {
+    //      doYouHaveChildren: 'Yes- they live at home'
+    //   },
+    //   {
+    //     doYouDrink : `Don't drink`
+    //   },
+    //   {
+    //     doYouSmoke: `I don't smoke`
+    //   },
+    //   {
+    //     howOftenDoYouExercise : 'no answer'
+    //   },
+    //   {
+    //     havePets:'Fish'
+    //   },
+    //   {
+    //     relationshipIAmSeeking:'Frienship'
+    //   },
+    //   {
+    //     bodyType : 'Average'
+    //   },
+    //   {
+    //     height : ['6','10']
+    //   },
+    //   {
+    //     maritalStatus : 'Never married'
+    //   },
+    //   {
+    //     livingSituation : 'Live with friends'
+    //   },
+    //   {
+    //     willingToRelocate : 'Not sure about relocating'
+    //   },
+    //   {
+    //     iBelieveIAM : 'Grafted in'
+    //   },
+    //   {
+    //     studyBible : 'King james Version'
+    //   },
+    //   {
+    //     studyHabits : '66 only'
+    //   },
+    //   {
+    //     spiritualValue : 'Non-Messianic'
+    //   },
+    //   {
+    //     maritalBeliefSystem : 'Polygyny'
+    //   },
+    //   {
+    //     yearsInTruth : '3 year'
+    //   },
+    //   {
+    //     anyAffiliation : 'i am a member of an online org'
+    //   },
+    //   {
+    //     spiritualBackground : 'i did not believe in anything'
+    //   },
+
+    //   ],
+    //   from : 1,
+    //   lat : '40.5689',
+    //   lag : '-73.96',
+
+
+    // }
+    const response = await Post(url, dataBody,apiHeader(token));
+    if(response != undefined){
 
       console.log('Search result Response', response);
       
