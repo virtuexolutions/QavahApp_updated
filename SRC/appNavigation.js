@@ -42,6 +42,8 @@ import VerifyNumber from './Screens/VerifyNumber';
 import ResetPassword from './Screens/ResetPassword';
 import TermsAndConditions from './Screens/TermsAndConditions';
 import Support from './Screens/Support';
+import GetSuperLike from './Screens/GetSuperLike';
+import PrivacyPolicy from './Screens/PrivacyPolicy';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -100,6 +102,8 @@ const AppNavigator = () => {
           <RootNav.Screen name="Subscription" component={Subscription} />
           <RootNav.Screen name= "TermsAndConditions" component={TermsAndConditions} />
           <RootNav.Screen name="Support" component={Support} />
+          <RootNav.Screen name="GetSuperLike" component={GetSuperLike} />
+          <RootNav.Screen name="Privacy" component={PrivacyPolicy} />
 
           {/* // options={()=>{
           //   options

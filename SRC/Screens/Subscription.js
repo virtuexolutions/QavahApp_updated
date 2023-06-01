@@ -11,23 +11,29 @@ import { Icon } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { Get, Post } from '../Axios/AxiosInterceptorFunction';
 import { useSelector } from 'react-redux';
+import navigationService from '../navigationService';
 
 const Subscription = () => {
   const token = useSelector((State)=>State.authReducer.token)
   const [index, setIndex] = useState(0);
+  const [itemPrice, setItemPrice] = useState(0);
+  const [itemColor, setItemColor] = useState(['#A97142', '#996633', '#A97142'])
 
   const subscriptions = [
     {
       text: 'Gold',
       color: ['#B78628', '#FCC201', '#DBA514', '#B78628'],
+      price: 450,
     },
     {
       text: 'Silver',
       color: ['#8E8D8D', '#BEC0C2', '#8E8D8D'],
+      price: 400,
     },
     {
       text: 'Bronze',
       color: ['#A97142', '#996633', '#A97142'],
+      price: 350,
     },
   ];
 
@@ -50,9 +56,11 @@ const Subscription = () => {
   const onViewableItemsChanged = ({viewableItems}) => {
     console.log(
       '🚀 ~ file: Walkthrough.js:62 ~ Walkthrough ~ viewableItems',
-      viewableItems[0]?.index,
+      viewableItems[0]?.item?.color,
     );
     setIndex(viewableItems[0]?.index);
+    setItemPrice(viewableItems[0]?.item?.price);
+    setItemColor(viewableItems[0]?.item?.color)
     // Do stuff
   };
   const viewabilityConfigCallbackPairs = useRef([{onViewableItemsChanged}]);
@@ -110,6 +118,9 @@ const Subscription = () => {
           viewabilityConfigCallbackPairs={
             viewabilityConfigCallbackPairs.current
           }
+          // onViewableItemsChanged={()=>{
+          //   console.log('')
+          // }}
           renderItem={({item, index}) => {
             return (
               <CustomButton
@@ -117,7 +128,9 @@ const Subscription = () => {
                 textColor={Color.white}
                 width={windowWidth * 0.9}
                 height={windowHeight * 0.09}
-                onPress={() => {}}
+                onPress={() => {
+                  
+                }}
                 marginLeft={windowWidth * 0.05}
                 marginRight={windowWidth * 0.05}
                 bgColor={item.color}
@@ -138,7 +151,7 @@ const Subscription = () => {
             alignItems: 'center',
             // position: 'absolute',
             bottom: moderateScale(0, 0.6),
-          }}>
+          }}> 
           {subscriptions.map((x, i) => {
             return (
               <View
@@ -160,26 +173,31 @@ const Subscription = () => {
         <PointsComponent array={pointsArray1} title={'Enhance your experience'} />
         <PointsComponent array={pointsArray2} title={'Premium discovery'} />
       </ScrollView>
+      
         <CustomButton
-                text={'Starting At $500'}
+                text={`${itemPrice}$`}
                 textColor={Color.white}
                 width={windowWidth * 0.8}
                 height={windowHeight * 0.07}
-                onPress={() => {}}
+                onPress={() => {
+                  navigationService.navigate('GetSuperLike');
+                }}
                 marginLeft={windowWidth * 0.05}
                 marginRight={windowWidth * 0.05}
-                bgColor={Color.themeColor}
+                bgColor={itemColor}
                 borderRadius={moderateScale(10, 0.6)}
                 marginTop={moderateScale(40, 0.6)}
                 marginBottom={moderateScale(10, 0.6)}
                 elevation
                 isBold
                 fontSize={moderateScale(15, 0.6)}
+                isGradient
                 containerStyle ={{
                   position : 'absolute' ,
                   bottom : moderateScale(5,0.3)
                 }}
               />
+
     </>
   );
 };
@@ -212,7 +230,7 @@ const styles = ScaledSheet.create({
   },
 });
 
-const PointsComponent = ({array, title}) => {
+export const PointsComponent = ({array, title}) => {
   return (
     <View style={styles.container}>
       <CustomText style={styles.titleContainer}>{title}</CustomText>

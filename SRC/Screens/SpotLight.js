@@ -26,8 +26,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Icon} from 'native-base';
 import BtnContainer from '../Components/BtnContainer';
 import navigationService from '../navigationService';
+import { useSelector } from 'react-redux';
 
 const SpotLight = () => {
+  const token = useSelector(state => state.authReducer.token);
   const [isVisible, setIsVisible] = useState(false);
   const [photoCards, setPhotoCards] = useState([
     {
@@ -249,6 +251,12 @@ const SpotLight = () => {
     require('../Assets/Images/woman3.jpeg'),
     require('../Assets/Images/woman4.jpeg'),
   ];
+
+
+  const getSpotLightData =async ()=>{
+    const url = 'user_spotlights';
+    const response = await Get(url, token);
+  }
 
   return (
     <>

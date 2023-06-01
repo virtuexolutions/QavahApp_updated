@@ -93,7 +93,9 @@ const Header = props => {
         navigationService.navigate('Subscription'), setDrawerModal(false);
       },
     },
-    {key: 6, title: 'Privacy Policy', onPress: () => alert('Action needed')},
+    {key: 6, title: 'Privacy Policy', onPress: () => {
+      navigationService.navigate('Privacy'), setDrawerModal(false);
+    }},
     {
       key: 7,
       title: 'terms & conditions',
@@ -246,7 +248,7 @@ const Header = props => {
           <View
             style={{
               position: 'absolute',
-              right: moderateScale(10, 0.3),
+              // right: moderateScale(10, 0.3),
               width: windowWidth * 0.12,
               height: windowHeight * 0.2,
               // backgroundColor : 'red'
@@ -257,6 +259,9 @@ const Header = props => {
               style={{
                 width: '100%',
                 height: '100%',
+                justifyContent: 'center',
+                // alignSelf:'center',
+             
               }}
             />
           </View>
