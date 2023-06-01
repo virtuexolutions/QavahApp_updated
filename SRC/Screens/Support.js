@@ -28,6 +28,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import { Icon } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import Header from '../Components/Header';
 
 const Support = () => {
   const navigationN = useNavigation()
@@ -45,25 +46,26 @@ const Support = () => {
   
 
   const GetSupportData = async () => {
-    const url = 'auth/admin/info';
+
+    const url = 'admin/info';
     setLoading(true);
     const response = await Get(url, token);
     setLoading(false);
     if (response != undefined) {
-      console.log(response?.data);
-      setSupportData(response?.data?.data);
+        // console.log('Support response======>>>>>>>>>>>',response?.data?.data?.official_email);
+        setSupportData(response?.data?.data);
     }
   };
-  // useEffect(() => {
-  //   GetSupportData();
-  //   // setFullName('');
-  //   // setPhone('');
-  //   // setEmail('');
-  //   // setSubject('');
-  //   // setMessage('');
-  // }, [isFocused]);
+  useEffect(() => {
+    GetSupportData();
+    // setFullName('');
+    // setPhone('');
+    // setEmail('');
+    // setSubject('');
+    // setMessage('');
+  }, [isFocused]);
   const sendQuestion = async () => {
-    const url = 'auth/contact/submit';
+    const url = 'support';
     const body = {
       name: fullName,
       phone: phone,
@@ -71,6 +73,7 @@ const Support = () => {
       subject: subject,
       description: message,
     };
+    // console.log("🚀 ~ file: Support.js:76 ~ sendQuestion ~ body:", body)
     for (let key in body) {
       if (body[key] === '') {
         return Platform.OS == 'android'
@@ -81,6 +84,7 @@ const Support = () => {
     setSubmitLoading(true);
 
     const response = await Post(url, body, apiHeader(token));
+    // console.log("🚀 ~ file: Support.js:86 ~ sendQuestion ~ response:", response)
     setSubmitLoading(false);
     if (response != undefined) {
       Platform.OS == 'android'
@@ -93,59 +97,29 @@ const Support = () => {
   return (
     <>
     <CustomStatusBar
-     backgroundColor={
-      Color.white
-    }
+      backgroundColor={Color.white}
       barStyle={'dark-content'}
     />
-       <LinearGradient
-      style={{
-        width: windowWidth,
-        height: windowHeight,
+    <Header
+      showLeft={true}
+      title={'Support'}
+      leftName={'left'}
+      textStyle={{
+        color: Color.veryLightGray,
       }}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y:1}}
-      colors={Color.themeBgColor}
-      // locations ={[0, 0.5, 0.6]}
-      >
-          <TouchableOpacity
-          activeOpacity={0.8}
-        style={{
-          position : 'absolute',
-          top : moderateScale(20,0.3),
-          left : moderateScale(20,0.3),
-          height: moderateScale(30, 0.3),
-          width: moderateScale(30, 0.3),
-          borderRadius: moderateScale(5, 0.3),
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor:'white',
-          zIndex : 1
-        }}>
-       
-          <Icon
-            name={'arrowleft'}
-            as={AntDesign}
-            size={moderateScale(22, 0.3)}
-            color={Color.themeColor}
-            onPress={()=>{
-              navigationN.goBack()
-            }}
-          />
-          </TouchableOpacity>
-        <KeyboardAwareScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingTop : moderateScale(20,0.6),
-            paddingBottom: moderateScale(20, 0.6),
-            alignItems: 'center',
-         width: '100%',
-            height: windowHeight,
-          }}>
-          <CustomText style={styles.Txt1} isBold>
-            {'Contact Us'}
-          </CustomText>
-          <TouchableOpacity
+    />
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{
+        backgroundColor: Color.white,
+      }}
+      contentContainerStyle={{
+        // height: windowHeight * 0.95,
+
+        alignItems: 'center',
+        paddingBottom: moderateScale(80, 0.6),
+      }}>
+        <TouchableOpacity
             style={[styles?.ContactInfoContainer]}
             activeOpacity={0.85}
             onPress={() => {
@@ -160,8 +134,8 @@ const Support = () => {
             <CustomText style={[styles.contactInfoText]} isRegular>
               {loading
                 ? 'loading...'
-                : supportData?.phone
-                ? supportData?.phone
+                :`tel': ${supportData?.phone}`
+                ? `tel: ${supportData?.phone}`
                 : 'no contact added yet'}
             </CustomText>
           </TouchableOpacity>
@@ -180,8 +154,8 @@ const Support = () => {
             <CustomText style={[styles.contactInfoText]} isRegular>
               {loading
                 ? 'loading...'
-                : supportData?.official_email
-                ? supportData?.official_email
+                : `mailto: ${supportData?.official_email}`
+                ? `mailto: ${supportData?.official_email}`
                 : 'not added yet'}
             </CustomText>
           </TouchableOpacity>
@@ -202,7 +176,7 @@ const Support = () => {
               inputWidth={0.8}
               border={1}
               borderColor={Color.themeLightGray}
-              placeholderColor={Color.black}
+              placeholderColor={Color.veryLightGray}
               marginTop={moderateScale(15, 0.3)}
               backgroundColor={'#F5F5F5'}
               borderRadius={moderateScale(25,0.3)}
@@ -218,7 +192,7 @@ const Support = () => {
               viewWidth={0.85}
               inputWidth={0.8}
               border={1}
-              placeholderColor={Color.black}
+              placeholderColor={Color.veryLightGray}
               borderColor={Color.themeLightGray}
               backgroundColor={'#F5F5F5'}
               marginTop={moderateScale(15, 0.3)}
@@ -237,7 +211,7 @@ const Support = () => {
               inputWidth={0.8}
               marginTop={moderateScale(15, 0.3)}
               border={1}
-              placeholderColor={Color.black}
+              placeholderColor={Color.veryLightGray}
               borderColor={Color.themeLightGray}
               backgroundColor={'#F5F5F5'}
               borderRadius={moderateScale(25,0.3)}
@@ -254,7 +228,7 @@ const Support = () => {
               inputWidth={0.8}
               marginTop={moderateScale(15, 0.3)}
               border={1}
-              placeholderColor={Color.black}
+              placeholderColor={Color.veryLightGray}
               borderColor={Color.themeLightGray}
               backgroundColor={'#F5F5F5'}
               borderRadius={moderateScale(25,0.3)}
@@ -278,7 +252,7 @@ const Support = () => {
               multiline={true}
               inputStyle={{textAlign: 'vertical'}}
               borderRadius={moderateScale(10, 0.3)}
-              placeholderColor={Color.black}
+              placeholderColor={Color.veryLightGray}
             />
            <CustomButton
               text={
@@ -292,9 +266,10 @@ const Support = () => {
               width={windowWidth * 0.85}
               height={windowHeight * 0.07}
               marginTop={moderateScale(20, 0.3)}
-              // onPress={() => {
-              //   dispatch(setUserToken({token: 'dasdawradawdawrtfeasfzs'}));
-              // }}
+              onPress={() => {
+                //dispatch(setUserToken({token: 'dasdawradawdawrtfeasfzs'}));
+                sendQuestion()
+              }}
               bgColor={
                Color.themeColor
               }
@@ -302,10 +277,227 @@ const Support = () => {
               // borderWidth={2}
               borderRadius={moderateScale(30, 0.3)}
             />
-          </View>
-        </KeyboardAwareScrollView>
-      </LinearGradient>
-    </>
+            </View>
+      
+    
+    </ScrollView>
+     
+  </>
+//     <>
+//     <CustomStatusBar
+//      backgroundColor={
+//       Color.white
+//     }
+//       barStyle={'dark-content'}
+//     />
+//        <LinearGradient
+//       style={{
+//         width: windowWidth,
+//         height: windowHeight,
+//       }}
+//       start={{ x: 0, y: 0 }}
+//       end={{ x: 1, y:1}}
+//       colors={Color.themeBgColor}
+//       // locations ={[0, 0.5, 0.6]}
+//       >
+//           <TouchableOpacity
+//           activeOpacity={0.8}
+//         style={{
+//           position : 'absolute',
+//           top : moderateScale(20,0.3),
+//           left : moderateScale(20,0.3),
+//           height: moderateScale(30, 0.3),
+//           width: moderateScale(30, 0.3),
+//           borderRadius: moderateScale(5, 0.3),
+//           justifyContent: 'center',
+//           alignItems: 'center',
+//           backgroundColor:'white',
+//           zIndex : 1
+//         }}>
+       
+//           <Icon
+//             name={'arrowleft'}
+//             as={AntDesign}
+//             size={moderateScale(22, 0.3)}
+//             color={Color.themeColor}
+//             onPress={()=>{
+//               navigationN.goBack()
+//             }}
+//           />
+//           </TouchableOpacity>
+//         <KeyboardAwareScrollView
+//           showsVerticalScrollIndicator={false}
+//           contentContainerStyle={{
+//             paddingTop : moderateScale(20,0.6),
+//             paddingBottom: moderateScale(20, 0.6),
+//             alignItems: 'center',
+//          width: '100%',
+//             height: windowHeight,
+//           }}>
+//           <CustomText style={styles.Txt1} isBold>
+//             {'Contact Us'}
+//           </CustomText>
+//           <TouchableOpacity
+//             style={[styles?.ContactInfoContainer]}
+//             activeOpacity={0.85}
+//             onPress={() => {
+//               Linking.openURL(`tel:${supportData?.phone}`);
+//             }}>
+//             <FontAwesome
+//               name="phone"
+//               color={Color.white}
+//               style={styles.icon1}
+//               size={moderateScale(22, 0.6)}
+//             />
+//             <CustomText style={[styles.contactInfoText]} isRegular>
+//               {loading
+//                 ? 'loading...'
+//                 : supportData?.phone
+//                 ? supportData?.phone
+//                 : 'no contact added yet'}
+//             </CustomText>
+//           </TouchableOpacity>
+//           <TouchableOpacity
+//             style={[styles?.ContactInfoContainer]}
+//             activeOpacity={0.85}
+//             onPress={() => {
+//               Linking.openURL(`mailto: ${supportData?.official_email}`);
+//             }}>
+//             <Entypo
+//               name="mail"
+//               color={Color.white}
+//               style={styles.icon1}
+//               size={moderateScale(22, 0.6)}
+//             />
+//             <CustomText style={[styles.contactInfoText]} isRegular>
+//               {loading
+//                 ? 'loading...'
+//                 : supportData?.official_email
+//                 ? supportData?.official_email
+//                 : 'not added yet'}
+//             </CustomText>
+//           </TouchableOpacity>
+//           <CustomText
+//             style={[styles.Txt1, {marginTop: moderateScale(10, 0.3)}]}
+//             isBold>
+//             {'Ask a Question'}
+//           </CustomText>
+//           <View style={{justifyContent: 'center', alignItems: 'center'}}>
+//             <TextInputWithTitle
+//               titleText={'Your Name'}
+//               secureText={false}
+//               placeholder={'Your Name'}
+//               setText={setFullName}
+//               value={fullName}
+//               viewHeight={0.06}
+//               viewWidth={0.85}
+//               inputWidth={0.8}
+//               border={1}
+//               borderColor={Color.themeLightGray}
+//               placeholderColor={Color.black}
+//               marginTop={moderateScale(15, 0.3)}
+//               backgroundColor={'#F5F5F5'}
+//               borderRadius={moderateScale(25,0.3)}
+//             />
+//             <TextInputWithTitle
+//               titleText={'Phone'}
+//               secureText={false}
+//               placeholder={'Phone'}
+//               keyboardType={'numeric'}
+//               setText={setPhone}
+//               value={phone}
+//               viewHeight={0.06}
+//               viewWidth={0.85}
+//               inputWidth={0.8}
+//               border={1}
+//               placeholderColor={Color.black}
+//               borderColor={Color.themeLightGray}
+//               backgroundColor={'#F5F5F5'}
+//               marginTop={moderateScale(15, 0.3)}
+//               borderRadius={moderateScale(25,0.3)}
+
+//             />
+
+//             <TextInputWithTitle
+//               titleText={'Email'}
+//               secureText={false}
+//               placeholder={'Email'}
+//               setText={setEmail}
+//               value={email}
+//               viewHeight={0.06}
+//               viewWidth={0.85}
+//               inputWidth={0.8}
+//               marginTop={moderateScale(15, 0.3)}
+//               border={1}
+//               placeholderColor={Color.black}
+//               borderColor={Color.themeLightGray}
+//               backgroundColor={'#F5F5F5'}
+//               borderRadius={moderateScale(25,0.3)}
+
+// />
+//             <TextInputWithTitle
+//               titleText={'Subject'}
+//               secureText={false}
+//               placeholder={'Subject'}
+//               setText={setSubject}
+//               value={subject}
+//               viewHeight={0.06}
+//               viewWidth={0.85}
+//               inputWidth={0.8}
+//               marginTop={moderateScale(15, 0.3)}
+//               border={1}
+//               placeholderColor={Color.black}
+//               borderColor={Color.themeLightGray}
+//               backgroundColor={'#F5F5F5'}
+//               borderRadius={moderateScale(25,0.3)}
+
+//             />
+
+//             <TextInputWithTitle
+//               titleText={'Enter Description'}
+//               secureText={false}
+//               placeholder={'Enter Description'}
+//               setText={setMessage}
+//               value={message}
+//               viewHeight={0.15}
+//               viewWidth={0.85}
+//               inputWidth={0.7}
+//               inputHeight={0.1}
+//               border={1}
+//               borderColor={Color.themeLightGray}
+//               backgroundColor={'#F5F5F5'}
+//               marginTop={moderateScale(20, 0.3)}
+//               multiline={true}
+//               inputStyle={{textAlign: 'vertical'}}
+//               borderRadius={moderateScale(10, 0.3)}
+//               placeholderColor={Color.black}
+//             />
+//            <CustomButton
+//               text={
+//                 loading ? (
+//                   <ActivityIndicator color={'#FFFFFF'} size={'small'} />
+//                 ) : (
+//                   'Reset'
+//                 )
+//               }
+//               textColor={Color.white}
+//               width={windowWidth * 0.85}
+//               height={windowHeight * 0.07}
+//               marginTop={moderateScale(20, 0.3)}
+//               // onPress={() => {
+//               //   dispatch(setUserToken({token: 'dasdawradawdawrtfeasfzs'}));
+//               // }}
+//               bgColor={
+//                Color.themeColor
+//               }
+//               // borderColor={Color.white}
+//               // borderWidth={2}
+//               borderRadius={moderateScale(30, 0.3)}
+//             />
+//           </View>
+//         </KeyboardAwareScrollView>
+//       </LinearGradient>
+//     </>
   );
 };
 
