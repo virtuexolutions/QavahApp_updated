@@ -196,7 +196,12 @@ export const TabNavigation = () => {
       <Tabs.Screen name={'SearchFilterScreen'} component={SearchFilterScreen} />
       <Tabs.Screen name={'Wishlist'} component={Wishlist} />
       <Tabs.Screen name={'ChatScreen'} component={ChatScreen} />
-      <Tabs.Screen name={'SpotLight'} component={SpotLight} />
+      <Tabs.Screen name={'SpotLight'} component={SpotLight} 
+      // options={{
+      //   // Pass data as a parameter to the component
+      //   data: { fromSpotLight: true },
+      // }}
+      />
     </Tabs.Navigator>
   );
 };

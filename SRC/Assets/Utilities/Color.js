@@ -32,6 +32,7 @@ export default Color = {
   themeBlack: '#5E5E5E',
   //gradientColors
   themeBgColor: ['#A1722E', '#EDA63F' ],
+  
   themeBgColorNegotiator : ['#0D668E' , '#00ADEF'],
   statusBarColor: ['#297FAD', '#297FAD'],
 };

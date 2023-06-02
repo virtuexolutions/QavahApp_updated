@@ -5,8 +5,9 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Header from '../Components/Header';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import {windowHeight, windowWidth} from '../Utillity/utils';
@@ -26,18 +27,30 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Icon} from 'native-base';
 import BtnContainer from '../Components/BtnContainer';
 import navigationService from '../navigationService';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import {useIsFocused} from '@react-navigation/native';
+import {Get} from '../Axios/AxiosInterceptorFunction';
 
 const SpotLight = () => {
   const token = useSelector(state => state.authReducer.token);
+  const isFocused = useIsFocused();
+  const [fromSpotLight, setFromSpotlight] = useState([]);
+
   const [isVisible, setIsVisible] = useState(false);
+  const [spotLightData, setSpotLightData] = useState([]);
+  console.log(
+    '🚀 ~ file: SpotLight.js:41 ~ SpotLight ~ setSpotLightData:',
+    setSpotLightData,
+  );
+
+  const [isLoading, setIsLoading] = useState(true);
   const [photoCards, setPhotoCards] = useState([
     {
       name: 'Austin Wade',
       age: 22,
       photo: require('../Assets/Images/woman5.jpeg'),
       key: 'caseex6qfO4TPMYyhorner',
-      images: [
+      profile_images: [
         require('../Assets/Images/image1.jpeg'),
         require('../Assets/Images/image2.jpeg'),
         require('../Assets/Images/image3.jpeg'),
@@ -60,7 +73,7 @@ const SpotLight = () => {
       age: 28,
       photo: require('../Assets/Images/banner.jpg'),
       key: 'ozda-XbeP0k',
-      images: [
+      profile_images: [
         require('../Assets/Images/image1.jpeg'),
         require('../Assets/Images/image2.jpeg'),
         require('../Assets/Images/image3.jpeg'),
@@ -78,7 +91,7 @@ const SpotLight = () => {
       age: 29,
       photo: require('../Assets/Images/banner2.jpg'),
       key: 'nBywXevf_jE-',
-      images: [
+      profile_images: [
         require('../Assets/Images/image1.jpeg'),
         require('../Assets/Images/image2.jpeg'),
         require('../Assets/Images/image3.jpeg'),
@@ -96,7 +109,7 @@ const SpotLight = () => {
       age: 30,
       photo: require('../Assets/Images/banner3.jpg'),
       key: 'ZHy0efLnzVc',
-      images: [
+      profile_images: [
         require('../Assets/Images/image1.jpeg'),
         require('../Assets/Images/image2.jpeg'),
         require('../Assets/Images/image3.jpeg'),
@@ -114,7 +127,7 @@ const SpotLight = () => {
       age: 21,
       photo: require('../Assets/Images/banner.jpg'),
       key: 'TvPCUHten1o',
-      images: [
+      profile_images: [
         require('../Assets/Images/image1.jpeg'),
         require('../Assets/Images/image2.jpeg'),
         require('../Assets/Images/image3.jpeg'),
@@ -132,7 +145,7 @@ const SpotLight = () => {
       age: 26,
       photo: require('../Assets/Images/banner1.jpg'),
       key: 'dlbiYGwEe9U',
-      images: [
+      profile_images: [
         require('../Assets/Images/image1.jpeg'),
         require('../Assets/Images/image2.jpeg'),
         require('../Assets/Images/image3.jpeg'),
@@ -150,7 +163,7 @@ const SpotLight = () => {
       age: 30,
       photo: require('../Assets/Images/banner2.jpg'),
       key: 'Ml4tr2WO7JE',
-      images: [
+      profile_images: [
         require('../Assets/Images/image1.jpeg'),
         require('../Assets/Images/image2.jpeg'),
         require('../Assets/Images/image3.jpeg'),
@@ -168,7 +181,7 @@ const SpotLight = () => {
       age: 24,
       photo: require('../Assets/Images/banner3.jpg'),
       key: 'mFcc5b_t74Q',
-      images: [
+      profile_images: [
         require('../Assets/Images/image1.jpeg'),
         require('../Assets/Images/image2.jpeg'),
         require('../Assets/Images/image3.jpeg'),
@@ -186,7 +199,7 @@ const SpotLight = () => {
       age: 28,
       photo: require('../Assets/Images/banner.jpg'),
       key: "Ty4f_NOFO60'",
-      images: [
+      profile_images: [
         require('../Assets/Images/image1.jpeg'),
         require('../Assets/Images/image2.jpeg'),
         require('../Assets/Images/image3.jpeg'),
@@ -204,7 +217,7 @@ const SpotLight = () => {
       age: 30,
       photo: require('../Assets/Images/banner2.jpg'),
       key: "AvLHH8qYbAI'",
-      images: [
+      profile_images: [
         require('../Assets/Images/image1.jpeg'),
         require('../Assets/Images/image2.jpeg'),
         require('../Assets/Images/image3.jpeg'),
@@ -222,7 +235,7 @@ const SpotLight = () => {
       age: 20,
       photo: require('../Assets/Images/banner3.jpg'),
       key: "3ujVzg9i2EI'",
-      images: [
+      profile_images: [
         require('../Assets/Images/image1.jpeg'),
         require('../Assets/Images/image2.jpeg'),
         require('../Assets/Images/image3.jpeg'),
@@ -235,7 +248,7 @@ const SpotLight = () => {
       age: 21,
       photo: require('../Assets/Images/banner1.jpg'),
       key: "5AoO7dBurMw'",
-      images: [
+      profile_images: [
         require('../Assets/Images/image1.jpeg'),
         require('../Assets/Images/image2.jpeg'),
         require('../Assets/Images/image3.jpeg'),
@@ -252,11 +265,26 @@ const SpotLight = () => {
     require('../Assets/Images/woman4.jpeg'),
   ];
 
-
-  const getSpotLightData =async ()=>{
+  const getSpotLightData = async () => {
     const url = 'user_spotlights';
+    setIsLoading(true);
     const response = await Get(url, token);
-  }
+
+    if (response != undefined) {
+      response?.data.users.map((item, index) => {
+        return console.log('data -=========== > ' ,  item.user_spotlights.length > 0 && item?.profile_images[0])
+        return (
+          item.user_spotlights.length > 0 &&
+          setSpotLightData(prev => [...prev, item])
+        );
+      });
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getSpotLightData();
+  }, [isFocused]);
 
   return (
     <>
@@ -275,18 +303,28 @@ const SpotLight = () => {
           color: Color.veryLightGray,
         }}
       />
-
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          // height: windowHeight * 0.4,
-          backgroundColor: Color.white,
-        }}
-        contentContainerStyle={{
-          paddingBottom: moderateScale(20, 0.6),
-          alignItems: 'center',
-        }}>
-        {/* <View style={styles.image}>
+      {isLoading ? (
+        <View
+          style={{
+            width: windowWidth,
+            height: windowHeight * 0.6,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <ActivityIndicator color={Color.themeColor} size={'large'} />
+        </View>
+      ) : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{
+            // height: windowHeight * 0.4,
+            backgroundColor: Color.white,
+          }}
+          contentContainerStyle={{
+            paddingBottom: moderateScale(20, 0.6),
+            alignItems: 'center',
+          }}>
+          {/* <View style={styles.image}>
           <CustomImage
             style={{
               width: '100%',
@@ -317,224 +355,233 @@ const SpotLight = () => {
             </View>
           </LinearGradient>
         </View> */}
-        <View
-          style={{
-            height: windowHeight * 0.48,
-            width: windowWidth,
-          }}>
-          <Swiper
-            animateCardOpacity
-            style={styles.mainContainer}
-            containerStyle={styles.subcontainer}
-            cards={photoCards}
-            renderCard={card => (
-              <Card card={card} height={windowHeight * 0.45} />
-            )}
-            cardIndex={0}
-            cardVerticalMargin={moderateScale(5, 0.6)}
-            backgroundColor="white"
-            stackSize={2}
-            infinite
-            showSecondCard={true}
-            animateOverlayLabelsOpacity
-            swipeBackCard
-            onSwipedLeft={() => {
-              console.log('left');
-            }}
-            disableBottomSwipe={true}
-            onSwipedRight={() => {
-              console.log('Right');
-            }}
-            onSwipedTop={() => {
-              console.log('Top');
-            }}
-            // onSwiping={(x, y) => {
-            //   console.log(x, y);
-            //   setXAxis(x);
-            //   setYAxis(y);
-            // }}
-            // dragEnd={() => {
-            //   setXAxis(0);
-            //   setYAxis(0);
-            // }}
-            overlayLabels={{
-              left: {
-                title: 'NOPE',
-                element: <OverlayLabel label="NOPE" color="#E5566D" />,
-                style: {
-                  wrapper: {
-                    alignItems: 'flex-end',
-                    right: moderateScale(30, 0.3),
-                  },
-                },
-              },
-              right: {
-                title: 'LIKE',
-                element: <OverlayLabel label="LIKE" color="#4CCC93" />,
-                style: {
-                  wrapper: {
-                    alignItems: 'flex-start',
-                    // alignItems: 'flex-start',
-                    left: moderateScale(30, 0.3),
-                  },
-                },
-              },
-              top: {
-                element: <OverlayLabel label="SUPER LIKE" color="blue" />,
-                title: 'SUPER LIKE',
-                style: {
-                  wrapper: {
-                    // alignItems: 'flex-end',
-                    flexDirection: 'column',
-                    bottom: moderateScale(80, 0.6),
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  },
-                },
-              },
-            }}
-          />
-        </View>
-        <CustomText
-        isBold
-          style={{
-            width: windowWidth * 0.9,
-            fontSize: moderateScale(20, 0.6),
-            marginTop: moderateScale(20, 0.3),
-          }}>
-         They're your type
-        </CustomText>
-        <FlatList
-          data={photoCards.slice(0,4)}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingHorizontal: moderateScale(20, 0.3),
-            paddingVertical : moderateScale(5,0.6)
-            // alignItems: 'center',
-          }}
-          style={{
-            flexGrow: 0,
-            // marginBottom : moderateScale(20,0.3)
-            // height: windowHeight * 0.4,
-            // backgroundColor : Color.themeColor
-          }}
-          renderItem={({item, index}) => {
-            return (
-              <TouchableOpacity
-                style={{
-                  width: windowWidth * 0.42,
-                  height: windowHeight * 0.2,
-                  backgroundColor: Color.veryLightGray,
-                  borderRadius: moderateScale(15, 0.6),
-                  overflow: 'hidden',
-                  // marginTop: moderateScale(20, 0.3),
-                  marginRight : moderateScale(10,0.3)
-                }}
-                activeOpacity={0.8}
-                onPress={() => {
-                  navigationService.navigate('UserDetail', {item: item , fromSearch : true});
-                }}
-                >
-                <CustomImage
-                  onPress={() => {
-                    navigationService.navigate('UserDetail', {item: item , fromSearch : true});
-                  }}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                  }}
-                  source={item?.photo}
+          <View
+            style={{
+              height: windowHeight * 0.48,
+              width: windowWidth,
+            }}>
+            <Swiper
+              animateCardOpacity
+              style={styles.mainContainer}
+              containerStyle={styles.subcontainer}
+              cards={spotLightData}
+              renderCard={(item, index) => (
+                <Card
+                  card={item}
+                  height={windowHeight * 0.45}
+                  fromSpotLight={fromSpotLight}
                 />
-                <LinearGradient
-                  start={{x: 0, y: 0}}
-                  end={{x: 0, y: 0.9}}
-                  colors={['#000000', '#ffffff00']}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    // justifyContent: 'flex-end',
-                    shadowOffset: {height: 2, width: 0},
-                    shadowOpacity: 1,
-                    shadowRadius: 4,
-                    width: '100%',
-                    paddingBottom: moderateScale(50, 0.6),
-                    justifyContent: 'center',
-                    paddingLeft: moderateScale(10, 0.6),
-                    paddingTop: moderateScale(10, 0.6),
-                  }}>
-                  <CustomText
-                  numberOfLines={2}
-                    style={{
-                      color: Color.white,
-                      fontSize: moderateScale(11, 0.6),
-                      width : '90%'
-                    }}>
-                  {`${item?.name},${item?.age}`}
-                  </CustomText>
-                  <View
-                    style={{
-                      flexDirection: 'row',
+              )}
+              cardIndex={0}
+              cardVerticalMargin={moderateScale(5, 0.6)}
+              backgroundColor="white"
+              stackSize={2}
+              infinite
+              showSecondCard={true}
+              animateOverlayLabelsOpacity
+              swipeBackCard
+              onSwipedLeft={() => {
+                console.log('left');
+              }}
+              disableBottomSwipe={true}
+              onSwipedRight={() => {
+                console.log('Right');
+              }}
+              onSwipedTop={() => {
+                console.log('Top');
+              }}
+              // onSwiping={(x, y) => {
+              //   console.log(x, y);
+              //   setXAxis(x);
+              //   setYAxis(y);
+              // }}
+              // dragEnd={() => {
+              //   setXAxis(0);
+              //   setYAxis(0);
+              // }}
+              overlayLabels={{
+                left: {
+                  title: 'NOPE',
+                  element: <OverlayLabel label="NOPE" color="#E5566D" />,
+                  style: {
+                    wrapper: {
+                      alignItems: 'flex-end',
+                      right: moderateScale(30, 0.3),
+                    },
+                  },
+                },
+                right: {
+                  title: 'LIKE',
+                  element: <OverlayLabel label="LIKE" color="#4CCC93" />,
+                  style: {
+                    wrapper: {
+                      alignItems: 'flex-start',
+                      // alignItems: 'flex-start',
+                      left: moderateScale(30, 0.3),
+                    },
+                  },
+                },
+                top: {
+                  element: <OverlayLabel label="SUPER LIKE" color="blue" />,
+                  title: 'SUPER LIKE',
+                  style: {
+                    wrapper: {
+                      // alignItems: 'flex-end',
+                      flexDirection: 'column',
+                      bottom: moderateScale(80, 0.6),
                       alignItems: 'center',
+                      justifyContent: 'center',
+                    },
+                  },
+                },
+              }}
+            />
+          </View>
+          <CustomText
+            isBold
+            style={{
+              width: windowWidth * 0.9,
+              fontSize: moderateScale(20, 0.6),
+              marginTop: moderateScale(20, 0.3),
+            }}>
+            They're your type
+          </CustomText>
+          <FlatList
+            data={photoCards.slice(0, 4)}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingHorizontal: moderateScale(20, 0.3),
+              paddingVertical: moderateScale(5, 0.6),
+              // alignItems: 'center',
+            }}
+            style={{
+              flexGrow: 0,
+              // marginBottom : moderateScale(20,0.3)
+              // height: windowHeight * 0.4,
+              // backgroundColor : Color.themeColor
+            }}
+            renderItem={({item, index}) => {
+              return (
+                <TouchableOpacity
+                  style={{
+                    width: windowWidth * 0.42,
+                    height: windowHeight * 0.2,
+                    backgroundColor: Color.veryLightGray,
+                    borderRadius: moderateScale(15, 0.6),
+                    overflow: 'hidden',
+                    // marginTop: moderateScale(20, 0.3),
+                    marginRight: moderateScale(10, 0.3),
+                  }}
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    navigationService.navigate('UserDetail', {
+                      item: item,
+                      fromSearch: true,
+                    });
+                  }}>
+                  <CustomImage
+                    onPress={() => {
+                      navigationService.navigate('UserDetail', {
+                        item: item,
+                        fromSearch: true,
+                      });
+                    }}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                    source={item?.photo}
+                  />
+                  <LinearGradient
+                    start={{x: 0, y: 0}}
+                    end={{x: 0, y: 0.9}}
+                    colors={['#000000', '#ffffff00']}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      // justifyContent: 'flex-end',
+                      shadowOffset: {height: 2, width: 0},
+                      shadowOpacity: 1,
+                      shadowRadius: 4,
+                      width: '100%',
+                      paddingBottom: moderateScale(50, 0.6),
+                      justifyContent: 'center',
+                      paddingLeft: moderateScale(10, 0.6),
+                      paddingTop: moderateScale(10, 0.6),
                     }}>
-                    <Icon
-                      name={'location-outline'}
-                      as={Ionicons}
-                      size={moderateScale(12, 0.6)}
-                      color={Color.white}
-                    />
                     <CustomText
-                      isBold
+                      numberOfLines={2}
                       style={{
                         color: Color.white,
-                        fontSize: moderateScale(10, 0.6),
-                      }}>{`5 Ml`}</CustomText>
+                        fontSize: moderateScale(11, 0.6),
+                        width: '90%',
+                      }}>
+                      {`${item?.name},${item?.age}`}
+                    </CustomText>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <Icon
+                        name={'location-outline'}
+                        as={Ionicons}
+                        size={moderateScale(12, 0.6)}
+                        color={Color.white}
+                      />
+                      <CustomText
+                        isBold
+                        style={{
+                          color: Color.white,
+                          fontSize: moderateScale(10, 0.6),
+                        }}>{`5 Ml`}</CustomText>
+                    </View>
+                  </LinearGradient>
+                  <View style={styles.absoluteContainer}>
+                    <BtnContainer
+                      backgroundColor={Color.white}
+                      color={Color.veryLightGray}
+                      name={'close-sharp'}
+                      type={Ionicons}
+                      style={{
+                        width: moderateScale(40, 0.6),
+                        height: moderateScale(40, 0.6),
+                        borderRadius: moderateScale(20, 0.6),
+
+                        //    marginTop: moderateScale(-15, 0.3),
+                      }}
+                      iconSize={moderateScale(20, 0.6)}
+                    />
+                    <BtnContainer
+                      backgroundColor={Color.themeColor}
+                      color={Color.white}
+                      name={'heart-o'}
+                      type={FontAwesome}
+                      style={{
+                        width: moderateScale(40, 0.6),
+                        height: moderateScale(40, 0.6),
+                        borderRadius: moderateScale(20, 0.6),
+
+                        //    marginTop: moderateScale(-15, 0.3),
+                      }}
+                      iconSize={moderateScale(20, 0.6)}
+                    />
                   </View>
-                </LinearGradient>
-                <View style={styles.absoluteContainer}>
-                  <BtnContainer
-                    backgroundColor={Color.white}
-                    color={Color.veryLightGray}
-                    name={'close-sharp'}
-                    type={Ionicons}
-                    style={{
-                      width: moderateScale(40, 0.6),
-                      height: moderateScale(40, 0.6),
-                      borderRadius: moderateScale(20, 0.6),
-
-                      //    marginTop: moderateScale(-15, 0.3),
-                    }}
-                    iconSize={moderateScale(20, 0.6)}
-                  />
-                  <BtnContainer
-                    backgroundColor={Color.themeColor}
-                    color={Color.white}
-                    name={'heart-o'}
-                    type={FontAwesome}
-                    style={{
-                      width: moderateScale(40, 0.6),
-                      height: moderateScale(40, 0.6),
-                      borderRadius: moderateScale(20, 0.6),
-
-                      //    marginTop: moderateScale(-15, 0.3),
-                    }}
-                    iconSize={moderateScale(20, 0.6)}
-                  />
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        />
-        <CustomText
-        isBold
-          style={{
-            width: windowWidth * 0.9,
-            fontSize: moderateScale(20, 0.6),
-            marginTop: moderateScale(20, 0.3),
-          }}>
-          You're their type
-        </CustomText>
-        {/* <View
+                </TouchableOpacity>
+              );
+            }}
+          />
+          <CustomText
+            isBold
+            style={{
+              width: windowWidth * 0.9,
+              fontSize: moderateScale(20, 0.6),
+              marginTop: moderateScale(20, 0.3),
+            }}>
+            You're their type
+          </CustomText>
+          {/* <View
           style={{
             width: windowWidth * 0.9,
             flexDirection: 'row',
@@ -579,119 +626,126 @@ const SpotLight = () => {
             width={windowWidth * 0.41}
           />
         </View> */}
-        <View
-          style={{
-            width: windowWidth * 0.9,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            // marginTop: moderateScale(20, 0.3),
-            flexWrap: 'wrap',
-          }}>
-          {photoCards.map((x, index) => {
-            return (
-              <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => {
-                navigationService.navigate('UserDetail', {item: x , fromSearch : true});
-              }}
-                style={{
-                  width: windowWidth * 0.42,
-                  height: windowHeight * 0.2,
-                  backgroundColor: Color.veryLightGray,
-                  borderRadius: moderateScale(15, 0.6),
-                  overflow: 'hidden',
-                  marginTop: moderateScale(20, 0.3),
-                }}>
-                <CustomImage
-                 onPress={() => {
-                  navigationService.navigate('UserDetail', {item: x , fromSearch : true});
-                }}
-                  style={{
-                    width: '100%',
-                    height: '100%',
+          <View
+            style={{
+              width: windowWidth * 0.9,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              // marginTop: moderateScale(20, 0.3),
+              flexWrap: 'wrap',
+            }}>
+            {photoCards.map((x, index) => {
+              return (
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    navigationService.navigate('UserDetail', {
+                      item: x,
+                      fromSearch: true,
+                    });
                   }}
-                  source={x?.photo}
-                />
-                <LinearGradient
-                  start={{x: 0, y: 0}}
-                  end={{x: 0, y: 0.9}}
-                  colors={['#000000', '#ffffff00']}
                   style={{
-                    position: 'absolute',
-                    top: 0,
-                    // justifyContent: 'flex-end',
-                    shadowOffset: {height: 2, width: 0},
-                    shadowOpacity: 1,
-                    shadowRadius: 4,
-                    width: '100%',
-                    paddingBottom: moderateScale(50, 0.6),
-                    justifyContent: 'center',
-                    paddingLeft: moderateScale(10, 0.6),
-                    paddingTop: moderateScale(10, 0.6),
+                    width: windowWidth * 0.42,
+                    height: windowHeight * 0.2,
+                    backgroundColor: Color.veryLightGray,
+                    borderRadius: moderateScale(15, 0.6),
+                    overflow: 'hidden',
+                    marginTop: moderateScale(20, 0.3),
                   }}>
-                  <CustomText
-                  numberOfLines={2}
+                  <CustomImage
+                    onPress={() => {
+                      navigationService.navigate('UserDetail', {
+                        item: x,
+                        fromSearch: true,
+                      });
+                    }}
                     style={{
-                      color: Color.white,
-                      fontSize: moderateScale(11, 0.6),
-                      width : '90%'
-                    }}>
-                  {`${x?.name} , ${x?.age}`}
-                  </CustomText>
-                  <View
+                      width: '100%',
+                      height: '100%',
+                    }}
+                    source={x?.photo}
+                  />
+                  <LinearGradient
+                    start={{x: 0, y: 0}}
+                    end={{x: 0, y: 0.9}}
+                    colors={['#000000', '#ffffff00']}
                     style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
+                      position: 'absolute',
+                      top: 0,
+                      // justifyContent: 'flex-end',
+                      shadowOffset: {height: 2, width: 0},
+                      shadowOpacity: 1,
+                      shadowRadius: 4,
+                      width: '100%',
+                      paddingBottom: moderateScale(50, 0.6),
+                      justifyContent: 'center',
+                      paddingLeft: moderateScale(10, 0.6),
+                      paddingTop: moderateScale(10, 0.6),
                     }}>
-                    <Icon
-                      name={'location-outline'}
-                      as={Ionicons}
-                      size={moderateScale(12, 0.6)}
-                      color={Color.white}
-                    />
                     <CustomText
-                      isBold
+                      numberOfLines={2}
                       style={{
                         color: Color.white,
-                        fontSize: moderateScale(10, 0.6),
-                      }}>{`5 Ml`}</CustomText>
+                        fontSize: moderateScale(11, 0.6),
+                        width: '90%',
+                      }}>
+                      {`${x?.name} , ${x?.age}`}
+                    </CustomText>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <Icon
+                        name={'location-outline'}
+                        as={Ionicons}
+                        size={moderateScale(12, 0.6)}
+                        color={Color.white}
+                      />
+                      <CustomText
+                        isBold
+                        style={{
+                          color: Color.white,
+                          fontSize: moderateScale(10, 0.6),
+                        }}>{`5 Ml`}</CustomText>
+                    </View>
+                  </LinearGradient>
+                  <View style={styles.absoluteContainer}>
+                    <BtnContainer
+                      backgroundColor={Color.white}
+                      color={Color.veryLightGray}
+                      name={'close-sharp'}
+                      type={Ionicons}
+                      style={{
+                        width: moderateScale(40, 0.6),
+                        height: moderateScale(40, 0.6),
+                        borderRadius: moderateScale(20, 0.6),
+
+                        //    marginTop: moderateScale(-15, 0.3),
+                      }}
+                      iconSize={moderateScale(20, 0.6)}
+                    />
+                    <BtnContainer
+                      backgroundColor={Color.themeColor}
+                      color={Color.white}
+                      name={'heart-o'}
+                      type={FontAwesome}
+                      style={{
+                        width: moderateScale(40, 0.6),
+                        height: moderateScale(40, 0.6),
+                        borderRadius: moderateScale(20, 0.6),
+
+                        //    marginTop: moderateScale(-15, 0.3),
+                      }}
+                      iconSize={moderateScale(20, 0.6)}
+                    />
                   </View>
-                </LinearGradient>
-                <View style={styles.absoluteContainer}>
-                  <BtnContainer
-                    backgroundColor={Color.white}
-                    color={Color.veryLightGray}
-                    name={'close-sharp'}
-                    type={Ionicons}
-                    style={{
-                      width: moderateScale(40, 0.6),
-                      height: moderateScale(40, 0.6),
-                      borderRadius: moderateScale(20, 0.6),
-
-                      //    marginTop: moderateScale(-15, 0.3),
-                    }}
-                    iconSize={moderateScale(20, 0.6)}
-                  />
-                  <BtnContainer
-                    backgroundColor={Color.themeColor}
-                    color={Color.white}
-                    name={'heart-o'}
-                    type={FontAwesome}
-                    style={{
-                      width: moderateScale(40, 0.6),
-                      height: moderateScale(40, 0.6),
-                      borderRadius: moderateScale(20, 0.6),
-
-                      //    marginTop: moderateScale(-15, 0.3),
-                    }}
-                    iconSize={moderateScale(20, 0.6)}
-                  />
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      </ScrollView>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </ScrollView>
+      )}
     </>
   );
 };

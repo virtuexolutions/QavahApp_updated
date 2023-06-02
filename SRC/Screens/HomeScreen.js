@@ -32,7 +32,6 @@ const HomeScreen = () => {
   const focused = useIsFocused()
   const user = useSelector(state => state.commonReducer.userData);
   const token = useSelector(state => state.authReducer.token);
-  console.log("🚀 ~ file: HomeScreen.js:37 ~ HomeScreen ~ user:", user)
   const [swiperRef, setSwiperRef] = useState();
   const [xAxis, setXAxis] = useState(0);
   const [yAxis, setYAxis] = useState(0);
@@ -50,7 +49,6 @@ const HomeScreen = () => {
     const response = await Get(url, token);
     setIsLoadingApi(false);
     if (response != undefined) {
-     console.log('users data============>>>>',response?.data?.peoples[0].gallery_images)
       setPhotoCards(response?.data?.peoples);
       // console.log(response?.data?.peoples[0]?.profile_images[0]?.url);
     }
@@ -167,7 +165,7 @@ const HomeScreen = () => {
               containerStyle={styles.container}
               cards={photoCards}
               renderCard={card => (
-                <Card card={card} height={windowHeight * 0.72} cards={selectedId} setCards={setSelectedId} />
+                <Card card={card} height={windowHeight * 0.72} cards={selectedId} setCards={setSelectedId} fromSpotLight={false}/>
               )}
               cardIndex={0}
               cardVerticalMargin={moderateScale(5, 0.6)}
@@ -290,7 +288,7 @@ const HomeScreen = () => {
               name={'lightning-bolt'}
               type={MaterialCommunityIcons}
               onPress={() => {
-                setSpotLightVisible(true);
+                // setSpotLightVisible(true);
               }}
             />
           </View>
@@ -312,10 +310,10 @@ const HomeScreen = () => {
         isVisible={isSuperLikeVisible}
         setIsVisible={setSuperLikeVisible}
       />
-      <SpotLightModal
+      {/* <SpotLightModal
         isVisible={isSpotLightVisible}
         setIsVisible={setSpotLightVisible}
-      />
+      /> */}
     </>
   );
 };

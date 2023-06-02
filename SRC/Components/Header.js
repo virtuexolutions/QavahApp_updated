@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import SuperLikeModal from '../Components/SuperLikeModal';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
@@ -30,15 +31,19 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setUserData} from '../Store/slices/common';
+import LoveNotesModal from './LoveNotesModal';
+import SpotLightModal from './SpotlightModal';
 
 const Header = props => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.authReducer.token);
+  const [isLoveNotesVisible, setLoveNotesVisible] = useState(false);
   const notification = useSelector(state => state.commonReducer.notification);
   const navigationN = useNavigation();
   const [isModalVisible, setModalVisible] = useState(false);
   const [drawerModal, setDrawerModal] = useState(false);
   const [switchEnabled, setSwitchEnabled] = useState(false);
+  const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const DrawerArray = [
     {
       key: 1,
@@ -92,9 +97,13 @@ const Header = props => {
         navigationService.navigate('Subscription'), setDrawerModal(false);
       },
     },
-    {key: 6, title: 'Privacy Policy', onPress: () => {
-      navigationService.navigate('Privacy'), setDrawerModal(false);
-    }},
+    {
+      key: 6,
+      title: 'Privacy Policy',
+      onPress: () => {
+        navigationService.navigate('Privacy'), setDrawerModal(false);
+      },
+    },
     {
       key: 7,
       title: 'terms & conditions',
@@ -128,6 +137,7 @@ const Header = props => {
     },
   ];
   const [isVisible, setIsVisible] = useState(false);
+  const [isBoostModalvisible, setBoostModalvisible] = useState(false)
 
   const setAccountVisible = async () => {
     const url = 'user/update-my-profile-app';
@@ -259,7 +269,6 @@ const Header = props => {
                 height: '100%',
                 justifyContent: 'center',
                 // alignSelf:'center',
-             
               }}
             />
           </View>
@@ -280,9 +289,7 @@ const Header = props => {
             paddingVertical: moderateScale(20, 0.6),
             // backgroundColor : 'red' ,
             height: windowHeight * 0.9,
-          }}
-          
-          >
+          }}>
           <TouchableOpacity
             style={{
               flexDirection: 'row',
@@ -324,20 +331,41 @@ const Header = props => {
           {DrawerArray.map((item, index) => {
             return <DrawerOptions item={item} />;
           })}
-              <View style={{
-                width : '93%',
-                alignSelf : 'center',
-                flexWrap : 'wrap',
-                flexDirection : 'row' ,
-                justifyContent : 'center' , 
-                marginTop : moderateScale(25,0.3)
-              }}>
-                <Addones icon={require('../Assets/Images/spotlight.png')}  title={'My Boosts'} text={'GET MOre'} textColor={'purple'}/>
-                <Addones icon={require('../Assets/Images/note.png')} title={'Love Notes'} text={'GET MOre'}  textColor={'#AA336A'}/> 
+          <View
+            style={{
+              width: '93%',
+              alignSelf: 'center',
+              flexWrap: 'wrap',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginTop: moderateScale(25, 0.3),
+            }}>
+            <Addones
+              icon={require('../Assets/Images/spotlight.png')}
+              title={'My Boosts'}
+              text={'GET MOre'}
+              textColor={'purple'}
+              onPress={()=>{
+                setSpotLightVisible(true);
+              }}
+            />
+            <Addones
+              icon={require('../Assets/Images/note.png')}
+              title={'Love Notes'}
+              text={'GET MOre'}
+              textColor={'#AA336A'}
+              onPress={() => {
+                setLoveNotesVisible(true);
+              }}
+            />
 
-                <Addones icon={require('../Assets/Images/secret.png')}  title={'Discrete'} text={'GET More'} textColor={'#286086'}/>
-
-              </View>
+            <Addones
+              icon={require('../Assets/Images/secret.png')}
+              title={'Discrete'}
+              text={'GET More'}
+              textColor={'#286086'}
+            />
+          </View>
         </ScrollView>
       </Modal>
       <Modal
@@ -382,6 +410,18 @@ const Header = props => {
           })}
         </ScrollView>
       </Modal>
+      <LoveNotesModal
+        isVisible={isLoveNotesVisible}
+        setIsVisible={setLoveNotesVisible}
+      />
+      {/* <SuperLikeModal
+        isVisible={isBoostModalvisible}
+        setIsVisible={setBoostModalvisible}
+      /> */}
+      <SpotLightModal
+        isVisible={isSpotLightVisible}
+        setIsVisible={setSpotLightVisible}
+      />
     </View>
   );
 };
@@ -432,7 +472,7 @@ const styles = ScaledSheet.create({
   containerMini: {
     width: '29%',
     // height: windowHeight * 0.1,
-    paddingVertical : moderateScale(5,0.6),
+    paddingVertical: moderateScale(5, 0.6),
     backgroundColor: 'white',
     borderRadius: moderateScale(15, 0.6),
     shadowColor: '#000',
@@ -442,64 +482,69 @@ const styles = ScaledSheet.create({
     },
     shadowOpacity: 0.32,
     shadowRadius: 5.46,
-    alignItems : 'center',
-    justifyContent : 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     elevation: 9,
-    marginRight : moderateScale(10,0.6),
-    marginTop : moderateScale(10,0.6)
-
+    marginRight: moderateScale(10, 0.6),
+    marginTop: moderateScale(10, 0.6),
   },
 });
 export default Header;
 
-const Addones = ({icon, title, text, onPress , textColor}) => {
-  return <View style={styles.containerMini}>
-    <CustomImage 
-    source={icon}
-    style={{
-      width : moderateScale(30,0.6),
-      height : moderateScale(30,0.6),
-
-    }}
-    
-    />
-    <CustomText isBold style={{
-      fontSize : moderateScale(10,0.6),
-      color : Color.veryLightGray
-    }}>{title}</CustomText>
-    <CustomText isBold style={{
-      fontSize : moderateScale(12,0.6),
-      color : textColor,
-      textTransform : 'uppercase'
-    }}>{text}</CustomText>
-    <TouchableOpacity 
-    activeOpacity={0.7}
-    onPress={onPress}
-    style={{
-      position : 'absolute',
-      top : -5 ,
-      right : -5 ,
-      width : moderateScale(20,0.6),
-      height : moderateScale(20,0.6),
-      borderRadius : moderateScale(10,0.6),
-      borderWidth : 1 ,
-      borderColor : Color.veryLightGray ,
-      justifyContent : 'center',
-      backgroundColor : 'white',
-      // alignItems : 'center',
-
-    }}>
-      <Icon 
-      name={'plus'}
-      as={Entypo}
-      color={Color.themeDarkGray}
-      size={moderateScale(12,0.6)}
-      style={{
-        width : '100%',
-        textAlign : 'center'
-      }}
+const Addones = ({icon, title, text, onPress, textColor}) => {
+  return (
+    <View style={styles.containerMini}>
+      <CustomImage
+        source={icon}
+        style={{
+          width: moderateScale(30, 0.6),
+          height: moderateScale(30, 0.6),
+        }}
       />
-    </TouchableOpacity>
-
-  </View>;
+      <CustomText
+        isBold
+        style={{
+          fontSize: moderateScale(10, 0.6),
+          color: Color.veryLightGray,
+        }}>
+        {title}
+      </CustomText>
+      <CustomText
+        isBold
+        style={{
+          fontSize: moderateScale(12, 0.6),
+          color: textColor,
+          textTransform: 'uppercase',
+        }}>
+        {text}
+      </CustomText>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={onPress}
+        style={{
+          position: 'absolute',
+          top: -5,
+          right: -5,
+          width: moderateScale(20, 0.6),
+          height: moderateScale(20, 0.6),
+          borderRadius: moderateScale(10, 0.6),
+          borderWidth: 1,
+          borderColor: Color.veryLightGray,
+          justifyContent: 'center',
+          backgroundColor: 'white',
+          // alignItems : 'center',
+        }}>
+        <Icon
+          name={'plus'}
+          as={Entypo}
+          color={Color.themeDarkGray}
+          size={moderateScale(12, 0.6)}
+          style={{
+            width: '100%',
+            textAlign: 'center',
+          }}
+        />
+      </TouchableOpacity>
+    </View>
+  );
 };
