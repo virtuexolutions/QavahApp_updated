@@ -23,48 +23,23 @@ import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import {Icon} from 'native-base';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
-import { Post } from '../Axios/AxiosInterceptorFunction';
-import { useSelector } from 'react-redux';
+import {Post} from '../Axios/AxiosInterceptorFunction';
+import {useSelector} from 'react-redux';
 
 const SearchFilterScreen = () => {
-  const token = useSelector((state)=> state.authReducer.token)
-  console.log("🚀 ~ file: SearchFilterScreen.js:31 ~ token:", token)
-  const user = useSelector((state)=>state.commonReducer.userData)
-  console.log("🚀 ~ file: SearchFilterScreen.js:32 ~ user:", user)
-  
+  const token = useSelector(state => state.authReducer.token);
+  // console.log('🚀 ~ file: SearchFilterScreen.js:31 ~ token:', token);
+  const user = useSelector(state => state.commonReducer.userData);
+
   const [location, setLocation] = useState('Jakarta, Indonesia');
   const [distance, setDistance] = useState(0);
-  console.log(
-    '🚀 ~ file: SearchFilterScreen.js:16 ~ SearchFilterScreen ~ distance:',
-    distance,
-  );
+
   const [age1, setAge] = useState(0);
-  console.log("🚀 ~ file: SearchFilterScreen.js:38 ~ age1:", age1)
   const [age2, setAge2] = useState(0);
   const [option, setOption] = useState('shortcuts');
-  console.log("🚀 ~ file: SearchFilterScreen.js:41 ~ option:", option)
   const [isLoading, setIsLoading] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(true);
-  // const [visibility , setVisibility] = useState('');
-  // const [keywords , setKeywords] = useState('');
-  // const [routine , setRoutine] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
-  // const [visibility , setVisibility] = useState('');
+ 
 
   const [body, setBody] = useState([]);
   console.log(
@@ -105,6 +80,7 @@ const SearchFilterScreen = () => {
   //   selectedIndex,
   // );
   const [summary, setSummary] = useState('');
+  const [filtersOn, setFiltersOn] = useState([]);
 
   //step 1
   const VisibilityArray = [
@@ -528,28 +504,25 @@ const SearchFilterScreen = () => {
     }
   }, [nestedOptions, step]);
 
-  
-  const getSearchResult =async()=>{
+  const getSearchResult = async () => {
     const url = 'seeking/seeking';
     // console.log('submit clicked')
     // return console.log("location in the search screen",location);
 
-    body.push(
-      {age:[age1,age2]},
-      {miles:distance},
-      {zipcode:'11230'})
+    body.push({age: [age1, age2]}, {miles: distance}, {zipcode: '11230'});
 
     const dataBody = {
-      uid : user?.uid,
-      filters:[...body],
+      uid: user?.id,
+      filters: [...body],
       from: 1,
-      lat:user?.latitude,
-      lng:user?.longitude,
-    }
-    console.log('Databosy filters===========????',dataBody.filters)
+      lat: user?.location?.latitude,
+      lng: user?.location?.longitude,
+    };
+    console.log("🚀 ~ file: SearchFilterScreen.js:546 ~ getSearchResult ~ dataBody:", dataBody)
+    console.log('Databosy filters===========????', dataBody.filters);
     // const oldBody = {
     //   uid :'',
-    //   filters:[{ 
+    //   filters:[{
     //     seeking:'woman'
     //   },{
     //     age:[20,30]
@@ -557,7 +530,7 @@ const SearchFilterScreen = () => {
     //   {
     //     miles:15
     //   },
-    //   { 
+    //   {
     //     zipcode:'12121'
     //   },
     //   {
@@ -626,15 +599,14 @@ const SearchFilterScreen = () => {
     //   lat : '40.5689',
     //   lag : '-73.96',
 
-
     // }
-    const response = await Post(url, dataBody,apiHeader(token));
-    if(response != undefined){
-
+    setIsLoading(true);
+    const response = await Post(url, dataBody, apiHeader(token));
+    setIsLoading(false);
+    if (response != undefined) {
       console.log('Search result Response', response);
-      
     }
-  }
+  };
 
   return (
     <>
@@ -1322,13 +1294,30 @@ const SearchFilterScreen = () => {
                         activeOpacity={0.8}
                         onPress={() => {
                         
-                          console.log( 'data index jey --------------------    ',item.text)
-                          const index = body.findIndex((data , index)=>data.hasOwnProperty(item.text));
-                          console.log("🚀 ~ file: SearchFilterScreen.js:1220 ~ {item?.array.map ~ index:", index)
-                          if (index > -1) {
-                            setBody(prev => [...prev],(body[index] = {[item.text]: x}));
+                          const index = filtersOn.indexOf(item?.text)
+                          let tempData = []
+                          console.log(
+                            '🚀 ~ file: SearchFilterScreen.js:1220 ~ {item?.array.map ~ index:',
+                            index,
+                          );
+                          if (index >-1) {
+                            !body[index].value.includes(x) 
+                            ?
+                            setBody(
+                              prev => [...prev],
+                              (body[index].value.push(x))
+                            )
+                            :
+                            tempData = body[index].value.filter((d , i)=> d != x) 
+                            setBody(
+                              prev => [...prev],
+                              (body[index].value= tempData)
+                            )
+
+                            // setFiltersOn(prev=>[...prev] ,(item.text)])
                           } else {
-                            setBody(prev => [...prev, {[item.text]: x}]);
+                            setBody(prev => [...prev, {key : item.text , value : [x] }]);
+                            setFiltersOn(prev => [...prev, item.text]);
                           }
                         }}
                         key={index}
@@ -1339,23 +1328,53 @@ const SearchFilterScreen = () => {
                           marginTop: moderateScale(8, 0.3),
                         }}>
                         <Icon
-                          name={body.findIndex((data , index)=>data[item.text] == x) > -1  ? 'square' : 'square-o'}
+                          name={
+                            body.findIndex(
+                              (data, index) => data[item.text] == x,
+                            ) > -1 ?
+                            body[body.findIndex(
+                              (data, index) => data[item.text] == x,
+                            )].value.includes(item.text)
+                              ? 'square'
+                              : 'square-o'
+                              : 'square-o'
+                          }
                           as={FontAwesome}
                           size={moderateScale(12, 0.6)}
                           color={
-                            body.findIndex((data , index)=>data[item.text] == x) > -1 
+                            body.findIndex(
+                              (data, index) => data[item.text] == x,
+                            ) > -1 ?
+                            body[body.findIndex(
+                              (data, index) => data[item.text] == x,
+                            )].value.includes(item.text)
                               ? Color.themeColor
                               : Color.veryLightGray
+                              : Color.veryLightGray
                           }
+                          disabled={true}
                           onPress={() => {
-                            console.log( 'data index jey --------------------    ',item.text)
-                          const index = body.findIndex((data , index)=>data.hasOwnProperty(item.text));
-                          console.log("🚀 ~ file: SearchFilterScreen.js:1220 ~ {item?.array.map ~ index:", index)
-                          if (index > -1) {
-                            setBody(prev => [...prev],(body[index] = {[item.text]: x}));
-                          } else {
-                            setBody(prev => [...prev, {[item.text]: x}]);
-                          }
+                            console.log(
+                              'data index jey --------------------    ',
+                              item.text,
+                            );
+                            const index = body.findIndex((data, index) =>
+                              data.hasOwnProperty(item.text),
+                            );
+                            console.log(
+                              '🚀 ~ file: SearchFilterScreen.js:1220 ~ {item?.array.map ~ index:',
+                              index,
+                            );
+                            if (index > -1) {
+                              setBody(
+                                prev => [...prev],
+                                (body[index].value.push(x))
+                              );
+                              // setFiltersOn(prev=>[...prev] ,(item.text)])
+                            } else {
+                              setBody(prev => [...prev, {key : item.text , value : [x] }]);
+                              setFiltersOn(prev => [...prev, item.text]);
+                            }
                           }}
                         />
                         <CustomText style={styles.text}>{x}</CustomText>
@@ -1379,9 +1398,8 @@ const SearchFilterScreen = () => {
             height={windowHeight * 0.05}
             marginTop={moderateScale(40, 0.3)}
             onPress={() => {
-              setIsLoading(true);
-              getSearchResult()
-              setIsLoading(false)
+           
+              getSearchResult();
             }}
             fontSize={moderateScale(12, 0.6)}
             bgColor={Color.themeColor}
@@ -1395,8 +1413,9 @@ const SearchFilterScreen = () => {
             styles.container,
             {
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              // justifyContent: 'space-between',
               paddingHorizontal: moderateScale(10, 0.6),
+              // backgroundColor : 'red'
             },
           ]}>
           <CustomText
@@ -1407,13 +1426,52 @@ const SearchFilterScreen = () => {
             }}>
             Filters on:
           </CustomText>
-          <CustomText
+          <View style={{width: windowWidth * 0.6}}>
+            <ScrollView
+              horizontal
+              contentContainerStyle={{
+                paddingHorizontal: 10,
+                // width: windowWidth * 0.4,
+              }}
+              style={{}}>
+              {filtersOn.map((item, index) => {
+                return (
+                  <CustomText
+                    style={{
+                      fontSize: moderateScale(10, 0.6),
+                      color: 'white',
+                      paddingHorizontal: 5,
+                      paddingVertical: 5,
+                      backgroundColor: '#ACACAC',
+                      borderRadius: moderateScale(10, 0.6),
+                      marginRight: moderateScale(5, 0.3),
+                    }}>
+                    {item}
+                  </CustomText>
+                );
+              })}
+            </ScrollView>
+          </View>
+          <TouchableOpacity
             style={{
-              fontSize: moderateScale(11, 0.6),
-              color: Color.themeColor,
+              position: 'absolute',
+              zIndex: 1,
+              right: 5,
+              // top : 1
             }}>
-            clear all
-          </CustomText>
+            <CustomText
+            onPress={()=>{
+            setBody([]),
+            setFiltersOn([])
+            }
+            }
+              style={{
+                fontSize: moderateScale(11, 0.6),
+                color: Color.themeColor,
+              }}>
+              clear all
+            </CustomText>
+          </TouchableOpacity>
         </View>
         <View
           style={[
