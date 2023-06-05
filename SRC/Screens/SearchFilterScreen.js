@@ -39,7 +39,6 @@ const SearchFilterScreen = () => {
   const [option, setOption] = useState('shortcuts');
   const [isLoading, setIsLoading] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(true);
- 
 
   const [body, setBody] = useState([]);
   console.log(
@@ -518,7 +517,10 @@ const SearchFilterScreen = () => {
       lat: user?.location?.latitude,
       lng: user?.location?.longitude,
     };
-    console.log("🚀 ~ file: SearchFilterScreen.js:546 ~ getSearchResult ~ dataBody:", dataBody)
+    console.log(
+      '🚀 ~ file: SearchFilterScreen.js:546 ~ getSearchResult ~ dataBody:',
+      dataBody,
+    );
     console.log('Databosy filters===========????', dataBody.filters);
     // const oldBody = {
     //   uid :'',
@@ -1293,30 +1295,51 @@ const SearchFilterScreen = () => {
                       <TouchableOpacity
                         activeOpacity={0.8}
                         onPress={() => {
-                        
-                          const index = filtersOn.indexOf(item?.text)
-                          let tempData = []
+                          // console.log('map index i=====>>>>',i)
+                          const index = filtersOn.indexOf(item?.text);
+                          let tempData = [];
                           console.log(
                             '🚀 ~ file: SearchFilterScreen.js:1220 ~ {item?.array.map ~ index:',
                             index,
                           );
-                          if (index >-1) {
-                            !body[index].value.includes(x) 
-                            ?
-                            setBody(
-                              prev => [...prev],
-                              (body[index].value.push(x))
-                            )
-                            :
-                            tempData = body[index].value.filter((d , i)=> d != x) 
-                            setBody(
-                              prev => [...prev],
-                              (body[index].value= tempData)
-                            )
+                          if (index > -1) {
+                            if (!body[index].value.includes(x)) {
+                              setBody(
+                                prev => [...prev],
+                                body[index].value.push(x),
+                              );
+                            } else {
+                              if (body[index].value.length > 1) {
+                                tempData = body[index].value.filter(
+                                  (d, i) => d != x,
+                                );
+                                console.log(
+                                  '🚀 ~ file: SearchFilterScreen.js:1312 ~ {item?.array.map ~ tempData:',
+                                  tempData,
+                                );
+                                setBody(
+                                  prev => [...prev],
+                                  (body[index].value = tempData),
+                                );
+                              } else {
+                                const updated = [...body];
+                                updated.splice(index, 1);
 
-                            // setFiltersOn(prev=>[...prev] ,(item.text)])
+                                setBody(updated);
+                                const newData = filtersOn.filter(
+                                  (filterItem, index) => {
+                                    return filterItem != item?.text;
+                                  },
+                                );
+                                setFiltersOn(newData);
+                              }
+                            }
+
                           } else {
-                            setBody(prev => [...prev, {key : item.text , value : [x] }]);
+                            setBody(prev => [
+                              ...prev,
+                              {key: item.text, value: [x]},
+                            ]);
                             setFiltersOn(prev => [...prev, item.text]);
                           }
                         }}
@@ -1329,27 +1352,19 @@ const SearchFilterScreen = () => {
                         }}>
                         <Icon
                           name={
-                            body.findIndex(
-                              (data, index) => data[item.text] == x,
-                            ) > -1 ?
-                            body[body.findIndex(
-                              (data, index) => data[item.text] == x,
-                            )].value.includes(item.text)
-                              ? 'square'
-                              : 'square-o'
+                             filtersOn.indexOf(item?.text) > -1
+                              ? body[filtersOn.indexOf(item?.text)].value.includes(x)
+                                ? 'square'
+                                : 'square-o'
                               : 'square-o'
                           }
                           as={FontAwesome}
                           size={moderateScale(12, 0.6)}
                           color={
-                            body.findIndex(
-                              (data, index) => data[item.text] == x,
-                            ) > -1 ?
-                            body[body.findIndex(
-                              (data, index) => data[item.text] == x,
-                            )].value.includes(item.text)
-                              ? Color.themeColor
-                              : Color.veryLightGray
+                            filtersOn.indexOf(item?.text) > -1
+                              ? body[filtersOn.indexOf(item?.text)].value.includes(x)
+                                ? Color.themeColor
+                                : Color.veryLightGray
                               : Color.veryLightGray
                           }
                           disabled={true}
@@ -1368,11 +1383,14 @@ const SearchFilterScreen = () => {
                             if (index > -1) {
                               setBody(
                                 prev => [...prev],
-                                (body[index].value.push(x))
+                                body[index].value.push(x),
                               );
                               // setFiltersOn(prev=>[...prev] ,(item.text)])
                             } else {
-                              setBody(prev => [...prev, {key : item.text , value : [x] }]);
+                              setBody(prev => [
+                                ...prev,
+                                {key: item.text, value: [x]},
+                              ]);
                               setFiltersOn(prev => [...prev, item.text]);
                             }
                           }}
@@ -1398,7 +1416,6 @@ const SearchFilterScreen = () => {
             height={windowHeight * 0.05}
             marginTop={moderateScale(40, 0.3)}
             onPress={() => {
-           
               getSearchResult();
             }}
             fontSize={moderateScale(12, 0.6)}
@@ -1460,11 +1477,9 @@ const SearchFilterScreen = () => {
               // top : 1
             }}>
             <CustomText
-            onPress={()=>{
-            setBody([]),
-            setFiltersOn([])
-            }
-            }
+              onPress={() => {
+                setBody([]), setFiltersOn([]);
+              }}
               style={{
                 fontSize: moderateScale(11, 0.6),
                 color: Color.themeColor,
