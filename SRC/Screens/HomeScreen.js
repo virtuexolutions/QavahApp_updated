@@ -41,28 +41,46 @@ const HomeScreen = () => {
   const [isSuperLikeVisible, setSuperLikeVisible] = useState(false);
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [selectedId , setSelectedId] = useState(0)
+  const [leftLogData, setLeftlogData] = useState([]);
+  console.log("🚀 ~ file: HomeScreen.js:45 ~ leftLogData:", leftLogData)
+  const [rightLogData, setRightLogData] = useState([])
+  // console.log("🚀 ~ file: HomeScreen.js:47 ~ HomeScreen ~ rightLogData:", rightLogData)
   const [photoCards, setPhotoCards] = useState([]);
+  // console.log("🚀 ~ file: HomeScreen.js:48 ~ photoCards:", photoCards)
   const [drawerType, setDrawerType] = useState('notification');
+
+  
   const getUsers = async () => {
+    
     const url = `discover/getPeople/${user?.uid}/${user?.seeking}/${user?.location?.latitude}/${user?.location?.longitude}/${user?.location?.city}/${user?.location?.zipcode}`;
+    
+    
     setIsLoadingApi(true);
     const response = await Get(url, token);
     setIsLoadingApi(false);
     if (response != undefined) {
       setPhotoCards(response?.data?.peoples);
-      // console.log(response?.data?.peoples[0]?.profile_images[0]?.url);
+      //  console.log(response?.data);
     }
   };
   const handleOnSwipedLeft = async id => {
+    // console.log("🚀 ~ file: HomeScreen.js:67 ~ handleOnSwipedLeft ~ id:", id)
     const url = 'swap/disliked';
     const response = await Post(url, {targetsUid: id}, apiHeader(token));
-    console.log({targetsUid: id});
+    // console.log("🚀 ~ file: HomeScreen.js:64 ~ handleOnSwipedLeft ~ id:", id)
+    // console.log({targetsUid: id});
     if (response != undefined) {
-      console.log('response ======= >', response?.data);
-      swiperRef.swipeLeft();
+      // console.log('response ======= >', response?.data);
+      setLeftlogData(
+        (prev) => [...prev , ...photoCards.filter((data, index) => id == data?.id)],
+        );
+        
+        swiperRef.swipeLeft();
+      // console.log('Left Log Data=======>>>',leftLogData);
       setPhotoCards(
         photoCards.filter((data, index) => id != data?.id),
-      );
+        );
+        // console.log("🚀 ~ file: HomeScreen.js:81 ~ handleOnSwipedLeft ~ photoCards:", photoCards)
     }
   };
   const handleOnSwipedTop = () => {
@@ -72,10 +90,13 @@ const HomeScreen = () => {
   const handleOnSwipedRight = async id => {
     const url = 'swap/liked';
     const response = await Post(url, {targetsUid: id}, apiHeader(token));
-    console.log({targetsUid: id});
+    // console.log({targetsUid: id});
     if (response != undefined) {
-      console.log('response ======= >', response?.data);
+      // console.log('response ======= >', response?.data);
       swiperRef.swipeRight();
+      setRightLogData(
+        (prev) => [...prev , ...photoCards.filter((data, index) => id == data?.id)],
+      );
       setPhotoCards(
         photoCards.filter((data, index) => id != data?.id),
       );
@@ -117,6 +138,14 @@ const HomeScreen = () => {
       photo: require('../Assets/Images/woman3.jpeg'),
     },
   ];
+  const UndoLeft = async() => {
+   setPhotoCards((prev) => [...prev, leftLogData.pop()] )
+   console.log("🚀 ~ file: HomeScreen.js:136 ~ UndoLeft ~ leftLogData:", leftLogData)
+   console.log('photoCards after undo', photoCards)
+   
+   await swiperRef.swipeBack();
+  }
+
 
   useEffect(() => {
     getUsers();
@@ -175,7 +204,9 @@ const HomeScreen = () => {
               showSecondCard={true}
               animateOverlayLabelsOpacity
               swipeBackCard
-              onSwipedLeft={async (index, item) => {
+              onSwipedLeft={async(index, item) => {
+                // return console.log('item in left ', item?.id)
+                console.log(' hererererere  ===  >> > > ')
                 const url = 'swap/disliked';
                 console.log({targetsUid: selectedId});
                 const response = await Post(
@@ -185,23 +216,50 @@ const HomeScreen = () => {
                 );
                 if (response != undefined) {
                   console.log('response ======= >', response?.data);
-                  // handleOnSwipedLeft(item?.id)
                   console.log('left', item?.id);
+                  setLeftlogData(
+                    (prev) => [...prev , ...photoCards.filter((data, index) => {
+                      item?.id == data?.id})],
+                  );
+                  // swiperRef.swipe();
+                  console.log('Left Log Data=======>>>',leftLogData);
+                 
                   setPhotoCards(
                     photoCards.filter((data, index) => item?.id != data?.id),
-                  );
+                    );
+                 
                 }
               }}
               disableBottomSwipe={true}
-              onSwipedRight={() => {
-                console.log('Right');
+              onSwipedRight={async (index, item) => {
+                const url = 'swap/liked';
+                // console.log({targetsUid: selectedId});
+                const response = await Post(
+                  url,
+                  {targetsUid: item?.id},
+                  apiHeader(token),
+                );
+                if (response != undefined) {
+                  // console.log('response ======= >', response?.data);
+                  // handleOnSwipedLeft(item?.id)
+                  // console.log('left', item?.id);
+                  setRightLogData(
+                    (prev) => [...prev , ...photoCards.filter((data, index) => {
+                      item?.id == data?.id})],
+                  );
+                  // console.log('Left Log Data=======>>>',leftLogData);
+                
+                  setPhotoCards(
+                    photoCards.filter((data, index) => item?.id != data?.id),
+                    );
+                }
               }}
               onSwipedTop={() => {
-                // console.log('Top');
+                console.log('Top');
                 setSuperLikeVisible(true);
               }}
               onSwiping={(x, y) => {
-                console.log(x, y);
+                // console.log(x, y);
                 setXAxis(x);
                 setYAxis(y);
               }}
@@ -251,9 +309,9 @@ const HomeScreen = () => {
               color={Color.themeColor}
               name={isLoading ? 'cloud-download' : 'undo'}
               type={FontAwesome}
-              onPress={async () => {
+              onPress={() => {
                 setIsLoading(true);
-                await swiperRef.swipeBack();
+                UndoLeft();
                 setIsLoading(false);
               }}
             />
@@ -262,7 +320,7 @@ const HomeScreen = () => {
               color={xAxis < 0 ? Color.white : Color.themeColor}
               name={'close-sharp'}
               type={Ionicons}
-              onPress={handleOnSwipedLeft}
+              onPress={() => handleOnSwipedLeft(selectedId)}
             />
             <BtnContainer
               backgroundColor={
@@ -280,7 +338,7 @@ const HomeScreen = () => {
               color={xAxis > 0 ? Color.white : Color.themeColor}
               name={'heart'}
               type={FontAwesome}
-              onPress={handleOnSwipedRight}
+              onPress={() => handleOnSwipedRight(selectedId)}
             />
             <BtnContainer
               backgroundColor={'white'}

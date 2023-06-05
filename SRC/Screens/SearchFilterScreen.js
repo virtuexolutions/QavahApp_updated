@@ -25,6 +25,7 @@ import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import {useSelector} from 'react-redux';
+import { parse } from 'react-native-svg';
 
 const SearchFilterScreen = () => {
   const token = useSelector(state => state.authReducer.token);
@@ -517,11 +518,11 @@ const SearchFilterScreen = () => {
       lat: user?.location?.latitude,
       lng: user?.location?.longitude,
     };
-    console.log(
-      '🚀 ~ file: SearchFilterScreen.js:546 ~ getSearchResult ~ dataBody:',
-      dataBody,
-    );
-    console.log('Databosy filters===========????', dataBody.filters);
+    // console.log(
+    //   '🚀 ~ file: SearchFilterScreen.js:546 ~ getSearchResult ~ dataBody:',
+    //   dataBody,
+    // );
+    // // console.log('Databody filters===========????', dataBody);
     // const oldBody = {
     //   uid :'',
     //   filters:[{
@@ -606,7 +607,7 @@ const SearchFilterScreen = () => {
     const response = await Post(url, dataBody, apiHeader(token));
     setIsLoading(false);
     if (response != undefined) {
-      console.log('Search result Response', response);
+      // console.log('Search result Response', response);
     }
   };
 

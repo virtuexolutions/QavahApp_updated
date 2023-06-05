@@ -129,7 +129,11 @@ const Header = props => {
       key: 9,
       title: 'set Account visibility to global',
       onPress: data => {
+        
+        setSwitchEnabled(!switchEnabled)
+        console.log('switchEnables value=======>>>>',switchEnabled)
         setAccountVisible();
+        
       },
       switch: true,
       switchEnabled: switchEnabled,

@@ -15,7 +15,7 @@ const DrawerOptions = ({item}) => {
     const datachane=()=>{
         console.log('dasdasasd')
       }
-    // console.log("🚀 ~ file: DrawerOptions.js:11 ~ DrawerOptions ~ openNested:", item?.switchEnabled)
+  
   return (<>
     <TouchableOpacity style={{
         flexDirection : 'row',
@@ -52,11 +52,12 @@ const DrawerOptions = ({item}) => {
             // // value={item?.switchEnabled}
             // />
             <Switch
-            trackColor={userData?.prefrences?.global ? 'red': '#81b0ff'}
-            thumbColor={userData?.prefrences?.global ? Color.themeColor : '#f4f3f4'}
+            trackColor={{true:Color.veryLightGray , false : Color.veryLightGray}}
+            thumbColor={item?.switchEnabled ? Color.themeColor : '#f4f3f4'}
             ios_backgroundColor="#3e3e3e"
             onValueChange={ item?.onPress}
-            value={userData?.prefrences?.global}
+            //value={userData?.prefrences?.global}
+            value={userData?.prefrences?.global == 0 ? false : true}
           />
  :       
         <Icon 
