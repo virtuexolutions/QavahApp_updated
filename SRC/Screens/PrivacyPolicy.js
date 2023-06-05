@@ -160,7 +160,7 @@ const PrivacyPolicy = () => {
              
      
     </ScrollView>
-    <CustomButton
+    {/* <CustomButton
                 text={'Accept'}
                 textColor={Color.white}
                 width={windowWidth * 0.8}
@@ -179,7 +179,7 @@ const PrivacyPolicy = () => {
                   position : 'absolute' ,
                   bottom : moderateScale(5,0.3)
                 }}
-              />
+              /> */}
       {/* <CustomButton
               text={'Starting At $500'}
               textColor={Color.white}
@@ -201,126 +201,7 @@ const PrivacyPolicy = () => {
               }}
             /> */}
   </>
-    // <ScreenBoiler
-    //   showHeader={true}
-    //   statusBarBackgroundColor={
-    //     Color.themeBgColorNegotiator
-    //   }
-    //   statusBarContentStyle={'light-content'}
-    //   headerColor={
-    //     Color.themeBgColorNegotiator
-    //   }
-    //   hideUser={false}
-    //   showBack={true}>
-    //   <ScrollView
-    //     showsVerticalScrollIndicator={false}
-    //     style={{minHeight: windowHeight * 0.7}}
-    //     contentContainerStyle={
-    //       {
-    //         // backgroundColor: 'transparent',
-    //       }
-    //     }>
-    //     <LinearGradient
-    //       style={{
-    //         // alignItems: 'center',
-    //         paddingVertical: moderateScale(30, 0.6),
-    //         paddingHorizontal: moderateScale(10, 0.6),
-    //         minHeight: windowHeight * 0.97,
-    //       }}
-    //       start={{x: 0, y: 0}}
-    //       end={{x: 1, y: 0}}
-    //       colors={ Color.themeBgColorNegotiator
-    //   }>
-    //       {isLoading ? (
-    //         <View style={styles.loaderView}>
-    //           {/* <Loader
-    //             bgColor={'transparent'}
-    //             // textColor={Color.Gray}
-    //             height={windowHeight * 0.8}
-    //             width={windowWidth * 0.9}
-    //             size={'large'}
-    //             text={true}
-    //           /> */}
-    //            <ActivityIndicator color={'#FFFFFF'} size={'small'} />
-    //         </View>
-    //       ) : (
-    //         <>
-    //           <CustomText
-    //             style={[
-    //               {color: Color.themeBlack, marginTop: moderateScale(20, 0.3)},
-    //             ]}>
-    //             Terms & Conditions
-    //           </CustomText>
-    //           <CustomText
-    //             style={[
-    //               {marginTop: moderateScale(8, 0.3)},
-    //             ]}>{`Effective Date : ${moment(termsData?.updated_at).format(
-    //             'll',
-    //           )}`}</CustomText>
-    //           <CustomText
-    //             style={[
-    //               {
-    //                 // backgroundColor: 'red',
-    //                 color: Color.white,
-    //                 textAlign: 'left',
-    //                 marginTop: moderateScale(20, 0.3),
-    //                 lineHeight: moderateScale(25, 0.3),
-    //                 fontSize: moderateScale(13, 0.3),
-    //               },
-    //             ]}>
-    //             Lorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorvLorem Ipsum dolorLorem Ipsum dolorLorem
-    //             Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor
-    //             Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
-    //             Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
-    //             Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem
-    //             Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-    //             dolorLorem Ipsum dolor helloo
-    //           </CustomText>
-    //         </>
-    //       )}
-    //     </LinearGradient>
-    //   </ScrollView>
-    // </ScreenBoiler>
+ 
   );
 };
 
