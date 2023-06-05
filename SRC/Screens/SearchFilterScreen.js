@@ -64,20 +64,8 @@ const SearchFilterScreen = () => {
     (Values = false),
   ]);
   const [innerOptions, setInnerOptions] = useState([]);
-  // console.log(
-  //   '🚀 ~ file: SearchFilterScreen.js:57 ~ SearchFilterScreen ~ innerOptions:',
-  //   innerOptions,
-  // );
   const [step, setSteps] = useState(1);
-  // console.log(
-  //   '🚀 ~ file: SearchFilterScreen.js:55 ~ SearchFilterScreen ~ step:',
-  //   step,
-  // );
   const [selectedIndex, setIndex] = useState(0);
-  // console.log(
-  //   '🚀 ~ file: SearchFilterScreen.js:64 ~ SearchFilterScreen ~ selectedIndex:',
-  //   selectedIndex,
-  // );
   const [summary, setSummary] = useState('');
   const [filtersOn, setFiltersOn] = useState([]);
 
@@ -504,15 +492,15 @@ const SearchFilterScreen = () => {
   }, [nestedOptions, step]);
 
   const getSearchResult = async () => {
-    const url = 'seeking/seeking';
+    const url = 'seeking/seeking/app';
     // console.log('submit clicked')
     // return console.log("location in the search screen",location);
 
-    body.push({age: [age1, age2]}, {miles: distance}, {zipcode: '11230'});
+    body.push({key : 'age' , values : [age1, age2]}, { key : 'miles'  , values : distance}, {key : 'zipcode' ,values: ['11230']} ,{key : 'seeking' ,values: [user?.seeking]});
 
     const dataBody = {
       uid: user?.id,
-      filters: [...body],
+      filters:  body,
       from: 1,
       lat: user?.location?.latitude,
       lng: user?.location?.longitude,
@@ -522,91 +510,12 @@ const SearchFilterScreen = () => {
       dataBody,
     );
     console.log('Databosy filters===========????', dataBody.filters);
-    // const oldBody = {
-    //   uid :'',
-    //   filters:[{
-    //     seeking:'woman'
-    //   },{
-    //     age:[20,30]
-    //   },
-    //   {
-    //     miles:15
-    //   },
-    //   {
-    //     zipcode:'12121'
-    //   },
-    //   {
-    //     doYouWantMoreChildren:'No'
-    //   },
-    //   {
-    //      doYouHaveChildren: 'Yes- they live at home'
-    //   },
-    //   {
-    //     doYouDrink : `Don't drink`
-    //   },
-    //   {
-    //     doYouSmoke: `I don't smoke`
-    //   },
-    //   {
-    //     howOftenDoYouExercise : 'no answer'
-    //   },
-    //   {
-    //     havePets:'Fish'
-    //   },
-    //   {
-    //     relationshipIAmSeeking:'Frienship'
-    //   },
-    //   {
-    //     bodyType : 'Average'
-    //   },
-    //   {
-    //     height : ['6','10']
-    //   },
-    //   {
-    //     maritalStatus : 'Never married'
-    //   },
-    //   {
-    //     livingSituation : 'Live with friends'
-    //   },
-    //   {
-    //     willingToRelocate : 'Not sure about relocating'
-    //   },
-    //   {
-    //     iBelieveIAM : 'Grafted in'
-    //   },
-    //   {
-    //     studyBible : 'King james Version'
-    //   },
-    //   {
-    //     studyHabits : '66 only'
-    //   },
-    //   {
-    //     spiritualValue : 'Non-Messianic'
-    //   },
-    //   {
-    //     maritalBeliefSystem : 'Polygyny'
-    //   },
-    //   {
-    //     yearsInTruth : '3 year'
-    //   },
-    //   {
-    //     anyAffiliation : 'i am a member of an online org'
-    //   },
-    //   {
-    //     spiritualBackground : 'i did not believe in anything'
-    //   },
-
-    //   ],
-    //   from : 1,
-    //   lat : '40.5689',
-    //   lag : '-73.96',
-
-    // }
+ 
     setIsLoading(true);
     const response = await Post(url, dataBody, apiHeader(token));
     setIsLoading(false);
     if (response != undefined) {
-      console.log('Search result Response', response);
+      console.log('Search result Response', response?.data?.peoples);
     }
   };
 
@@ -644,16 +553,13 @@ const SearchFilterScreen = () => {
           titleText={'location'}
           secureText={false}
           placeholder={'location'}
-          // setText={setComment}
-          // rightIcon
-          value={location}
+    value={location}
           viewHeight={0.06}
           viewWidth={0.9}
           inputWidth={0.86}
           border={1}
           borderColor={Color.veryLightGray}
           disable
-          // backgroundColor={'#FFFFFF'}
           marginTop={moderateScale(15, 0.3)}
           color={Color.themeColor}
           placeholderColor={Color.themeLightGray}
@@ -1303,13 +1209,13 @@ const SearchFilterScreen = () => {
                             index,
                           );
                           if (index > -1) {
-                            if (!body[index].value.includes(x)) {
+                            if (!body[index].values.includes(x)) {
                               setBody(
                                 prev => [...prev],
-                                body[index].value.push(x),
+                                body[index].values.push(x),
                               );
                             } else {
-                              if (body[index].value.length > 1) {
+                              if (body[index].values.length > 1) {
                                 tempData = body[index].value.filter(
                                   (d, i) => d != x,
                                 );
@@ -1319,7 +1225,7 @@ const SearchFilterScreen = () => {
                                 );
                                 setBody(
                                   prev => [...prev],
-                                  (body[index].value = tempData),
+                                  (body[index].values = tempData),
                                 );
                               } else {
                                 const updated = [...body];
@@ -1338,7 +1244,7 @@ const SearchFilterScreen = () => {
                           } else {
                             setBody(prev => [
                               ...prev,
-                              {key: item.text, value: [x]},
+                              {key: item.text, values: [x]},
                             ]);
                             setFiltersOn(prev => [...prev, item.text]);
                           }
@@ -1353,7 +1259,7 @@ const SearchFilterScreen = () => {
                         <Icon
                           name={
                              filtersOn.indexOf(item?.text) > -1
-                              ? body[filtersOn.indexOf(item?.text)].value.includes(x)
+                              ? body[filtersOn.indexOf(item?.text)]?.values.includes(x)
                                 ? 'square'
                                 : 'square-o'
                               : 'square-o'
@@ -1362,7 +1268,7 @@ const SearchFilterScreen = () => {
                           size={moderateScale(12, 0.6)}
                           color={
                             filtersOn.indexOf(item?.text) > -1
-                              ? body[filtersOn.indexOf(item?.text)].value.includes(x)
+                              ? body[filtersOn.indexOf(item?.text)]?.values.includes(x)
                                 ? Color.themeColor
                                 : Color.veryLightGray
                               : Color.veryLightGray
@@ -1383,13 +1289,13 @@ const SearchFilterScreen = () => {
                             if (index > -1) {
                               setBody(
                                 prev => [...prev],
-                                body[index].value.push(x),
+                                body[index].values.push(x),
                               );
                               // setFiltersOn(prev=>[...prev] ,(item.text)])
                             } else {
                               setBody(prev => [
                                 ...prev,
-                                {key: item.text, value: [x]},
+                                {key: item.text, values: [x]},
                               ]);
                               setFiltersOn(prev => [...prev, item.text]);
                             }
@@ -1702,7 +1608,7 @@ const Silder = ({
           max={max}
           values={!multi ? [state1] : [state1, state2]}
           onValuesChange={low => {
-            // console.log(low);
+            console.log(low);
             single ? setState1(low) : (setState1(low[0]), setState2(low[1]));
           }}
           containerStyle={{
