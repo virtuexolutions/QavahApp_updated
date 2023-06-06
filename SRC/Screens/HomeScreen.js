@@ -24,12 +24,11 @@ import SpotLightModal from '../Components/SpotlightModal';
 import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import CustomImage from '../Components/CustomImage';
 import NullDataComponent from '../Components/NullDataComponent';
-import { useIsFocused } from '@react-navigation/native';
-
+import {useIsFocused} from '@react-navigation/native';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
-  const focused = useIsFocused()
+  const focused = useIsFocused();
   const user = useSelector(state => state.commonReducer.userData);
   const token = useSelector(state => state.authReducer.token);
   const [swiperRef, setSwiperRef] = useState();
@@ -40,12 +39,10 @@ const HomeScreen = () => {
 
   const [isSuperLikeVisible, setSuperLikeVisible] = useState(false);
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
-  const [selectedId , setSelectedId] = useState(0)
-  const [leftLogData, setLeftlogData] = useState([]);
-  console.log("🚀 ~ file: HomeScreen.js:45 ~ leftLogData:", leftLogData)
-  const [rightLogData, setRightLogData] = useState([])
-  // console.log("🚀 ~ file: HomeScreen.js:47 ~ HomeScreen ~ rightLogData:", rightLogData)
+  const [selectedId, setSelectedId] = useState(0);
   const [photoCards, setPhotoCards] = useState([]);
+  const [leftLogData, setLeftlogData] = useState([])
+  const [rightLogData, setRightLogData] = useState([])
   // console.log("🚀 ~ file: HomeScreen.js:48 ~ photoCards:", photoCards)
   const [drawerType, setDrawerType] = useState('notification');
 
@@ -60,7 +57,7 @@ const HomeScreen = () => {
     setIsLoadingApi(false);
     if (response != undefined) {
       setPhotoCards(response?.data?.peoples);
-      //  console.log(response?.data);
+      console.log(response?.data?.peoples);
     }
   };
   const handleOnSwipedLeft = async id => {
@@ -101,11 +98,8 @@ const HomeScreen = () => {
         photoCards.filter((data, index) => id != data?.id),
       );
     }
-
   };
- 
-  
-  
+
   //  let obj = array.find(o => o.name === 'string 1');
 
   const notificaitonArray = [
@@ -178,8 +172,7 @@ const HomeScreen = () => {
           }}>
           <ActivityIndicator color={Color.themeColor} size={'large'} />
         </View>
-      ) : (
-        photoCards.length > 0 ?
+      ) : photoCards.length > 0 ? (
         <>
           <View
             style={{
@@ -194,7 +187,13 @@ const HomeScreen = () => {
               containerStyle={styles.container}
               cards={photoCards}
               renderCard={card => (
-                <Card card={card} height={windowHeight * 0.72} cards={selectedId} setCards={setSelectedId} fromSpotLight={false}/>
+                <Card
+                  card={card}
+                  height={windowHeight * 0.72}
+                  cards={selectedId}
+                  setCards={setSelectedId}
+                  fromSpotLight={false}
+                />
               )}
               cardIndex={0}
               cardVerticalMargin={moderateScale(5, 0.6)}
@@ -208,7 +207,6 @@ const HomeScreen = () => {
                 // return console.log('item in left ', item?.id)
                 console.log(' hererererere  ===  >> > > ')
                 const url = 'swap/disliked';
-                console.log({targetsUid: selectedId});
                 const response = await Post(
                   url,
                   {targetsUid: item?.id},
@@ -351,17 +349,16 @@ const HomeScreen = () => {
             />
           </View>
         </>
-        : 
-        <View style={{
-          width : windowWidth ,
-          height : windowHeight * 0.6 ,
-          marginTop:moderateScale(30,0.3),
-          justifyContent : 'center',
-          alignItems : 'center',
-        }}>
-
-       
-          <NullDataComponent/>
+      ) : (
+        <View
+          style={{
+            width: windowWidth,
+            height: windowHeight * 0.6,
+            marginTop: moderateScale(30, 0.3),
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <NullDataComponent />
         </View>
       )}
       <SuperLikeModal

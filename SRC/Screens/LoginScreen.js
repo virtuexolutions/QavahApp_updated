@@ -62,9 +62,9 @@ const LoginScreen = ({route}) => {
     const response = await Post(url, body, apiHeader());
     setIsLoading(false);
     if (response?.data?.status) {
-      console.log('response ========>' , response?.data)
+      // return console.log('response ========>' , response?.data?.user)
+      dispatch(setUserData(response?.data?.user))
         dispatch(setUserToken({token: response?.data?.token}));
-        dispatch(setUserData(response?.data?.user))
       }
       else{
         console.log(response?.data?.message)

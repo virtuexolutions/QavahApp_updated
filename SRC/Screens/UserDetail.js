@@ -193,7 +193,7 @@ const UserDetail = props => {
             </View>
           )}
           <CustomText style={styles.heading}>
-            {`${userData?.governmentName}`}
+            {`${userData?.profileName}`}
           </CustomText>
           <View
             style={{

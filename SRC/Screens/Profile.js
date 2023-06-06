@@ -140,7 +140,7 @@ const Profile = props => {
           </View>
           }
         <CustomText style={styles.heading}>
-         {fromSearch ?`${fromSearch ? userData?.governmentName : userData?.profileName},${userData?.age}` : 'Austin,21'}
+         {fromSearch ?`${fromSearch ? userData?.profileName : userData?.profileName},${userData?.age}` : 'Austin,21'}
         </CustomText>
         <CustomText
           style={[
