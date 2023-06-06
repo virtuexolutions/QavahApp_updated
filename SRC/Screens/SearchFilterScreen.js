@@ -25,6 +25,7 @@ import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import {useSelector} from 'react-redux';
+import { parse } from 'react-native-svg';
 
 const SearchFilterScreen = () => {
   const token = useSelector(state => state.authReducer.token);
@@ -505,6 +506,91 @@ const SearchFilterScreen = () => {
       lat: user?.location?.latitude,
       lng: user?.location?.longitude,
     };
+    // console.log(
+    //   '🚀 ~ file: SearchFilterScreen.js:546 ~ getSearchResult ~ dataBody:',
+    //   dataBody,
+    // );
+    // // console.log('Databody filters===========????', dataBody);
+    // const oldBody = {
+    //   uid :'',
+    //   filters:[{
+    //     seeking:'woman'
+    //   },{
+    //     age:[20,30]
+    //   },
+    //   {
+    //     miles:15
+    //   },
+    //   {
+    //     zipcode:'12121'
+    //   },
+    //   {
+    //     doYouWantMoreChildren:'No'
+    //   },
+    //   {
+    //      doYouHaveChildren: 'Yes- they live at home'
+    //   },
+    //   {
+    //     doYouDrink : `Don't drink`
+    //   },
+    //   {
+    //     doYouSmoke: `I don't smoke`
+    //   },
+    //   {
+    //     howOftenDoYouExercise : 'no answer'
+    //   },
+    //   {
+    //     havePets:'Fish'
+    //   },
+    //   {
+    //     relationshipIAmSeeking:'Frienship'
+    //   },
+    //   {
+    //     bodyType : 'Average'
+    //   },
+    //   {
+    //     height : ['6','10']
+    //   },
+    //   {
+    //     maritalStatus : 'Never married'
+    //   },
+    //   {
+    //     livingSituation : 'Live with friends'
+    //   },
+    //   {
+    //     willingToRelocate : 'Not sure about relocating'
+    //   },
+    //   {
+    //     iBelieveIAM : 'Grafted in'
+    //   },
+    //   {
+    //     studyBible : 'King james Version'
+    //   },
+    //   {
+    //     studyHabits : '66 only'
+    //   },
+    //   {
+    //     spiritualValue : 'Non-Messianic'
+    //   },
+    //   {
+    //     maritalBeliefSystem : 'Polygyny'
+    //   },
+    //   {
+    //     yearsInTruth : '3 year'
+    //   },
+    //   {
+    //     anyAffiliation : 'i am a member of an online org'
+    //   },
+    //   {
+    //     spiritualBackground : 'i did not believe in anything'
+    //   },
+
+    //   ],
+    //   from : 1,
+    //   lat : '40.5689',
+    //   lag : '-73.96',
+
+    // }
     console.log(
       '🚀 ~ file: SearchFilterScreen.js:546 ~ getSearchResult ~ dataBody:',
       dataBody,
@@ -515,6 +601,7 @@ const SearchFilterScreen = () => {
     const response = await Post(url, dataBody, apiHeader(token));
     setIsLoading(false);
     if (response != undefined) {
+      // console.log('Search result Response', response);
       console.log('Search result Response', response?.data?.peoples);
     }
   };

@@ -40,7 +40,7 @@ const SpotLight = () => {
   const [spotLightData, setSpotLightData] = useState([]);
   console.log(
     '🚀 ~ file: SpotLight.js:41 ~ SpotLight ~ setSpotLightData:',
-    setSpotLightData,
+    spotLightData,
   );
 
   const [isLoading, setIsLoading] = useState(true);
@@ -272,7 +272,7 @@ const SpotLight = () => {
 
     if (response != undefined) {
       response?.data.users.map((item, index) => {
-        return console.log('data -=========== > ' ,  item.user_spotlights.length > 0 && item?.profile_images[0])
+        console.log('data -=========== > ' ,  item.user_spotlights.length > 0)
         return (
           item.user_spotlights.length > 0 &&
           setSpotLightData(prev => [...prev, item])

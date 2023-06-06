@@ -18,16 +18,16 @@ let startNode;
 const Card = ({card, height , setCards , cards, fromSpotLight}) => {
 // console.log("🚀 ~ file: Card.js:19 ~ Card ~ fromSpotLight:", fromSpotLight)
 //   console.log("🚀 ~ file: Card.js:19 ~ Card ~ card:", JSON.stringify( card , null , 2))
-console.log('card ===>' , card?.profile_images[0]?.url)
+// console.log('card ===>' , card?.profile_images[0]?.url)
 //   fromSpotLight? 'coming from spotlight': 'coming from homescreen'
 
 //   const [card, setCardData] = useState(card) 
 //   console.log("🚀 ~ file: Card.js:22 ~ Card ~ CardData:", CardData)
 
 
-// useEffect(() => {
-//   setCards(card?.uid)
-// }, [])
+useEffect(() => {
+   setCards && setCards(card?.id)
+}, [])
 
   return (
 	<View activeOpacity={1} style={[styles.card, {height: height}]}>
@@ -36,7 +36,8 @@ console.log('card ===>' , card?.profile_images[0]?.url)
     		<CustomImage
       		style={styles.image}
       		source={{
-				uri : 'https://admin.qavah.us/images/profile_images/qavah-1671203404639c8a4cd8113.jpg'
+				uri :card?.profile_images[0]?.url
+				//  'https://admin.qavah.us/images/profile_images/qavah-1671203404639c8a4cd8113.jpg'
 			}
         		// card?.profile_images.length > 0
           		// ?
