@@ -43,7 +43,7 @@ const CreatePortfolio = () => {
   // );
   //Step 1
   const [profileName, setProfileName] = useState('');
-  const [profileName, setprofileName] = useState('');
+  const [governmentName, setGovernmentName] = useState('');
 
   //Step 2
   const [email, setEmail] = useState('');
@@ -97,7 +97,7 @@ const CreatePortfolio = () => {
   const ProfileBody = {
     step1: {
       profileName: profileName,
-      profileName: profileName,
+      governmentName: governmentName,
       phone: `${country?.callingCode}${number}`,
       email: email,
       password: password,
@@ -260,8 +260,8 @@ const CreatePortfolio = () => {
                 titleText={`Your Government Name`}
                 secureText={false}
                 placeholder={`Your Government Name`}
-                setText={setprofileName}
-                value={profileName}
+                setText={setGovernmentName}
+                value={governmentName}
                 viewHeight={0.1}
                 viewWidth={0.9}
                 inputWidth={0.86}
@@ -667,7 +667,7 @@ const CreatePortfolio = () => {
           width={windowWidth * 0.9}
           height={windowHeight * 0.09}
           onPress={() => {
-            if (profileName != '' && profileName != '' && currentStep == 1) {
+            if (profileName != '' && governmentName != '' && currentStep == 1) {
               setCurrentStep(prev => prev + 1);
             } else if (email != '' && currentStep == 2) {
               if (!validateEmail(email)) {
