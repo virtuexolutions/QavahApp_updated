@@ -42,6 +42,7 @@ const HomeScreen = () => {
   const [selectedId, setSelectedId] = useState(0);
   const [photoCards, setPhotoCards] = useState([]);
   const [leftLogData, setLeftlogData] = useState([])
+  console.log("🚀 ~ file: HomeScreen.js:45 ~ HomeScreen ~ leftLogData:", leftLogData)
   const [rightLogData, setRightLogData] = useState([])
   // console.log("🚀 ~ file: HomeScreen.js:48 ~ photoCards:", photoCards)
   const [drawerType, setDrawerType] = useState('notification');
@@ -217,13 +218,12 @@ const HomeScreen = () => {
                   console.log('left', item?.id);
                   setLeftlogData(
                     (prev) => [...prev , ...photoCards.filter((data, index) => {
-                      item?.id == data?.id})],
+                     return response?.data?.peoples?.match_id == data?.id})],
                   );
                   // swiperRef.swipe();
-                  console.log('Left Log Data=======>>>',leftLogData);
                  
                   setPhotoCards(
-                    photoCards.filter((data, index) => item?.id != data?.id),
+                    photoCards.filter((data, index) => response?.data?.peoples?.match_id != data?.id),
                     );
                  
                 }
