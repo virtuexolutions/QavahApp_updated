@@ -41,9 +41,8 @@ const HomeScreen = () => {
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [photoCards, setPhotoCards] = useState([]);
-  const [leftLogData, setLeftlogData] = useState([])
-  console.log("🚀 ~ file: HomeScreen.js:45 ~ HomeScreen ~ leftLogData:", leftLogData)
-  const [rightLogData, setRightLogData] = useState([])
+  const [LogData, setLogData] = useState([])
+  
   // console.log("🚀 ~ file: HomeScreen.js:48 ~ photoCards:", photoCards)
   const [drawerType, setDrawerType] = useState('notification');
 
@@ -69,7 +68,7 @@ const HomeScreen = () => {
     // console.log({targetsUid: id});
     if (response != undefined) {
       // console.log('response ======= >', response?.data);
-      setLeftlogData(
+      setLogData(
         (prev) => [...prev , ...photoCards.filter((data, index) => id == data?.id)],
         );
         
@@ -92,7 +91,7 @@ const HomeScreen = () => {
     if (response != undefined) {
       // console.log('response ======= >', response?.data);
       swiperRef.swipeRight();
-      setRightLogData(
+      setLogData(
         (prev) => [...prev , ...photoCards.filter((data, index) => id == data?.id)],
       );
       setPhotoCards(
@@ -133,13 +132,15 @@ const HomeScreen = () => {
       photo: require('../Assets/Images/woman3.jpeg'),
     },
   ];
-  const UndoLeft = async() => {
-   setPhotoCards((prev) => [...prev, leftLogData.pop()] )
-   console.log("🚀 ~ file: HomeScreen.js:136 ~ UndoLeft ~ leftLogData:", leftLogData)
+  const UndoLog = async() => {
+   setPhotoCards((prev) => [...prev, LogData.pop()] )
+   console.log("🚀 ~ file: HomeScreen.js:136 ~ UndoLeft ~ leftLogData:", LogData)
    console.log('photoCards after undo', photoCards)
    
    await swiperRef.swipeBack();
   }
+
+  
 
 
   useEffect(() => {
@@ -216,7 +217,7 @@ const HomeScreen = () => {
                 if (response != undefined) {
                   console.log('response ======= >', response?.data);
                   console.log('left', item?.id);
-                  setLeftlogData(
+                  setLogData(
                     (prev) => [...prev , ...photoCards.filter((data, index) => {
                      return response?.data?.peoples?.match_id == data?.id})],
                   );
@@ -241,7 +242,7 @@ const HomeScreen = () => {
                   // console.log('response ======= >', response?.data);
                   // handleOnSwipedLeft(item?.id)
                   // console.log('left', item?.id);
-                  setRightLogData(
+                  setLogData(
                     (prev) => [...prev , ...photoCards.filter((data, index) => {
                       item?.id == data?.id})],
                   );
@@ -267,8 +268,8 @@ const HomeScreen = () => {
               }}
               overlayLabels={{
                 left: {
-                  title: 'NOPE',
-                  element: <OverlayLabel label="NOPE" color="#E5566D" />,
+                  title: 'LO',
+                  element: <OverlayLabel label="LO" color="#E5566D" />,
                   style: {
                     wrapper: {
                       alignItems: 'flex-end',
@@ -277,8 +278,8 @@ const HomeScreen = () => {
                   },
                 },
                 right: {
-                  title: 'LIKE',
-                  element: <OverlayLabel label="LIKE" color="#4CCC93" />,
+                  title: 'KAN',
+                  element: <OverlayLabel label="KAN" color="#4CCC93" />,
                   style: {
                     wrapper: {
                       alignItems: 'flex-start',
@@ -288,8 +289,8 @@ const HomeScreen = () => {
                   },
                 },
                 top: {
-                  element: <OverlayLabel label="SUPER LIKE" color="blue" />,
-                  title: 'SUPER LIKE',
+                  element: <OverlayLabel label="SUPER FANCY" color="blue" />,
+                  title: 'SUPER FANCY',
                   style: {
                     wrapper: {
                       flexDirection: 'column',
@@ -309,7 +310,7 @@ const HomeScreen = () => {
               type={FontAwesome}
               onPress={() => {
                 setIsLoading(true);
-                UndoLeft();
+                UndoLog();
                 setIsLoading(false);
               }}
             />
