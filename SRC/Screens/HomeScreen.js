@@ -222,7 +222,6 @@ const HomeScreen = () => {
                      return response?.data?.peoples?.match_id == data?.id})],
                   );
                   // swiperRef.swipe();
-                  console.log('Left Log Data=======>>>',LogData);
                  
                   setPhotoCards(
                     photoCards.filter((data, index) => response?.data?.peoples?.match_id != data?.id),
