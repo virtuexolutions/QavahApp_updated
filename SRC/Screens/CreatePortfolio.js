@@ -43,7 +43,7 @@ const CreatePortfolio = () => {
   // );
   //Step 1
   const [profileName, setProfileName] = useState('');
-  const [profileName, setprofileName] = useState('');
+  // const [profileName, setprofileName] = useState('');
 
   //Step 2
   const [email, setEmail] = useState('');
@@ -97,7 +97,13 @@ const CreatePortfolio = () => {
   const ProfileBody = {
     step1: {
       profileName: profileName,
-      profileName: profileName,
+      // profileName: profileName,
+      get profileName() {
+        return this._profileName;
+      },
+      set profileName(value) {
+        this._profileName = value;
+      },
       phone: `${country?.callingCode}${number}`,
       email: email,
       password: password,
