@@ -25,6 +25,8 @@ import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import CustomImage from '../Components/CustomImage';
 import NullDataComponent from '../Components/NullDataComponent';
 import {useIsFocused} from '@react-navigation/native';
+import {ToastAndroid} from 'react-native';
+import {Platform} from 'react-native';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -41,17 +43,19 @@ const HomeScreen = () => {
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [photoCards, setPhotoCards] = useState([]);
-  const [LogData, setLogData] = useState([])
-  
+  console.log(
+    '🚀 ~ file: HomeScreen.js:44 ~ HomeScreen ~ photoCards:',
+    photoCards,
+  );
+  const [LogData, setLogData] = useState([]);
+  console.log('🚀 ~ file: HomeScreen.js:45 ~ HomeScreen ~ LogData:', LogData);
+
   // console.log("🚀 ~ file: HomeScreen.js:48 ~ photoCards:", photoCards)
   const [drawerType, setDrawerType] = useState('notification');
 
-  
   const getUsers = async () => {
-    
     const url = `discover/getPeople/${user?.uid}/${user?.seeking}/${user?.location?.latitude}/${user?.location?.longitude}/${user?.location?.city}/${user?.location?.zipcode}`;
-    
-    
+
     setIsLoadingApi(true);
     const response = await Get(url, token);
     setIsLoadingApi(false);
@@ -60,44 +64,75 @@ const HomeScreen = () => {
       console.log(response?.data?.peoples);
     }
   };
-  const handleOnSwipedLeft = async id => {
+  const handleOnSwipedLeft = async () => {
     // console.log("🚀 ~ file: HomeScreen.js:67 ~ handleOnSwipedLeft ~ id:", id)
-    const url = 'swap/disliked';
-    const response = await Post(url, {targetsUid: id}, apiHeader(token));
-    // console.log("🚀 ~ file: HomeScreen.js:64 ~ handleOnSwipedLeft ~ id:", id)
-    // console.log({targetsUid: id});
-    if (response != undefined) {
-      // console.log('response ======= >', response?.data);
-      setLogData(
-        (prev) => [...prev , ...photoCards.filter((data, index) => id == data?.id)],
-        );
-        
-        swiperRef.swipeLeft();
+    // const url = 'swap/disliked';
+    // const response = await Post(url, {targetsUid: id}, apiHeader(token));
+    // // console.log("🚀 ~ file: HomeScreen.js:64 ~ handleOnSwipedLeft ~ id:", id)
+    // // console.log({targetsUid: id});
+    // if (response?.data?.status == true) {
+    //   console.log('response ======= >', response?.data?.peoples?.match_id);
+    //   setLogData(prev => [
+    //     ...prev,
+    //     ...photoCards.filter((data, index) => {
+    //       return response?.data?.peoples?.match_id == data?.id;
+    //     }),
+    //   ]);
+
+      swiperRef.swipeLeft();
       // console.log('Left Log Data=======>>>',leftLogData);
-      setPhotoCards(
-        photoCards.filter((data, index) => id != data?.id),
-        );
-        // console.log("🚀 ~ file: HomeScreen.js:81 ~ handleOnSwipedLeft ~ photoCards:", photoCards)
-    }
+    //   console.log(
+    //     '🚀 ~ file: HomeScreen.js:80 ~ handleOnSwipedLeft ~ photoCards:',
+    //     photoCards,
+    //   );
+    //   setPhotoCards(
+    //     photoCards.filter(
+    //       (data, index) => response?.data?.peoples?.match_id != data?.id,
+    //     ),
+    //   );
+    //   // console.log("🚀 ~ file: HomeScreen.js:81 ~ handleOnSwipedLeft ~ photoCards:", photoCards)
+    // }
+    // else {
+    //   Platform.OS == 'android'
+    //     ? ToastAndroid.show(response?.error, ToastAndroid.SHORT)
+    //     : alert(response?.error);
+    // }
   };
   const handleOnSwipedTop = () => {
     // swiperRef.swipeTop(),
     setSuperLikeVisible(true);
   };
-  const handleOnSwipedRight = async id => {
-    const url = 'swap/liked';
-    const response = await Post(url, {targetsUid: id}, apiHeader(token));
-    // console.log({targetsUid: id});
-    if (response != undefined) {
-      // console.log('response ======= >', response?.data);
+  const handleOnSwipedRight = async () => {
+    // const url = 'swap/liked';
+    // const response = await Post(url, {targetsUid: id}, apiHeader(token));
+
+    // // console.log({targetsUid: id});
+    // if (response?.data?.status == true) {
+    //   console.log('response for like ======= >', response?.data);
+    //   //swiperRef.swipeRight();
+    //   setLogData(prev => [
+    //     ...prev,
+    //     ...photoCards.filter((data, index) => {
+    //       return response?.data?.peoples?.match_id == data?.id;
+    //     }),
+    //   ]);
       swiperRef.swipeRight();
-      setLogData(
-        (prev) => [...prev , ...photoCards.filter((data, index) => id == data?.id)],
-      );
-      setPhotoCards(
-        photoCards.filter((data, index) => id != data?.id),
-      );
-    }
+
+    //   console.log(
+    //     '🚀 ~ file: HomeScreen.js:80 ~ handleOnSwipedLeft ~ photoCards:',
+    //     photoCards,
+    //   );
+
+    //   setPhotoCards(
+    //     photoCards.filter(
+    //       (data, index) => response?.data?.peoples?.match_id != data?.id,
+    //     ),
+    //   );
+    // } else {
+    //   Platform.OS == 'android'
+    //     ? ToastAndroid.show(response?.error, ToastAndroid.SHORT)
+    //     : alert(response?.error);
+    // }
   };
 
   //  let obj = array.find(o => o.name === 'string 1');
@@ -132,16 +167,17 @@ const HomeScreen = () => {
       photo: require('../Assets/Images/woman3.jpeg'),
     },
   ];
-  const UndoLog = async() => {
-   setPhotoCards((prev) => [...prev, LogData.pop()] )
-   console.log("🚀 ~ file: HomeScreen.js:136 ~ UndoLeft ~ leftLogData:", LogData)
-   console.log('photoCards after undo', photoCards)
-   
-   await swiperRef.swipeBack();
-  }
-
-  
-
+  const UndoLog = async () => {
+    if (LogData.length > 0) {
+      setPhotoCards(prev => [...prev, LogData.pop()]);
+      console.log(
+        '🚀 ~ file: HomeScreen.js:136 ~ UndoLeft ~ leftLogData:',
+        LogData,
+      );
+      console.log('photoCards after undo', photoCards);
+      await swiperRef.swipeBack();
+    }
+  };
 
   useEffect(() => {
     getUsers();
@@ -205,29 +241,38 @@ const HomeScreen = () => {
               showSecondCard={true}
               animateOverlayLabelsOpacity
               swipeBackCard
-              onSwipedLeft={async(index, item) => {
+              onSwipedLeft={async (index, item) => {
                 // return console.log('item in left ', item?.id)
-                console.log(' hererererere  ===  >> > > ')
+                console.log(' hererererere  ===  >> > > ');
                 const url = 'swap/disliked';
                 const response = await Post(
                   url,
                   {targetsUid: item?.id},
                   apiHeader(token),
                 );
-                if (response != undefined) {
+                if (response?.data?.status == true) {
                   console.log('response ======= >', response?.data);
                   console.log('left', item?.id);
-                  setLogData(
-                    (prev) => [...prev , ...photoCards.filter((data, index) => {
-                     return response?.data?.peoples?.match_id == data?.id})],
-                  );
-                  // swiperRef.swipe();
                  
+                  setLogData(prev => [
+                    ...prev,
+                    ...photoCards.filter((data, index) => {
+                      return response?.data?.peoples?.match_id == data?.id;
+                    }),
+                  ]);
+
                   setPhotoCards(
-                    photoCards.filter((data, index) => response?.data?.peoples?.match_id != data?.id),
-                    );
-                 
+                    photoCards.filter(
+                      (data, index) =>
+                        response?.data?.peoples?.match_id != data?.id,
+                    ),
+                  );
                 }
+                else {
+                    Platform.OS == 'android'
+                      ? ToastAndroid.show(response?.error, ToastAndroid.SHORT)
+                      : alert(response?.error);
+                  }
               }}
               disableBottomSwipe={true}
               onSwipedRight={async (index, item) => {
@@ -238,20 +283,26 @@ const HomeScreen = () => {
                   {targetsUid: item?.id},
                   apiHeader(token),
                 );
-                if (response != undefined) {
-                  // console.log('response ======= >', response?.data);
-                  // handleOnSwipedLeft(item?.id)
-                  // console.log('left', item?.id);
-                  setLogData(
-                    (prev) => [...prev , ...photoCards.filter((data, index) => {
-                      item?.id == data?.id})],
-                  );
-                  // console.log('Left Log Data=======>>>',leftLogData);
-                
+                if (response?.data?.status == true) {
+                 setLogData(prev => [
+                    ...prev,
+                    ...photoCards.filter((data, index) => {
+                      return response?.data?.peoples?.match_id == data?.id;
+                    }),
+                  ]);
+
                   setPhotoCards(
-                    photoCards.filter((data, index) => item?.id != data?.id),
-                    );
+                    photoCards.filter(
+                      (data, index) =>
+                        response?.data?.peoples?.match_id != data?.id,
+                    ),
+                  );
                 }
+                else {
+                    Platform.OS == 'android'
+                      ? ToastAndroid.show(response?.error, ToastAndroid.SHORT)
+                      : alert(response?.error);
+                  }
               }}
               onSwipedTop={() => {
                 console.log('Top');
@@ -314,12 +365,13 @@ const HomeScreen = () => {
                 setIsLoading(false);
               }}
             />
+
             <BtnContainer
               backgroundColor={xAxis < 0 ? Color.themeColor : 'white'}
               color={xAxis < 0 ? Color.white : Color.themeColor}
               name={'close-sharp'}
               type={Ionicons}
-              onPress={() => handleOnSwipedLeft(selectedId)}
+              onPress={() => handleOnSwipedLeft()}
             />
             <BtnContainer
               backgroundColor={
@@ -360,6 +412,19 @@ const HomeScreen = () => {
             alignItems: 'center',
           }}>
           <NullDataComponent />
+          {LogData.length > 0 && photoCards.length == 0 && (
+            <BtnContainer
+              backgroundColor={'white'}
+              color={Color.themeColor}
+              name={isLoading ? 'cloud-download' : 'undo'}
+              type={FontAwesome}
+              onPress={() => {
+                setIsLoading(true);
+                UndoLog();
+                setIsLoading(false);
+              }}
+            />
+          )}
         </View>
       )}
       <SuperLikeModal
