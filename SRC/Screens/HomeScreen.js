@@ -32,6 +32,7 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const focused = useIsFocused();
   const user = useSelector(state => state.commonReducer.userData);
+  console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
   const [swiperRef, setSwiperRef] = useState();
   const [xAxis, setXAxis] = useState(0);
@@ -49,6 +50,7 @@ const HomeScreen = () => {
   );
   const [LogData, setLogData] = useState([]);
   console.log('🚀 ~ file: HomeScreen.js:45 ~ HomeScreen ~ LogData:', LogData);
+  // console.log('token',token)
 
   // console.log("🚀 ~ file: HomeScreen.js:48 ~ photoCards:", photoCards)
   const [drawerType, setDrawerType] = useState('notification');
@@ -169,13 +171,40 @@ const HomeScreen = () => {
   ];
   const UndoLog = async () => {
     if (LogData.length > 0) {
-      setPhotoCards(prev => [...prev, LogData.pop()]);
-      console.log(
-        '🚀 ~ file: HomeScreen.js:136 ~ UndoLeft ~ leftLogData:',
-        LogData,
+      const undoData = [...LogData]
+      LogData.pop()
+      console.log("🚀 ~ file: HomeScreen.js:173 ~ UndoLog ~ undoData:", undoData)
+      const url = 'swap/rewind'
+      
+      
+      const body = {
+        myName : user?.profileName,
+        myUid: user?.id,
+        targetsUid: undoData[undoData?.length-1]?.id,
+        targetName:undoData[undoData?.length-1]?.profileName,
+
+      }
+      
+      const response = await Post(
+        url,
+        body,
+        apiHeader(token),
       );
-      console.log('photoCards after undo', photoCards);
-      await swiperRef.swipeBack();
+      
+      if(response?.data?.status){
+        
+        console.log("🚀 ~ file: HomeScreen.js:180 ~ UndoLog ~ response:", response?.data?.response?.target_user)
+        setPhotoCards(prev => [undoData[undoData?.length-1], ...prev  ]);
+        // console.log(
+        //   '🚀 ~ file: HomeScreen.js:136 ~ UndoLeft ~ leftLogData:',
+        //   LogData,
+        // );
+        // console.log('photoCards after undo', photoCards);
+         await swiperRef.swipeBack();
+
+      }
+
+
     }
   };
 
@@ -251,29 +280,26 @@ const HomeScreen = () => {
                   apiHeader(token),
                 );
                 if (response?.data?.status == true) {
-                  console.log('response ======= >', response?.data);
-                  console.log('left', item?.id);
-                 
+                  // console.log('response ======= >', response?.data);
+                  // console.log('left', item?.id);
+
+                  const filteredData = photoCards.filter((data,index) => response?.data?.peoples?.match_id == data?.id)
+                  const filteredData2 = photoCards.filter((data, index) => response?.data?.peoples?.match_id != data?.id)
                   setLogData(prev => [
                     ...prev,
-                    ...photoCards.filter((data, index) => {
-                      return response?.data?.peoples?.match_id == data?.id;
-                    }),
+                    filteredData,
                   ]);
 
-                  setPhotoCards(
-                    photoCards.filter(
-                      (data, index) =>
-                        response?.data?.peoples?.match_id != data?.id,
-                    ),
-                  );
+                  setPhotoCards(filteredData2);
                 }
                 else {
                     Platform.OS == 'android'
                       ? ToastAndroid.show(response?.error, ToastAndroid.SHORT)
                       : alert(response?.error);
                   }
-              }}
+              }
+            
+            }
               disableBottomSwipe={true}
               onSwipedRight={async (index, item) => {
                 const url = 'swap/liked';

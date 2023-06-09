@@ -97,7 +97,7 @@ const SpotLightModal = ({isVisible, setIsVisible}) => {
         />
         <View style={styles.image}>
           <CustomImage
-            source={require('../Assets/Images/spotlight.jpg')}
+            source={require('../Assets/Images/spotlight_cover.jpg')}
             style={{
               width: '100%',
               height: '100%',

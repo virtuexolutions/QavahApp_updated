@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, Dimensions, TouchableOpacity} from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../Components/Header';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -9,23 +9,45 @@ import {ScrollView} from 'native-base';
 import PlanCard from '../Components/PlanCard';
 import {PointsComponent} from './Subscription';
 import CustomButton from '../Components/CustomButton';
+import { Get } from '../Axios/AxiosInterceptorFunction';
+import {useSelector} from 'react-redux';
+
 const {height, width} = Dimensions.get('window');
 
-const GetSuperLike = () => {
+const GetSuperLike = ({route}) => {
+  const token = useSelector(State => State.authReducer.token);
+
+  const [selected, setSelected] = useState('');
+  const [packages, setPackages] = useState([])
+  const {text} = route.params ;
+
   const pointsArray = [
     {lock: false, text: 'Unlimited Likes'},
     {lock: false, text: 'See who likes you'},
     {lock: true, text: 'Priority Likes'},
   ];
 
-  const packages = [
-    {title: 'Monthly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
-    {title: 'Weekly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
-    {title: 'yearly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
+//   const packages = [
+//     {title: 'Monthly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
+//     {title: 'Weekly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
+//     {title: 'yearly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
     
-];
+// ]; 
 
-  const [selected, setSelected] = useState('');
+const getSubscriptionPlan = async () => {
+  const url = 'packages';
+  const response = await Get(url, token);
+  if (response != undefined) {
+    console.log(JSON.stringify(response?.data, null, 2));
+    setPackages(response?.data?.packages)
+  }
+};
+
+useEffect(() => {
+  getSubscriptionPlan();
+}, []);
+
+
 
   return (
     <>
@@ -87,7 +109,7 @@ const GetSuperLike = () => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           style={{marginHorizontal: moderateScale(10, 0.3)}}>
-            {packages.map((item,index)=>(
+            {(text == 'gold' ? packages?.gold : packages?.platinum)?.map((item,index)=>(
                 <TouchableOpacity onPress={()=>{ setSelected(item?.title)}}>
                     <PlanCard
                     key={index}

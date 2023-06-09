@@ -33,6 +33,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setUserData} from '../Store/slices/common';
 import LoveNotesModal from './LoveNotesModal';
 import SpotLightModal from './SpotlightModal';
+import CustomButton from './CustomButton';
 
 const Header = props => {
   const dispatch = useDispatch();
@@ -370,6 +371,20 @@ const Header = props => {
               textColor={'#286086'}
             />
           </View>
+          <CustomButton
+          text={'Get Qavah gold* \n 5 free super likes every 1 week'}
+          width={windowWidth * 0.65}
+          height={windowHeight * 0.07}
+          marginTop={moderateScale(20, 0.3)}
+          bgColor={'white'}
+          borderRadius={moderateScale(25, 0.3)}
+          fontSize={moderateScale(10, 0.6)}
+          borderColor={Color.themeColor}
+          textColor={Color.themeColor}
+          borderWidth={1}
+          elevation
+          isBold
+        />
         </ScrollView>
       </Modal>
       <Modal
@@ -412,7 +427,9 @@ const Header = props => {
               />
             );
           })}
+         
         </ScrollView>
+
       </Modal>
       <LoveNotesModal
         isVisible={isLoveNotesVisible}

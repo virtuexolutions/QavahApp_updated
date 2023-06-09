@@ -18,7 +18,8 @@ const PlanCard = ({ title, description, price,selected,item }) => {
         <CustomText
           style={[
             styles.Txt1,
-            { fontSize: moderateScale(25, 0.6) },
+            { fontSize: moderateScale(25, 0.6) ,
+              color : selected == item?.title ? Color.themeColor : 'black'},
 
           ]}
           bold>
@@ -50,10 +51,11 @@ const PlanCard = ({ title, description, price,selected,item }) => {
           {
             fontSize: moderateScale(15, 0.6),
             marginTop: moderateScale(5, 0.3),
+            color : selected == item?.title ? Color.themeColor : 'black',
           },
         ]}
         bold>
-        Rs {price}/mo
+        {price} $
       </CustomText>
     </View>
   );
@@ -64,7 +66,7 @@ export default PlanCard;
 const styles = StyleSheet.create({
   container: {
     width: width * 0.55,
-    height: height * 0.17,
+    // height: height * 0.17,
     borderRadius: 5,
    
     borderWidth: 1,
