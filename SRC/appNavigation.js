@@ -44,6 +44,7 @@ import TermsAndConditions from './Screens/TermsAndConditions';
 import Support from './Screens/Support';
 import GetSuperLike from './Screens/GetSuperLike';
 import PrivacyPolicy from './Screens/PrivacyPolicy';
+import Chat from './Screens/Chat';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -72,11 +73,13 @@ const AppNavigator = () => {
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
+        
         <RootNav.Navigator
           headerMode="none"
           initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
-          <RootNav.Screen name="LandingPage" component={LandingPage} />
+          <RootNav.Screen name="Chat" component={Chat} />
+          {/* <RootNav.Screen name="LandingPage" component={LandingPage} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="CreatePortfolio" component={CreatePortfolio} />
           <RootNav.Screen name="ProfilePictures" component={ProfilePictures} />
@@ -103,7 +106,7 @@ const AppNavigator = () => {
           <RootNav.Screen name= "TermsAndConditions" component={TermsAndConditions} />
           <RootNav.Screen name="Support" component={Support} />
           <RootNav.Screen name="GetSuperLike" component={GetSuperLike} />
-          <RootNav.Screen name="Privacy" component={PrivacyPolicy} />
+          <RootNav.Screen name="Privacy" component={PrivacyPolicy} /> */}
 
           {/* // options={()=>{
           //   options

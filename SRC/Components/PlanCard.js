@@ -65,7 +65,7 @@ export default PlanCard;
 
 const styles = StyleSheet.create({
   container: {
-    width: width * 0.55,
+    width: width * 0.58,
     // height: height * 0.17,
     borderRadius: 5,
    

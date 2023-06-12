@@ -223,7 +223,7 @@ const Subscription = () => {
       </ScrollView>
 
       <CustomButton
-        text={`${itemPrice}$`}
+        text={itemPrice == 0 ? 'Continue' : `${itemPrice}$`}
         textColor={Color.white}
         width={windowWidth * 0.8}
         height={windowHeight * 0.07}
