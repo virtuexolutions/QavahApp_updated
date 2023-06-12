@@ -1,5 +1,5 @@
 // export const baseUrl = "https://qavah.us";
-export const baseUrl = "https://9e9c-139-190-235-29.ngrok-free.app";
+export const baseUrl = "https://3770-113-203-241-18.ngrok-free.app";
 export const imageUrl = `${baseUrl}/api/images/`;
 export const profilePicUrl = `${baseUrl}/uploads`
 

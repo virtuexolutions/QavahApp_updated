@@ -1,5 +1,11 @@
-import {StyleSheet, Text, View, Dimensions, TouchableOpacity} from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import Header from '../Components/Header';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -9,7 +15,7 @@ import {ScrollView} from 'native-base';
 import PlanCard from '../Components/PlanCard';
 import {PointsComponent} from './Subscription';
 import CustomButton from '../Components/CustomButton';
-import { Get } from '../Axios/AxiosInterceptorFunction';
+import {Get} from '../Axios/AxiosInterceptorFunction';
 import {useSelector} from 'react-redux';
 
 const {height, width} = Dimensions.get('window');
@@ -18,8 +24,9 @@ const GetSuperLike = ({route}) => {
   const token = useSelector(State => State.authReducer.token);
 
   const [selected, setSelected] = useState('');
-  const [packages, setPackages] = useState([])
-  const {text} = route.params ;
+  const [packages, setPackages] = useState([]);
+  const {text} = route.params;
+  const [price, setPrice] = useState(0);
 
   const pointsArray = [
     {lock: false, text: 'Unlimited Likes'},
@@ -27,27 +34,37 @@ const GetSuperLike = ({route}) => {
     {lock: true, text: 'Priority Likes'},
   ];
 
-//   const packages = [
-//     {title: 'Monthly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
-//     {title: 'Weekly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
-//     {title: 'yearly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
-    
-// ]; 
+  //   const packages = [
+  //     {title: 'Monthly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
+  //     {title: 'Weekly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
+  //     {title: 'yearly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
 
-const getSubscriptionPlan = async () => {
-  const url = 'packages';
-  const response = await Get(url, token);
-  if (response != undefined) {
-    console.log(JSON.stringify(response?.data, null, 2));
-    setPackages(response?.data?.packages)
-  }
-};
+  // ];
 
-useEffect(() => {
-  getSubscriptionPlan();
-}, []);
+  const getSubscriptionPlan = async () => {
+    const url = 'packages';
+    const response = await Get(url, token);
+    if (response != undefined) {
+      console.log(JSON.stringify(response?.data, null, 2));
+      const newData = response?.data?.packages;
+      console.log(
+        '🚀 ~ file: GetSuperLike.js:43 ~ getSubscriptionPlan ~ newData:',
+        ...newData?.platinum,
+      );
+      // console.log(
+      //   '🚀 ~ file: GetSuperLike.js:43 ~ getSubscriptionPlan ~ newData2:',
+      //   ...newData?.gold.flat(),
+      // );
 
+      text == 'Platinum'
+        ? setPackages([newData?.month_to_month[0], ...newData?.platinum])
+        : setPackages([newData?.month_to_month[1], ...newData?.gold]);
+    }
+  };
 
+  useEffect(() => {
+    getSubscriptionPlan();
+  }, []);
 
   return (
     <>
@@ -109,25 +126,28 @@ useEffect(() => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           style={{marginHorizontal: moderateScale(10, 0.3)}}>
-            {(text == 'gold' ? packages?.gold : packages?.platinum)?.map((item,index)=>(
-                <TouchableOpacity onPress={()=>{ setSelected(item?.title)}}>
-                    <PlanCard
-                    key={index}
-                    title={item.title}
-                    description={item.description}
-                    price={item.price}
-                    selected={selected}
-                    item={item}
-                />
-              </TouchableOpacity>
-            ))}
-          
+          {packages.map((item, index) => (
+            <TouchableOpacity
+              onPress={() => {
+                setSelected(item?.title);
+                setPrice(item?.price);
+              }}>
+              <PlanCard
+                key={index}
+                title={item.title}
+                description={item.description}
+                price={item.price}
+                selected={selected}
+                item={item}
+              />
+            </TouchableOpacity>
+          ))}
         </ScrollView>
 
         <PointsComponent array={pointsArray} title={'Upgrade your likes'} />
       </ScrollView>
       <CustomButton
-        text={'Continue'}
+        text={price == 0 ? 'continue' : `${price} $`}
         textColor={Color.white}
         width={width * 0.8}
         height={height * 0.07}
