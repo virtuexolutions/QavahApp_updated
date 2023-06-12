@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Header from '../Components/Header';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
@@ -208,6 +208,12 @@ const HomeScreen = () => {
     }
   };
 
+  const setXY = useCallback((x, y) => {
+    console.log(x, y);
+    setXAxis(x);
+    setYAxis(y);
+  },[])
+
   useEffect(() => {
     getUsers();
   }, [focused]);
@@ -287,7 +293,7 @@ const HomeScreen = () => {
                   const filteredData2 = photoCards.filter((data, index) => response?.data?.peoples?.match_id != data?.id)
                   setLogData(prev => [
                     ...prev,
-                    filteredData,
+                    ...filteredData,
                   ]);
 
                   setPhotoCards(filteredData2);
@@ -334,10 +340,8 @@ const HomeScreen = () => {
                 console.log('Top');
                 setSuperLikeVisible(true);
               }}
-              onSwiping={(x, y) => {
-                // console.log(x, y);
-                setXAxis(x);
-                setYAxis(y);
+              onSwiping={(x, y)=>{
+                setXY(x ,y)
               }}
               dragEnd={() => {
                 setXAxis(0);

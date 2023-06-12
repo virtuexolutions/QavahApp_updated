@@ -26,7 +26,7 @@ const ProfileCreated = (props) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'OK', onPress: () => {navigationService.navigate('LandingPage')}},
+        {text: 'OK', onPress: () => {navigationService.navigate('LoginScreen')}},
       ]);
       return true;
     }
