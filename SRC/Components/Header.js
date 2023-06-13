@@ -333,9 +333,13 @@ const Header = props => {
               // }}
             />
           </View>
+          <ScrollView 
+            showsVerticalScrollIndicator= {false}
+          >
           {DrawerArray.map((item, index) => {
             return <DrawerOptions item={item} />;
           })}
+          
           <View
             style={{
               width: '93%',
@@ -385,6 +389,7 @@ const Header = props => {
           elevation
           isBold
         />
+        </ScrollView>
         </ScrollView>
       </Modal>
       <Modal

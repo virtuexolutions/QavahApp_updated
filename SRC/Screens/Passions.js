@@ -55,6 +55,10 @@ const Passions = () => {
     'History Buff',
     'Jazz',
   ];
+
+ 
+
+
   return (
     <>
       <CustomStatusBar

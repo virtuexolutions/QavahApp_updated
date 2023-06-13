@@ -22,7 +22,9 @@ import CustomImage from '../Components/CustomImage';
 import navigationService from '../navigationService';
 // import SortableGrid from 'react-native-sortable-grid';
 import ImageContainer from '../Components/ImageContainer';
-// import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist'
+// import DraggableFlatList, {
+//   ScaleDecorator,
+// } from 'react-native-draggable-flatlist';
 // import SortableGridView from 'react-native-sortable-gridview'
 import {Easing} from 'react-native-reanimated';
 
@@ -33,7 +35,14 @@ const ProfilePictures = props => {
     profileBody,
   );
   const [profilePicture, setProfilePicture] = useState({});
-  const [multiImages, setMultiImages] = useState([{}, {}, {}, {}, {}, {}]);
+  const [multiImages, setMultiImages] = useState([
+    require('../Assets/Images/banner.jpg'),
+    require('../Assets/Images/banner.jpg'),
+    require('../Assets/Images/banner.jpg'),
+    require('../Assets/Images/banner.jpg'),
+    require('../Assets/Images/banner.jpg'),
+    require('../Assets/Images/banner.jpg'),
+  ]);
   console.log(
     '🚀 ~ file: ProfilePictures.js:32 ~ ProfilePictures ~ multiImages:',
     multiImages,
@@ -157,25 +166,37 @@ const ProfilePictures = props => {
 
         <View style={styles.imageView}>
           {/* <DraggableFlatList
-        // horizontal={true}
-        numColumns={3}
-      data={multiImages}
-      onDragEnd={({ data }) => console.log(data)}
-      keyExtractor={(item) => item.id }
-      contentContainerStyle={{
-        alignItems : 'center'
-      }}
-      
-      // style={{
-      //   maxHeight : windowHeight * 0.35,
-      //   marginBottom : moderateScale(20,0.3)
-      // }}
-      // renderItem={renderItem}
-        renderItem={({item ,drag , isActive }) => {
-          return ( */}
-          {/* // <CustomText onPress={drag}>hello</CustomText> */}
+            // horizontal={true}
+            numColumns={3}
+            data={multiImages}
+            onDragEnd={({data}) => console.log(data)}
+            keyExtractor={item => item.id}
+            contentContainerStyle={{
+              alignItems: 'center',
+            }}
+            // style={{
+            //   maxHeight : windowHeight * 0.35,
+            //   marginBottom : moderateScale(20,0.3)
+            // }}
+            // renderItem={renderItem}
+            renderItem={({item, drag, isActive}) => {
+              return (
+                <ImageContainer
+                  data={multiImages}
+                  setData={setMultiImages}
+                  item={item}
+                  setIndex={setIndex}
+                  index={index}
+                  showMultiImageModal={showMultiImageModal}
+                  setShowMultiImageModal={setShowMultiImageModal}
+                  // onPress={drag}
+                />
+              );
+            }}
+          /> */}
+          {/*  <CustomText onPress={drag}>hello</CustomText> */}
           {/* <ScaleDecorator> */}
-          {multiImages.map((item, index) => {
+          {/* {multiImages.map((item, index) => {
             return (
               <ImageContainer
                 data={multiImages}
@@ -188,7 +209,7 @@ const ProfilePictures = props => {
                 // onPress={drag}
               />
             );
-          })}
+          })} */}
 
           {/* </ScaleDecorator> */}
 
@@ -209,30 +230,34 @@ const ProfilePictures = props => {
               data: profileBody,
               profileImages: [
                 {
-                    index: 0,
-                    url: "http://127.0.0.1:8000/images/profile_images/qavah-16811261746433f31ed7383.png",
-                    name: "qavah-16811261746433f31ed7383.png",
-                    thumbnails: "http://127.0.0.1:8000/images/profile_images/thumbnails/qavah-16811261746433f31ed7383.png",
-                    web_url: "http://127.0.0.1:8000/images/profile_images"
-                }],
-              galleryImages:  [
+                  index: 0,
+                  url: 'http://127.0.0.1:8000/images/profile_images/qavah-16811261746433f31ed7383.png',
+                  name: 'qavah-16811261746433f31ed7383.png',
+                  thumbnails:
+                    'http://127.0.0.1:8000/images/profile_images/thumbnails/qavah-16811261746433f31ed7383.png',
+                  web_url: 'http://127.0.0.1:8000/images/profile_images',
+                },
+              ],
+              galleryImages: [
                 {
-                    index: 0,
-                    url: "http://127.0.0.1:8000/images/gallery_Images/qavah-16811261786433f322397a5.png",
-                    name: "qavah-16811261786433f322397a5.png",
-                    thumbnails: "http://127.0.0.1:8000/images/gallery_Images/thumbnails/qavah-16811261786433f322397a5.png",
-                    web_url: "http://127.0.0.1:8000/images/gallery_Images",
-                    type: "image"
+                  index: 0,
+                  url: 'http://127.0.0.1:8000/images/gallery_Images/qavah-16811261786433f322397a5.png',
+                  name: 'qavah-16811261786433f322397a5.png',
+                  thumbnails:
+                    'http://127.0.0.1:8000/images/gallery_Images/thumbnails/qavah-16811261786433f322397a5.png',
+                  web_url: 'http://127.0.0.1:8000/images/gallery_Images',
+                  type: 'image',
                 },
                 {
-                    index: 1,
-                    url: "http://127.0.0.1:8000/images/gallery_Images/qavah-16811261776433f321cf413.png",
-                    name: "qavah-16811261776433f321cf413.png",
-                  thumbnails: "http://127.0.0.1:8000/images/gallery_Images/thumbnails/qavah-16811261776433f321cf413.png",
-                    web_url: "http://127.0.0.1:8000/images/gallery_Images",
-                    type: "image"
-                }
-            ],
+                  index: 1,
+                  url: 'http://127.0.0.1:8000/images/gallery_Images/qavah-16811261776433f321cf413.png',
+                  name: 'qavah-16811261776433f321cf413.png',
+                  thumbnails:
+                    'http://127.0.0.1:8000/images/gallery_Images/thumbnails/qavah-16811261776433f321cf413.png',
+                  web_url: 'http://127.0.0.1:8000/images/gallery_Images',
+                  type: 'image',
+                },
+              ],
             });
           }}
           bgColor={Color.themeColor}

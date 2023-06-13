@@ -32,7 +32,7 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const focused = useIsFocused();
   const user = useSelector(state => state.commonReducer.userData);
-  console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
+  // console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
   const [swiperRef, setSwiperRef] = useState();
   const [xAxis, setXAxis] = useState(0);
@@ -44,12 +44,12 @@ const HomeScreen = () => {
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [photoCards, setPhotoCards] = useState([]);
-  console.log(
-    '🚀 ~ file: HomeScreen.js:44 ~ HomeScreen ~ photoCards:',
-    photoCards,
-  );
+  // console.log(
+  //   '🚀 ~ file: HomeScreen.js:44 ~ HomeScreen ~ photoCards:',
+  //   photoCards,
+  // );
   const [LogData, setLogData] = useState([]);
-  console.log('🚀 ~ file: HomeScreen.js:45 ~ HomeScreen ~ LogData:', LogData);
+  // console.log('🚀 ~ file: HomeScreen.js:45 ~ HomeScreen ~ LogData:', LogData);
   // console.log('token',token)
 
   // console.log("🚀 ~ file: HomeScreen.js:48 ~ photoCards:", photoCards)
@@ -63,7 +63,7 @@ const HomeScreen = () => {
     setIsLoadingApi(false);
     if (response != undefined) {
       setPhotoCards(response?.data?.peoples);
-      console.log(response?.data?.peoples);
+      // console.log(response?.data?.peoples);
     }
   };
   const handleOnSwipedLeft = async () => {
@@ -173,7 +173,7 @@ const HomeScreen = () => {
     if (LogData.length > 0) {
       const undoData = [...LogData]
       LogData.pop()
-      console.log("🚀 ~ file: HomeScreen.js:173 ~ UndoLog ~ undoData:", undoData)
+      // console.log("🚀 ~ file: HomeScreen.js:173 ~ UndoLog ~ undoData:", undoData)
       const url = 'swap/rewind'
       
       
@@ -193,7 +193,7 @@ const HomeScreen = () => {
       
       if(response?.data?.status){
         
-        console.log("🚀 ~ file: HomeScreen.js:180 ~ UndoLog ~ response:", response?.data?.response?.target_user)
+        // console.log("🚀 ~ file: HomeScreen.js:180 ~ UndoLog ~ response:", response?.data?.response?.target_user)
         setPhotoCards(prev => [undoData[undoData?.length-1], ...prev  ]);
         // console.log(
         //   '🚀 ~ file: HomeScreen.js:136 ~ UndoLeft ~ leftLogData:',
@@ -272,7 +272,7 @@ const HomeScreen = () => {
               swipeBackCard
               onSwipedLeft={async (index, item) => {
                 // return console.log('item in left ', item?.id)
-                console.log(' hererererere  ===  >> > > ');
+                // console.log(' hererererere  ===  >> > > ');
                 const url = 'swap/disliked';
                 const response = await Post(
                   url,
@@ -331,7 +331,7 @@ const HomeScreen = () => {
                   }
               }}
               onSwipedTop={() => {
-                console.log('Top');
+                // console.log('Top');
                 setSuperLikeVisible(true);
               }}
               onSwiping={(x, y) => {

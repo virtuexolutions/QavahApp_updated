@@ -11,6 +11,9 @@ import Color from '../Assets/Utilities/Color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import DraggableFlatList, {
+  ScaleDecorator,
+} from 'react-native-draggable-flatlist';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -35,6 +38,15 @@ const UserDetail = props => {
   const [userData, setUserData] = useState(fromSearch ? item : user);
   // console.log("🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:", userData)
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [dummyImages, setDummyImages] = useState([
+    require('../Assets/Images/banner.jpg'),
+    require('../Assets/Images/banner.jpg'),
+    require('../Assets/Images/banner.jpg'),
+    require('../Assets/Images/banner.jpg'),
+    require('../Assets/Images/banner.jpg'),
+    require('../Assets/Images/banner.jpg'),
+  ]);
+
   // const [images, setImages] = useState(
   //   userData?.gallery_images.length > 5
   //     ? userData?.gallery_images.slice(0, 5)
@@ -313,7 +325,7 @@ const UserDetail = props => {
               />
             </TouchableOpacity>
           </View>
-          <View
+          {/* <View
             style={{
               flexDirection: 'row',
               flexWrap: 'wrap',
@@ -357,7 +369,62 @@ const UserDetail = props => {
                 </TouchableOpacity>
               );
             })}
-          </View>
+          </View> */}
+           <View style={styles.imageView}>
+          <DraggableFlatList
+            // horizontal={true}
+            numColumns={3}
+            data={dummyImages}
+            onDragEnd={({data}) => console.log(data)}
+            keyExtractor={item => item.id}
+            contentContainerStyle={{
+              alignItems: 'center',
+            }}
+            // style={{
+            //   maxHeight : windowHeight * 0.35,
+            //   marginBottom : moderateScale(20,0.3)
+            // }}
+            // renderItem={renderItem}
+            renderItem={({item, drag, isActive}) => {
+              return (
+                <ImageContainer
+                  data={multiImages}
+                  setData={setMultiImages}
+                  item={item}
+                  setIndex={setIndex}
+                  index={index}
+                  showMultiImageModal={showMultiImageModal}
+                  setShowMultiImageModal={setShowMultiImageModal}
+                  // onPress={drag}
+                />
+              );
+            }}
+          />
+          {/*  <CustomText onPress={drag}>hello</CustomText> */}
+          {/* <ScaleDecorator> */}
+          {/* {multiImages.map((item, index) => {
+            return (
+              <ImageContainer
+                data={multiImages}
+                setData={setMultiImages}
+                item={item}
+                setIndex={setIndex}
+                index={index}
+                showMultiImageModal={showMultiImageModal}
+                setShowMultiImageModal={setShowMultiImageModal}
+                // onPress={drag}
+              />
+            );
+          })} */}
+
+          {/* </ScaleDecorator> */}
+
+          {/* );
+        }}
+
+      
+    /> */}
+        </View>
           {fromSearch && (
             <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
               <CustomText
@@ -468,5 +535,13 @@ const styles = ScaledSheet.create({
     alignSelf: 'center',
     marginTop: moderateScale(20, 0.6),
     flexDirection: 'row',
+  },
+  imageView: {
+    width: windowWidth * 0.95,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: moderateScale(15, 0.3),
+    height: windowHeight * 0.35,
+    justifyContent: 'space-between',
   },
 });

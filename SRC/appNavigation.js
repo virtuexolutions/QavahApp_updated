@@ -75,19 +75,19 @@ const AppNavigator = () => {
         <RootNav.Navigator
           headerMode="none"
           initialRouteName={firstScreen}
-          screenOptions={{headerShown: false}}>
-          <RootNav.Screen name="LandingPage" component={LandingPage} />
-          <RootNav.Screen name="LoginScreen" component={LoginScreen} />
-          <RootNav.Screen name="CreatePortfolio" component={CreatePortfolio} />
-          <RootNav.Screen name="ProfilePictures" component={ProfilePictures} />
-          <RootNav.Screen name="MoreAboutme" component={MoreAboutme} />
-          <RootNav.Screen name="EnterPhone" component={EnterPhone} />
-          <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
-          <RootNav.Screen name="ResetPassword" component={ResetPassword} />
+           screenOptions={{headerShown: false}}>
+           <RootNav.Screen name="LandingPage" component={LandingPage} />
+           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
+           <RootNav.Screen name="CreatePortfolio" component={CreatePortfolio} />
+           <RootNav.Screen name="ProfilePictures" component={ProfilePictures} />
+           <RootNav.Screen name="MoreAboutme" component={MoreAboutme} />
+           <RootNav.Screen name="EnterPhone" component={EnterPhone} />
+           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
+           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
 
-          <RootNav.Screen
-            name="IsraeliteFilters"
-            component={IsraeliteFilters}
+           <RootNav.Screen
+             name="IsraeliteFilters"
+             component={IsraeliteFilters}
           />
           <RootNav.Screen name="Passions" component={Passions} />
           <RootNav.Screen name="ProfileCreated" component={ProfileCreated} />

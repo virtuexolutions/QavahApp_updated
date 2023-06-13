@@ -64,7 +64,7 @@ const MoreAboutme = (props) => {
       // havePetsOthers :  'xyz'
     }
   }
-  console.log("🚀 ~ file: MoreAboutme.js:46 ~ MoreAboutme ~ body:", body)
+  // console.log("🚀 ~ file: MoreAboutme.js:46 ~ MoreAboutme ~ body:", body)
 
 
 
@@ -218,7 +218,7 @@ const MoreAboutme = (props) => {
             styles.text,
             description?.length == 600 && {color: Color.green},
           ]}>
-          {`Characters : ${description?.length}/600`}
+          {`Characters : ${description?.length}/2000`}
         </CustomText>
         <CustomText style={[styles.text, {marginTop: moderateScale(15, 0.3)}]}>
           {
@@ -228,11 +228,10 @@ const MoreAboutme = (props) => {
               *Attention:
             </CustomText>
           }{' '}
-          These inquiries aren't designed to offend rather, they are meant to be
-          inclusive of the entire Israelite family. These questions identify the
-          doctrine that drive wedges between the scattered members of the
-          Israelite family. They must also be named so that you may screen out
-          any doctrine you don't adhere to.
+          These inquiries are intended to foster inclusivity within the entire Israelite family and not to cause offense.
+          The purpose is to identify the doctrinal differences that may exist among the scattered members of the Israelite
+          family. By naming these questions, you have the opportunity to screen out any doctrines that you do not adhere 
+          to, promoting a more aligned and harmonious engagement among like-minded Israelites.
         </CustomText>
         
         <BottomSheetSelect 
@@ -378,11 +377,11 @@ const MoreAboutme = (props) => {
                 lineHeight: moderateScale(20, 0.3),
               },
             ]}>
-            These inquiries aren't designed to offend rather, they are meant to
-            be inclusive of the entire Israelite family. These questions
-            identify the doctrine that drive wedges between the scattered
-            members of the Israelite family. They must also be named so that you
-            may screen out any doctrine you don't adhere to.
+            These inquiries are intended to foster inclusivity within the entire Israelite 
+            family and not to cause offense. The purpose is to identify the doctrinal differences 
+            that may exist among the scattered members of the Israelite family. By naming these 
+            questions, you have the opportunity to screen out any doctrines that you do not 
+            adhere to, promoting a more aligned and harmonious engagement among like-minded Israelites.
           </CustomText>
           <CustomButton
           text={ 'i agree'}

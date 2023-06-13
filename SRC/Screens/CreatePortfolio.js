@@ -231,7 +231,7 @@ const CreatePortfolio = () => {
                 placeholder={`Your First Name`}
                 setText={setProfileName}
                 value={profileName}
-                viewHeight={0.1}
+                viewHeight={0.07}
                 viewWidth={0.9}
                 inputWidth={0.86}
                 borderColor={Color.veryLightGray}
@@ -262,7 +262,7 @@ const CreatePortfolio = () => {
                 placeholder={`Your Government Name`}
                 setText={setGovernmentName}
                 value={governmentName}
-                viewHeight={0.1}
+                viewHeight={0.07}
                 viewWidth={0.9}
                 inputWidth={0.86}
                 borderColor={Color.veryLightGray}
@@ -411,7 +411,7 @@ const CreatePortfolio = () => {
                   placeholder={`FT`}
                   setText={setFeet}
                   value={feet}
-                  viewHeight={0.1}
+                  viewHeight={0.07}
                   viewWidth={0.4}
                   inputWidth={0.39}
                   borderColor={Color.veryLightGray}
@@ -431,7 +431,7 @@ const CreatePortfolio = () => {
                   placeholder={`Inch`}
                   setText={setInch}
                   value={inch}
-                  viewHeight={0.1}
+                  viewHeight={0.07}
                   viewWidth={0.4}
                   inputWidth={0.39}
                   borderColor={Color.veryLightGray}
@@ -458,7 +458,7 @@ const CreatePortfolio = () => {
                 placeholder={`password`}
                 setText={setPassword}
                 value={password}
-                viewHeight={0.1}
+                viewHeight={0.07}
                 viewWidth={0.9}
                 inputWidth={0.86}
                 borderColor={Color.veryLightGray}
@@ -479,7 +479,7 @@ const CreatePortfolio = () => {
                 placeholder={`Re-type Password`}
                 setText={setconfirmPassword}
                 value={confirmPassword}
-                viewHeight={0.1}
+                viewHeight={0.07}
                 viewWidth={0.9}
                 inputWidth={0.86}
                 borderColor={Color.veryLightGray}

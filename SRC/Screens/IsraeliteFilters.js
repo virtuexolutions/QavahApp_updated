@@ -17,7 +17,7 @@ import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomText from '../Components/CustomText';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomButton from '../Components/CustomButton';
-import {Icon} from 'native-base';
+import {Alert, Icon} from 'native-base';
 import navigationService from '../navigationService';
 import CustomModal from '../Components/CustomModal';
 import BottomSheetSelect from '../Components/BottomSheetSelect';
@@ -58,9 +58,32 @@ const IsraeliteFilters = props => {
   const [kingdomGifts, setKingDomGifts] = useState(
     edit ? ['House keeping', 'cooking', 'wellness planning'] : [],
   );
+  // console.log("🚀 ~ file: IsraeliteFilters.js:69 ~ checkPassion ~ kingdomGifts:", kingdomGifts)
+
   const [arrayForModal, setArrayForModal] = useState([]);
-  const [type, setType] = useState('passion');
+  const [type, setType] = useState('passions');
   const [isLoading , setIsLoading] = useState(false);
+
+
+
+
+  const checkPassion = ()=>{
+    if(type == 'passions' ? passions.length<6 : kingdomGifts.length < 6){
+      Platform.OS == 'android' ? 
+      ToastAndroid.show(`Select atleast 6 ${type}`,ToastAndroid.SHORT) : 
+      Alert.Alert(`Select atleast 6 ${type}`)
+
+    }
+    else if(type == 'passions' ? passions.length> 10 : kingdomGifts.length>10)
+    {
+      Platform.OS == 'android' ? 
+      ToastAndroid.show(`Select atmost 10 ${type}`,ToastAndroid.SHORT) : 
+      Alert.Alert(`Select atmost 10 ${type}`)
+    }
+    else{
+      setPassionModalVisible(false);
+    }
+  }
   
   const PassionsArray = [
     'Singing',
@@ -249,7 +272,7 @@ const IsraeliteFilters = props => {
     
     }
   }
-    console.log("🚀 ~ file: IsraeliteFilters.js:236 ~ IsraeliteFilters ~ completeBody:", completeBody)
+    // console.log("🚀 ~ file: IsraeliteFilters.js:236 ~ IsraeliteFilters ~ completeBody:", completeBody)
 
     const Registration =async()=>{
       const url = 'auth/register'
@@ -426,7 +449,7 @@ const IsraeliteFilters = props => {
               height={windowHeight * 0.05}
               fontSize={moderateScale(12, 0.6)}
               onPress={() => {
-                setType('passion');
+                setType('passions');
                 setArrayForModal(PassionsArray);
                 setPassionModalVisible(true);
               }}
@@ -649,7 +672,8 @@ const IsraeliteFilters = props => {
           width={windowWidth * 0.8}
           height={windowHeight * 0.06}
           onPress={() => {
-            setPassionModalVisible(false);
+            checkPassion()
+            
           }}
           bgColor={Color.themeColor}
           borderRadius={moderateScale(15, 0.3)}
