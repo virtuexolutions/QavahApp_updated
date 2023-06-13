@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import {View, Text, Image, ImageSourcePropType} from 'react-native';
 import {shape, string, number} from 'prop-types';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
@@ -15,7 +15,7 @@ import navigationService from '../navigationService';
 let startAncestor;
 let startNode;
 
-const Card = ({card, height , setCards , cards, fromSpotLight}) => {
+const Card =memo( ({card, height , setCards , cards, fromSpotLight}) => {
 // console.log("🚀 ~ file: Card.js:19 ~ Card ~ fromSpotLight:", fromSpotLight)
 //   console.log("🚀 ~ file: Card.js:19 ~ Card ~ card:", JSON.stringify( card , null , 2))
 // console.log('card ===>' , card?.profile_images[0]?.url)
@@ -109,7 +109,7 @@ useEffect(() => {
   		</View>
 		);
 
-            }
+})
 
 
 export default Card;
