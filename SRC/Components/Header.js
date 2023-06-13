@@ -262,17 +262,17 @@ const Header = props => {
             style={{
               position: 'absolute',
               // right: moderateScale(10, 0.3),
-              width: windowWidth * 0.12,
-              height: windowHeight * 0.2,
+              width: windowWidth * 0.1,
+              height: windowHeight * 0.055,
               // backgroundColor : 'red'
             }}>
             <CustomImage
               source={require('../Assets/Images/headerLogo.png')}
-              resizeMode={'contain'}
+              resizeMode={'stretch'}
               style={{
                 width: '100%',
                 height: '100%',
-                justifyContent: 'center',
+                // justifyContent: 'center',
                 // alignSelf:'center',
               }}
             />
@@ -454,7 +454,7 @@ const Header = props => {
 const styles = ScaledSheet.create({
   header2: {
     width: windowWidth,
-    height: windowHeight * 0.05,
+    height: windowHeight * 0.06,
     // paddingTop: moderateScale(20, 0.3),
     alignItems: 'center',
     justifyContent: 'center',
