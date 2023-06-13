@@ -46,7 +46,7 @@ const MoreAboutme = (props) => {
   const body = {
     ...data , 
     step2 : {
-      profileImages  : profileImages ,
+      profileImages  : profileImages,
       galleryImages : galleryImages,
       aboutMe : description,
       maritalStatus : maritialStatus ,

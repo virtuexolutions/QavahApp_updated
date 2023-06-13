@@ -48,11 +48,12 @@ const ProfileCreated = (props) => {
             Hi,
           </CustomText>
           <CustomText isBold style={styles.text}>
-            John Doe
+            {userData?.profileName}
           </CustomText>
           <CustomImage
             style={styles.image}
-            source={require('../Assets/Images/dummyman6.png')}
+            source={{uri : userData?.profile_images[0]?.url ? userData?.profile_images[0]?.url : require('../Assets/Images/dummyman6.png')}}
+
           />
         </View>
       </View>

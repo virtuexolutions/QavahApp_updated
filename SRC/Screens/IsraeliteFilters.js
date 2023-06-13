@@ -253,7 +253,7 @@ const IsraeliteFilters = props => {
 
     const Registration =async()=>{
       const url = 'auth/register'
-      // console.log(completeBody?.step1?.email)
+      console.log( ' body ================== ? ? ?? ',completeBody)
       setIsLoading(true);
       const response = await Post(url , completeBody , apiHeader())
       setIsLoading(false);
