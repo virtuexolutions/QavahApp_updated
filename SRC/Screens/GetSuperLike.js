@@ -111,6 +111,7 @@ const GetSuperLike = ({route}) => {
             {'Lorem Ipsum Dol Consectetur Adipiscing Elit.'}
           </CustomText>
           <CustomText
+          isBold
             style={[
               styles.Txt1,
               {
@@ -122,10 +123,15 @@ const GetSuperLike = ({route}) => {
             Select a plan
           </CustomText>
         </View>
+        
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
-          style={{marginHorizontal: moderateScale(10, 0.3)}}>
+          // style={{marginHorizontal: moderateScale(10, 0.3)}}
+          contentContainerStyle={{
+            paddingHorizontal : moderateScale(10,0.6),
+          }}
+>
           {packages.map((item, index) => (
             <TouchableOpacity
               onPress={() => {
@@ -147,7 +153,7 @@ const GetSuperLike = ({route}) => {
         <PointsComponent array={pointsArray} title={'Upgrade your likes'} />
       </ScrollView>
       <CustomButton
-        text={price == 0 ? 'continue' : `${price} $`}
+        text={price == 0 ? 'continue' : `$${price}`}
         textColor={Color.white}
         width={width * 0.8}
         height={height * 0.07}
