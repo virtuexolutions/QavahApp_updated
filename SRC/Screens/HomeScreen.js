@@ -32,7 +32,7 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const focused = useIsFocused();
   const user = useSelector(state => state.commonReducer.userData);
-  // console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
+   console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
   const [swiperRef, setSwiperRef] = useState();
   const [xAxis, setXAxis] = useState(0);
@@ -245,7 +245,7 @@ const HomeScreen = () => {
           }}>
           <ActivityIndicator color={Color.themeColor} size={'large'} />
         </View>
-      ) : photoCards.length > 0 ? (
+      ) : [].length > 0 ? (
         <>
           <View
             style={{
@@ -276,7 +276,8 @@ const HomeScreen = () => {
               showSecondCard={true}
               animateOverlayLabelsOpacity
               swipeBackCard
-              onSwipedLeft={async (index, item) => {
+              onSwipedLeft={
+                async (index, item) => {
                 // return console.log('item in left ', item?.id)
                 // console.log(' hererererere  ===  >> > > ');
                 const url = 'swap/disliked';
@@ -335,7 +336,7 @@ const HomeScreen = () => {
                       ? ToastAndroid.show(response?.error, ToastAndroid.SHORT)
                       : alert(response?.error);
                   }
-              }}
+              }  }
               onSwipedTop={() => {
                 // console.log('Top');
                 setSuperLikeVisible(true);

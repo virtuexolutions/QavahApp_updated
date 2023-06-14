@@ -69,7 +69,7 @@ useEffect(() => {
               		styles.text
             		}>{`${card?.profileName}, ${card?.age}`}</CustomText>
           		<CustomText style={styles.text1}>
-            		{`${card?.state}, ${card?.city}`}
+            		{`${card?.location?.state}, ${card?.location?.city}`}
           		</CustomText>
         		</View>
         		<View>

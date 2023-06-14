@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Platform,
+  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Header from '../Components/Header';
@@ -30,6 +32,7 @@ import navigationService from '../navigationService';
 import {useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import {Get, Post} from '../Axios/AxiosInterceptorFunction';
+import NullDataComponent from '../Components/NullDataComponent';
 
 const SpotLight = () => {
   const token = useSelector(state => state.authReducer.token);
@@ -41,20 +44,21 @@ const SpotLight = () => {
   const [spotLightData, setSpotLightData] = useState([]);
   console.log(
     '🚀 ~ file: SpotLight.js:41 ~ SpotLight ~ setSpotLightData:',
-    spotLightData,
+     spotLightData
   );
 
   const [theyAreYourType , setTheyAreYourType ] = useState([])
+  console.log("🚀 ~ file: SpotLight.js:49 ~ SpotLight ~ theyAreYourType:", theyAreYourType)
 
   const [isLoading, setIsLoading] = useState(true);
   const [photoCards, setPhotoCards] = useState([
     {
-      name: 'Austin Wade',
+      profileName: 'Austin Wade',
       age: 22,
       photo: require('../Assets/Images/woman5.jpeg'),
       key: 'caseex6qfO4TPMYyhorner',
       profile_images: [
-        require('../Assets/Images/image1.jpeg'),
+        '../Assets/Images/image1.jpeg',
         require('../Assets/Images/image2.jpeg'),
         require('../Assets/Images/image3.jpeg'),
         require('../Assets/Images/image4.jpeg'),
@@ -72,7 +76,7 @@ const SpotLight = () => {
       ],
     },
     {
-      name: 'Aleksander Borzenets',
+      profileName: 'Aleksander Borzenets',
       age: 28,
       photo: require('../Assets/Images/banner.jpg'),
       key: 'ozda-XbeP0k',
@@ -90,7 +94,7 @@ const SpotLight = () => {
       ],
     },
     {
-      name: 'Don Delfin Espino',
+      profileName: 'Don Delfin Espino',
       age: 29,
       photo: require('../Assets/Images/banner2.jpg'),
       key: 'nBywXevf_jE-',
@@ -108,7 +112,7 @@ const SpotLight = () => {
       ],
     },
     {
-      name: 'Eduardo Dutra',
+      profileName: 'Eduardo Dutra',
       age: 30,
       photo: require('../Assets/Images/banner3.jpg'),
       key: 'ZHy0efLnzVc',
@@ -126,7 +130,7 @@ const SpotLight = () => {
       ],
     },
     {
-      name: 'Wesley Tingey',
+      profileName: 'Wesley Tingey',
       age: 21,
       photo: require('../Assets/Images/banner.jpg'),
       key: 'TvPCUHten1o',
@@ -144,7 +148,7 @@ const SpotLight = () => {
       ],
     },
     {
-      name: 'Gift Habeshaw',
+      profileName: 'Gift Habeshaw',
       age: 26,
       photo: require('../Assets/Images/banner1.jpg'),
       key: 'dlbiYGwEe9U',
@@ -162,7 +166,7 @@ const SpotLight = () => {
       ],
     },
     {
-      name: 'Henri Pham',
+      profileName: 'Henri Pham',
       age: 30,
       photo: require('../Assets/Images/banner2.jpg'),
       key: 'Ml4tr2WO7JE',
@@ -180,7 +184,7 @@ const SpotLight = () => {
       ],
     },
     {
-      name: 'Nico Marks',
+      profileName: 'Nico Marks',
       age: 24,
       photo: require('../Assets/Images/banner3.jpg'),
       key: 'mFcc5b_t74Q',
@@ -198,7 +202,7 @@ const SpotLight = () => {
       ],
     },
     {
-      name: 'Sirio',
+      profileName: 'Sirio',
       age: 28,
       photo: require('../Assets/Images/banner.jpg'),
       key: "Ty4f_NOFO60'",
@@ -216,7 +220,7 @@ const SpotLight = () => {
       ],
     },
     {
-      name: 'Teymi Townsend',
+      profileName: 'Teymi Townsend',
       age: 30,
       photo: require('../Assets/Images/banner2.jpg'),
       key: "AvLHH8qYbAI'",
@@ -234,7 +238,7 @@ const SpotLight = () => {
       ],
     },
     {
-      name: 'Caique Silva',
+      profileName: 'Caique Silva',
       age: 20,
       photo: require('../Assets/Images/banner3.jpg'),
       key: "3ujVzg9i2EI'",
@@ -247,12 +251,12 @@ const SpotLight = () => {
       ],
     },
     {
-      name: 'David Yanutenama',
+      profileName: 'David Yanutenama',
       age: 21,
       photo: require('../Assets/Images/banner1.jpg'),
       key: "5AoO7dBurMw'",
       profile_images: [
-        require('../Assets/Images/image1.jpeg'),
+        '../Assets/Images/image1.jpeg',
         require('../Assets/Images/image2.jpeg'),
         require('../Assets/Images/image3.jpeg'),
         require('../Assets/Images/image4.jpeg'),
@@ -260,6 +264,7 @@ const SpotLight = () => {
       ],
     },
   ]);
+
 
   const dummyArray = [
     require('../Assets/Images/woman1.jpeg'),
@@ -292,17 +297,18 @@ const SpotLight = () => {
     
     if(response != undefined){
       
-      console.log("🚀 ~ file: SpotLight.js:290 ~ getTheyAreYourType ~ response:", response?.data?.peoples)
+      console.log("🚀 ~ file: SpotLight.js:290 ~ getTheyAreYourType ~ response:", response?.data?.peoples[0]?.profile_images[0]?.url)
       setTheyAreYourType(response?.data?.peoples)
     }
-
+    
+    setIsLoading(false)
 
   }
 
   useEffect(() => {
     getSpotLightData();
     getTheyAreYourType();
-  }, [isFocused]);
+  }, [isFocused]);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 
   return (
     <>
@@ -378,6 +384,7 @@ const SpotLight = () => {
               height: windowHeight * 0.48,
               width: windowWidth,
             }}>
+              {spotLightData.length > 0 ?
             <Swiper
               animateCardOpacity
               style={styles.mainContainer}
@@ -398,12 +405,66 @@ const SpotLight = () => {
               showSecondCard={true}
               animateOverlayLabelsOpacity
               swipeBackCard
-              onSwipedLeft={() => {
-                console.log('left');
+              onSwipedLeft={async (index, item) => {
+                console.log("🚀 ~ file: SpotLight.js:408 ~ onSwipedLeft={ ~ item:", item)
+                // return console.log('item in left ', item?.id)
+                // console.log(' hererererere  ===  >> > > ');
+                const url = 'swap/disliked';
+                const response = await Post(
+                  url,
+                  {targetsUid: item?.id},
+                  apiHeader(token),
+                );
+                console.log("🚀 ~ file: SpotLight.js:417 ~ onSwipedLeft={ ~ response:", response?.data)
+                
+                if (response?.data?.status == true) {
+                  // console.log('response ======= >', response?.data);
+                  // console.log('left', item?.id);
+
+                  // const filteredData = photoCards.filter((data,index) => response?.data?.peoples?.match_id == data?.id)
+                  const filteredData2 = spotLightData.filter((data, index) => response?.data?.peoples?.match_id != data?.id)
+                  // setLogData(prev => [
+                  //   ...prev,
+                  //   ...filteredData,
+                  // ]);
+
+                  setSpotLightData(filteredData2);
+                }
+                else {
+                    Platform.OS == 'android'
+                      ? ToastAndroid.show(response?.error, ToastAndroid.SHORT)
+                      : alert(response?.error);
+                  }
               }}
               disableBottomSwipe={true}
-              onSwipedRight={() => {
-                console.log('Right');
+              onSwipedRight={async (index, item) => {
+                const url = 'swap/liked';
+                // console.log({targetsUid: selectedId});
+                const response = await Post(
+                  url,
+                  {targetsUid: item?.id},
+                  apiHeader(token),
+                );
+                if (response?.data?.status == true) {
+                //  setLogData(prev => [
+                //     ...prev,
+                //     ...photoCards.filter((data, index) => {
+                //       return response?.data?.peoples?.match_id == data?.id;
+                //     }),
+                //   ]);
+
+                  setPhotoCards(
+                    photoCards.filter(
+                      (data, index) =>
+                        response?.data?.peoples?.match_id != data?.id,
+                    ),
+                  );
+                }
+                else {
+                    Platform.OS == 'android'
+                      ? ToastAndroid.show(response?.error, ToastAndroid.SHORT)
+                      : alert(response?.error);
+                  }
               }}
               onSwipedTop={() => {
                 console.log('Top');
@@ -453,7 +514,7 @@ const SpotLight = () => {
                   },
                 },
               }}
-            />
+            /> :<NullDataComponent />}
           </View>
           <CustomText
             isBold
@@ -465,7 +526,8 @@ const SpotLight = () => {
             They're your type
           </CustomText>
           <FlatList
-            data={photoCards.slice(0, 4)}
+            data={theyAreYourType}
+            ListEmptyComponent={<NullDataComponent style={{width: windowWidth * 0.3, height: windowHeight * 0.18, fontSize : moderateScale(15,0.6) }}/>}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{
@@ -479,6 +541,7 @@ const SpotLight = () => {
               // height: windowHeight * 0.4,
               // backgroundColor : Color.themeColor
             }}
+            
             renderItem={({item, index}) => {
               return (
                 <TouchableOpacity
@@ -509,7 +572,7 @@ const SpotLight = () => {
                       width: '100%',
                       height: '100%',
                     }}
-                    source={item?.photo}
+                    source={item?.profile_images[0]?.url}
                   />
                   <LinearGradient
                     start={{x: 0, y: 0}}
@@ -535,7 +598,7 @@ const SpotLight = () => {
                         fontSize: moderateScale(11, 0.6),
                         width: '90%',
                       }}>
-                      {`${item?.name},${item?.age}`}
+                      {`${item?.profileName},${item?.location?.city}`}
                     </CustomText>
                     <View
                       style={{
@@ -644,6 +707,8 @@ const SpotLight = () => {
             width={windowWidth * 0.41}
           />
         </View> */}
+
+
           <View
             style={{
               width: windowWidth * 0.9,
