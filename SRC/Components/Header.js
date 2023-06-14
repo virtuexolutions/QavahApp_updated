@@ -383,6 +383,7 @@ const Header = props => {
           bgColor={'white'}
           borderRadius={moderateScale(25, 0.3)}
           fontSize={moderateScale(10, 0.6)}
+          marginBottom={moderateScale(20,0.3)}
           borderColor={Color.themeColor}
           textColor={Color.themeColor}
           borderWidth={1}
