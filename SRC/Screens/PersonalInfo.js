@@ -25,12 +25,12 @@ const PersonalInfo = () => {
   const [gender, setGender] = useState('Male');
   const [profileName, setProfileName] = useState('');
   const [multiImages, setMultiImages] = useState([
-    {id: 1, image: require('../Assets/Images/image1.jpeg')},
-    {id: 2, image: require('../Assets/Images/image2.jpeg')},
-    {id: 3, image: require('../Assets/Images/image3.jpeg')},
-    {id: 4, image: require('../Assets/Images/image4.jpeg')},
-    {id: 5, image: require('../Assets/Images/image4.jpeg')},
-    {id: 6, image: require('../Assets/Images/image5.jpeg')},
+    {id: 1, uri: require('../Assets/Images/image1.jpeg')},
+    {id: 2, uri: require('../Assets/Images/image2.jpeg')},
+    {id: 3, uri: require('../Assets/Images/image3.jpeg')},
+    {id: 4, uri: require('../Assets/Images/image4.jpeg')},
+    {id: 5, uri: require('../Assets/Images/image4.jpeg')},
+    {id: 6, uri: require('../Assets/Images/image5.jpeg')},
   ]);
   const [tempMultiImages, setTempMultiImages] = useState([]);
   console.log("🚀 ~ file: PersonalInfo.js:36 ~ PersonalInfo ~ tempMultiImages:", tempMultiImages)

@@ -105,7 +105,10 @@ const UserDetail = props => {
             }}
             source={
               // fromSearch
-              {uri: userData?.profile_images[0].url}
+              userData?.profile_images?.length > 0 ?
+              {uri: userData?.profile_images[0]?.url}
+              :
+              require('../Assets/Images/image1.jpeg')
               // : require('../Assets/Images/image1.jpeg')
             }
             resizeMode={'contain'}
@@ -402,7 +405,7 @@ const UserDetail = props => {
                 return (
                   
                   <View style={styles.imageContainer} onTouchStart={drag}>
-                    <Image source={item.uri} style={styles.image} />
+                    <Image source={item.uri} style={styles.image1} />
                   </View>
                 );
               }}
@@ -597,7 +600,7 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  image: {
+  image1: {
     width: 80,
     height: 80,
     borderRadius: 8,

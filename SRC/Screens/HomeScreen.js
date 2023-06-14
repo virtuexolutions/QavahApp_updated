@@ -32,7 +32,7 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const focused = useIsFocused();
   const user = useSelector(state => state.commonReducer.userData);
-   console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
+  console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
   const [swiperRef, setSwiperRef] = useState();
   const [xAxis, setXAxis] = useState(0);
@@ -44,15 +44,9 @@ const HomeScreen = () => {
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [photoCards, setPhotoCards] = useState([]);
-  // console.log(
-  //   '🚀 ~ file: HomeScreen.js:44 ~ HomeScreen ~ photoCards:',
-  //   photoCards,
-  // );
-  const [LogData, setLogData] = useState([]);
-  // console.log('🚀 ~ file: HomeScreen.js:45 ~ HomeScreen ~ LogData:', LogData);
-  // console.log('token',token)
 
-  // console.log("🚀 ~ file: HomeScreen.js:48 ~ photoCards:", photoCards)
+  const [LogData, setLogData] = useState([]);
+
   const [drawerType, setDrawerType] = useState('notification');
 
   const getUsers = async () => {
@@ -67,74 +61,16 @@ const HomeScreen = () => {
     }
   };
   const handleOnSwipedLeft = async () => {
-    // console.log("🚀 ~ file: HomeScreen.js:67 ~ handleOnSwipedLeft ~ id:", id)
-    // const url = 'swap/disliked';
-    // const response = await Post(url, {targetsUid: id}, apiHeader(token));
-    // // console.log("🚀 ~ file: HomeScreen.js:64 ~ handleOnSwipedLeft ~ id:", id)
-    // // console.log({targetsUid: id});
-    // if (response?.data?.status == true) {
-    //   console.log('response ======= >', response?.data?.peoples?.match_id);
-    //   setLogData(prev => [
-    //     ...prev,
-    //     ...photoCards.filter((data, index) => {
-    //       return response?.data?.peoples?.match_id == data?.id;
-    //     }),
-    //   ]);
-
+ 
       swiperRef.swipeLeft();
-      // console.log('Left Log Data=======>>>',leftLogData);
-    //   console.log(
-    //     '🚀 ~ file: HomeScreen.js:80 ~ handleOnSwipedLeft ~ photoCards:',
-    //     photoCards,
-    //   );
-    //   setPhotoCards(
-    //     photoCards.filter(
-    //       (data, index) => response?.data?.peoples?.match_id != data?.id,
-    //     ),
-    //   );
-    //   // console.log("🚀 ~ file: HomeScreen.js:81 ~ handleOnSwipedLeft ~ photoCards:", photoCards)
-    // }
-    // else {
-    //   Platform.OS == 'android'
-    //     ? ToastAndroid.show(response?.error, ToastAndroid.SHORT)
-    //     : alert(response?.error);
-    // }
+    
   };
   const handleOnSwipedTop = () => {
     // swiperRef.swipeTop(),
     setSuperLikeVisible(true);
   };
   const handleOnSwipedRight = async () => {
-    // const url = 'swap/liked';
-    // const response = await Post(url, {targetsUid: id}, apiHeader(token));
-
-    // // console.log({targetsUid: id});
-    // if (response?.data?.status == true) {
-    //   console.log('response for like ======= >', response?.data);
-    //   //swiperRef.swipeRight();
-    //   setLogData(prev => [
-    //     ...prev,
-    //     ...photoCards.filter((data, index) => {
-    //       return response?.data?.peoples?.match_id == data?.id;
-    //     }),
-    //   ]);
       swiperRef.swipeRight();
-
-    //   console.log(
-    //     '🚀 ~ file: HomeScreen.js:80 ~ handleOnSwipedLeft ~ photoCards:',
-    //     photoCards,
-    //   );
-
-    //   setPhotoCards(
-    //     photoCards.filter(
-    //       (data, index) => response?.data?.peoples?.match_id != data?.id,
-    //     ),
-    //   );
-    // } else {
-    //   Platform.OS == 'android'
-    //     ? ToastAndroid.show(response?.error, ToastAndroid.SHORT)
-    //     : alert(response?.error);
-    // }
   };
 
   //  let obj = array.find(o => o.name === 'string 1');
