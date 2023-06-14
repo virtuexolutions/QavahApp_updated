@@ -26,11 +26,14 @@ import IconWithName from '../Components/IconWithName';
 import ImageView from 'react-native-image-viewing';
 import CustomButton from '../Components/CustomButton';
 import {useSelector} from 'react-redux';
+import ImageContainer from '../Components/ImageContainer';
+import ImagePickerModal from '../Components/ImagePickerModal';
+import {Image} from 'react-native';
 
 const UserDetail = props => {
   const user = useSelector(state => state.commonReducer.userData);
   const item = props?.route?.params?.item;
-  console.log("🚀 ~ file: UserDetail.js:30 ~ UserDetail ~ item:", item)
+  console.log('🚀 ~ file: UserDetail.js:30 ~ UserDetail ~ item:', item);
   // console.log('data =============>>>>>>>>>>', item?.gallery_images[0]);
   const fromSearch = props?.route?.params?.fromSearch;
 
@@ -38,13 +41,34 @@ const UserDetail = props => {
   const [userData, setUserData] = useState(fromSearch ? item : user);
   // console.log("🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:", userData)
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [index, setIndex] = useState('');
+  const [showMultiImageModal, setShowMultiImageModal] = useState(false);
+
   const [dummyImages, setDummyImages] = useState([
-    require('../Assets/Images/banner.jpg'),
-    require('../Assets/Images/banner.jpg'),
-    require('../Assets/Images/banner.jpg'),
-    require('../Assets/Images/banner.jpg'),
-    require('../Assets/Images/banner.jpg'),
-    require('../Assets/Images/banner.jpg'),
+    {
+      id: 0,
+      uri: require('../Assets/Images/banner.jpg'),
+    },
+    {
+      id: 1,
+      uri: require('../Assets/Images/banner1.jpg'),
+    },
+    {
+      id: 2,
+      uri: require('../Assets/Images/banner2.jpg'),
+    },
+    {
+      id: 3,
+      uri: require('../Assets/Images/image1.jpeg'),
+    },
+    {
+      id: 4,
+      uri: require('../Assets/Images/image2.jpeg'),
+    },
+    {
+      id: 5,
+      uri: require('../Assets/Images/image3.jpeg'),
+    },
   ]);
 
   // const [images, setImages] = useState(
@@ -53,7 +77,7 @@ const UserDetail = props => {
   //     : userData?.gallery_images,
   // );
 
-  const images = [require('../Assets/Images/woman1.jpeg')] ;
+  const images = [require('../Assets/Images/woman1.jpeg')];
   console.log('🚀 ~ file: UserDetail.js:50 ~ UserDetail ~ images:', images);
   return (
     <>
@@ -81,8 +105,8 @@ const UserDetail = props => {
             }}
             source={
               // fromSearch
-                {uri: userData?.profile_images[0].url}
-                // : require('../Assets/Images/image1.jpeg')
+              {uri: userData?.profile_images[0].url}
+              // : require('../Assets/Images/image1.jpeg')
             }
             resizeMode={'contain'}
           />
@@ -302,10 +326,10 @@ const UserDetail = props => {
                       data: userData,
                       fromSearch: fromSearch,
                     })
-                  : navigationService.navigate('Profile'  , {
-                    data: userData,
-                    fromSearch: fromSearch,
-                  });
+                  : navigationService.navigate('Profile', {
+                      data: userData,
+                      fromSearch: fromSearch,
+                    });
               }}>
               <CustomText
                 style={{
@@ -370,8 +394,22 @@ const UserDetail = props => {
               );
             })}
           </View> */}
-           <View style={styles.imageView}>
-          <DraggableFlatList
+          <View style={styles.imageView}>
+            <DraggableFlatList
+              data={dummyImages}
+              numColumns={3}
+              renderItem={({item, drag, isActive}) => {
+                return (
+                  
+                  <View style={styles.imageContainer} onTouchStart={drag}>
+                    <Image source={item.uri} style={styles.image} />
+                  </View>
+                );
+              }}
+              keyExtractor={item => item.id}
+              onDragEnd={({data}) => setDummyImages(data)}
+            />
+            {/* <DraggableFlatList
             // horizontal={true}
             numColumns={3}
             data={dummyImages}
@@ -388,8 +426,9 @@ const UserDetail = props => {
             renderItem={({item, drag, isActive}) => {
               return (
                 <ImageContainer
-                  data={multiImages}
-                  setData={setMultiImages}
+                  key ={index} 
+                  data={dummyImages}
+                  setData={setDummyImages}
                   item={item}
                   setIndex={setIndex}
                   index={index}
@@ -399,10 +438,10 @@ const UserDetail = props => {
                 />
               );
             }}
-          />
-          {/*  <CustomText onPress={drag}>hello</CustomText> */}
-          {/* <ScaleDecorator> */}
-          {/* {multiImages.map((item, index) => {
+          /> */}
+            {/*  <CustomText onPress={drag}>hello</CustomText> */}
+            {/* <ScaleDecorator> */}
+            {/* {multiImages.map((item, index) => {
             return (
               <ImageContainer
                 data={multiImages}
@@ -417,14 +456,14 @@ const UserDetail = props => {
             );
           })} */}
 
-          {/* </ScaleDecorator> */}
+            {/* </ScaleDecorator> */}
 
-          {/* );
+            {/* );
         }}
 
       
     /> */}
-        </View>
+          </View>
           {fromSearch && (
             <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
               <CustomText
@@ -445,6 +484,13 @@ const UserDetail = props => {
           )}
         </View>
       </ScrollView>
+      <ImagePickerModal
+        show={showMultiImageModal}
+        setShow={setShowMultiImageModal}
+        setMultiImages={setDummyImages}
+        images={dummyImages}
+        index={index}
+      />
       <ImageView
         images={images}
         imageIndex={selectedIndex}
@@ -543,5 +589,17 @@ const styles = ScaledSheet.create({
     marginTop: moderateScale(15, 0.3),
     height: windowHeight * 0.35,
     justifyContent: 'space-between',
+  },
+  imageContainer: {
+    width: 100,
+    height: 100,
+    margin: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
   },
 });

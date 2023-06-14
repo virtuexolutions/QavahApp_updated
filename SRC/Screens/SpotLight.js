@@ -10,7 +10,7 @@ import {
 import React, {useEffect, useRef, useState} from 'react';
 import Header from '../Components/Header';
 import CustomStatusBar from '../Components/CustomStatusBar';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
 import Swiper from 'react-native-deck-swiper';
 import Card from '../Components/Card';
@@ -29,10 +29,11 @@ import BtnContainer from '../Components/BtnContainer';
 import navigationService from '../navigationService';
 import {useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
-import {Get} from '../Axios/AxiosInterceptorFunction';
+import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 
 const SpotLight = () => {
   const token = useSelector(state => state.authReducer.token);
+  const user = useSelector(state => state.commonReducer.userData );
   const isFocused = useIsFocused();
   const [fromSpotLight, setFromSpotlight] = useState([]);
 
@@ -42,6 +43,8 @@ const SpotLight = () => {
     '🚀 ~ file: SpotLight.js:41 ~ SpotLight ~ setSpotLightData:',
     spotLightData,
   );
+
+  const [theyAreYourType , setTheyAreYourType ] = useState([])
 
   const [isLoading, setIsLoading] = useState(true);
   const [photoCards, setPhotoCards] = useState([
@@ -269,6 +272,7 @@ const SpotLight = () => {
     const url = 'user_spotlights';
     setIsLoading(true);
     const response = await Get(url, token);
+    console.log("🚀 ~ file: SpotLight.js:275 ~ getSpotLightData ~ response:", response)
 
     if (response != undefined) {
       response?.data.users.map((item, index) => {
@@ -281,9 +285,23 @@ const SpotLight = () => {
     }
     setIsLoading(false);
   };
+  const getTheyAreYourType = async ()=>{
+    const url = 'seeking/theyareyourtype';
+    setIsLoading(true);
+    const response = await Post(url, {targetsUid: user.id} ,apiHeader(token))
+    
+    if(response != undefined){
+      
+      console.log("🚀 ~ file: SpotLight.js:290 ~ getTheyAreYourType ~ response:", response?.data?.peoples)
+      setTheyAreYourType(response?.data?.peoples)
+    }
+
+
+  }
 
   useEffect(() => {
     getSpotLightData();
+    getTheyAreYourType();
   }, [isFocused]);
 
   return (
