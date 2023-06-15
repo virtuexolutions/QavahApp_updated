@@ -1,7 +1,7 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View,Platform,ToastAndroid} from 'react-native';
 import React from 'react';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from './CustomImage';
 import BtnContainer from './BtnContainer';
 import Color from '../Assets/Utilities/Color';
@@ -12,14 +12,71 @@ import CustomTextWithMask from './CustomTextWithMask';
 import {Icon} from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import navigationService from '../navigationService';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
-const UserCard = ({onClosePress, onheartPress, style, item, hideBtns}) => {
+const UserCard = ({onClosePress, onheartPress, style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => {
   // console.log("🚀 ~ file: UserCard.js:17 ~ UserCard ~ item:", item?.profile_images[0]?.url)
   const profile_image = item?.profile_images[0]?.url;
   console.log(
     '🚀 ~ file: UserCard.js:19 ~ UserCard ~ profile_image:',
     profile_image,
   );
+
+  const sendDislike = async (index, item) => {
+                  
+    const url = 'swap/disliked';
+    const response = await Post(
+      url,
+      {targetsUid: item?.id},
+      apiHeader(token),
+    );
+
+    if (response?.data?.status == true) {
+      const filteredData2 = favoredYouPost.filter(
+        (data, index) =>
+          response?.data?.peoples?.match_id != data?.id,
+      );
+
+      setFavoredYouPost(filteredData2);
+    } else {
+      console.log('in else');
+      Platform.OS == 'android'
+        ? ToastAndroid.show(
+            response?.data?.error,
+            ToastAndroid.SHORT,
+          )
+        : Alert.alert(response?.data?.error);
+    }
+  }
+
+  const sendLike = async (index, item) => {
+    const url = 'swap/liked';
+    // console.log({targetsUid: selectedId});
+    const response = await Post(
+      url,
+      {targetsUid: item?.id},
+      apiHeader(token),
+    );
+    if (response?.data?.status) {
+
+      setFavoredYouPost(
+        favoredYouPost.filter(
+          (data, index) =>
+            response?.data?.peoples?.match_id != data?.id,
+        ),
+      );
+    } else {
+      Platform.OS == 'android'
+        ? ToastAndroid.show(
+            response?.data?.error,
+            ToastAndroid.SHORT,
+          )
+        : Alert.alert(response?.data?.error);
+    }
+  }
+
+
+
 
   return (
     <TouchableOpacity
@@ -125,7 +182,7 @@ const UserCard = ({onClosePress, onheartPress, style, item, hideBtns}) => {
               //    marginTop: moderateScale(-15, 0.3),
             }}
             iconSize={moderateScale(20, 0.6)}
-            onPress={() => {}}
+            onPress={() => sendDislike()}
           />
           <BtnContainer
             backgroundColor={Color.themeColor}
@@ -140,6 +197,7 @@ const UserCard = ({onClosePress, onheartPress, style, item, hideBtns}) => {
               //    marginTop: moderateScale(-15, 0.3),
             }}
             iconSize={moderateScale(20, 0.6)}
+            onPress={()=>sendLike()}
           />
         </View>
       )}

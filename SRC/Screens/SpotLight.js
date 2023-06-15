@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Platform,
   ToastAndroid,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Header from '../Components/Header';
@@ -33,10 +34,11 @@ import {useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import NullDataComponent from '../Components/NullDataComponent';
+import SuperLikeModal from '../Components/SuperLikeModal';
 
 const SpotLight = () => {
   const token = useSelector(state => state.authReducer.token);
-  const user = useSelector(state => state.commonReducer.userData );
+  const user = useSelector(state => state.commonReducer.userData);
   const isFocused = useIsFocused();
   const [fromSpotLight, setFromSpotlight] = useState([]);
 
@@ -47,8 +49,10 @@ const SpotLight = () => {
      spotLightData
   );
 
-  const [theyAreYourType , setTheyAreYourType ] = useState([])
-  console.log("🚀 ~ file: SpotLight.js:49 ~ SpotLight ~ theyAreYourType:", theyAreYourType)
+  const [isSuperLikeVisible, setSuperLikeVisible] = useState(false);
+
+  const [theyAreYourType, setTheyAreYourType] = useState([]);
+  // console.log("🚀 ~ file: SpotLight.js:49 ~ SpotLight ~ theyAreYourType:", theyAreYourType)
 
   const [isLoading, setIsLoading] = useState(true);
   const [photoCards, setPhotoCards] = useState([
@@ -265,7 +269,6 @@ const SpotLight = () => {
     },
   ]);
 
-
   const dummyArray = [
     require('../Assets/Images/woman1.jpeg'),
     require('../Assets/Images/woman2.jpeg'),
@@ -277,11 +280,10 @@ const SpotLight = () => {
     const url = 'user_spotlights';
     setIsLoading(true);
     const response = await Get(url, token);
-    console.log("🚀 ~ file: SpotLight.js:275 ~ getSpotLightData ~ response:", response)
 
     if (response != undefined) {
       response?.data.users.map((item, index) => {
-        console.log('data -=========== > ' ,  item.user_spotlights.length > 0)
+        // console.log('data -=========== > ', item.user_spotlights.length > 0);
         return (
           item.user_spotlights.length > 0 &&
           setSpotLightData(prev => [...prev, item])
@@ -290,25 +292,25 @@ const SpotLight = () => {
     }
     setIsLoading(false);
   };
-  const getTheyAreYourType = async ()=>{
+  const getTheyAreYourType = async () => {
     const url = 'seeking/theyareyourtype';
     setIsLoading(true);
-    const response = await Post(url, {targetsUid: user.id} ,apiHeader(token))
-    
-    if(response != undefined){
-      
-      console.log("🚀 ~ file: SpotLight.js:290 ~ getTheyAreYourType ~ response:", response?.data?.peoples[0]?.profile_images[0]?.url)
-      setTheyAreYourType(response?.data?.peoples)
-    }
-    
-    setIsLoading(false)
+    const response = await Post(url, {targetsUid: user.id}, apiHeader(token));
 
-  }
+    if (response != undefined) {
+      setTheyAreYourType(response?.data?.peoples);
+    }
+
+    setIsLoading(false);
+  };
+
+
+
 
   useEffect(() => {
     getSpotLightData();
     getTheyAreYourType();
-  }, [isFocused]);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+  }, [isFocused]);
 
   return (
     <>
@@ -384,137 +386,138 @@ const SpotLight = () => {
               height: windowHeight * 0.48,
               width: windowWidth,
             }}>
-              {spotLightData.length > 0 ?
-            <Swiper
-              animateCardOpacity
-              style={styles.mainContainer}
-              containerStyle={styles.subcontainer}
-              cards={spotLightData}
-              renderCard={(item, index) => (
-                <Card
-                  card={item}
-                  height={windowHeight * 0.45}
-                  fromSpotLight={fromSpotLight}
-                />
-              )}
-              cardIndex={0}
-              cardVerticalMargin={moderateScale(5, 0.6)}
-              backgroundColor="white"
-              stackSize={2}
-              infinite
-              showSecondCard={true}
-              animateOverlayLabelsOpacity
-              swipeBackCard
-              onSwipedLeft={async (index, item) => {
-                console.log("🚀 ~ file: SpotLight.js:408 ~ onSwipedLeft={ ~ item:", item)
-                // return console.log('item in left ', item?.id)
-                // console.log(' hererererere  ===  >> > > ');
-                const url = 'swap/disliked';
-                const response = await Post(
-                  url,
-                  {targetsUid: item?.id},
-                  apiHeader(token),
-                );
-                console.log("🚀 ~ file: SpotLight.js:417 ~ onSwipedLeft={ ~ response:", response?.data)
-                
-                if (response?.data?.status == true) {
-                  // console.log('response ======= >', response?.data);
-                  // console.log('left', item?.id);
+            {spotLightData.length > 0 ? (
+              <Swiper
+                animateCardOpacity
+                style={styles.mainContainer}
+                containerStyle={styles.subcontainer}
+                cards={spotLightData}
+                renderCard={(item, index) => (
+                  <Card
+                    card={item}
+                    height={windowHeight * 0.45}
+                    fromSpotLight={fromSpotLight}
+                  />
+                )}
+                cardIndex={0}
+                cardVerticalMargin={moderateScale(5, 0.6)}
+                backgroundColor="white"
+                stackSize={2}
+                infinite
+                showSecondCard={true}
+                animateOverlayLabelsOpacity
+                swipeBackCard
+                onSwipedLeft={async (index, item) => {
+                  
+                  const url = 'swap/disliked';
+                  const response = await Post(
+                    url,
+                    {targetsUid: item?.id},
+                    apiHeader(token),
+                  );
 
-                  // const filteredData = photoCards.filter((data,index) => response?.data?.peoples?.match_id == data?.id)
-                  const filteredData2 = spotLightData.filter((data, index) => response?.data?.peoples?.match_id != data?.id)
-                  // setLogData(prev => [
-                  //   ...prev,
-                  //   ...filteredData,
-                  // ]);
-
-                  setSpotLightData(filteredData2);
-                }
-                else {
-                    Platform.OS == 'android'
-                      ? ToastAndroid.show(response?.error, ToastAndroid.SHORT)
-                      : alert(response?.error);
-                  }
-              }}
-              disableBottomSwipe={true}
-              onSwipedRight={async (index, item) => {
-                const url = 'swap/liked';
-                // console.log({targetsUid: selectedId});
-                const response = await Post(
-                  url,
-                  {targetsUid: item?.id},
-                  apiHeader(token),
-                );
-                if (response?.data?.status == true) {
-                //  setLogData(prev => [
-                //     ...prev,
-                //     ...photoCards.filter((data, index) => {
-                //       return response?.data?.peoples?.match_id == data?.id;
-                //     }),
-                //   ]);
-
-                  setPhotoCards(
-                    photoCards.filter(
+                  if (response?.data?.status == true) {
+                    const filteredData2 = spotLightData.filter(
                       (data, index) =>
                         response?.data?.peoples?.match_id != data?.id,
-                    ),
-                  );
-                }
-                else {
+                    );
+
+                    setSpotLightData(filteredData2);
+                  } else {
+                    console.log('in else');
                     Platform.OS == 'android'
-                      ? ToastAndroid.show(response?.error, ToastAndroid.SHORT)
-                      : alert(response?.error);
+                      ? ToastAndroid.show(
+                          response?.data?.error,
+                          ToastAndroid.SHORT,
+                        )
+                      : Alert.alert(response?.data?.error);
                   }
-              }}
-              onSwipedTop={() => {
-                console.log('Top');
-              }}
-              // onSwiping={(x, y) => {
-              //   console.log(x, y);
-              //   setXAxis(x);
-              //   setYAxis(y);
-              // }}
-              // dragEnd={() => {
-              //   setXAxis(0);
-              //   setYAxis(0);
-              // }}
-              overlayLabels={{
-                left: {
-                  title: 'NOPE',
-                  element: <OverlayLabel label="NOPE" color="#E5566D" />,
-                  style: {
-                    wrapper: {
-                      alignItems: 'flex-end',
-                      right: moderateScale(30, 0.3),
+                }}
+                disableBottomSwipe={true}
+                onSwipedRight={async (index, item) => {
+                  const url = 'swap/liked';
+                  // console.log({targetsUid: selectedId});
+                  const response = await Post(
+                    url,
+                    {targetsUid: item?.id},
+                    apiHeader(token),
+                  );
+                  if (response?.data?.status) {
+
+                    setSpotLightData(
+                      spotLightData.filter(
+                        (data, index) =>
+                          response?.data?.peoples?.match_id != data?.id,
+                      ),
+                    );
+                  } else {
+                    Platform.OS == 'android'
+                      ? ToastAndroid.show(
+                          response?.data?.error,
+                          ToastAndroid.SHORT,
+                        )
+                      : Alert.alert(response?.data?.error);
+                  }
+                }}
+                onSwipedTop={async (index, item) => {
+                  console.log("🚀 ~ file: SpotLight.js:463 ~ onSwipedTop={ ~ item:", item?.id)
+                  
+                  const url = 'swap/superLiked';
+                  const response = await Post(url, {targetsUid:item?.id}, apiHeader(token))
+                  console.log("🚀 ~ file: SpotLight.js:468 ~ onSwipedTop={ ~ response:", response?.data)
+                  if(response?.data?.status){
+
+                    
+                    setSpotLightData(spotLightData.filter((data, index)=>response?.data?.peoples?.only?.match_id != data?.id))
+                    console.log("🚀 ~ file: SpotLight.js:464 ~ onSwipedTop={ ~ response:", response?.data)
+
+                  }else{
+                    Platform.OS == 'android' ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT) : Alert.alert(response?.data?.error)
+                  }
+
+                  // setSuperLikeVisible(true);
+                }}
+                
+                overlayLabels={{
+                  left: {
+                    title: 'LO',
+                    element: <OverlayLabel label="LO" color="#E5566D" />,
+                    style: {
+                      wrapper: {
+                        alignItems: 'flex-end',
+                        right: moderateScale(30, 0.3),
+                      },
                     },
                   },
-                },
-                right: {
-                  title: 'LIKE',
-                  element: <OverlayLabel label="LIKE" color="#4CCC93" />,
-                  style: {
-                    wrapper: {
-                      alignItems: 'flex-start',
-                      // alignItems: 'flex-start',
-                      left: moderateScale(30, 0.3),
+                  right: {
+                    title: 'KAN',
+                    element: <OverlayLabel label="KAN" color="#4CCC93" />,
+                    style: {
+                      wrapper: {
+                        alignItems: 'flex-start',
+                        // alignItems: 'flex-start',
+                        left: moderateScale(30, 0.3),
+                      },
                     },
                   },
-                },
-                top: {
-                  element: <OverlayLabel label="SUPER LIKE" color="blue" />,
-                  title: 'SUPER LIKE',
-                  style: {
-                    wrapper: {
-                      // alignItems: 'flex-end',
-                      flexDirection: 'column',
-                      bottom: moderateScale(80, 0.6),
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                  top: {
+                    element: <OverlayLabel label="SUPER FANCY" color="blue" />,
+                    title: 'SUPER FANCY',
+                    style: {
+                      wrapper: {
+                        // alignItems: 'flex-end',
+                        flexDirection: 'column',
+                        bottom: moderateScale(80, 0.6),
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      },
                     },
                   },
-                },
-              }}
-            /> :<NullDataComponent />}
+                }}
+              />
+            ) : (
+              <NullDataComponent />
+            )}
           </View>
           <CustomText
             isBold
@@ -527,7 +530,15 @@ const SpotLight = () => {
           </CustomText>
           <FlatList
             data={theyAreYourType}
-            ListEmptyComponent={<NullDataComponent style={{width: windowWidth * 0.3, height: windowHeight * 0.18, fontSize : moderateScale(15,0.6) }}/>}
+            ListEmptyComponent={
+              <NullDataComponent
+                style={{
+                  width: windowWidth * 0.3,
+                  height: windowHeight * 0.18,
+                  fontSize: moderateScale(15, 0.6),
+                }}
+              />
+            }
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{
@@ -541,7 +552,6 @@ const SpotLight = () => {
               // height: windowHeight * 0.4,
               // backgroundColor : Color.themeColor
             }}
-            
             renderItem={({item, index}) => {
               return (
                 <TouchableOpacity
@@ -633,6 +643,32 @@ const SpotLight = () => {
                         //    marginTop: moderateScale(-15, 0.3),
                       }}
                       iconSize={moderateScale(20, 0.6)}
+                      onPress={async (item, index) => {
+                  
+                        const url = 'swap/disliked';
+                        const response = await Post(
+                          url,
+                          {targetsUid: item?.id},
+                          apiHeader(token),
+                        );
+      
+                        if (response?.data?.status == true) {
+                          const filteredData2 = theyAreYourType.filter(
+                            (data, index) =>
+                              response?.data?.peoples?.match_id != data?.id,
+                          );
+      
+                          setTheyAreYourType(filteredData2);
+                        } else {
+                          console.log('in else');
+                          Platform.OS == 'android'
+                            ? ToastAndroid.show(
+                                response?.data?.error,
+                                ToastAndroid.SHORT,
+                              )
+                            : Alert.alert(response?.data?.error);
+                        }
+                      }}
                     />
                     <BtnContainer
                       backgroundColor={Color.themeColor}
@@ -647,6 +683,31 @@ const SpotLight = () => {
                         //    marginTop: moderateScale(-15, 0.3),
                       }}
                       iconSize={moderateScale(20, 0.6)}
+                      onPress={async (item ,index ) => {
+                        const url = 'swap/liked';
+                        // console.log({targetsUid: selectedId});
+                        const response = await Post(
+                          url,
+                          {targetsUid: item?.id},
+                          apiHeader(token),
+                        );
+                        if (response?.data?.status) {
+      
+                          setTheyAreYourType(
+                            theyAreYourType.filter(
+                              (data, index) =>
+                                response?.data?.peoples?.match_id != data?.id,
+                            ),
+                          );
+                        } else {
+                          Platform.OS == 'android'
+                            ? ToastAndroid.show(
+                                response?.data?.error,
+                                ToastAndroid.SHORT,
+                              )
+                            : Alert.alert(response?.data?.error);
+                        }
+                      }}
                     />
                   </View>
                 </TouchableOpacity>
@@ -707,7 +768,6 @@ const SpotLight = () => {
             width={windowWidth * 0.41}
           />
         </View> */}
-
 
           <View
             style={{
@@ -829,6 +889,10 @@ const SpotLight = () => {
           </View>
         </ScrollView>
       )}
+      <SuperLikeModal
+        isVisible={isSuperLikeVisible}
+        setIsVisible={setSuperLikeVisible}
+      />
     </>
   );
 };

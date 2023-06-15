@@ -7,10 +7,10 @@ import Color from '../Assets/Utilities/Color';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 
 const NullDataComponent = ({style}) => {
-  console.log(
-    '🚀 ~ file: NullDataComponent.js:10 ~ NullDataComponent ~ style:',
-    style,
-  );
+  // console.log(
+  //   '🚀 ~ file: NullDataComponent.js:10 ~ NullDataComponent ~ style:',
+  //   style,
+  // );
   return (
     <>
       <View style={{flex: 1, alignItems: 'center'}}>

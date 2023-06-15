@@ -296,7 +296,7 @@ const CreatePortfolio = () => {
                 placeholder={`hello@abc.com`}
                 setText={setEmail}
                 value={email}
-                viewHeight={0.1}
+                viewHeight={0.07}
                 viewWidth={0.9}
                 inputWidth={0.86}
                 borderColor={Color.veryLightGray}
@@ -691,10 +691,16 @@ const CreatePortfolio = () => {
               confirmPassword != '' &&
               currentStep == 6
             ) {
+              
               if (password != confirmPassword) {
                 return Platform.OS == 'android'
                   ? ToastAndroid.show('Password unmatched', ToastAndroid.SHORT)
                   : Alert.alert('Password unmatched');
+              }
+              else if(password.length < 6){
+                return Platform.OS == 'android'
+                  ? ToastAndroid.show('Password should be atleast 6 characters long', ToastAndroid.SHORT)
+                  : Alert.alert('Password should be atleast 6 characters long');
               }
               setCurrentStep(prev => prev + 1);
             } else if (countryCode != '' && number != '' && currentStep == 7) {
