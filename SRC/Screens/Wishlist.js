@@ -337,6 +337,8 @@ const Wishlist = () => {
                       },
                   {},
                 ]}
+                favoredYouPost ={selected=='Favored You'?favoredYouPost:youFavoured}
+                setFavoredYouPost ={setFavoredYouPost}
                 onPress={() => {}}
                 hideBtns={hideBtns}
               />

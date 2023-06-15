@@ -68,17 +68,11 @@ const IsraeliteFilters = props => {
 
 
   const checkPassion = ()=>{
-    if(type == 'passions' ? passions.length<6 : kingdomGifts.length < 6){
+    if(type == 'passions' ? passions.length>6 : kingdomGifts.length > 10){
       Platform.OS == 'android' ? 
-      ToastAndroid.show(`Select atleast 6 ${type}`,ToastAndroid.SHORT) : 
-      Alert.Alert(`Select atleast 6 ${type}`)
+      ToastAndroid.show(type == 'passions'? `Select atmost 6 ${type}`:`Select atmost 10 ${type}` ,ToastAndroid.SHORT) : 
+      Alert.Alert(type == 'passions'? `Select atmost 6 ${type}`:`Select atmost 10 ${type}`)
 
-    }
-    else if(type == 'passions' ? passions.length> 10 : kingdomGifts.length>10)
-    {
-      Platform.OS == 'android' ? 
-      ToastAndroid.show(`Select atmost 10 ${type}`,ToastAndroid.SHORT) : 
-      Alert.Alert(`Select atmost 10 ${type}`)
     }
     else{
       setPassionModalVisible(false);

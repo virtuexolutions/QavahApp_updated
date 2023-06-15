@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
+import {StyleSheet, Text, View, ActivityIndicator,ToastAndroid,Platform} from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Header from '../Components/Header';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -25,15 +25,14 @@ import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import CustomImage from '../Components/CustomImage';
 import NullDataComponent from '../Components/NullDataComponent';
 import {useIsFocused} from '@react-navigation/native';
-import {ToastAndroid} from 'react-native';
-import {Platform} from 'react-native';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const focused = useIsFocused();
   const user = useSelector(state => state.commonReducer.userData);
-  console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
+  // console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
+  console.log("🚀 ~ file: HomeScreen.js:35 ~ token:", token)
   const [swiperRef, setSwiperRef] = useState();
   const [xAxis, setXAxis] = useState(0);
   const [yAxis, setYAxis] = useState(0);
@@ -44,6 +43,7 @@ const HomeScreen = () => {
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [photoCards, setPhotoCards] = useState([]);
+  // console.log("🚀 ~ file: HomeScreen.js:45 ~ photoCards:", photoCards)
 
   const [LogData, setLogData] = useState([]);
 
@@ -181,7 +181,7 @@ const HomeScreen = () => {
           }}>
           <ActivityIndicator color={Color.themeColor} size={'large'} />
         </View>
-      ) : [].length > 0 ? (
+      ) : photoCards.length > 0 ? (
         <>
           <View
             style={{
@@ -273,9 +273,22 @@ const HomeScreen = () => {
                       : alert(response?.error);
                   }
               }  }
-              onSwipedTop={() => {
-                // console.log('Top');
-                setSuperLikeVisible(true);
+              onSwipedTop={async (index, item) => {
+                // console.log("🚀 ~ file: HomeScreen.js:276 ~ onSwipedTop={ ~ item:", item?.id)
+                const url = 'swap/superLiked';
+                const response = await Post(url, {targetsUid:item?.id}, apiHeader(token))
+
+                if(response?.data?.status){
+                  
+                  // console.log("🚀 ~ file: SpotLight.js:464 ~ onSwipedTop={ ~ response:", response?.data)
+                  const filteredData2 = photoCards.filter((data, index) => response?.data?.peoples?.only?.match_id != data?.id)
+
+                  setPhotoCards(filteredData2);
+
+                }else{
+                  Platform.OS == 'android' ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT) : Alert.Alert(response?.data?.error)
+                }
+
               }}
               onSwiping={(x, y)=>{
                 setXY(x ,y)

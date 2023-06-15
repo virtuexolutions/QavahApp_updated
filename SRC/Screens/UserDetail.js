@@ -39,44 +39,21 @@ const UserDetail = props => {
 
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setUserData] = useState(fromSearch ? item : user);
-  // console.log("🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:", userData)
+  
+  console.log("🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:", userData)
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [index, setIndex] = useState('');
   const [showMultiImageModal, setShowMultiImageModal] = useState(false);
-
-  const [dummyImages, setDummyImages] = useState([
-    {
-      id: 0,
-      uri: require('../Assets/Images/banner.jpg'),
-    },
-    {
-      id: 1,
-      uri: require('../Assets/Images/banner1.jpg'),
-    },
-    {
-      id: 2,
-      uri: require('../Assets/Images/banner2.jpg'),
-    },
-    {
-      id: 3,
-      uri: require('../Assets/Images/image1.jpeg'),
-    },
-    {
-      id: 4,
-      uri: require('../Assets/Images/image2.jpeg'),
-    },
-    {
-      id: 5,
-      uri: require('../Assets/Images/image3.jpeg'),
-    },
+  const [multiImages, setMultiImages] = useState([
+    {id: 1, uri: require('../Assets/Images/image1.jpeg')},
+    {id: 2, uri: require('../Assets/Images/image2.jpeg')},
+    {id: 3, uri: require('../Assets/Images/image3.jpeg')},
+    {id: 4, uri: require('../Assets/Images/image4.jpeg')},
+    {id: 5, uri: require('../Assets/Images/image4.jpeg')},
+    {id: 6, uri: require('../Assets/Images/image5.jpeg')},
   ]);
 
-  // const [images, setImages] = useState(
-  //   userData?.gallery_images.length > 5
-  //     ? userData?.gallery_images.slice(0, 5)
-  //     : userData?.gallery_images,
-  // );
-
+ 
   const images = [require('../Assets/Images/woman1.jpeg')];
   console.log('🚀 ~ file: UserDetail.js:50 ~ UserDetail ~ images:', images);
   return (
@@ -398,53 +375,8 @@ const UserDetail = props => {
             })}
           </View> */}
           <View style={styles.imageView}>
-            <DraggableFlatList
-              data={dummyImages}
-              numColumns={3}
-              renderItem={({item, drag, isActive}) => {
-                return (
-                  
-                  <View style={styles.imageContainer} onTouchStart={drag}>
-                    <Image source={item.uri} style={styles.image1} />
-                  </View>
-                );
-              }}
-              keyExtractor={item => item.id}
-              onDragEnd={({data}) => setDummyImages(data)}
-            />
-            {/* <DraggableFlatList
-            // horizontal={true}
-            numColumns={3}
-            data={dummyImages}
-            onDragEnd={({data}) => console.log(data)}
-            keyExtractor={item => item.id}
-            contentContainerStyle={{
-              alignItems: 'center',
-            }}
-            // style={{
-            //   maxHeight : windowHeight * 0.35,
-            //   marginBottom : moderateScale(20,0.3)
-            // }}
-            // renderItem={renderItem}
-            renderItem={({item, drag, isActive}) => {
-              return (
-                <ImageContainer
-                  key ={index} 
-                  data={dummyImages}
-                  setData={setDummyImages}
-                  item={item}
-                  setIndex={setIndex}
-                  index={index}
-                  showMultiImageModal={showMultiImageModal}
-                  setShowMultiImageModal={setShowMultiImageModal}
-                  // onPress={drag}
-                />
-              );
-            }}
-          /> */}
-            {/*  <CustomText onPress={drag}>hello</CustomText> */}
-            {/* <ScaleDecorator> */}
-            {/* {multiImages.map((item, index) => {
+          
+            {multiImages.map((item, index) => {
             return (
               <ImageContainer
                 data={multiImages}
@@ -457,15 +389,8 @@ const UserDetail = props => {
                 // onPress={drag}
               />
             );
-          })} */}
+          })}
 
-            {/* </ScaleDecorator> */}
-
-            {/* );
-        }}
-
-      
-    /> */}
           </View>
           {fromSearch && (
             <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
@@ -487,13 +412,7 @@ const UserDetail = props => {
           )}
         </View>
       </ScrollView>
-      <ImagePickerModal
-        show={showMultiImageModal}
-        setShow={setShowMultiImageModal}
-        setMultiImages={setDummyImages}
-        images={dummyImages}
-        index={index}
-      />
+    
       <ImageView
         images={images}
         imageIndex={selectedIndex}
@@ -502,6 +421,13 @@ const UserDetail = props => {
           setIsVisible(false);
         }}
       />
+        <ImagePickerModal
+          show={showMultiImageModal}
+          setShow={setShowMultiImageModal}
+          setMultiImages={setMultiImages}
+          images={multiImages}
+          index={index}
+        />
     </>
   );
 };
@@ -592,6 +518,8 @@ const styles = ScaledSheet.create({
     marginTop: moderateScale(15, 0.3),
     height: windowHeight * 0.35,
     justifyContent: 'space-between',
+    alignItems:'center',
+    paddingHorizontal:moderateScale(15,0.3),
   },
   imageContainer: {
     width: 100,

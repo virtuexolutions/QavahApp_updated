@@ -35,14 +35,15 @@ const ProfilePictures = props => {
     profileBody,
   );
   const [profilePicture, setProfilePicture] = useState({});
-  const [multiImages, setMultiImages] = useState([
-    require('../Assets/Images/banner.jpg'),
-    require('../Assets/Images/banner.jpg'),
-    require('../Assets/Images/banner.jpg'),
-    require('../Assets/Images/banner.jpg'),
-    require('../Assets/Images/banner.jpg'),
-    require('../Assets/Images/banner.jpg'),
-  ]);
+  // const [multiImages, setMultiImages] = useState([
+  //   require('../Assets/Images/banner.jpg'),
+  //   require('../Assets/Images/banner.jpg'),
+  //   require('../Assets/Images/banner.jpg'),
+  //   require('../Assets/Images/banner.jpg'),
+  //   require('../Assets/Images/banner.jpg'),
+  //   require('../Assets/Images/banner.jpg'),
+  // ]);
+  const [multiImages, setMultiImages] = useState([])
   console.log(
     '🚀 ~ file: ProfilePictures.js:32 ~ ProfilePictures ~ multiImages:',
     multiImages,
@@ -196,7 +197,7 @@ const ProfilePictures = props => {
           /> */}
           {/*  <CustomText onPress={drag}>hello</CustomText> */}
           {/* <ScaleDecorator> */}
-          {/* {multiImages.map((item, index) => {
+          {multiImages.map((item, index) => {
             return (
               <ImageContainer
                 data={multiImages}
@@ -209,7 +210,7 @@ const ProfilePictures = props => {
                 // onPress={drag}
               />
             );
-          })} */}
+          })}
 
           {/* </ScaleDecorator> */}
 
