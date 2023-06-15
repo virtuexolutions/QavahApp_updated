@@ -1,7 +1,7 @@
 // export const baseUrl = "https://qavah.us";
-export const baseUrl = "https://qavah.ad-wize.com";
+// export const baseUrl = "https://qavah.ad-wize.com";
 
-// export const baseUrl = "https://d897-113-203-241-13.ngrok-free.app";
+export const baseUrl = "https://4d5c-113-203-241-13.ngrok-free.app" ;
 export const imageUrl = `${baseUrl}/api/images/`;
 export const profilePicUrl = `${baseUrl}/uploads`
 

@@ -44,10 +44,10 @@ const SpotLight = () => {
 
   const [isVisible, setIsVisible] = useState(false);
   const [spotLightData, setSpotLightData] = useState([]);
-  console.log(
-    '🚀 ~ file: SpotLight.js:41 ~ SpotLight ~ setSpotLightData:',
-     spotLightData
-  );
+  // console.log(
+  //   '🚀 ~ file: SpotLight.js:41 ~ SpotLight ~ setSpotLightData:',
+  //    spotLightData
+  // );
 
   const [isSuperLikeVisible, setSuperLikeVisible] = useState(false);
 
@@ -643,7 +643,8 @@ const SpotLight = () => {
                         //    marginTop: moderateScale(-15, 0.3),
                       }}
                       iconSize={moderateScale(20, 0.6)}
-                      onPress={async (item, index) => {
+                      onPress={async () => {
+                      // console.log("🚀 ~ file: SpotLight.js:647 ~ onPress={ ~ item:", item)
                   
                         const url = 'swap/disliked';
                         const response = await Post(
@@ -651,8 +652,9 @@ const SpotLight = () => {
                           {targetsUid: item?.id},
                           apiHeader(token),
                         );
+                        // console.log("🚀 ~ file: SpotLight.js:655 ~ onPress={ ~ response:", response?.data)
       
-                        if (response?.data?.status == true) {
+                        if (response?.data?.status) {
                           const filteredData2 = theyAreYourType.filter(
                             (data, index) =>
                               response?.data?.peoples?.match_id != data?.id,
@@ -683,7 +685,7 @@ const SpotLight = () => {
                         //    marginTop: moderateScale(-15, 0.3),
                       }}
                       iconSize={moderateScale(20, 0.6)}
-                      onPress={async (item ,index ) => {
+                      onPress={async () => {
                         const url = 'swap/liked';
                         // console.log({targetsUid: selectedId});
                         const response = await Post(

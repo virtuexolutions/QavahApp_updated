@@ -7,7 +7,7 @@ import {
   Platform,
   ToastAndroid
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
@@ -22,48 +22,96 @@ import navigationService from '../navigationService';
 import CustomModal from '../Components/CustomModal';
 import BottomSheetSelect from '../Components/BottomSheetSelect';
 import { Post } from '../Axios/AxiosInterceptorFunction';
+import { useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
 
 const IsraeliteFilters = props => {
   const edit = props?.route?.params?.edit;
   const twoStepsData = props?.route?.params?.twoStepsData
-  console.log("🚀 ~ file: IsraeliteFilters.js:26 ~ IsraeliteFilters ~ twoStepsData:", twoStepsData?.step2?.galleryImages)
+  const user = useSelector(state => state.commonReducer.userData)
+  console.log("🚀 ~ file: IsraeliteFilters.js:31 ~ IsraeliteFilters ~ user:", user)
+  // console.log("🚀 ~ file: IsraeliteFilters.js:26 ~ IsraeliteFilters ~ twoStepsData:", twoStepsData?.step2?.galleryImages)
   // console.log(
   //   '🚀 ~ file: IsraeliteFilters.js:25 ~ IsraeliteFilters ~ edit:',
   //   edit,
   // );
-  const [believe, setBelieve] = useState(edit ? 'grafted in' : '');
-  const [yearsInTruth, setYearsInTruth] = useState(edit ? '2 years' : '');
-  const [studyHabits, setStudyHabits] = useState(edit ? 'torah only' : '');
+  const focused = useIsFocused()
+  const [believe, setBelieve] = useState(edit ? user?.iBelieveIAM : '');
+  console.log("🚀 ~ file: IsraeliteFilters.js:40 ~ IsraeliteFilters ~ believe:", believe)
+  const [yearsInTruth, setYearsInTruth] = useState(edit ? user?.yearsInTruth : '');
+  const [studyHabits, setStudyHabits] = useState(edit ? user?.studyHabits : '');
   const [spiritualValues, setSpiritualValues] = useState(
-    edit ? 'messianic' : '',
+    edit ? user?.spiritualValue : '',
   );
-  const [maritialBelief, setMaritialBelief] = useState(edit ? 'monogamy' : '');
+  const [maritialBelief, setMaritialBelief] = useState(edit ? user?.maritalBeliefSystem : '');
   const [studyBible, setStudyBible] = useState(
-    edit ? '1611 king james a/Apocrypha' : '',
+    edit ? user?.studyBible : '',
   );
   const [spiritualBgc, setSpiritualBgc] = useState(
-    edit ? 'i came out of islam' : '',
+    edit ? user?.spiritualBackground : '',
   );
   const [anyAffiliation, setAnyAffiliation] = useState(
-    edit ? 'i am a member of an online org' : '',
+    edit ? user?.anyAffiliation : '',
   );
   const [selectedIndex, setIndex] = useState('');
   const [israelitePractise , setIsraelitePractise] = useState([]);
+  console.log("🚀 ~ file: IsraeliteFilters.js:55 ~ IsraeliteFilters ~ israelitePractise:", israelitePractise)
   const [modalVisible, setModalVisible] = useState(false);
   // const [type, setType] = useState('');
   const [passionModalVisible, setPassionModalVisible] = useState(false);
-  const [passions, setPassions] = useState(
-    edit ? ['Singing', 'Music', 'Riding Horses'] : [],
+  const [passions, setPassions] = useState([]
   );
-  const [kingdomGifts, setKingDomGifts] = useState(
-    edit ? ['House keeping', 'cooking', 'wellness planning'] : [],
-  );
+  console.log("🚀 ~ file: IsraeliteFilters.js:61 ~ IsraeliteFilters ~ passions:", passions)
+  const [kingdomGifts, setKingDomGifts] = useState([]);
+  console.log("🚀 ~ file: IsraeliteFilters.js:63 ~ IsraeliteFilters ~ kingdomGifts:", kingdomGifts)
   // console.log("🚀 ~ file: IsraeliteFilters.js:69 ~ checkPassion ~ kingdomGifts:", kingdomGifts)
 
   const [arrayForModal, setArrayForModal] = useState([]);
   const [type, setType] = useState('passions');
   const [isLoading , setIsLoading] = useState(false);
 
+
+  const setPracticeData = ()=>{
+    edit ? user?.isrealite_practice_keeping.map((item,index) => setIsraelitePractise(prev=>[...prev,item?.options])) : []
+  }
+
+  const setPassionsData = () =>{
+    edit ? user?.passions.map((item, index) => setPassions(prev =>[...prev, item?.options])) : []
+  }
+
+  const setKingdom_gifts =()=>{
+    edit ? user?.kingdom_gifts.map((item, index) => setKingDomGifts(prev =>[...prev, item?.options])) : []
+  }
+
+  useEffect(()=>{
+    setPracticeData();
+    setPassionsData();
+    setKingdom_gifts()
+  },[focused])
+
+
+  const updateIsraelLiteInfo = async () => {
+    const url = 'update-israelite-info';
+    const body = {
+      iBelieveIAm: 'grafted In',
+      yearsInTruth: 2,
+      StudyHabits: 'Torah Only',
+      SpiritualValues: 'Messianic',
+      MaritalBeliefSystem: 'Monogamy',
+      studyBible: 'King ujames Version',
+      SpiritualBg: 'I Came Out Of Islam',
+      isrealite_practice_keeping: ['feast days', 'new moons'],
+      Passions: ['Photography', 'singing'],
+      KingomGifts: ['animal Husbandry'],
+    };
+    const response = await Post(url, {targetsUid: user?.id , body:body}, apiHeader(token));
+
+    if(response != undefined){
+      
+      console.log("🚀 ~ file: Israeliteinfo.js:58 ~ updateIsraelLiteInfo ~ response:", response)
+      
+    }
+  };
 
 
 

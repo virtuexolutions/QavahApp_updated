@@ -13,16 +13,21 @@ import {Icon} from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import navigationService from '../navigationService';
 import { Post } from '../Axios/AxiosInterceptorFunction';
+import { useSelector } from 'react-redux';
 
 const UserCard = ({onClosePress, onheartPress, style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => {
   // console.log("🚀 ~ file: UserCard.js:17 ~ UserCard ~ item:", item?.profile_images[0]?.url)
+  
+  const token = useSelector(state => state.authReducer.token);
+  
+  console.log("🚀 ~ file: UserCard.js:19 ~ UserCard ~ favoredYouPost:", favoredYouPost)
   const profile_image = item?.profile_images[0]?.url;
   console.log(
     '🚀 ~ file: UserCard.js:19 ~ UserCard ~ profile_image:',
     profile_image,
   );
 
-  const sendDislike = async (index, item) => {
+  const sendDislike = async (item) => {
                   
     const url = 'swap/disliked';
     const response = await Post(
@@ -30,6 +35,7 @@ const UserCard = ({onClosePress, onheartPress, style, item, hideBtns,favoredYouP
       {targetsUid: item?.id},
       apiHeader(token),
     );
+    console.log("🚀 ~ file: UserCard.js:38 ~ sendDislike ~ response:", response?.data)
 
     if (response?.data?.status == true) {
       const filteredData2 = favoredYouPost.filter(
@@ -49,7 +55,7 @@ const UserCard = ({onClosePress, onheartPress, style, item, hideBtns,favoredYouP
     }
   }
 
-  const sendLike = async (index, item) => {
+  const sendLike = async (item) => {
     const url = 'swap/liked';
     // console.log({targetsUid: selectedId});
     const response = await Post(
@@ -57,6 +63,9 @@ const UserCard = ({onClosePress, onheartPress, style, item, hideBtns,favoredYouP
       {targetsUid: item?.id},
       apiHeader(token),
     );
+    console.log("🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:", response?.data)
+
+    
     if (response?.data?.status) {
 
       setFavoredYouPost(
@@ -182,7 +191,7 @@ const UserCard = ({onClosePress, onheartPress, style, item, hideBtns,favoredYouP
               //    marginTop: moderateScale(-15, 0.3),
             }}
             iconSize={moderateScale(20, 0.6)}
-            onPress={() => sendDislike()}
+            onPress={() => sendDislike(item)}
           />
           <BtnContainer
             backgroundColor={Color.themeColor}
@@ -197,7 +206,7 @@ const UserCard = ({onClosePress, onheartPress, style, item, hideBtns,favoredYouP
               //    marginTop: moderateScale(-15, 0.3),
             }}
             iconSize={moderateScale(20, 0.6)}
-            onPress={()=>sendLike()}
+            onPress={()=>sendLike(item)}
           />
         </View>
       )}
