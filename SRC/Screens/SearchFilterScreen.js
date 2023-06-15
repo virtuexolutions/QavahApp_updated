@@ -634,7 +634,7 @@ const SearchFilterScreen = () => {
           paddingBottom: moderateScale(20, 0.6),
           alignItems: 'center',
         }}>
-        <TextInputWithTitle
+        {/* <TextInputWithTitle
           iconName={'location'}
           iconType={Ionicons}
           titleText={'location'}
@@ -651,7 +651,7 @@ const SearchFilterScreen = () => {
           color={Color.themeColor}
           placeholderColor={Color.themeLightGray}
           borderRadius={moderateScale(5, 0.3)}
-        />
+        /> */}
         <Silder
           single={true}
           setState1={setDistance}

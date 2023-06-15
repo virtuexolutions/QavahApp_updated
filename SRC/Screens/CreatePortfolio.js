@@ -370,7 +370,11 @@ const CreatePortfolio = () => {
                 ]}>
                 Born Day
               </CustomText>
-              <View style={styles.birthday}>
+              <TouchableOpacity activeOpacity={0.8} style={styles.birthday} 
+                onPress={() => {
+                  setOpen(true);
+                }}
+              >
                 <CustomText
                   style={{
                     fontSize: moderateScale(15, 0.6),
@@ -388,7 +392,7 @@ const CreatePortfolio = () => {
                     setOpen(true);
                   }}
                 />
-              </View>
+              </TouchableOpacity>
             </>
           ) : currentStep == 5 ? (
             <>

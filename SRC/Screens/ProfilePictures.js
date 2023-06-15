@@ -196,7 +196,7 @@ const ProfilePictures = props => {
           /> */}
           {/*  <CustomText onPress={drag}>hello</CustomText> */}
           {/* <ScaleDecorator> */}
-          {/* {multiImages.map((item, index) => {
+          {multiImages.map((item, index) => {
             return (
               <ImageContainer
                 data={multiImages}
@@ -209,7 +209,7 @@ const ProfilePictures = props => {
                 // onPress={drag}
               />
             );
-          })} */}
+          })}
 
           {/* </ScaleDecorator> */}
 

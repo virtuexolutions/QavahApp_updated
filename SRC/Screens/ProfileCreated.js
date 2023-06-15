@@ -83,12 +83,13 @@ const ProfileCreated = (props) => {
         </View>
         <CustomButton
           text={'Start'}
-          textColor={Color.themeColor}
+          textColor={Color.black}
           width={windowWidth * 0.9}
           height={windowHeight * 0.09}
           onPress={() => {
-            dispatch(setUserToken({token: token}));
-            dispatch(setUserData(userData))
+            navigationService.navigate('LoginScreen')
+            // dispatch(setUserToken({token: token}));
+            // dispatch(setUserData(userData))
           }}
           bgColor={Color.white}
           borderRadius={moderateScale(15, 0.3)}
@@ -123,7 +124,7 @@ const styles = ScaledSheet.create({
     height: moderateScale(100, 0.3),
     borderRadius: moderateScale(50, 0.3),
     borderWidth: 3,
-    borderColor: Color.themeColor,
+    borderColor: Color.black,
   },
   downContainer: {
     marginTop: moderateScale(20, 0.3),

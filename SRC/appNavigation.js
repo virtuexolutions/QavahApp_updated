@@ -91,7 +91,7 @@ const AppNavigator = () => {
           />
           <RootNav.Screen name="Passions" component={Passions} />
           <RootNav.Screen name="ProfileCreated" component={ProfileCreated} />
-          <RootNav.Screen name="Israeliteinfo" component={Israeliteinfo} />
+          {/* <RootNav.Screen name="Israeliteinfo" component={Israeliteinfo} />
           <RootNav.Screen name="TabNavigation" component={TabNavigation} />
           <RootNav.Screen name="UserDetail" component={UserDetail} />
           <RootNav.Screen name="Profile" component={Profile} />
@@ -103,7 +103,7 @@ const AppNavigator = () => {
           <RootNav.Screen name= "TermsAndConditions" component={TermsAndConditions} />
           <RootNav.Screen name="Support" component={Support} />
           <RootNav.Screen name="GetSuperLike" component={GetSuperLike} />
-          <RootNav.Screen name="Privacy" component={PrivacyPolicy} />
+          <RootNav.Screen name="Privacy" component={PrivacyPolicy} /> */}
 
           {/* // options={()=>{
           //   options
