@@ -49,6 +49,7 @@ const IsraeliteFilters = props => {
   );
   const [selectedIndex, setIndex] = useState('');
   const [israelitePractise , setIsraelitePractise] = useState([]);
+  console.log("🚀 ~ file: IsraeliteFilters.js:52 ~ IsraeliteFilters ~ israelitePractise:", israelitePractise)
   const [modalVisible, setModalVisible] = useState(false);
   // const [type, setType] = useState('');
   const [passionModalVisible, setPassionModalVisible] = useState(false);
@@ -393,7 +394,8 @@ const IsraeliteFilters = props => {
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => {
-                  !israelitePractise.includes(item) && setIsraelitePractise(prev=>[...prev ,item])
+                  const data =[...israelitePractise]
+                  !israelitePractise.includes(item) ? setIsraelitePractise(prev=>[...prev ,item]): setIsraelitePractise(data.filter(value=> value != item)) 
                   // setIndex(index);
                 }}
                 key={index}

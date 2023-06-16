@@ -43,7 +43,7 @@ const ProfilePictures = props => {
   //   require('../Assets/Images/banner.jpg'),
   //   require('../Assets/Images/banner.jpg'),
   // ]);
-  const [multiImages, setMultiImages] = useState([])
+  const [multiImages, setMultiImages] = useState([{},{},{},{},{},{}])
   console.log(
     '🚀 ~ file: ProfilePictures.js:32 ~ ProfilePictures ~ multiImages:',
     multiImages,

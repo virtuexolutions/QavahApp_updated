@@ -78,16 +78,16 @@ const ProfileCreated = (props) => {
           </CustomText>
           <CustomImage
             style={styles.logo}
-            source={require('../Assets/Images/logo.png')}
+            source={require('../Assets/Images/logo1.png')}
           />
         </View>
         <CustomButton
           text={'Start'}
-          textColor={Color.black}
+          textColor={Color.themeColor}
           width={windowWidth * 0.9}
           height={windowHeight * 0.09}
           onPress={() => {
-            navigationService.navigate('LoginScreen')
+            navigationService.navigate('TabNavigation')
             // dispatch(setUserToken({token: token}));
             // dispatch(setUserData(userData))
           }}
@@ -124,7 +124,7 @@ const styles = ScaledSheet.create({
     height: moderateScale(100, 0.3),
     borderRadius: moderateScale(50, 0.3),
     borderWidth: 3,
-    borderColor: Color.black,
+    borderColor: Color.themeColor,
   },
   downContainer: {
     marginTop: moderateScale(20, 0.3),
