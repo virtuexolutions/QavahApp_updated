@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, ActivityIndicator,ToastAndroid,Platform} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  ToastAndroid,
+  Platform,
+} from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Header from '../Components/Header';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -61,16 +68,14 @@ const HomeScreen = () => {
     }
   };
   const handleOnSwipedLeft = async () => {
- 
-      swiperRef.swipeLeft();
-    
+    swiperRef.swipeLeft();
   };
   const handleOnSwipedTop = () => {
     // swiperRef.swipeTop(),
     setSuperLikeVisible(true);
   };
   const handleOnSwipedRight = async () => {
-      swiperRef.swipeRight();
+    swiperRef.swipeRight();
   };
 
   //  let obj = array.find(o => o.name === 'string 1');
@@ -105,42 +110,36 @@ const HomeScreen = () => {
       photo: require('../Assets/Images/woman3.jpeg'),
     },
   ];
-  const UndoLog = async () => {
+  const UndoLog = async allow => {
     if (LogData.length > 0) {
-      const undoData = [...LogData]
-      LogData.pop()
+      const undoData = [...LogData];
+      LogData.pop();
       // console.log("🚀 ~ file: HomeScreen.js:173 ~ UndoLog ~ undoData:", undoData)
-      const url = 'swap/rewind'
-      
-      
-      const body = {
-        myName : user?.profileName,
-        myUid: user?.id,
-        targetsUid: undoData[undoData?.length-1]?.id,
-        targetName:undoData[undoData?.length-1]?.profileName,
 
-      }
-      
-      const response = await Post(
-        url,
-        body,
-        apiHeader(token),
-      );
-      
-      if(response?.data?.status){
-        
+      const url = 'swap/rewind';
+
+      const body = {
+        myName: user?.profileName,
+        myUid: user?.id,
+        targetsUid: undoData[undoData?.length - 1]?.id,
+        targetName: undoData[undoData?.length - 1]?.profileName,
+      };
+      // return console.log("🚀 ~ file: HomeScreen.js:127 ~ UndoLog ~ body:", body)
+      setIsLoading(true);
+
+      const response = await Post(url, body, apiHeader(token));
+      setIsLoading(false);
+
+      if (response?.data?.status) {
         // console.log("🚀 ~ file: HomeScreen.js:180 ~ UndoLog ~ response:", response?.data?.response?.target_user)
-        setPhotoCards(prev => [undoData[undoData?.length-1], ...prev  ]);
+        setPhotoCards(prev => [undoData[undoData?.length - 1], ...prev]);
         // console.log(
         //   '🚀 ~ file: HomeScreen.js:136 ~ UndoLeft ~ leftLogData:',
         //   LogData,
         // );
         // console.log('photoCards after undo', photoCards);
-         await swiperRef.swipeBack();
-
+        allow && (await swiperRef.swipeBack());
       }
-
-
     }
   };
 
@@ -148,7 +147,7 @@ const HomeScreen = () => {
     console.log(x, y);
     setXAxis(x);
     setYAxis(y);
-  },[])
+  }, []);
 
   useEffect(() => {
     getUsers();
@@ -212,8 +211,7 @@ const HomeScreen = () => {
               showSecondCard={true}
               animateOverlayLabelsOpacity
               swipeBackCard
-              onSwipedLeft={
-                async (index, item) => {
+              onSwipedLeft={async (index, item) => {
                 // return console.log('item in left ', item?.id)
                 // console.log(' hererererere  ===  >> > > ');
                 const url = 'swap/disliked';
@@ -226,23 +224,26 @@ const HomeScreen = () => {
                   // console.log('response ======= >', response?.data);
                   // console.log('left', item?.id);
 
-                  const filteredData = photoCards.filter((data,index) => response?.data?.peoples?.match_id == data?.id)
-                  const filteredData2 = photoCards.filter((data, index) => response?.data?.peoples?.match_id != data?.id)
-                  setLogData(prev => [
-                    ...prev,
-                    ...filteredData,
-                  ]);
+                  const filteredData = photoCards.filter(
+                    (data, index) =>
+                      response?.data?.peoples?.match_id == data?.id,
+                  );
+                  const filteredData2 = photoCards.filter(
+                    (data, index) =>
+                      response?.data?.peoples?.match_id != data?.id,
+                  );
+                  setLogData(prev => [...prev, ...filteredData]);
 
                   setPhotoCards(filteredData2);
+                } else {
+                  Platform.OS == 'android'
+                    ? ToastAndroid.show(
+                        response?.data?.error,
+                        ToastAndroid.SHORT,
+                      )
+                    : alert(response?.data?.error);
                 }
-                else {
-                    Platform.OS == 'android'
-                      ? ToastAndroid.show(response?.error, ToastAndroid.SHORT)
-                      : alert(response?.error);
-                  }
-              }
-            
-            }
+              }}
               disableBottomSwipe={true}
               onSwipedRight={async (index, item) => {
                 const url = 'swap/liked';
@@ -253,7 +254,7 @@ const HomeScreen = () => {
                   apiHeader(token),
                 );
                 if (response?.data?.status == true) {
-                 setLogData(prev => [
+                  setLogData(prev => [
                     ...prev,
                     ...photoCards.filter((data, index) => {
                       return response?.data?.peoples?.match_id == data?.id;
@@ -266,32 +267,43 @@ const HomeScreen = () => {
                         response?.data?.peoples?.match_id != data?.id,
                     ),
                   );
+                } else {
+                  Platform.OS == 'android'
+                    ? ToastAndroid.show(
+                        response?.data?.error,
+                        ToastAndroid.SHORT,
+                      )
+                    : alert(response?.data?.error);
                 }
-                else {
-                    Platform.OS == 'android'
-                      ? ToastAndroid.show(response?.error, ToastAndroid.SHORT)
-                      : alert(response?.error);
-                  }
-              }  }
+              }}
               onSwipedTop={async (index, item) => {
                 // console.log("🚀 ~ file: HomeScreen.js:276 ~ onSwipedTop={ ~ item:", item?.id)
                 const url = 'swap/superLiked';
-                const response = await Post(url, {targetsUid:item?.id}, apiHeader(token))
+                const response = await Post(
+                  url,
+                  {targetsUid: item?.id},
+                  apiHeader(token),
+                );
 
-                if(response?.data?.status){
-                  
+                if (response?.data?.status) {
                   // console.log("🚀 ~ file: SpotLight.js:464 ~ onSwipedTop={ ~ response:", response?.data)
-                  const filteredData2 = photoCards.filter((data, index) => response?.data?.peoples?.only?.match_id != data?.id)
+                  const filteredData2 = photoCards.filter(
+                    (data, index) =>
+                      response?.data?.peoples?.only?.match_id != data?.id,
+                  );
 
                   setPhotoCards(filteredData2);
-
-                }else{
-                  Platform.OS == 'android' ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT) : Alert.Alert(response?.data?.error)
+                } else {
+                  Platform.OS == 'android'
+                    ? ToastAndroid.show(
+                        response?.data?.error,
+                        ToastAndroid.SHORT,
+                      )
+                    : Alert.Alert(response?.data?.error);
                 }
-
               }}
-              onSwiping={(x, y)=>{
-                setXY(x ,y)
+              onSwiping={(x, y) => {
+                setXY(x, y);
               }}
               dragEnd={() => {
                 setXAxis(0);
@@ -340,9 +352,7 @@ const HomeScreen = () => {
               name={isLoading ? 'cloud-download' : 'undo'}
               type={FontAwesome}
               onPress={() => {
-                setIsLoading(true);
-                UndoLog();
-                setIsLoading(false);
+                UndoLog(true);
               }}
             />
 
