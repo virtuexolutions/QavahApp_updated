@@ -1,8 +1,8 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity , ToastAndroid , Platform} from 'react-native';
 import React, {useState} from 'react';
 import CustomImage from '../Components/CustomImage';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 // import {SharedElement} from 'react-navigation-shared-element';
 import {ScrollView} from 'react-native';
 import Header from '../Components/Header';
@@ -29,8 +29,12 @@ import {useSelector} from 'react-redux';
 import ImageContainer from '../Components/ImageContainer';
 import ImagePickerModal from '../Components/ImagePickerModal';
 import {Image} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
 const UserDetail = props => {
+  const token = useSelector(state => state.authReducer.token);
+  const navigation = useNavigation()
   const user = useSelector(state => state.commonReducer.userData);
   const item = props?.route?.params?.item;
   console.log('🚀 ~ file: UserDetail.js:30 ~ UserDetail ~ item:', item);
@@ -56,6 +60,39 @@ const UserDetail = props => {
  
   const images = [require('../Assets/Images/woman1.jpeg')];
   console.log('🚀 ~ file: UserDetail.js:50 ~ UserDetail ~ images:', images);
+
+  const handleLike = async()=>{
+    const url = 'swap/liked';
+    const response = await Post(
+      url,
+      {targetsUid: item?.id},
+      apiHeader(token),
+    );
+    if (response?.data?.status == true) {
+        navigation.goBack()
+    }
+    else {
+        Platform.OS == 'android'
+          ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
+          : alert(response?.data?.error);
+      }
+  }
+  const handleDisLike = async()=>{
+    const url = 'swap/disliked';
+    const response = await Post(
+      url,
+      {targetsUid: item?.id},
+      apiHeader(token),
+    );
+    if (response?.data?.status == true) {
+        navigation.goBack()
+    }
+    else {
+        Platform.OS == 'android'
+          ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
+          : alert(response?.data?.error);
+      }
+  }
   return (
     <>
       <CustomStatusBar
@@ -103,7 +140,7 @@ const UserDetail = props => {
                 zIndex: 1,
               }}
               onPress={() => {
-                props?.navigation.goBack();
+                navigation.goBack();
               }}
             />
           )}
@@ -127,7 +164,7 @@ const UserDetail = props => {
                 // marginTop: moderateScale(-5, 0.3),
               }}
               onPress={() => {
-                !fromSearch && navigationService.navigate('PersonalInfo');
+                !fromSearch ? navigationService.navigate('PersonalInfo') : handleDisLike();
               }}
               iconSize={moderateScale(30, 0.6)}
             />
@@ -145,6 +182,7 @@ const UserDetail = props => {
                   marginTop: moderateScale(-15, 0.3),
                 }}
                 iconSize={moderateScale(40, 0.6)}
+                onPress={handleLike}
               />
             )}
             <View style={styles.likeContainer}>
@@ -329,7 +367,7 @@ const UserDetail = props => {
               />
             </TouchableOpacity>
           </View>
-          {/* <View
+          <View
             style={{
               flexDirection: 'row',
               flexWrap: 'wrap',
@@ -373,8 +411,8 @@ const UserDetail = props => {
                 </TouchableOpacity>
               );
             })}
-          </View> */}
-          <View style={styles.imageView}>
+          </View>
+          {/* <View style={styles.imageView}>
           
             {multiImages.map((item, index) => {
             return (
@@ -391,7 +429,7 @@ const UserDetail = props => {
             );
           })}
 
-          </View>
+          </View> */}
           {fromSearch && (
             <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
               <CustomText
