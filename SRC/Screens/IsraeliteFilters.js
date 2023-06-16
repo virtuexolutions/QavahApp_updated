@@ -51,9 +51,7 @@ const IsraeliteFilters = props => {
   const [spiritualBgc, setSpiritualBgc] = useState(
     edit ? user?.spiritualBackground : '',
   );
-  const [anyAffiliation, setAnyAffiliation] = useState(
-    edit ? user?.anyAffiliation : '',
-  );
+  const [anyAffiliation, setAnyAffiliation] = useState(edit ? user?.anyAffiliation : '');
   const [selectedIndex, setIndex] = useState('');
   const [israelitePractise , setIsraelitePractise] = useState(edit? user?.isrealite_practice_keeping.map(item=> item?.options) :[]);
   console.log("🚀 ~ file: IsraeliteFilters.js:55 ~ IsraeliteFilters ~ israelitePractise:", israelitePractise)
@@ -427,7 +425,8 @@ const IsraeliteFilters = props => {
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => {
-                  !israelitePractise.includes(item) && setIsraelitePractise(prev=>[...prev ,item])
+                  const data =[...israelitePractise]
+                  !israelitePractise.includes(item) ? setIsraelitePractise(prev=>[...prev ,item]): setIsraelitePractise(data.filter(value=> value != item)) 
                   // setIndex(index);
                 }}
                 key={index}
