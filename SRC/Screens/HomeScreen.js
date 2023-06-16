@@ -50,7 +50,7 @@ const HomeScreen = () => {
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [photoCards, setPhotoCards] = useState([]);
-  // console.log("🚀 ~ file: HomeScreen.js:45 ~ photoCards:", photoCards)
+  console.log("🚀 ~ file: HomeScreen.js:45 ~ photoCards:", photoCards)
 
   const [LogData, setLogData] = useState([]);
 
@@ -212,6 +212,7 @@ const HomeScreen = () => {
               animateOverlayLabelsOpacity
               swipeBackCard
               onSwipedLeft={async (index, item) => {
+                // return console.log("🚀 ~ file: HomeScreen.js:215 ~ onSwipedLeft={ ~ item:", item)
                 // return console.log('item in left ', item?.id)
                 // console.log(' hererererere  ===  >> > > ');
                 const url = 'swap/disliked';
@@ -221,20 +222,27 @@ const HomeScreen = () => {
                   apiHeader(token),
                 );
                 if (response?.data?.status == true) {
-                  // console.log('response ======= >', response?.data);
+                  console.log('response ======= >', response?.data);
                   // console.log('left', item?.id);
-
-                  const filteredData = photoCards.filter(
+                  const filteredData = [...photoCards]
+                  const filteredData2 = [...photoCards]
+                  // const filteredData = photoCards.filter(
+                  //   (data, index) =>
+                  //     response?.data?.peoples?.match_id == data?.id,
+                  // );
+                  setLogData(prev => [...prev, filteredData.find(
                     (data, index) =>
                       response?.data?.peoples?.match_id == data?.id,
-                  );
-                  const filteredData2 = photoCards.filter(
+                  )]);
+                  // const filteredData2 = photoCards.filter(
+                  //   (data, index) =>
+                  //     response?.data?.peoples?.match_id != data?.id,
+                  // );
+                  setPhotoCards(filteredData2.filter(
                     (data, index) =>
                       response?.data?.peoples?.match_id != data?.id,
-                  );
-                  setLogData(prev => [...prev, ...filteredData]);
+                  ));
 
-                  setPhotoCards(filteredData2);
                 } else {
                   Platform.OS == 'android'
                     ? ToastAndroid.show(
