@@ -29,6 +29,7 @@ const IsraeliteFilters = props => {
   const edit = props?.route?.params?.edit;
   const twoStepsData = props?.route?.params?.twoStepsData
   const user = useSelector(state => state.commonReducer.userData)
+  const token = useSelector(state => state.authReducer.token)
   console.log("🚀 ~ file: IsraeliteFilters.js:31 ~ IsraeliteFilters ~ user:", user)
   // console.log("🚀 ~ file: IsraeliteFilters.js:26 ~ IsraeliteFilters ~ twoStepsData:", twoStepsData?.step2?.galleryImages)
   // console.log(
@@ -54,15 +55,14 @@ const IsraeliteFilters = props => {
     edit ? user?.anyAffiliation : '',
   );
   const [selectedIndex, setIndex] = useState('');
-  const [israelitePractise , setIsraelitePractise] = useState([]);
+  const [israelitePractise , setIsraelitePractise] = useState(edit? user?.isrealite_practice_keeping.map(item=> item?.options) :[]);
   console.log("🚀 ~ file: IsraeliteFilters.js:55 ~ IsraeliteFilters ~ israelitePractise:", israelitePractise)
   const [modalVisible, setModalVisible] = useState(false);
   // const [type, setType] = useState('');
   const [passionModalVisible, setPassionModalVisible] = useState(false);
-  const [passions, setPassions] = useState([]
-  );
+  const [passions, setPassions] = useState(edit? user?.passions.map(item => item?.options) : []);
   console.log("🚀 ~ file: IsraeliteFilters.js:61 ~ IsraeliteFilters ~ passions:", passions)
-  const [kingdomGifts, setKingDomGifts] = useState([]);
+  const [kingdomGifts, setKingDomGifts] = useState(edit? user?.kingdom_gifts.map(item => item?.options) : []);
   console.log("🚀 ~ file: IsraeliteFilters.js:63 ~ IsraeliteFilters ~ kingdomGifts:", kingdomGifts)
   // console.log("🚀 ~ file: IsraeliteFilters.js:69 ~ checkPassion ~ kingdomGifts:", kingdomGifts)
 
@@ -71,44 +71,30 @@ const IsraeliteFilters = props => {
   const [isLoading , setIsLoading] = useState(false);
 
 
-  const setPracticeData = ()=>{
-    edit ? user?.isrealite_practice_keeping.map((item,index) => setIsraelitePractise(prev=>[...prev,item?.options])) : []
-  }
-
-  const setPassionsData = () =>{
-    edit ? user?.passions.map((item, index) => setPassions(prev =>[...prev, item?.options])) : []
-  }
-
-  const setKingdom_gifts =()=>{
-    edit ? user?.kingdom_gifts.map((item, index) => setKingDomGifts(prev =>[...prev, item?.options])) : []
-  }
-
-  useEffect(()=>{
-    setPracticeData();
-    setPassionsData();
-    setKingdom_gifts()
-  },[focused])
+  
 
 
   const updateIsraelLiteInfo = async () => {
-    const url = 'update-israelite-info';
+    const url = 'isralite_info';
     const body = {
-      iBelieveIAm: 'grafted In',
-      yearsInTruth: 2,
-      StudyHabits: 'Torah Only',
-      SpiritualValues: 'Messianic',
-      MaritalBeliefSystem: 'Monogamy',
-      studyBible: 'King ujames Version',
-      SpiritualBg: 'I Came Out Of Islam',
-      isrealite_practice_keeping: ['feast days', 'new moons'],
-      Passions: ['Photography', 'singing'],
-      KingomGifts: ['animal Husbandry'],
+      targetsUid: user?.id , 
+      iBelieveIAm: believe,
+      yearsInTruth:yearsInTruth ,
+      StudyHabits: studyHabits,
+      SpiritualValues: spiritualValues,
+      MaritalBeliefSystem: maritialBelief,
+      studyBible:studyBible,
+      SpiritualBg: spiritualBgc,
+      isrealite_practice_keeping:israelitePractise,
+      Passions: passions,
+      KingomGifts: kingdomGifts,
     };
-    const response = await Post(url, {targetsUid: user?.id , body:body}, apiHeader(token));
+    console.log("🚀 ~ file: IsraeliteFilters.js:91 ~ updateIsraelLiteInfo ~ body:", body)
+    const response = await Post(url, body, apiHeader(token));
 
     if(response != undefined){
       
-      console.log("🚀 ~ file: Israeliteinfo.js:58 ~ updateIsraelLiteInfo ~ response:", response)
+      console.log("🚀 ~ file: Israeliteinfo.js:58 ~ updateIsraelLiteInfo ~ response:", response?.data)
       
     }
   };
@@ -607,7 +593,7 @@ const IsraeliteFilters = props => {
           width={windowWidth * 0.9}
           height={windowHeight * 0.09}
           onPress={() => {
-           edit ? props?.navigation.goBack() : Registration() ;
+           edit ? updateIsraelLiteInfo()  : Registration() ;
           }}
           bgColor={Color.themeColor}
           borderRadius={moderateScale(15, 0.3)}

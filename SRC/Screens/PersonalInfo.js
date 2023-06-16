@@ -68,18 +68,19 @@ const PersonalInfo = () => {
       };
 
       const updatePortfolio = async () =>{
-        const url ='update-portfolio';
+        const url ='portfolio';
         const body = {
+          targetsUid: user?.id,
           profileName : profileName,
           Birthday: dob,
           Gender:gender,
           galleryImages:multiImages
           
           };
-        const response = await Post(url, {targetsUid: user?.id,body:body},apiHeader(token))
+        const response = await Post(url, body,apiHeader(token))
     
         if(response != undefined){
-    
+          
           console.log("🚀 ~ file: UserDetail.js:71 ~ updatePortfolio ~ response:", response)
           
         }
@@ -334,6 +335,11 @@ const PersonalInfo = () => {
           bgColor={Color.themeColor}
           borderRadius={moderateScale(15, 0.3)}
           elevation
+          onPress ={
+            ()=>{
+              updatePortfolio()
+            }
+          }
         />
       </ScrollView>
       <DatePicker

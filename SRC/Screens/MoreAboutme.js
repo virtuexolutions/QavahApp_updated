@@ -76,8 +76,9 @@ const MoreAboutme = (props) => {
 
 
   const updateMoreAboutMe = async ()=>{
-    const url = 'update-more-about-me';
+    const url = 'more_about_me';
     const body ={
+      targetsUid:user?.id,
       AboutMe : description,
       MaritialStatus: maritialStatus,
       LivingSituation: livingSituation,
@@ -93,11 +94,12 @@ const MoreAboutme = (props) => {
       WillingToRelocate: relocate,
       
       }
+    console.log("🚀 ~ file: MoreAboutme.js:96 ~ updateMoreAboutMe ~ body:", body)
     
-      const response = await Post(url, {targetsUid:user?.id, body: body}, apiHeader(token));
+      const response = await Post(url,body, apiHeader(token));
 
     if(response!= undefined){
-      console.log("🚀 ~ file: MoreAboutme.js:95 ~ updateMoreAboutMe ~ response:", response)
+      console.log("🚀 ~ file: MoreAboutme.js:95 ~ updateMoreAboutMe ~ response:", response?.data?.user)
       
     }
 
@@ -367,7 +369,7 @@ const MoreAboutme = (props) => {
           width={windowWidth * 0.9}
           height={windowHeight * 0.09}
           onPress={() => {
-            edit ? props?.navigation?.goBack() : navigationService.navigate('IsraeliteFilters', {twoStepsData : body});
+            edit ? updateMoreAboutMe() : navigationService.navigate('IsraeliteFilters', {twoStepsData : body});
           }}
           bgColor={Color.themeColor}
           borderRadius={moderateScale(15, 0.3)}
