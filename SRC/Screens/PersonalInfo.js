@@ -16,11 +16,15 @@ import {Icon} from 'native-base';
 import CustomButton from '../Components/CustomButton';
 import ImagePickerModal from '../Components/ImagePickerModal';
 import ImageContainer from '../Components/ImageContainer';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Post } from '../Axios/AxiosInterceptorFunction';
+import { setUserData } from '../Store/slices/common';
 
 const PersonalInfo = () => {
   const user = useSelector(state => state.commonReducer.userData);
+
+  const dispatch = useDispatch();
+  console.log("🚀 ~ file: PersonalInfo.js:24 ~ PersonalInfo ~ user:", user?.gallery_images)
   const token = useSelector(state => state.authReducer.token)
   const [email, setEmail] = useState(user?.email);
   const [number, setNumber] = useState(user?.phone);
@@ -38,6 +42,8 @@ const PersonalInfo = () => {
     {id: 5, uri: require('../Assets/Images/image4.jpeg')},
     {id: 6, uri: require('../Assets/Images/image5.jpeg')},
   ]);
+
+  // const [multiImages, setMultiImages] = useState(user?.gallery_images)
   const [tempMultiImages, setTempMultiImages] = useState([]);
   console.log("🚀 ~ file: PersonalInfo.js:36 ~ PersonalInfo ~ tempMultiImages:", tempMultiImages)
   const [multiImagesEmpty, setMultiImagesEmpty] = useState([]);
@@ -72,16 +78,19 @@ const PersonalInfo = () => {
         const body = {
           targetsUid: user?.id,
           profileName : profileName,
-          Birthday: dob,
+          Birthday: moment(dob).format('YYYY-MM-DD'),
           Gender:gender,
           galleryImages:multiImages
           
           };
+        console.log("🚀 ~ file: PersonalInfo.js:81 ~ updatePortfolio ~ body:", body)
         const response = await Post(url, body,apiHeader(token))
     
         if(response != undefined){
           
-          console.log("🚀 ~ file: UserDetail.js:71 ~ updatePortfolio ~ response:", response)
+          console.log("🚀 ~ file: UserDetail.js:71 ~ updatePortfolio ~ response:", response?.data)
+          dispatch(setUserData(response?.data?.user));
+          
           
         }
       }
@@ -238,24 +247,24 @@ const PersonalInfo = () => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              setGender('Man');
+              setGender('Men');
             }}
             style={[
               styles.cont,
-              gender == 'Man' && {borderColor: Color.themeColor},
+              gender == 'Men' && {borderColor: Color.themeColor},
             ]}
             activeOpacity={0.7}>
             <Icon
               name={'man'}
               as={Ionicons}
-              color={gender == 'Man' ? Color.themeColor : Color.veryLightGray}
+              color={gender == 'Men' ? Color.themeColor : Color.veryLightGray}
             />
 
             <CustomText
               isBold
               style={[
                 styles.txt6,
-                gender == 'Man' && {color: Color.themeColor},
+                gender == 'Men' && {color: Color.themeColor},
               ]}>
               {' '}
               Man

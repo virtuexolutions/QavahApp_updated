@@ -17,28 +17,30 @@ import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomText from '../Components/CustomText';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomButton from '../Components/CustomButton';
-import {Alert, Icon} from 'native-base';
+import {Alert, Icon, useDisclose} from 'native-base';
 import navigationService from '../navigationService';
 import CustomModal from '../Components/CustomModal';
 import BottomSheetSelect from '../Components/BottomSheetSelect';
 import { Post } from '../Axios/AxiosInterceptorFunction';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
+import { setUserData } from '../Store/slices/common';
 
 const IsraeliteFilters = props => {
   const edit = props?.route?.params?.edit;
   const twoStepsData = props?.route?.params?.twoStepsData
   const user = useSelector(state => state.commonReducer.userData)
   const token = useSelector(state => state.authReducer.token)
-  console.log("🚀 ~ file: IsraeliteFilters.js:31 ~ IsraeliteFilters ~ user:", user)
+  // console.log("🚀 ~ file: IsraeliteFilters.js:31 ~ IsraeliteFilters ~ user:", user)
   // console.log("🚀 ~ file: IsraeliteFilters.js:26 ~ IsraeliteFilters ~ twoStepsData:", twoStepsData?.step2?.galleryImages)
   // console.log(
   //   '🚀 ~ file: IsraeliteFilters.js:25 ~ IsraeliteFilters ~ edit:',
   //   edit,
   // );
   const focused = useIsFocused()
+  const dispatch = useDispatch()
   const [believe, setBelieve] = useState(edit ? user?.iBelieveIAM : '');
-  console.log("🚀 ~ file: IsraeliteFilters.js:40 ~ IsraeliteFilters ~ believe:", believe)
+  // console.log("🚀 ~ file: IsraeliteFilters.js:40 ~ IsraeliteFilters ~ believe:", believe)
   const [yearsInTruth, setYearsInTruth] = useState(edit ? user?.yearsInTruth : '');
   const [studyHabits, setStudyHabits] = useState(edit ? user?.studyHabits : '');
   const [spiritualValues, setSpiritualValues] = useState(
@@ -54,14 +56,14 @@ const IsraeliteFilters = props => {
   const [anyAffiliation, setAnyAffiliation] = useState(edit ? user?.anyAffiliation : '');
   const [selectedIndex, setIndex] = useState('');
   const [israelitePractise , setIsraelitePractise] = useState(edit? user?.isrealite_practice_keeping.map(item=> item?.options) :[]);
-  console.log("🚀 ~ file: IsraeliteFilters.js:55 ~ IsraeliteFilters ~ israelitePractise:", israelitePractise)
+  // console.log("🚀 ~ file: IsraeliteFilters.js:55 ~ IsraeliteFilters ~ israelitePractise:", israelitePractise)
   const [modalVisible, setModalVisible] = useState(false);
   // const [type, setType] = useState('');
   const [passionModalVisible, setPassionModalVisible] = useState(false);
   const [passions, setPassions] = useState(edit? user?.passions.map(item => item?.options) : []);
-  console.log("🚀 ~ file: IsraeliteFilters.js:61 ~ IsraeliteFilters ~ passions:", passions)
+  // console.log("🚀 ~ file: IsraeliteFilters.js:61 ~ IsraeliteFilters ~ passions:", passions)
   const [kingdomGifts, setKingDomGifts] = useState(edit? user?.kingdom_gifts.map(item => item?.options) : []);
-  console.log("🚀 ~ file: IsraeliteFilters.js:63 ~ IsraeliteFilters ~ kingdomGifts:", kingdomGifts)
+  // console.log("🚀 ~ file: IsraeliteFilters.js:63 ~ IsraeliteFilters ~ kingdomGifts:", kingdomGifts)
   // console.log("🚀 ~ file: IsraeliteFilters.js:69 ~ checkPassion ~ kingdomGifts:", kingdomGifts)
 
   const [arrayForModal, setArrayForModal] = useState([]);
@@ -83,16 +85,19 @@ const IsraeliteFilters = props => {
       MaritalBeliefSystem: maritialBelief,
       studyBible:studyBible,
       SpiritualBg: spiritualBgc,
+      anyAffiliation:anyAffiliation,
       isrealite_practice_keeping:israelitePractise,
       Passions: passions,
       KingomGifts: kingdomGifts,
     };
-    console.log("🚀 ~ file: IsraeliteFilters.js:91 ~ updateIsraelLiteInfo ~ body:", body)
+    // console.log("🚀 ~ file: IsraeliteFilters.js:91 ~ updateIsraelLiteInfo ~ body:", body)
     const response = await Post(url, body, apiHeader(token));
 
     if(response != undefined){
       
-      console.log("🚀 ~ file: Israeliteinfo.js:58 ~ updateIsraelLiteInfo ~ response:", response?.data)
+      // console.log("🚀 ~ file: Israeliteinfo.js:58 ~ updateIsraelLiteInfo ~ response:", response?.data)
+
+      dispatch(setUserData(response?.data?.user))
       
     }
   };
@@ -302,12 +307,12 @@ const IsraeliteFilters = props => {
 
     const Registration =async()=>{
       const url = 'auth/register'
-      console.log( ' body ================== ? ? ?? ',completeBody)
+      // console.log( ' body ================== ? ? ?? ',completeBody)
       setIsLoading(true);
       const response = await Post(url , completeBody , apiHeader())
       setIsLoading(false);
       if(response != undefined){
-        console.log('User registered =-======>' , response?.data)
+        // console.log('User registered =-======>' , response?.data)
         Platform.OS == 'android' ?
         ToastAndroid.show('User Registered Successfully',ToastAndroid.SHORT) :
         alert('User Registered Successfully')

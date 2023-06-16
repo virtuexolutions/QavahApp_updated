@@ -14,8 +14,9 @@ import CustomModal from '../Components/CustomModal';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import BottomSheetSelect from '../Components/BottomSheetSelect';
 import Modal from 'react-native-modal'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Post } from '../Axios/AxiosInterceptorFunction';
+import { setUserData } from '../Store/slices/common';
 
 const MoreAboutme = (props) => {
   const edit = props?.route?.params?.edit ;
@@ -24,6 +25,8 @@ const MoreAboutme = (props) => {
   const galleryImages = props?.route?.params?.galleryImages ;
   const user = useSelector(state=>state.commonReducer?.userData)
   const token = useSelector(state => state.authReducer.token)
+
+  const dispatch = useDispatch();
 
 
   console.log("🚀 ~ file: MoreAboutme.js:26 ~ MoreAboutme ~ user:", user)
@@ -36,7 +39,7 @@ const MoreAboutme = (props) => {
   const [livingSituation, setLivingSituation] = useState(edit ? user?.livingSituation :'');
   const [doYouHaveChildren, setDoYouHaveChildren] = useState(edit ? user?.doYouHaveChildren :'');
   const [doYouwantChildren, setdoYouWantChildren] = useState(edit ? user?.doYouWantMoreChildren :'');
-  const [seeking, setSeeking] = useState(edit ? user?.seeking : '');
+  const [seeking, setSeeking] = useState(edit ? user?.relationshipIAmSeeking : '');
   const [bodyType, setBodyType] = useState(edit ? user?.bodyType : '');
   const [oftenExersice , setOftenExersice] = useState(edit ? user?.howOftenDoYouExercise : '');
   const [havePets , setHavePets] = useState(edit ? user?.havePets :'');
@@ -99,7 +102,9 @@ const MoreAboutme = (props) => {
       const response = await Post(url,body, apiHeader(token));
 
     if(response!= undefined){
+
       console.log("🚀 ~ file: MoreAboutme.js:95 ~ updateMoreAboutMe ~ response:", response?.data?.user)
+      dispatch(setUserData(response?.data?.user))
       
     }
 
