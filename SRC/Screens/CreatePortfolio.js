@@ -11,7 +11,7 @@ import React, {useEffect, useState} from 'react';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomText from '../Components/CustomText';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -31,6 +31,7 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import {validateEmail} from '../Config';
+import {Post} from '../Axios/AxiosInterceptorFunction';
 
 // import DatePicker from 'react-native-date-picker';
 
@@ -143,6 +144,22 @@ const CreatePortfolio = () => {
     }
 
     return phoneNumber;
+  };
+
+  const emailExists = async email => {
+    const url = 'pr';
+    const response = await Post(url, {email: email}, apiHeader());
+
+    console.log(
+      '🚀 ~ file: CreatePortfolio.js:155 ~ emailValidate ~ response:',
+      response?.data,
+    );
+    if (!response?.data?.status) {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show('Email is already taken', ToastAndroid.SHORT)
+        : Alert.alert('Email is already taken');
+    }
+    setCurrentStep(prev => prev + 1);
   };
 
   useEffect(() => {
@@ -370,11 +387,12 @@ const CreatePortfolio = () => {
                 ]}>
                 Born Day
               </CustomText>
-              <TouchableOpacity activeOpacity={0.8} style={styles.birthday} 
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={styles.birthday}
                 onPress={() => {
                   setOpen(true);
-                }}
-              >
+                }}>
                 <CustomText
                   style={{
                     fontSize: moderateScale(15, 0.6),
@@ -678,8 +696,14 @@ const CreatePortfolio = () => {
                 return Platform.OS == 'android'
                   ? ToastAndroid.show('Email invalid', ToastAndroid.SHORT)
                   : Alert.alert('Email invalid');
+              } else if (!emailExists(email)) {
+                return Platform.OS == 'android'
+                  ? ToastAndroid.show(
+                      'Email is already taken',
+                      ToastAndroid.SHORT,
+                    )
+                  : Alert.alert('Email is already taken');
               }
-              setCurrentStep(prev => prev + 1);
             } else if (gender != '' && currentStep == 3) {
               setCurrentStep(prev => prev + 1);
             } else if (dob != '' && currentStep == 4) {
@@ -691,15 +715,16 @@ const CreatePortfolio = () => {
               confirmPassword != '' &&
               currentStep == 6
             ) {
-              
               if (password != confirmPassword) {
                 return Platform.OS == 'android'
                   ? ToastAndroid.show('Password unmatched', ToastAndroid.SHORT)
                   : Alert.alert('Password unmatched');
-              }
-              else if(password.length < 6){
+              } else if (password.length < 6) {
                 return Platform.OS == 'android'
-                  ? ToastAndroid.show('Password should be atleast 6 characters long', ToastAndroid.SHORT)
+                  ? ToastAndroid.show(
+                      'Password should be atleast 6 characters long',
+                      ToastAndroid.SHORT,
+                    )
                   : Alert.alert('Password should be atleast 6 characters long');
               }
               setCurrentStep(prev => prev + 1);
@@ -767,7 +792,7 @@ const styles = ScaledSheet.create({
   },
   birthday: {
     width: windowWidth * 0.9,
-    height: windowHeight * 0.09,
+    height: windowHeight * 0.07,
     borderRadius: moderateScale(10, 0.6),
     borderWidth: 1,
     borderColor: Color.veryLightGray,

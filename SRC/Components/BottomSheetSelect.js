@@ -21,7 +21,7 @@ const BottomSheetSelect = ({title, data, setData, array}) => {
    const flatListRef = useRef(null);
   // console.log("🚀 ~ file: BottomSheetSelect.js:21 ~ BottomSheetSelect ~ flatListRef:", flatListRef)
 
-  const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const [highlightedIndex, setHighlightedIndex] = useState(data !='' ? array.indexOf(data): 0);
   // console.log("🚀 ~ file: BottomSheetSelect.js:22 ~ BottomSheetSelect ~ highlightedIndex:", highlightedIndex)
   const [ref, setRef] = useState(null);
   // console.log("🚀 ~ file: BottomSheetSelect.js:27 ~ BottomSheetSelect ~ ref:", ref.current)

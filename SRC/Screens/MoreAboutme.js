@@ -2,7 +2,7 @@ import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
@@ -14,29 +14,36 @@ import CustomModal from '../Components/CustomModal';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import BottomSheetSelect from '../Components/BottomSheetSelect';
 import Modal from 'react-native-modal'
+import { useSelector } from 'react-redux';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
 const MoreAboutme = (props) => {
   const edit = props?.route?.params?.edit ;
   const profileImages = props?.route?.params?.profileImages ;
   const data = props?.route?.params?.data ;
   const galleryImages = props?.route?.params?.galleryImages ;
-  console.log("🚀 ~ file: MoreAboutme.js:23 ~ MoreAboutme ~ galleryImages:", galleryImages)
+  const user = useSelector(state=>state.commonReducer?.userData)
+  const token = useSelector(state => state.authReducer.token)
+
+
+  console.log("🚀 ~ file: MoreAboutme.js:26 ~ MoreAboutme ~ user:", user)
+  // console.log("🚀 ~ file: MoreAboutme.js:23 ~ MoreAboutme ~ galleryImages:", galleryImages)
   // console.log("🚀 ~ file: MoreAboutme.js:21 ~ MoreAboutme ~ profileImages:", profileImages , data , galleryImages)
 
-  console.log("🚀 ~ file: MoreAboutme.js:19 ~ MoreAboutme ~ edit:", edit)
-  const [description, setDescription] = useState(edit ? 'lorem ipsum dolor is a dummy text ' : '');
-  const [maritialStatus, setMaritialStatus] = useState(edit ? 'currently seperated' :'');
-  const [livingSituation, setLivingSituation] = useState(edit ? 'live with friends' :'');
-  const [doYouHaveChildren, setDoYouHaveChildren] = useState(edit ? 'yes, they sometime live at home' :'');
-  const [doYouwantChildren, setdoYouWantChildren] = useState(edit ? 'not sure' :'');
-  const [seeking, setSeeking] = useState(edit ? 'community' : '');
-  const [bodyType, setBodyType] = useState(edit ? 'athelitic' : '');
-  const [oftenExersice , setOftenExersice] = useState(edit ? 'i exersice 1-2 times per week' : '');
-  const [havePets , setHavePets] = useState(edit ? 'cats' :'');
-  const [doYouDrink , setDoYouDrink] = useState(edit ? 'dont drink' :'');
-  const [doYouSmoke , setDoYouSmoke] = useState(edit ? 'occasionally smoke' :'');
-  const [employmentStatus , setEmploymentStatus] = useState(edit ? 'retired' : '');
-  const [relocate , setRelocate] = useState(edit ? 'not willing to relocate' : '');
+  // console.log("🚀 ~ file: MoreAboutme.js:19 ~ MoreAboutme ~ edit:", edit)
+  const [description, setDescription] = useState(edit ? user?.aboutMe : '');
+  const [maritialStatus, setMaritialStatus] = useState(edit ? user?.maritalStatus :'');
+  const [livingSituation, setLivingSituation] = useState(edit ? user?.livingSituation :'');
+  const [doYouHaveChildren, setDoYouHaveChildren] = useState(edit ? user?.doYouHaveChildren :'');
+  const [doYouwantChildren, setdoYouWantChildren] = useState(edit ? user?.doYouWantMoreChildren :'');
+  const [seeking, setSeeking] = useState(edit ? user?.seeking : '');
+  const [bodyType, setBodyType] = useState(edit ? user?.bodyType : '');
+  const [oftenExersice , setOftenExersice] = useState(edit ? user?.howOftenDoYouExercise : '');
+  const [havePets , setHavePets] = useState(edit ? user?.havePets :'');
+  const [doYouDrink , setDoYouDrink] = useState(edit ? user?.doYouDrink :'');
+  const [doYouSmoke , setDoYouSmoke] = useState(edit ? user?.doYouSmoke :'');
+  const [employmentStatus , setEmploymentStatus] = useState(edit ? user?.employmentStatus : '');
+  const [relocate , setRelocate] = useState(edit ? user?.willingToRelocate : '');
 
   const [modalVisible, setModalVisible] = useState(false);
   const [type, setType] = useState('');
@@ -65,6 +72,36 @@ const MoreAboutme = (props) => {
     }
   }
   // console.log("🚀 ~ file: MoreAboutme.js:46 ~ MoreAboutme ~ body:", body)
+
+
+
+  const updateMoreAboutMe = async ()=>{
+    const url = 'update-more-about-me';
+    const body ={
+      AboutMe : description,
+      MaritialStatus: maritialStatus,
+      LivingSituation: livingSituation,
+      DoyouhaveChildren: doYouHaveChildren,
+      DoyouWantMoreChildren: doYouwantChildren,
+      RelationshipYouAreSeeking: seeking,
+      BodyType: bodyType,
+      HowOftenDoyouExercise: oftenExersice,
+      HavePets: havePets,
+      DoYouDrink: doYouDrink,
+      DoYouSmoke: doYouSmoke,
+      EmploymentStatus: employmentStatus ,
+      WillingToRelocate: relocate,
+      
+      }
+    
+      const response = await Post(url, {targetsUid:user?.id, body: body}, apiHeader(token));
+
+    if(response!= undefined){
+      console.log("🚀 ~ file: MoreAboutme.js:95 ~ updateMoreAboutMe ~ response:", response)
+      
+    }
+
+  }
 
 
 

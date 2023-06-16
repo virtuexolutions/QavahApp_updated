@@ -4,7 +4,7 @@ import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
 import Color from '../Assets/Utilities/Color';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from '../Components/CustomText';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -16,14 +16,20 @@ import {Icon} from 'native-base';
 import CustomButton from '../Components/CustomButton';
 import ImagePickerModal from '../Components/ImagePickerModal';
 import ImageContainer from '../Components/ImageContainer';
+import { useSelector } from 'react-redux';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
 const PersonalInfo = () => {
-  const [email, setEmail] = useState('');
-  const [number, setNumber] = useState('');
-  const [dob, setDob] = useState(new Date());
+  const user = useSelector(state => state.commonReducer.userData);
+  const token = useSelector(state => state.authReducer.token)
+  const [email, setEmail] = useState(user?.email);
+  const [number, setNumber] = useState(user?.phone);
+  const [dob, setDob] = useState( new Date(user?.birthday));
+  // console.log("🚀 ~ file: PersonalInfo.js:28 ~ PersonalInfo ~ Birthday:", user?.birthday)
+  // console.log("🚀 ~ file: PersonalInfo.js:28 ~ PersonalInfo ~ ob:", dob)
   const [open, setOpen] = useState(false);
-  const [gender, setGender] = useState('Male');
-  const [profileName, setProfileName] = useState('');
+  const [gender, setGender] = useState(user?.iAm);
+  const [profileName, setProfileName] = useState(user?.profileName);
   const [multiImages, setMultiImages] = useState([
     {id: 1, uri: require('../Assets/Images/image1.jpeg')},
     {id: 2, uri: require('../Assets/Images/image2.jpeg')},
@@ -60,6 +66,27 @@ const PersonalInfo = () => {
         setMultiImages(newItems)
         console.log("🚀 ~ file: PersonalInfo.js:35 ~ PersonalInfo ~ multiImages:", multiImages)
       };
+
+      const updatePortfolio = async () =>{
+        const url ='update-portfolio';
+        const body = {
+          profileName : profileName,
+          Birthday: dob,
+          Gender:gender,
+          galleryImages:multiImages
+          
+          };
+        const response = await Post(url, {targetsUid: user?.id,body:body},apiHeader(token))
+    
+        if(response != undefined){
+    
+          console.log("🚀 ~ file: UserDetail.js:71 ~ updatePortfolio ~ response:", response)
+          
+        }
+      }
+
+
+
       
   return (
 
@@ -209,44 +236,44 @@ const PersonalInfo = () => {
             marginTop: moderateScale(20, 0.3),
           }}>
           <TouchableOpacity
-            // onPress={() => {
-            //   setGender('Male');
-            // }}
+            onPress={() => {
+              setGender('Man');
+            }}
             style={[
               styles.cont,
-              gender == 'Male' && {borderColor: Color.themeColor},
+              gender == 'Man' && {borderColor: Color.themeColor},
             ]}
             activeOpacity={0.7}>
             <Icon
-              name={'male'}
+              name={'man'}
               as={Ionicons}
-              color={gender == 'Male' ? Color.themeColor : Color.veryLightGray}
+              color={gender == 'Man' ? Color.themeColor : Color.veryLightGray}
             />
 
             <CustomText
               isBold
               style={[
                 styles.txt6,
-                gender == 'Male' && {color: Color.themeColor},
+                gender == 'Man' && {color: Color.themeColor},
               ]}>
               {' '}
-              Male
+              Man
             </CustomText>
           </TouchableOpacity>
           <TouchableOpacity
-            // onPress={() => {
-            //   setGender('FeMale');
-            // }}
+            onPress={() => {
+              setGender('Woman');
+            }}
             style={[
               styles.cont,
-              gender == 'FeMale' && {borderColor: Color.themeColor},
+              gender == 'Woman' && {borderColor: Color.themeColor},
             ]}
             activeOpacity={0.7}>
             <Icon
-              name={'female'}
+              name={'woman'}
               as={Ionicons}
               color={
-                gender == 'FeMale' ? Color.themeColor : Color.veryLightGray
+                gender == 'Woman' ? Color.themeColor : Color.veryLightGray
               }
             />
 
@@ -254,10 +281,10 @@ const PersonalInfo = () => {
               isBold
               style={[
                 styles.txt6,
-                gender == 'FeMale' && {color: Color.themeColor},
+                gender == 'Woman' && {color: Color.themeColor},
               ]}>
               {' '}
-              FeMale
+              Woman
             </CustomText>
           </TouchableOpacity>
         </View>
