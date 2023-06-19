@@ -55,18 +55,21 @@ const ChangePassword = () => {
         ? ToastAndroid.show(`New Password much be matched`, ToastAndroid.SHORT)
         : alert(`New Password much be matched`);
     }
-    if (newPass.length < 8) {
+    if (newPass.length < 6) {
       return Platform.OS == 'android'
         ? ToastAndroid.show(
-            `password much be atleast 8 digit`,
+            `password much be atleast 6 digit`,
             ToastAndroid.SHORT,
           )
-        : alert(`password much be atleast 8 digit`);
+        : alert(`password much be atleast 6 digit`);
     }
 
     setisLoading(true);
     const response = await Post(url, body, apiHeader(token));
     setisLoading(false);
+    
+    // console.log("🚀 ~ file: ChangePassword.js:69 ~ handleChangePassword ~ response:", response?.data)
+    
     if (response != undefined) {
       Platform.OS == 'android'
         ? ToastAndroid.show(`Password has been changed successfully`, ToastAndroid.SHORT)

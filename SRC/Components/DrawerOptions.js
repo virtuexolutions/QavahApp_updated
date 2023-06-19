@@ -11,10 +11,10 @@ import { useSelector } from 'react-redux';
 const DrawerOptions = ({item}) => {
     const [openNested , setOpenNested] = useState(false);
     const userData = useSelector((State)=>State.commonReducer.userData);
-    console.log("🚀 ~ file: DrawerOptions.js:14 ~ DrawerOptions ~ userData:", userData?.prefrences?.global)
-    const datachane=()=>{
-        console.log('dasdasasd')
-      }
+    // console.log("🚀 ~ file: DrawerOptions.js:14 ~ DrawerOptions ~ userData:", userData?.prefrences?.global)
+    // const datachane=()=>{
+    //     console.log('dasdasasd')
+    //   }
   
   return (<>
     <TouchableOpacity style={{

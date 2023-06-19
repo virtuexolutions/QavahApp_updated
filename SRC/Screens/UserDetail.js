@@ -375,7 +375,7 @@ const UserDetail = props => {
               alignSelf: 'center',
               width: windowWidth * 0.9,
             }}>
-            {userData?.gallery_images.map((item, index) => {
+            {userData?.gallery_images?.map((item, index) => {
               console.log('data image =====>>>>', item?.url);
               return (
                 <TouchableOpacity

@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, ToastAndroid, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
@@ -29,7 +29,7 @@ const MoreAboutme = (props) => {
   const dispatch = useDispatch();
 
 
-  console.log("🚀 ~ file: MoreAboutme.js:26 ~ MoreAboutme ~ user:", user)
+  console.log("🚀 ~ file: MoreAboutme.js:26 ~ MoreAboutme ~ user:", JSON.stringify(user , null ,2 ))
   // console.log("🚀 ~ file: MoreAboutme.js:23 ~ MoreAboutme ~ galleryImages:", galleryImages)
   // console.log("🚀 ~ file: MoreAboutme.js:21 ~ MoreAboutme ~ profileImages:", profileImages , data , galleryImages)
 
@@ -101,10 +101,12 @@ const MoreAboutme = (props) => {
     
       const response = await Post(url,body, apiHeader(token));
 
-    if(response!= undefined){
+    if(response?.data?.status){
 
       console.log("🚀 ~ file: MoreAboutme.js:95 ~ updateMoreAboutMe ~ response:", response?.data?.user)
       dispatch(setUserData(response?.data?.user))
+      Platform.OS == 'android' ? ToastAndroid.show('Profile Updated Successfully',ToastAndroid.SHORT) :
+      Alert('Profile Updated Successfully')
       
     }
 

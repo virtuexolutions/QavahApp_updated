@@ -96,6 +96,7 @@ const Header = props => {
       title: 'Subscribe Now',
       onPress: () => {
         navigationService.navigate('Subscription'), setDrawerModal(false);
+        // alert('Action needed')
       },
     },
     {
@@ -103,6 +104,8 @@ const Header = props => {
       title: 'Privacy Policy',
       onPress: () => {
         navigationService.navigate('Privacy'), setDrawerModal(false);
+        // alert('Action needed')
+
       },
     },
     {
@@ -110,6 +113,7 @@ const Header = props => {
       title: 'terms & conditions',
       onPress: () => {
         navigationService.navigate('TermsAndConditions'), setDrawerModal(false);
+        // alert('Action needed')
       },
     },
     {
@@ -117,6 +121,8 @@ const Header = props => {
       title: 'Help',
       onPress: () => {
         navigationService.navigate('Support'), setDrawerModal(false);
+        // alert('Action needed')
+
       },
     },
     {
@@ -124,6 +130,8 @@ const Header = props => {
       title: 'Who Viewed Me?',
       onPress: () => {
         navigationService.navigate('WhoViewedMe'), setDrawerModal(false);
+        // alert('Action needed')
+
       },
     },
     {
@@ -131,8 +139,8 @@ const Header = props => {
       title: 'set Account visibility to global',
       onPress: data => {
         
-        setSwitchEnabled(!switchEnabled)
-        console.log('switchEnables value=======>>>>',switchEnabled)
+        // setSwitchEnabled(!switchEnabled)
+        // console.log('switchEnables value=======>>>>',switchEnabled)
         setAccountVisible();
         
       },

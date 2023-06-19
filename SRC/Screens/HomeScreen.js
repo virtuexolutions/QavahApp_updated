@@ -37,9 +37,10 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const focused = useIsFocused();
   const user = useSelector(state => state.commonReducer.userData);
+  // console.log("🚀 ~ file: HomeScreen.js:40 ~ user:", user)
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
-  // console.log("🚀 ~ file: HomeScreen.js:35 ~ token:", token)
+  console.log("🚀 ~ file: HomeScreen.js:35 ~ token:", token)
   const [swiperRef, setSwiperRef] = useState();
   const [xAxis, setXAxis] = useState(0);
   const [yAxis, setYAxis] = useState(0);
@@ -53,6 +54,7 @@ const HomeScreen = () => {
   console.log("🚀 ~ file: HomeScreen.js:45 ~ photoCards:", photoCards)
 
   const [LogData, setLogData] = useState([]);
+  console.log("🚀 ~ file: HomeScreen.js:56 ~ LogData:", LogData)
 
   const [drawerType, setDrawerType] = useState('notification');
 
@@ -180,7 +182,7 @@ const HomeScreen = () => {
           }}>
           <ActivityIndicator color={Color.themeColor} size={'large'} />
         </View>
-      ) : photoCards.length > 0 ? (
+      ) : photoCards?.length > 0 ? (
         <>
           <View
             style={{
@@ -221,8 +223,8 @@ const HomeScreen = () => {
                   {targetsUid: item?.id},
                   apiHeader(token),
                 );
+                console.log('response ======= >', response?.data);
                 if (response?.data?.status == true) {
-                  console.log('response ======= >', response?.data);
                   // console.log('left', item?.id);
                   const filteredData = [...photoCards]
                   const filteredData2 = [...photoCards]

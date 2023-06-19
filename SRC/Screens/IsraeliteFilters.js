@@ -31,7 +31,7 @@ const IsraeliteFilters = props => {
   const twoStepsData = props?.route?.params?.twoStepsData
   const user = useSelector(state => state.commonReducer.userData)
   const token = useSelector(state => state.authReducer.token)
-  // console.log("🚀 ~ file: IsraeliteFilters.js:31 ~ IsraeliteFilters ~ user:", user)
+  console.log("🚀 ~ file: IsraeliteFilters.js:31 ~ IsraeliteFilters ~ user:", user)
   // console.log("🚀 ~ file: IsraeliteFilters.js:26 ~ IsraeliteFilters ~ twoStepsData:", twoStepsData?.step2?.galleryImages)
   // console.log(
   //   '🚀 ~ file: IsraeliteFilters.js:25 ~ IsraeliteFilters ~ edit:',
@@ -55,15 +55,15 @@ const IsraeliteFilters = props => {
   );
   const [anyAffiliation, setAnyAffiliation] = useState(edit ? user?.anyAffiliation : '');
   const [selectedIndex, setIndex] = useState('');
-  const [israelitePractise , setIsraelitePractise] = useState(edit? user?.isrealite_practice_keeping.map(item=> item?.options) :[]);
+  const [israelitePractise , setIsraelitePractise] = useState(edit? user?.isrealite_practice_keeping == undefined ? [] : user?.isrealite_practice_keeping.map(item=>item?.options) :[]);
   // console.log("🚀 ~ file: IsraeliteFilters.js:55 ~ IsraeliteFilters ~ israelitePractise:", israelitePractise)
   const [modalVisible, setModalVisible] = useState(false);
   // const [type, setType] = useState('');
   const [passionModalVisible, setPassionModalVisible] = useState(false);
-  const [passions, setPassions] = useState(edit? user?.passions.map(item => item?.options) : []);
-  // console.log("🚀 ~ file: IsraeliteFilters.js:61 ~ IsraeliteFilters ~ passions:", passions)
-  const [kingdomGifts, setKingDomGifts] = useState(edit? user?.kingdom_gifts.map(item => item?.options) : []);
-  // console.log("🚀 ~ file: IsraeliteFilters.js:63 ~ IsraeliteFilters ~ kingdomGifts:", kingdomGifts)
+  const [passions, setPassions] = useState(edit? user?.passions == undefined ? [] : user?.passions.map(item=>item?.options) : []);
+  console.log("🚀 ~ file: IsraeliteFilters.js:61 ~ IsraeliteFilters ~ passions:", passions)
+  const [kingdomGifts, setKingDomGifts] = useState(edit? user?.kingdom_gifts == undefined ? [] : user?.kingdom_gifts.map(item=>item?.options) : []);
+  console.log("🚀 ~ file: IsraeliteFilters.js:63 ~ IsraeliteFilters ~ kingdomGifts:", kingdomGifts)
   // console.log("🚀 ~ file: IsraeliteFilters.js:69 ~ checkPassion ~ kingdomGifts:", kingdomGifts)
 
   const [arrayForModal, setArrayForModal] = useState([]);
@@ -90,14 +90,16 @@ const IsraeliteFilters = props => {
       Passions: passions,
       KingomGifts: kingdomGifts,
     };
-    // console.log("🚀 ~ file: IsraeliteFilters.js:91 ~ updateIsraelLiteInfo ~ body:", body)
+    console.log("🚀 ~ file: IsraeliteFilters.js:91 ~ updateIsraelLiteInfo ~ body:", body)
     const response = await Post(url, body, apiHeader(token));
+    console.log("🚀 ~ file: Israeliteinfo.js:58 ~ updateIsraelLiteInfo ~ response:", response?.data)
 
-    if(response != undefined){
+    if(response?.data?.status){
       
-      // console.log("🚀 ~ file: Israeliteinfo.js:58 ~ updateIsraelLiteInfo ~ response:", response?.data)
 
       dispatch(setUserData(response?.data?.user))
+      Platform.OS == 'android' ? ToastAndroid.show('Profile Updated Successfully',ToastAndroid.SHORT) :
+      Alert('Profile Updated Successfully')
       
     }
   };
@@ -105,6 +107,7 @@ const IsraeliteFilters = props => {
 
 
   const checkPassion = ()=>{
+    
     if(type == 'passions' ? passions.length>6 : kingdomGifts.length > 10){
       Platform.OS == 'android' ? 
       ToastAndroid.show(type == 'passions'? `Select atmost 6 ${type}`:`Select atmost 10 ${type}` ,ToastAndroid.SHORT) : 
@@ -113,11 +116,12 @@ const IsraeliteFilters = props => {
     }
     else{
       setPassionModalVisible(false);
+      
     }
   }
   
   const PassionsArray = [
-    'Singing',
+    'singing',
     'Music',
     'Riding Horses',
     'Fitness /Exercising',
@@ -425,13 +429,13 @@ const IsraeliteFilters = props => {
             marginTop: moderateScale(20, 0.3),
             // justifyContent : 'space-between',
           }}>
-          {IsraelitesPractise.map((item, index) => {
+          {IsraelitesPractise?.map((item, index) => {
             return (
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => {
                   const data =[...israelitePractise]
-                  !israelitePractise.includes(item) ? setIsraelitePractise(prev=>[...prev ,item]): setIsraelitePractise(data.filter(value=> value != item)) 
+                  !israelitePractise?.includes(item) ? setIsraelitePractise(prev=>[...prev ,item]): setIsraelitePractise(data.filter(value=> value != item)) 
                   // setIndex(index);
                 }}
                 key={index}
@@ -442,16 +446,16 @@ const IsraeliteFilters = props => {
                   marginTop: moderateScale(8, 0.3),
                 }}>
                 <Icon
-                  name={israelitePractise.includes(item) ? 'square' : 'square-o'}
+                  name={israelitePractise?.includes(item) ? 'square' : 'square-o'}
                   as={FontAwesome}
                   size={moderateScale(12, 0.6)}
                   color={
-                    israelitePractise.includes(item)
+                    israelitePractise?.includes(item)
                       ? Color.themeColor
                       : Color.veryLightGray
                   }
                   onPress={() => {
-                    !israelitePractise.includes(item) && setIsraelitePractise(prev=>[...prev ,item])
+                    !israelitePractise?.includes(item) && setIsraelitePractise(prev=>[...prev ,item])
                     // setIndex(index);
                   }}
                 />
@@ -532,7 +536,7 @@ const IsraeliteFilters = props => {
                 paddingLeft: moderateScale(10, 0.6),
                 flexWrap: 'wrap',
               }}>
-              {passions.map((item, index) => {
+              {passions?.map((item, index) => {
                 return (
                   <View
                     key={index}
@@ -565,7 +569,7 @@ const IsraeliteFilters = props => {
                 paddingLeft: moderateScale(10, 0.6),
                 flexWrap: 'wrap',
               }}>
-              {kingdomGifts.map((item, index) => {
+              {kingdomGifts?.map((item, index) => {
                 return (
                   <View
                     key={index}
@@ -639,7 +643,7 @@ const IsraeliteFilters = props => {
             marginTop: moderateScale(20, 0.3),
             // justifyContent : 'space-between',
           }}>
-          {arrayForModal.map((item, index) => {
+          {arrayForModal?.map((item, index) => {
             // console.log(
             //   type == 'kingdom'
             //     ? kingdomGifts?.includes(item)
@@ -654,18 +658,18 @@ const IsraeliteFilters = props => {
                   var index2 = null;
 
                   type == 'kingdom'
-                    ? kingdomGifts.includes(item)
+                    ? kingdomGifts?.includes(item)
                       ? ((tempKingdom = [...kingdomGifts]),
-                        (index1 = kingdomGifts.indexOf(item)),
-                        tempKingdom.splice(index1, 1),
+                        (index1 = kingdomGifts?.indexOf(item)),
+                        tempKingdom?.splice(index1, 1),
                         setKingDomGifts(tempKingdom))
-                      : setKingDomGifts(prev => [...prev, item])
-                    : passions?.includes(item)
+                      : kingdomGifts.length < 10 ? setKingDomGifts(prev => [...prev, item]) : alert('you can only select 10 passions')
+                    : passions?.includes(item) 
                     ? ((tempPassion = [...passions]),
-                      (index2 = passions.indexOf(item)),
-                      tempPassion.splice(index2, 1),
+                      (index2 = passions?.indexOf(item)),
+                      tempPassion?.splice(index2, 1),
                       setPassions(tempPassion))
-                    : setPassions(prev => [...prev, item]);
+                    : passions.length < 6 ? setPassions(prev => [...prev, item]) : alert('you can select only 6 passions!!');
                 }}
                 activeOpacity={0.8}
                 key={index}

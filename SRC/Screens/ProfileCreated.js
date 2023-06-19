@@ -88,8 +88,8 @@ const ProfileCreated = (props) => {
           height={windowHeight * 0.09}
           onPress={() => {
             navigationService.navigate('TabNavigation')
-            // dispatch(setUserToken({token: token}));
-            // dispatch(setUserData(userData))
+            dispatch(setUserToken({token: token}));
+            dispatch(setUserData(userData))
           }}
           bgColor={Color.white}
           borderRadius={moderateScale(15, 0.3)}

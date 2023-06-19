@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView, Platform, ToastAndroid, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
@@ -86,10 +86,12 @@ const PersonalInfo = () => {
         console.log("🚀 ~ file: PersonalInfo.js:81 ~ updatePortfolio ~ body:", body)
         const response = await Post(url, body,apiHeader(token))
     
-        if(response != undefined){
+        if(response?.data?.status){
           
           console.log("🚀 ~ file: UserDetail.js:71 ~ updatePortfolio ~ response:", response?.data)
           dispatch(setUserData(response?.data?.user));
+          Platform.OS == 'android' ? ToastAndroid.show('Profile Updated Successfully',ToastAndroid.SHORT) :
+          Alert('Profile Updated Successfully')
           
           
         }

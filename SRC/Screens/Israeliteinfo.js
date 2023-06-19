@@ -125,7 +125,7 @@ const Israeliteinfo = ({navigation}) => {
           flexWrap : 'wrap'
         }}>
 
-      {SelectedPassions.map((item, index) => {
+      {SelectedPassions?.map((item, index) => {
           return (
               <View
               key={index}
@@ -169,7 +169,7 @@ const Israeliteinfo = ({navigation}) => {
           flexWrap : 'wrap'
         }}>
 
-      {SelectedPassions.map((item, index) => {
+      {SelectedPassions?.map((item, index) => {
           return (
               <View
               key={index}
