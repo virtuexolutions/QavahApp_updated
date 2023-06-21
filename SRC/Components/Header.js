@@ -34,6 +34,7 @@ import {setUserData} from '../Store/slices/common';
 import LoveNotesModal from './LoveNotesModal';
 import SpotLightModal from './SpotlightModal';
 import CustomButton from './CustomButton';
+import DiscreteModal from './DiscreteModal';
 
 const Header = props => {
   const dispatch = useDispatch();
@@ -43,8 +44,9 @@ const Header = props => {
   const navigationN = useNavigation();
   const [isModalVisible, setModalVisible] = useState(false);
   const [drawerModal, setDrawerModal] = useState(false);
-  const [switchEnabled, setSwitchEnabled] = useState(false);
+  // const [switchEnabled, setSwitchEnabled] = useState(false);
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
+  const [discreteModal, setDiscreteModal] = useState(false)
   const DrawerArray = [
     {
       key: 1,
@@ -67,7 +69,7 @@ const Header = props => {
         },
         {
           key: 4,
-          title: 'Portfolio',
+          title: 'Profile',
           onPress: () => {
             navigationService.navigate('UserDetail'), setDrawerModal(false);
           },
@@ -145,8 +147,7 @@ const Header = props => {
         
       },
       switch: true,
-      switchEnabled: switchEnabled,
-      setSwitchEnabled: setSwitchEnabled,
+      
     },
   ];
   const [isVisible, setIsVisible] = useState(false);
@@ -155,6 +156,7 @@ const Header = props => {
   const setAccountVisible = async () => {
     const url = 'user/update-my-profile-app';
     const response = await Post(url, {}, apiHeader(token));
+    console.log("🚀 ~ file: Header.js:157 ~ setAccountVisible ~ response:", response)
     if (response != undefined) {
       // return console.log('data ======= = = = = = ' , response?.data)
       dispatch(setUserData(response?.data));
@@ -269,7 +271,7 @@ const Header = props => {
           <View
             style={{
               position: 'absolute',
-              // right: moderateScale(10, 0.3),
+              right: moderateScale(15, 0.3),
               width: windowWidth * 0.1,
               height: windowHeight * 0.055,
               // backgroundColor : 'red'
@@ -344,7 +346,7 @@ const Header = props => {
           <ScrollView 
             showsVerticalScrollIndicator= {false}
           >
-          {DrawerArray.map((item, index) => {
+          {DrawerArray?.map((item, index) => {
             return <DrawerOptions item={item} />;
           })}
           
@@ -381,6 +383,9 @@ const Header = props => {
               title={'Discrete'}
               text={'GET More'}
               textColor={'#286086'}
+              onPress={()=>{
+                setDiscreteModal(true)
+              }}
             />
           </View>
           <CustomButton
@@ -449,6 +454,9 @@ const Header = props => {
         isVisible={isLoveNotesVisible}
         setIsVisible={setLoveNotesVisible}
       />
+      <DiscreteModal 
+        isVisible={discreteModal}
+        setIsVisible={setDiscreteModal} />
       {/* <SuperLikeModal
         isVisible={isBoostModalvisible}
         setIsVisible={setBoostModalvisible}

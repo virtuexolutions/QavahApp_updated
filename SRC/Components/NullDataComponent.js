@@ -5,6 +5,8 @@ import CustomText from './CustomText';
 import {moderateScale} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
 import {windowHeight, windowWidth} from '../Utillity/utils';
+import * as Animatable from 'react-native-animatable';
+import Pulse from 'react-native-pulse';
 
 const NullDataComponent = ({style}) => {
   // console.log(
@@ -13,32 +15,63 @@ const NullDataComponent = ({style}) => {
   // );
   return (
     <>
-      <View style={{flex: 1, alignItems: 'center'}}>
-        <CustomImage
-          source={require('../Assets/Images/no-data.png')}
-          resizeMode={'cover'}
+      <View style={{alignItems: 'center', marginTop: moderateScale(30, 0.6)}}>
+        <Animatable.View
           style={{
-            width: style?.width ? style?.width : windowWidth * 0.65,
-            height: style?.height ? style?.height : windowHeight * 0.35,
+            width: style?.width
+              ? style?.width + windowWidth * 0.03
+              : windowWidth * 0.23,
+            height: style?.height
+              ? style?.height + windowWidth * 0.03
+              : windowWidth * 0.23,
+            borderRadius: style?.height
+              ? style?.height + (windowWidth * 0.03) / 2
+              : (windowWidth * 0.23) / 2,
+            // backgroundColor : 'rgba(161,114,46 , 0.8)',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
-        />
-        <CustomText
+          // animation="pulse" easing="ease-out" iterationCount="infinite"
+        >
+          {/* <Pulse
+            color="rgba(161,114,46 , 0.8)"
+            numPulses={6}
+            diameter={windowWidth * 0.5}
+            // speed={10}
+            // duration={20}
+          /> */}
+          <CustomImage
+            source={require('../Assets/Images/banner3.jpg')}
+            resizeMode={'cover'}
+            style={{
+              width: style?.width ? style?.width : windowWidth * 0.2,
+              height: style?.height ? style?.height : windowWidth * 0.2,
+              borderRadius: (windowWidth * 0.2) / 2,
+            }}
+          />
+        </Animatable.View>
+        {/* <CustomText
           isBold
           style={{
             color: Color.black,
-            fontSize: style?.fontSize ? style?.fontSize : 25,
+            fontSize: style?.fontSize ? style?.fontSize : moderateScale(22,0.6),
             marginTop: moderateScale(-5, 0.6),
           }}>
           No data found!!
-        </CustomText>
+        </CustomText> */}
         <CustomText
-          isBold
+          // isBold
           style={{
             color: 'gray',
-            fontSize: style?.fontSize ? style?.fontSize-5 : 15,
+            fontSize: style?.fontSize
+              ? style?.fontSize - 5
+              : moderateScale(12, 0.6),
             marginTop: moderateScale(3, 0.3),
+            width: windowWidth * 0.8,
+            textAlign: 'center',
           }}>
-          Nothing to show at this moment
+          We are unable to find any potential matches right now. Try changing
+          your preferences to see who is nearby
         </CustomText>
       </View>
     </>

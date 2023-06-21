@@ -44,7 +44,7 @@ const LandingPage = () => {
           height: windowHeight,
           justifyContent: 'flex-end',
         }}
-        source={require('../Assets/Images/LandingPage1.png')}
+        source={require('../Assets/Images/LandingPage3.jpg')}
         resizeMode={'stretch'}>
         <CustomButton
           iconName={'envelope'}

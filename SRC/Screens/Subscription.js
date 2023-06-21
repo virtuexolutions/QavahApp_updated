@@ -35,7 +35,7 @@ const Subscription = () => {
   const subscriptions = [
     {
       text: 'Platinum',
-      color: ['#acacac', '#e5e1e2'],
+      color: ['#acacac', '#e1e1e1'],
       price: 350,
     },
     {

@@ -88,7 +88,7 @@ const ProfilePictures = props => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header showLeft={true} leftName={'left'} />
+      <Header showLeft={true} leftName={'left'} showRight={true} />
 
       <View
         // scrollEnabled={!scrollOff}
@@ -229,36 +229,38 @@ const ProfilePictures = props => {
           onPress={() => {
             navigationService.navigate('MoreAboutme', {
               data: profileBody,
-              profileImages: [
-                {
-                  index: 0,
-                  url: 'http://127.0.0.1:8000/images/profile_images/qavah-16811261746433f31ed7383.png',
-                  name: 'qavah-16811261746433f31ed7383.png',
-                  thumbnails:
-                    'http://127.0.0.1:8000/images/profile_images/thumbnails/qavah-16811261746433f31ed7383.png',
-                  web_url: 'http://127.0.0.1:8000/images/profile_images',
-                },
-              ],
-              galleryImages: [
-                {
-                  index: 0,
-                  url: 'http://127.0.0.1:8000/images/gallery_Images/qavah-16811261786433f322397a5.png',
-                  name: 'qavah-16811261786433f322397a5.png',
-                  thumbnails:
-                    'http://127.0.0.1:8000/images/gallery_Images/thumbnails/qavah-16811261786433f322397a5.png',
-                  web_url: 'http://127.0.0.1:8000/images/gallery_Images',
-                  type: 'image',
-                },
-                {
-                  index: 1,
-                  url: 'http://127.0.0.1:8000/images/gallery_Images/qavah-16811261776433f321cf413.png',
-                  name: 'qavah-16811261776433f321cf413.png',
-                  thumbnails:
-                    'http://127.0.0.1:8000/images/gallery_Images/thumbnails/qavah-16811261776433f321cf413.png',
-                  web_url: 'http://127.0.0.1:8000/images/gallery_Images',
-                  type: 'image',
-                },
-              ],
+              profileImages: profilePicture,
+              galleryImages: multiImages,
+              // profileImages: [
+              //   {
+              //     index: 0,
+              //     url: 'http://127.0.0.1:8000/images/profile_images/qavah-16811261746433f31ed7383.png',
+              //     name: 'qavah-16811261746433f31ed7383.png',
+              //     thumbnails:
+              //       'http://127.0.0.1:8000/images/profile_images/thumbnails/qavah-16811261746433f31ed7383.png',
+              //     web_url: 'http://127.0.0.1:8000/images/profile_images',
+              //   },
+              // ],
+              // galleryImages: [
+              //   {
+              //     index: 0,
+              //     url: 'http://127.0.0.1:8000/images/gallery_Images/qavah-16811261786433f322397a5.png',
+              //     name: 'qavah-16811261786433f322397a5.png',
+              //     thumbnails:
+              //       'http://127.0.0.1:8000/images/gallery_Images/thumbnails/qavah-16811261786433f322397a5.png',
+              //     web_url: 'http://127.0.0.1:8000/images/gallery_Images',
+              //     type: 'image',
+              //   },
+              //   {
+              //     index: 1,
+              //     url: 'http://127.0.0.1:8000/images/gallery_Images/qavah-16811261776433f321cf413.png',
+              //     name: 'qavah-16811261776433f321cf413.png',
+              //     thumbnails:
+              //       'http://127.0.0.1:8000/images/gallery_Images/thumbnails/qavah-16811261776433f321cf413.png',
+              //     web_url: 'http://127.0.0.1:8000/images/gallery_Images',
+              //     type: 'image',
+              //   },
+              // ],
             });
           }}
           bgColor={Color.themeColor}

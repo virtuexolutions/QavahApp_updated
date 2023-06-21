@@ -1,10 +1,10 @@
 import {Text, View , FlatList , TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Icon} from 'native-base';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Color from '../Assets/Utilities/Color';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from '../Components/CustomText';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
@@ -13,10 +13,13 @@ import CustomModal from '../Components/CustomModal';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { Post } from '../Axios/AxiosInterceptorFunction';
+import { useSelector } from 'react-redux';
+import NullDataComponent from '../Components/NullDataComponent';
 
 const WhoViewedMe = () => {
-const [isVisible , setIsVisible] = useState(false);  
-const [seekingType , setSeekingType] = useState('Seeking')
+  const token = useSelector((State)=>State.authReducer.token)
+  // console.log("🚀 ~ file: WhoViewedMe.js:21 ~ WhoViewedMe ~ token:", token)
 const [search , setSearch] = useState('')
 const [photoCards, setPhotoCards] = useState([
   {
@@ -231,6 +234,25 @@ const [photoCards, setPhotoCards] = useState([
     ],
   },
 ]);
+const [isLoading , setIsLoading] = useState(false)
+const [whoViewedMe , setWhoViewedMe] = useState([])
+
+
+const getFavouredYouPosts = async id => {
+  console.log('get favoured posts');
+  const url = 'favoured/someone-viewed-my-profile';
+  const response = await Post(url, {}, apiHeader(token));
+  if (response != undefined) {
+   console.log('response data=>>>>>>>>>>>>>>', response?.data);
+   setWhoViewedMe(response?.data?.peoples);
+  }
+};
+
+
+useEffect(() => {
+  getFavouredYouPosts()
+}, [])
+
   return (
     <>
       <CustomStatusBar
@@ -251,7 +273,7 @@ const [photoCards, setPhotoCards] = useState([
 
 
        <FlatList 
-      data={photoCards}
+      data={whoViewedMe}
       numColumns = {2}
       showsVerticalScrollIndicator = {false}
       style={{
@@ -285,28 +307,45 @@ const [photoCards, setPhotoCards] = useState([
       }}
       ListHeaderComponent={()=>{
         return(
+          
+            whoViewedMe.length > 0 &&
+
             <TextInputWithTitle
-          iconName={'search'}
-          iconType={FontAwesome}
-          titleText={`Search Match Request`}
-          secureText={false}
-          placeholder={`Search Match Request`}
-          setText={setSearch}
-          value={search}
-          viewHeight={0.06}
-          viewWidth={0.85}
-          inputWidth={0.83}
-          borderColor={Color.veryLightGray}
-          backgroundColor={'transparent'}
-          placeholderColor={Color.themeLightGray}
-          borderRadius={moderateScale(0, 0.3)}
-          marginTop={moderateScale(20, 0.3)}
-          marginBottom={moderateScale(20, 0.3)}
-
-
-          border={1}
-          color={Color.veryLightGray}
-        />
+            iconName={'search'}
+            iconType={FontAwesome}
+            titleText={`Search Match Request`}
+            secureText={false}
+            placeholder={`Search Match Request`}
+            setText={setSearch}
+            value={search}
+            viewHeight={0.06}
+            viewWidth={0.85}
+            inputWidth={0.83}
+            borderColor={Color.veryLightGray}
+            backgroundColor={'transparent'}
+            placeholderColor={Color.themeLightGray}
+            borderRadius={moderateScale(0, 0.3)}
+            marginTop={moderateScale(20, 0.3)}
+            marginBottom={moderateScale(20, 0.3)}
+            
+            
+            border={1}
+            color={Color.veryLightGray}
+            />
+          
+            )
+      }}
+      ListEmptyComponent={() => {
+        return (
+        <View
+        style={{
+          width: windowWidth,
+          height: windowHeight * 0.6,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <NullDataComponent />
+      </View>
         )
       }}
       />

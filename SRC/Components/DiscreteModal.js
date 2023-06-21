@@ -10,7 +10,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomText from './CustomText';
 import CustomButton from './CustomButton';
 
-const LoveNotesModal = ({isVisible, setIsVisible}) => {
+const DiscreteModal = ({isVisible, setIsVisible}) => {
   const [selectedIndex, setSelecetedIndex] = useState(1);
   const dummyData = [
     {days: '3', cash: '566.60', savingPercent: '10%'},
@@ -32,7 +32,7 @@ const LoveNotesModal = ({isVisible, setIsVisible}) => {
           // start={{x : 0.35 ,y : 0.45}}
           // end={{x : 0.45 , y : 0.85}}
 
-          colors={['#CD4D7B', '#D9AABB']}
+          colors={['#286086', '#dfecf5']}
           style={{
             height: windowHeight * 0.22,
             width: windowWidth * 0.85,
@@ -41,28 +41,28 @@ const LoveNotesModal = ({isVisible, setIsVisible}) => {
           }}>
           <View style={styles.circle}>
             <Icon
-              name={'heart'}
+              name={'lock'}
               as={AntDesign}
               size={moderateScale(30, 0.6)}
-              color={'#CD4D7B'}
+              color={'#286086'}
             />
           </View>
-          <CustomText
+          {/* <CustomText
             isBold
             style={{
               color: Color.white,
               fontSize: moderateScale(12, 0.6),
               marginTop: moderateScale(10, 0.3),
             }}>
-            Stand out with Love notes
-          </CustomText>
+            standout with Discrete Mode
+          </CustomText> */}
           <CustomText
             style={{
               color: Color.white,
               fontSize: moderateScale(11, 0.6),
               marginTop: moderateScale(10, 0.3),
             }}>
-            you can send a message without being matched
+            handle your availability for other users
           </CustomText>
         </LinearGradient>
         <View style={styles.container2}>
@@ -71,7 +71,7 @@ const LoveNotesModal = ({isVisible, setIsVisible}) => {
               fontSize: moderateScale(20, 0.6),
               color: Color.black,
             }} isBold>
-            Love Notes
+             Discrete Mode
           </CustomText>
           <CustomText
             style={{
@@ -86,7 +86,7 @@ const LoveNotesModal = ({isVisible, setIsVisible}) => {
               fontSize: moderateScale(24, 0.6),
               color: Color.black,
             }} isBold>
-            $7.00
+            $10.00
           </CustomText>
 
           {/* {dummyData.map((item, index) => {
@@ -175,7 +175,7 @@ const LoveNotesModal = ({isVisible, setIsVisible}) => {
           width={windowWidth * 0.65}
           height={windowHeight * 0.06}
           marginTop={moderateScale(20, 0.3)}
-          bgColor={['#CD4D7B', '#D9AABB']}
+          bgColor={['#286086', '#dfecf5']}
           borderRadius={moderateScale(25, 0.3)}
           elevation
           isGradient
@@ -232,7 +232,7 @@ const LoveNotesModal = ({isVisible, setIsVisible}) => {
   );
 };
 
-export default LoveNotesModal;
+export default DiscreteModal;
 
 const styles = ScaledSheet.create({
   container: {

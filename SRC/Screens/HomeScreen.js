@@ -40,7 +40,7 @@ const HomeScreen = () => {
   // console.log("🚀 ~ file: HomeScreen.js:40 ~ user:", user)
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
-  console.log("🚀 ~ file: HomeScreen.js:35 ~ token:", token)
+  // console.log("🚀 ~ file: HomeScreen.js:35 ~ token:", token)
   const [swiperRef, setSwiperRef] = useState();
   const [xAxis, setXAxis] = useState(0);
   const [yAxis, setYAxis] = useState(0);
@@ -51,10 +51,10 @@ const HomeScreen = () => {
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [photoCards, setPhotoCards] = useState([]);
-  console.log("🚀 ~ file: HomeScreen.js:45 ~ photoCards:", photoCards)
+  // console.log("🚀 ~ file: HomeScreen.js:45 ~ photoCards:", photoCards)
 
   const [LogData, setLogData] = useState([]);
-  console.log("🚀 ~ file: HomeScreen.js:56 ~ LogData:", LogData)
+  // console.log("🚀 ~ file: HomeScreen.js:56 ~ LogData:", LogData)
 
   const [drawerType, setDrawerType] = useState('notification');
 
@@ -182,7 +182,7 @@ const HomeScreen = () => {
           }}>
           <ActivityIndicator color={Color.themeColor} size={'large'} />
         </View>
-      ) : photoCards?.length > 0 ? (
+      ) : []?.length > 0 ? (
         <>
           <View
             style={{

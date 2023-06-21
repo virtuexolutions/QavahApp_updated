@@ -78,8 +78,8 @@ const PersonalInfo = () => {
         const body = {
           targetsUid: user?.id,
           profileName : profileName,
-          Birthday: moment(dob).format('YYYY-MM-DD'),
-          Gender:gender,
+          // Birthday: moment(dob).format('YYYY-MM-DD'),
+          // Gender:gender,
           galleryImages:multiImages
           
           };
@@ -249,7 +249,7 @@ const PersonalInfo = () => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              setGender('Men');
+              // setGender('Men');
             }}
             style={[
               styles.cont,
@@ -274,7 +274,7 @@ const PersonalInfo = () => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setGender('Woman');
+              // setGender('Woman');
             }}
             style={[
               styles.cont,
@@ -305,7 +305,7 @@ const PersonalInfo = () => {
           Media
         </CustomText>
 
-        <View style={styles.imageView}>
+        {/* <View style={styles.imageView}>
           <SortableGrid
             itemsPerRow={3}
            onDragStart={() => setScrollEnabled(false)}
@@ -336,7 +336,7 @@ const PersonalInfo = () => {
               );
             })}
           </SortableGrid>
-        </View>
+        </View> */}
         <CustomButton
           text={'Save'}
           textColor={Color.white}
@@ -353,7 +353,7 @@ const PersonalInfo = () => {
           }
         />
       </ScrollView>
-      <DatePicker
+      {/* <DatePicker
         maximumDate={new Date()}
         modal
         open={open}
@@ -369,7 +369,7 @@ const PersonalInfo = () => {
         androidVariant="iosClone"
         style={{}}
         theme={'light'}
-      />
+      /> */}
       <ImagePickerModal
         show={showMultiImageModal}
         setShow={setShowMultiImageModal}

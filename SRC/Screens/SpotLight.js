@@ -385,8 +385,10 @@ const SpotLight = () => {
             style={{
               height: windowHeight * 0.48,
               width: windowWidth,
+              alignItems:'center',
+              justifyContent:'center',
             }}>
-            {spotLightData.length > 0 ? (
+            {[].length > 0 ? (
               <Swiper
                 animateCardOpacity
                 style={styles.mainContainer}
@@ -533,9 +535,12 @@ const SpotLight = () => {
             ListEmptyComponent={
               <NullDataComponent
                 style={{
-                  width: windowWidth * 0.3,
-                  height: windowHeight * 0.18,
+                  width: windowWidth * 0.15,
+                  height: windowWidth * 0.15,
                   fontSize: moderateScale(15, 0.6),
+                  borderWidth:2,
+                  borderColor:Color.themeColor,
+                  marginTop : moderateScale(30,0.3)
                 }}
               />
             }

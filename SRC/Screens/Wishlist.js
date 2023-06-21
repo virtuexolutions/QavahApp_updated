@@ -353,6 +353,7 @@ const Wishlist = () => {
             height: windowHeight * 0.6,
             justifyContent: 'center',
             alignItems: 'center',
+            // backgroundColor : 'red'
           }}>
           <NullDataComponent />
         </View>

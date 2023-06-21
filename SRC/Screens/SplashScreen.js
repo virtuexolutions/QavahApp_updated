@@ -27,7 +27,7 @@ const SplashScreen = () => {
             width: '100%',
             height: '100%',
           }}
-          source={require('../Assets/Images/splash1.png')}
+          source={require('../Assets/Images/splash2.jpg')}
         />
         {/* <View
           style={{

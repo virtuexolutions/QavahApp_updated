@@ -21,15 +21,17 @@ import { setUserData } from '../Store/slices/common';
 const MoreAboutme = (props) => {
   const edit = props?.route?.params?.edit ;
   const profileImages = props?.route?.params?.profileImages ;
+  console.log("🚀 ~ file: MoreAboutme.js:24 ~ MoreAboutme ~ profileImages:", [profileImages])
   const data = props?.route?.params?.data ;
   const galleryImages = props?.route?.params?.galleryImages ;
+  console.log("🚀 ~ file: MoreAboutme.js:27 ~ MoreAboutme ~ galleryImages:", galleryImages)
   const user = useSelector(state=>state.commonReducer?.userData)
   const token = useSelector(state => state.authReducer.token)
 
   const dispatch = useDispatch();
 
 
-  console.log("🚀 ~ file: MoreAboutme.js:26 ~ MoreAboutme ~ user:", JSON.stringify(user , null ,2 ))
+  // console.log("🚀 ~ file: MoreAboutme.js:26 ~ MoreAboutme ~ user:", JSON.stringify(user , null ,2 ))
   // console.log("🚀 ~ file: MoreAboutme.js:23 ~ MoreAboutme ~ galleryImages:", galleryImages)
   // console.log("🚀 ~ file: MoreAboutme.js:21 ~ MoreAboutme ~ profileImages:", profileImages , data , galleryImages)
 
@@ -56,8 +58,8 @@ const MoreAboutme = (props) => {
   const body = {
     ...data , 
     step2 : {
-      profileImages  : profileImages,
-      galleryImages : galleryImages,
+      profileImages  : JSON.stringify(profileImages,null,2),
+      galleryImages : JSON.stringify(galleryImages,null,2),
       aboutMe : description,
       maritalStatus : maritialStatus ,
       livingSituation : livingSituation ,

@@ -45,7 +45,7 @@ const ImageContainer = ({
       {Object.keys(item).length >0 ? (
         <>
           <Image
-            source={item?.uri}
+            source={{uri:item?.uri}}
             style={{width: '100%', height: '100%'}}
           />
           <TouchableOpacity

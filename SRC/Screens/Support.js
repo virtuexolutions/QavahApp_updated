@@ -51,8 +51,8 @@ const Support = () => {
     setLoading(true);
     const response = await Get(url, token);
     setLoading(false);
+    console.log('Support response======>>>>>>>>>>>',response?.data);
     if (response != undefined) {
-        // console.log('Support response======>>>>>>>>>>>',response?.data?.data?.official_email);
         setSupportData(response?.data?.data);
     }
   };

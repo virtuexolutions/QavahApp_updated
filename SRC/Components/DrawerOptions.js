@@ -53,7 +53,7 @@ const DrawerOptions = ({item}) => {
             // />
             <Switch
             trackColor={{true:Color.veryLightGray , false : Color.veryLightGray}}
-            thumbColor={item?.switchEnabled ? Color.themeColor : '#f4f3f4'}
+            thumbColor={item?.prefrences?.global ? Color.themeColor : '#f4f3f4'}
             ios_backgroundColor="#3e3e3e"
             onValueChange={ item?.onPress}
             //value={userData?.prefrences?.global}

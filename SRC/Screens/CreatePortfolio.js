@@ -4,8 +4,10 @@ import {
   StyleSheet,
   Text,
   ToastAndroid,
+  ActivityIndicator,
   View,
   TouchableOpacity,
+  Animated 
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
@@ -94,6 +96,7 @@ const CreatePortfolio = () => {
   const [withFilter, setFilter] = useState(true);
   const [timeOutId, setTimeOutId] = useState(null);
   const [chunks, setChunks] = useState('');
+  const [progress, setProgress] = useState(new Animated.Value(0))
 
   const ProfileBody = {
     step1: {
@@ -148,8 +151,10 @@ const CreatePortfolio = () => {
 
   const emailExists = async email => {
     const url = 'pr';
-    const response = await Post(url, {email: email}, apiHeader());
 
+    setIsLoading(true)
+    const response = await Post(url, {email: email}, apiHeader());
+    setIsLoading(false)
     console.log(
       '🚀 ~ file: CreatePortfolio.js:155 ~ emailValidate ~ response:',
       response?.data,
@@ -160,7 +165,11 @@ const CreatePortfolio = () => {
         : Alert.alert('Email is already taken');
     }
     setCurrentStep(prev => prev + 1);
+    setProgress(prev => (prev+(windowWidth/7)))
+
   };
+
+  
 
   useEffect(() => {
     if (number && number.length < 12) {
@@ -193,12 +202,14 @@ const CreatePortfolio = () => {
       setFeet('');
     }
   }, [feet]);
+
   useEffect(() => {
     if (inch && inch > 12) {
       alert('inches can not be more than 12');
       setInch('');
     }
   }, [inch]);
+
 
   return (
     <>
@@ -209,26 +220,29 @@ const CreatePortfolio = () => {
       <Header
         showLeft={true}
         leftName={'left'}
+        showRight ={true}
         leftPress={
           currentStep > 1 && currentStep != 8
             ? () => {
-                setCurrentStep(prev => prev - 1);
+              setProgress(prev => (prev-(windowWidth/7)))
+              setCurrentStep(prev => prev - 1);
               }
             : currentStep == 8
             ? () => {
                 clearTimeout(timeOutId);
                 settimerLabel('Resend Code '), settime(0);
                 console.log('herer');
+                setProgress(prev => (prev-(windowWidth/7)))
                 setCurrentStep(prev => prev - 1);
               }
             : () => {
                 console.log('herer ae fasdasdasd');
-
+                setProgress(prev => (prev-(windowWidth/7)))
                 navigatioN.goBack();
               }
         }
-      />
-
+      />{currentStep < 8 && <View style={{width:progress,height:windowHeight*0.008, backgroundColor:Color.themeColor}}></View> }
+      
       <KeyboardAwareScrollView
         style={{
           paddingTop: windowHeight * 0.1,
@@ -684,13 +698,19 @@ const CreatePortfolio = () => {
         </View>
         {/* Button */}
         <CustomButton
-          text={'Next'}
+          text={isLoading ? (
+            <ActivityIndicator color={'#FFFFFF'} size={'small'} />
+          ) : (
+            'Next'
+          )}
           textColor={Color.white}
           width={windowWidth * 0.9}
           height={windowHeight * 0.09}
+          disabled={isLoading}
           onPress={() => {
             if (profileName != '' && governmentName != '' && currentStep == 1) {
               setCurrentStep(prev => prev + 1);
+              setProgress(prev => (prev+(windowWidth/7)))
             } else if (email != '' && currentStep == 2) {
               if (!validateEmail(email)) {
                 return Platform.OS == 'android'
@@ -706,10 +726,16 @@ const CreatePortfolio = () => {
               }
             } else if (gender != '' && currentStep == 3) {
               setCurrentStep(prev => prev + 1);
+              setProgress(prev => (prev+(windowWidth/7)))
+
             } else if (dob != '' && currentStep == 4) {
               setCurrentStep(prev => prev + 1);
+              setProgress(prev => (prev+(windowWidth/7)))
+
             } else if (feet != '' && inch != '' && currentStep == 5) {
               setCurrentStep(prev => prev + 1);
+              setProgress(prev => (prev+(windowWidth/7)))
+
             } else if (
               password != '' &&
               confirmPassword != '' &&
@@ -728,9 +754,13 @@ const CreatePortfolio = () => {
                   : Alert.alert('Password should be atleast 6 characters long');
               }
               setCurrentStep(prev => prev + 1);
+              setProgress(prev => (prev+(windowWidth/7)))
+
             } else if (countryCode != '' && number != '' && currentStep == 7) {
               setCurrentStep(prev => prev + 1);
               settimerLabel('ReSend in '), settime(120);
+              setProgress(prev => (prev+(windowWidth/7)))
+
             } else if (currentStep == 8) {
               clearTimeout(timeOutId);
               navigationService.navigate('ProfilePictures', {

@@ -307,7 +307,7 @@ const IsraeliteFilters = props => {
     
     }
   }
-    // console.log("🚀 ~ file: IsraeliteFilters.js:236 ~ IsraeliteFilters ~ completeBody:", completeBody)
+    console.log("🚀 ~ file: IsraeliteFilters.js:236 ~ IsraeliteFilters ~ completeBody:", completeBody)
 
     const Registration =async()=>{
       const url = 'auth/register'

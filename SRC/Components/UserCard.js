@@ -15,7 +15,7 @@ import navigationService from '../navigationService';
 import { Post } from '../Axios/AxiosInterceptorFunction';
 import { useSelector } from 'react-redux';
 
-const UserCard = ({onClosePress, onheartPress, style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => {
+const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => {
   // console.log("🚀 ~ file: UserCard.js:17 ~ UserCard ~ item:", item?.profile_images[0]?.url)
   
   const token = useSelector(state => state.authReducer.token);
