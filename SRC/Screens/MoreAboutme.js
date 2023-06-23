@@ -20,11 +20,11 @@ import { setUserData } from '../Store/slices/common';
 
 const MoreAboutme = (props) => {
   const edit = props?.route?.params?.edit ;
-  const profileImages = props?.route?.params?.profileImages ;
-  console.log("🚀 ~ file: MoreAboutme.js:24 ~ MoreAboutme ~ profileImages:", [profileImages])
+  // const profileImages = props?.route?.params?.profileImages ;
+  // console.log("🚀 ~ file: MoreAboutme.js:24 ~ MoreAboutme ~ profileImages:", [profileImages])
   const data = props?.route?.params?.data ;
-  const galleryImages = props?.route?.params?.galleryImages ;
-  console.log("🚀 ~ file: MoreAboutme.js:27 ~ MoreAboutme ~ galleryImages:", galleryImages)
+  // const galleryImages = props?.route?.params?.galleryImages ;
+  // console.log("🚀 ~ file: MoreAboutme.js:27 ~ MoreAboutme ~ galleryImages:", galleryImages)
   const user = useSelector(state=>state.commonReducer?.userData)
   const token = useSelector(state => state.authReducer.token)
 
@@ -54,12 +54,26 @@ const MoreAboutme = (props) => {
   const [type, setType] = useState('');
   const [isVisible, setIsVisible] = useState(edit ? false : true);
   const [ref, setRef] = useState(null);
+  // const formData = new FormData()
+  // formData.append('profileImages',profileImages)
+  // formData.append('galleryImages', JSON.stringify(galleryImages));
+  
+  // for(let key of galleryImages){
+  // }
+  // galleryImages.map((item,index)=>{
+  //   Object.keys(item).length>0 && formData.append(`galleryImages[${index}]`,item)
+   
+  // })
+  
+  
+  // console.log("🚀 ~ file: MoreAboutme.js:58 ~ MoreAboutme ~ formData:", JSON.stringify(formData,null, 2))
 
   const body = {
     ...data , 
     step2 : {
-      profileImages  : JSON.stringify(profileImages,null,2),
-      galleryImages : JSON.stringify(galleryImages,null,2),
+      // profileImages  : JSON.stringify(profileImages,null,2),
+      // galleryImages : JSON.stringify(galleryImages,null,2),
+      
       aboutMe : description,
       maritalStatus : maritialStatus ,
       livingSituation : livingSituation ,

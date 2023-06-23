@@ -9,35 +9,67 @@ import CustomImage from '../Components/CustomImage';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 import {FlatList} from 'native-base';
+import { useNavigation } from '@react-navigation/native';
 
-const Israeliteinfo = ({navigation}) => {
+const Israeliteinfo = (props) => {
+
+  const userData = props?.route?.params?.user;
+  console.log("🚀 ~ file: Israeliteinfo.js:16 ~ Israeliteinfo ~ userData:", userData)
+
+  const navigation = useNavigation();
+
   const LifeStyleArray = [
-    {heading: 'i believe i am', title: 'I am a diaspora israelite'},
-    {heading: 'years in truth', title: '2 years'},
-    {heading: 'Spiritual value', title: 'N/A'},
-    {heading: 'maritial belief system', title: 'polygyny'},
-    {heading: 'Any affiliation', title: 'I am a member of an online org'},
-    {heading: 'Study bible', title: 'King james version'},
-    {heading: 'Study Habits', title: 'Torah and tanakh'},
+    {heading: 'i believe i am', title: userData?.iBelieveIAM},
+    {heading: 'years in truth', title: userData?.yearsInTruth},
+    {heading: 'Spiritual value', title: userData?.spiritualValue},
+    {heading: 'maritial belief system', title: userData?.maritalBeliefSystem},
+    {heading: 'Any affiliation', title: userData?.anyAffiliation},
+    {heading: 'Study bible', title: userData?.studyBible},
+    {heading: 'Study Habits', title: userData?.studyHabits},
     {
       heading: 'Spiritual background',
-      title: 'I came out of the nation of islam',
+      title: userData?.spiritualBackground,
     },
   ];
-  const SelectedPassions = [
-    'Lorem Ipsum',
-    'Lorem Ipsum',
-    'Lorem Ipsum',
-    'Lorem Ipsum dolor',
-    'Lorem Ipsum',
+  // const practiceKeeping = 
+  // const SelectedPassions = [
+  //   'Lorem Ipsum',
+  //   'Lorem Ipsum',
+  //   'Lorem Ipsum',
+  //   'Lorem Ipsum dolor',
+  //   'Lorem Ipsum',
     
-  ];
+  // ];
+  const SelectedPassions = userData?.passions ? userData?.passions?.map((item,index)=>{
+    return item?.options
+  }) : ['Not available']
+
+  const SelectedKingdom = userData?.kingdom_gifts ? userData?.kingdom_gifts?.map((item,index)=>{
+    return item?.options
+  }) : ['Not available']
+  console.log("🚀 ~ file: Israeliteinfo.js:50 ~ SelectedKingdom ~ SelectedKingdom:", SelectedKingdom)
+
+  const practiceKeeping = userData?.isrealite_practice_keeping ? userData?.isrealite_practice_keeping.map((item,index)=>{
+    return item?.options
+  }) :['Not available']
+  console.log("🚀 ~ file: Israeliteinfo.js:55 ~ practiceKeeping ~ practiceKeeping:", practiceKeeping)
+
+  console.log("🚀 ~ file: Israeliteinfo.js:45 ~ SelectedPassions ~ SelectedPassions:", SelectedPassions)
+  
+  // const practiceKeeping = [
+  //   'Lorem Ipsum',
+  //   'Lorem Ipsum',
+  //   'Lorem Ipsum',
+  //   'Lorem Ipsum dolor',
+  //   'Lorem Ipsum',
+    
+  // ];
 
   return (
     <ImageBackground
       style={styles.container}
       source={require('../Assets/Images/Israelite_info.jpg')}>
-        <ScrollView
+        {/* <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
             paddingTop: moderateScale(20, 0.6),
@@ -45,7 +77,7 @@ const Israeliteinfo = ({navigation}) => {
 
         }}
        
-        >
+        > */}
 
       <CustomText
         style={{
@@ -54,7 +86,7 @@ const Israeliteinfo = ({navigation}) => {
           width: windowWidth,
           textAlign: 'center',
         }}>
-        Israelite LifeStyle and & Values
+        Israelite LifeStyle & Values
       </CustomText>
       <CustomText isBold style={[styles.heading]}>
         LifeStyle
@@ -86,7 +118,44 @@ const Israeliteinfo = ({navigation}) => {
       <CustomText isBold style={[styles.heading]}>
         Values
       </CustomText>
-      <CustomText
+      <View>
+
+   
+<CustomText
+  style={[
+      styles.text,
+      {
+          marginLeft: moderateScale(10, 0.3),
+          marginTop: moderateScale(20, 0.3),
+      },
+  ]}>
+  israelite Practise keeping
+</CustomText>
+<View style={{
+    flexDirection : 'row',
+    width : windowWidth * 0.9 ,
+    paddingLeft : moderateScale(10,.6),
+    flexWrap : 'wrap'
+  }}>
+
+{practiceKeeping?.map((item, index) => {
+    return (
+        
+        
+        <CustomText
+        isBold
+        style={[
+          styles.text,
+          {color: Color.themeColor, marginLeft: moderateScale(10, 0.3)},
+        ]}>
+        {item}
+      </CustomText>
+
+      );
+  })}
+  </View>
+  </View>
+      {/* <CustomText
         style={[
           styles.text,
           {
@@ -103,7 +172,7 @@ const Israeliteinfo = ({navigation}) => {
           {color: Color.themeColor, marginLeft: moderateScale(10, 0.3)},
         ]}>
         Eating Clean
-      </CustomText>
+      </CustomText> */}
       <View style={styles.row}>
       <View>
 
@@ -169,7 +238,7 @@ const Israeliteinfo = ({navigation}) => {
           flexWrap : 'wrap'
         }}>
 
-      {SelectedPassions?.map((item, index) => {
+      {SelectedKingdom?.map((item, index) => {
           return (
               <View
               key={index}
@@ -209,7 +278,7 @@ const Israeliteinfo = ({navigation}) => {
           isBold
         />
 
-</ScrollView>
+{/* </ScrollView> */}
     </ImageBackground>
   );
 };
@@ -243,7 +312,7 @@ const styles = ScaledSheet.create({
     fontSize: moderateScale(12, 0.6),
     textTransform: 'none',
     // backgroundColor : 'red' , 
-    width : windowWidth * 0.42
+    // width : windowWidth * 0.42
   },
   bar: {
     alignSelf: 'center',

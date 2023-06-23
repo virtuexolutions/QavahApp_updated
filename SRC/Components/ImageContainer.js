@@ -32,7 +32,7 @@ const ImageContainer = ({
   onPress,
 }) => {
   console.log("🚀 ~ file: ImageContainer.js:34 ~ key:", key)
-  console.log('🚀 ~ file: ImageContainer.js:29 ~ ImageContainer ~ item:', item);
+  console.log('🚀 ~ file: ImageContainer.js:29 ~ ImageContainer ~ item:', item?.url);
   const [remove, setRemove] = useState(false);
 
   return (
@@ -45,7 +45,7 @@ const ImageContainer = ({
       {Object.keys(item).length >0 ? (
         <>
           <Image
-            source={{uri:item?.uri}}
+            source={{uri:item?.url}}
             style={{width: '100%', height: '100%'}}
           />
           <TouchableOpacity

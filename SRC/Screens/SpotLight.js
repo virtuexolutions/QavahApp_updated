@@ -388,7 +388,7 @@ const SpotLight = () => {
               alignItems:'center',
               justifyContent:'center',
             }}>
-            {[].length > 0 ? (
+            {spotLightData.length > 0 ? (
               <Swiper
                 animateCardOpacity
                 style={styles.mainContainer}

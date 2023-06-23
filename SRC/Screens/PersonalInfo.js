@@ -22,9 +22,10 @@ import { setUserData } from '../Store/slices/common';
 
 const PersonalInfo = () => {
   const user = useSelector(state => state.commonReducer.userData);
+  console.log("🚀 ~ file: PersonalInfo.js:25 ~ PersonalInfo ~ user:", user)
 
   const dispatch = useDispatch();
-  console.log("🚀 ~ file: PersonalInfo.js:24 ~ PersonalInfo ~ user:", user?.gallery_images)
+  // console.log("🚀 ~ file: PersonalInfo.js:24 ~ PersonalInfo ~ user:", user?.gallery_images)
   const token = useSelector(state => state.authReducer.token)
   const [email, setEmail] = useState(user?.email);
   const [number, setNumber] = useState(user?.phone);
@@ -33,23 +34,28 @@ const PersonalInfo = () => {
   // console.log("🚀 ~ file: PersonalInfo.js:28 ~ PersonalInfo ~ ob:", dob)
   const [open, setOpen] = useState(false);
   const [gender, setGender] = useState(user?.iAm);
+  console.log("🚀 ~ file: PersonalInfo.js:37 ~ PersonalInfo ~ gender:", gender)
   const [profileName, setProfileName] = useState(user?.profileName);
-  const [multiImages, setMultiImages] = useState([
-    {id: 1, uri: require('../Assets/Images/image1.jpeg')},
-    {id: 2, uri: require('../Assets/Images/image2.jpeg')},
-    {id: 3, uri: require('../Assets/Images/image3.jpeg')},
-    {id: 4, uri: require('../Assets/Images/image4.jpeg')},
-    {id: 5, uri: require('../Assets/Images/image4.jpeg')},
-    {id: 6, uri: require('../Assets/Images/image5.jpeg')},
-  ]);
+  // const [multiImages, setMultiImages] = useState([
+  //   {id: 1, uri: require('../Assets/Images/image1.jpeg')},
+  //   {id: 2, uri: require('../Assets/Images/image2.jpeg')},
+  //   {id: 3, uri: require('../Assets/Images/image3.jpeg')},
+  //   {id: 4, uri: require('../Assets/Images/image4.jpeg')},
+  //   {id: 5, uri: require('../Assets/Images/image4.jpeg')},
+  //   {id: 6, uri: require('../Assets/Images/image5.jpeg')},
+  // ]);
+
+  const [multiImages, setMultiImages] = useState(user?.gallery_images)
 
   // const [multiImages, setMultiImages] = useState(user?.gallery_images)
+  console.log("🚀 ~ file: PersonalInfo.js:50 ~ PersonalInfo ~ multiImages:", multiImages)
   const [tempMultiImages, setTempMultiImages] = useState([]);
   console.log("🚀 ~ file: PersonalInfo.js:36 ~ PersonalInfo ~ tempMultiImages:", tempMultiImages)
   const [multiImagesEmpty, setMultiImagesEmpty] = useState([]);
   const [currentIndex, setIndex] = useState('');
   const [showMultiImageModal, setShowMultiImageModal] = useState(false);
   const [scrollEnabled , setScrollEnabled] = useState(true)
+  const [newMultiImages, setNewMultiImages] = useState([])
 
     // useEffect(() => {
     //   setTempMultiImages([])
@@ -75,16 +81,26 @@ const PersonalInfo = () => {
 
       const updatePortfolio = async () =>{
         const url ='portfolio';
-        const body = {
-          targetsUid: user?.id,
-          profileName : profileName,
-          // Birthday: moment(dob).format('YYYY-MM-DD'),
-          // Gender:gender,
-          galleryImages:multiImages
+        const formData = new FormData()
+        formData.append('targetsUid',user?.id)
+        formData.append('profileName',profileName)
+        newMultiImages.map((item,index)=>{
           
-          };
-        console.log("🚀 ~ file: PersonalInfo.js:81 ~ updatePortfolio ~ body:", body)
-        const response = await Post(url, body,apiHeader(token))
+          Object.keys(item).length > 0 && formData.append(`galleryImages[${index}]`,JSON.stringify(item,null,2))
+          
+        })
+        
+        console.log("🚀 ~ file: PersonalInfo.js:84 ~ updatePortfolio ~ formData:", formData)
+        // const body = {
+        //   // targetsUid: user?.id,
+        //   profileName : profileName,
+        //   // Birthday: moment(dob).format('YYYY-MM-DD'),
+        //   // Gender:gender,
+        //   galleryImages:multiImages
+          
+        //   };
+        // console.log("🚀 ~ file: PersonalInfo.js:81 ~ updatePortfolio ~ body:", body)
+        const response = await Post(url, formData,apiHeader(token))
     
         if(response?.data?.status){
           
@@ -305,7 +321,7 @@ const PersonalInfo = () => {
           Media
         </CustomText>
 
-        {/* <View style={styles.imageView}>
+        <View style={styles.imageView}>
           <SortableGrid
             itemsPerRow={3}
            onDragStart={() => setScrollEnabled(false)}
@@ -316,12 +332,17 @@ const PersonalInfo = () => {
               // // value?.itemOrder.map((item, index) => {
                 // //   return ( setMultiImages((prev)=>[...prev , tempMultiImages[item?.key] ]))
                 // // });
-                const newItems = value?.itemOrder.map((item) => multiImages[item.key-1]);
-                // console.log("🚀 ~ file: PersonalInfo.js:59 ~ onDragRelease ~ newItems:", newItems)
-                setMultiImages(newItems)
+                // const newItems = value?.itemOrder.map((item) => {multiImages.filter((x)=> x?.id==item?.key)});
+                const newItems =  value?.itemOrder?.map((item)=> {
+                  return multiImages.find((x)=>x?.id == item?.key)
+                })
+                console.log("🚀 ~ file: PersonalInfo.js:59 ~ onDragRelease ~ newItems:", newItems)
+                // setMultiImages(newItems)
+                setNewMultiImages(newItems)
+                
                 console.log("🚀 ~ file: PersonalInfo.js:35 ~ PersonalInfo ~ multiImages:", multiImages)
             }}>
-            {multiImages.map((item, index) => {
+            {multiImages?.map((item, index) => {
               return (
                 <ImageContainer
                   data={multiImages}
@@ -336,7 +357,7 @@ const PersonalInfo = () => {
               );
             })}
           </SortableGrid>
-        </View> */}
+        </View>
         <CustomButton
           text={'Save'}
           textColor={Color.white}

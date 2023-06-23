@@ -51,6 +51,8 @@ const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
   const isVerified = useSelector(state => state.authReducer.isVerified);
   const token = useSelector(state => state.authReducer.token);
+  const isLoggedIn = useSelector(state => state.authReducer.isLoggedIn);
+
 
   // console.log('token>>>>', token);
   // console.log('isVerified', isGoalCreated);
@@ -68,7 +70,7 @@ const AppNavigator = () => {
   };
 
   const AppNavigatorContainer = () => {
-    const firstScreen = token != null ? 'TabNavigation' : 'LandingPage';
+    const firstScreen = token != null  && isLoggedIn ? 'TabNavigation' : 'LandingPage';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
@@ -79,8 +81,10 @@ const AppNavigator = () => {
            <RootNav.Screen name="LandingPage" component={LandingPage} />
            <RootNav.Screen name="LoginScreen" component={LoginScreen} />
            <RootNav.Screen name="CreatePortfolio" component={CreatePortfolio} />
-           <RootNav.Screen name="ProfilePictures" component={ProfilePictures} />
+       
            <RootNav.Screen name="MoreAboutme" component={MoreAboutme} />
+          <RootNav.Screen name="ProfilePictures" component={ProfilePictures} />
+           <RootNav.Screen name="ProfileCreated" component={ProfileCreated} />
            <RootNav.Screen name="EnterPhone" component={EnterPhone} />
            <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
            <RootNav.Screen name="ResetPassword" component={ResetPassword} />
@@ -90,7 +94,6 @@ const AppNavigator = () => {
              component={IsraeliteFilters}
           />
           <RootNav.Screen name="Passions" component={Passions} />
-          <RootNav.Screen name="ProfileCreated" component={ProfileCreated} />
           <RootNav.Screen name="Israeliteinfo" component={Israeliteinfo} />
           <RootNav.Screen name="TabNavigation" component={TabNavigation} />
           <RootNav.Screen name="UserDetail" component={UserDetail} />

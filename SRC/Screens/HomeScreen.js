@@ -182,7 +182,7 @@ const HomeScreen = () => {
           }}>
           <ActivityIndicator color={Color.themeColor} size={'large'} />
         </View>
-      ) : []?.length > 0 ? (
+      ) : photoCards?.length > 0 ? (
         <>
           <View
             style={{

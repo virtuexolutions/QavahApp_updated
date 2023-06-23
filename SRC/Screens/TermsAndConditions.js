@@ -17,11 +17,13 @@ import {useSelector} from 'react-redux';
 import Animated from 'react-native-reanimated';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import CustomButton from '../Components/CustomButton';
+import navigationService from '../navigationService';
+import { useNavigation } from '@react-navigation/native';
 
 const TermsAndConditions = () => {
-
   const [isLoading, setIsLoading] = useState(false);
   const [termsData, setTermsData] = useState('');
+  const navigation = useNavigation();
 
   // const parser = new DOMParser.DOMParser();
 
@@ -53,133 +55,124 @@ const TermsAndConditions = () => {
 
   return (
     <>
-    <CustomStatusBar
-      backgroundColor={Color.white}
-      barStyle={'dark-content'}
-    />
-    <Header
-      showLeft={true}
-      title={'Terms & Conditions'}
-      leftName={'left'}
-      textStyle={{
-        color: Color.veryLightGray,
-      }}
-    />
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      style={{
-        backgroundColor: Color.white,
-      }}
-      contentContainerStyle={{
-        // height: windowHeight * 0.95,
+      <CustomStatusBar
+        backgroundColor={Color.white}
+        barStyle={'dark-content'}
+      />
+      <Header
+        showLeft={true}
+        title={'Terms & Conditions'}
+        leftName={'left'}
+        textStyle={{
+          color: Color.veryLightGray,
+        }}
+      />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{
+          backgroundColor: Color.white,
+        }}
+        contentContainerStyle={{
+          // height: windowHeight * 0.95,
 
-        alignItems: 'center',
-        paddingBottom: moderateScale(80, 0.6),
-      }}>
-         <CustomText
-                style={[
-                  {marginTop: moderateScale(8, 0.3),
-                    color:Color.themeColor,
-                    fontWeight: 'bold',
-                  },
-                ]}>{`Effective Date : ${moment(termsData?.updated_at).format(
-                'll',
-              )}`}</CustomText>
+          alignItems: 'center',
+          paddingBottom: moderateScale(80, 0.6),
+        }}>
         <CustomText
-                style={[
-                  {
-                    // backgroundColor: 'red',
-                    color: Color.black,
-                    textAlign: 'left',
-                    margin: moderateScale(20, 0.3),
-                    lineHeight: moderateScale(18, 0.3),
-                    fontSize: moderateScale(15, 0.3),
-                  },
-                ]}>
-                Lorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorvLorem Ipsum dolorLorem Ipsum dolorLorem
-                Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor
-                Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum
-                
-              </CustomText>
-              <CustomText
-                style={[
-                  {
-                    // backgroundColor: 'red',
-                    color: Color.black,
-                    textAlign: 'left',
-                    margin: moderateScale(20, 0.3),
-                    lineHeight: moderateScale(18, 0.3),
-                    fontSize: moderateScale(15, 0.3),
-                  },
-                ]}>
-               
-               
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
-                
-              </CustomText>
-              <CustomText
-                style={[
-                  {
-                    // backgroundColor: 'red',
-                    color: Color.black,
-                    textAlign: 'left',
-                    margin: moderateScale(20, 0.3),
-                    lineHeight: moderateScale(18, 0.3),
-                    fontSize: moderateScale(15, 0.3),
-                  },
-                ]}>
-               
-                dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolor helloo
-              </CustomText>
-             
-     
-    </ScrollView>
-    <CustomButton
-                text={'Accept'}
-                textColor={Color.white}
-                width={windowWidth * 0.8}
-                height={windowHeight * 0.07}
-                onPress={() => {}}
-                marginLeft={windowWidth * 0.05}
-                marginRight={windowWidth * 0.05}
-                bgColor={Color.themeColor}
-                borderRadius={moderateScale(10, 0.6)}
-                marginTop={moderateScale(40, 0.6)}
-                marginBottom={moderateScale(10, 0.6)}
-                elevation
-                isBold
-                fontSize={moderateScale(15, 0.6)}
-                containerStyle ={{
-                  position : 'absolute' ,
-                  bottom : moderateScale(5,0.3)
-                }}
-              />
+          style={[
+            {
+              marginTop: moderateScale(8, 0.3),
+              color: Color.themeColor,
+              fontWeight: 'bold',
+            },
+          ]}>{`Effective Date : ${moment(termsData?.updated_at).format(
+          'll',
+        )}`}</CustomText>
+        <CustomText
+          style={[
+            {
+              // backgroundColor: 'red',
+              color: Color.black,
+              textAlign: 'left',
+              margin: moderateScale(20, 0.3),
+              lineHeight: moderateScale(18, 0.3),
+              fontSize: moderateScale(15, 0.3),
+            },
+          ]}>
+          Lorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorvLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolor Lorem Ipsum
+        </CustomText>
+        <CustomText
+          style={[
+            {
+              // backgroundColor: 'red',
+              color: Color.black,
+              textAlign: 'left',
+              margin: moderateScale(20, 0.3),
+              lineHeight: moderateScale(18, 0.3),
+              fontSize: moderateScale(15, 0.3),
+            },
+          ]}>
+          Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
+          Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
+          Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
+          Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem
+          Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
+          Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
+          Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
+          Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
+          Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
+        </CustomText>
+        <CustomText
+          style={[
+            {
+              // backgroundColor: 'red',
+              color: Color.black,
+              textAlign: 'left',
+              margin: moderateScale(20, 0.3),
+              lineHeight: moderateScale(18, 0.3),
+              fontSize: moderateScale(15, 0.3),
+            },
+          ]}>
+          dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor helloo
+        </CustomText>
+      </ScrollView>
+      <CustomButton
+        text={'Accept'}
+        textColor={Color.white}
+        width={windowWidth * 0.8}
+        height={windowHeight * 0.07}
+        onPress={() => {navigation.goBack()}}
+        marginLeft={windowWidth * 0.05}
+        marginRight={windowWidth * 0.05}
+        bgColor={Color.themeColor}
+        borderRadius={moderateScale(10, 0.6)}
+        marginTop={moderateScale(40, 0.6)}
+        marginBottom={moderateScale(10, 0.6)}
+        elevation
+        isBold
+        fontSize={moderateScale(15, 0.6)}
+        containerStyle={{
+          position: 'absolute',
+          bottom: moderateScale(5, 0.3),
+        }}
+      />
       {/* <CustomButton
               text={'Starting At $500'}
               textColor={Color.white}
@@ -200,7 +193,7 @@ const TermsAndConditions = () => {
                 bottom : moderateScale(5,0.3)
               }}
             /> */}
-  </>
+    </>
     // <ScreenBoiler
     //   showHeader={true}
     //   statusBarBackgroundColor={

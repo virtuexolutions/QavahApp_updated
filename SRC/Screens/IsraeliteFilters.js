@@ -25,6 +25,7 @@ import { Post } from '../Axios/AxiosInterceptorFunction';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import { setUserData } from '../Store/slices/common';
+import { setIsLoggedIn, setUserToken } from '../Store/slices/auth';
 
 const IsraeliteFilters = props => {
   const edit = props?.route?.params?.edit;
@@ -310,18 +311,21 @@ const IsraeliteFilters = props => {
     console.log("🚀 ~ file: IsraeliteFilters.js:236 ~ IsraeliteFilters ~ completeBody:", completeBody)
 
     const Registration =async()=>{
-      const url = 'auth/register'
+      const url = 'auth/register/app'
       // console.log( ' body ================== ? ? ?? ',completeBody)
       setIsLoading(true);
       const response = await Post(url , completeBody , apiHeader())
       setIsLoading(false);
       if(response != undefined){
-        // console.log('User registered =-======>' , response?.data)
+         console.log('User registered =-======>' , response?.data)
         Platform.OS == 'android' ?
         ToastAndroid.show('User Registered Successfully',ToastAndroid.SHORT) :
         alert('User Registered Successfully')
-        
-        navigationService.navigate('ProfileCreated',{
+
+        dispatch(setUserData(response?.data?.user))
+        dispatch(setUserToken(response?.data?.token))
+        dispatch(setIsLoggedIn());
+        navigationService.navigate('ProfilePictures',{
           token : response?.data?.token ,
           userData : response?.data?.user,
         })

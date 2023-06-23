@@ -96,7 +96,7 @@ const CreatePortfolio = () => {
   const [withFilter, setFilter] = useState(true);
   const [timeOutId, setTimeOutId] = useState(null);
   const [chunks, setChunks] = useState('');
-  const [progress, setProgress] = useState(new Animated.Value(0))
+  const [progress, setProgress] = useState(0)
 
   const ProfileBody = {
     step1: {
@@ -763,7 +763,7 @@ const CreatePortfolio = () => {
 
             } else if (currentStep == 8) {
               clearTimeout(timeOutId);
-              navigationService.navigate('ProfilePictures', {
+              navigationService.navigate('MoreAboutme', {
                 data: ProfileBody,
               });
             } else {

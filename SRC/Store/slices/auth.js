@@ -7,6 +7,7 @@ const initialState = {
   isVerified: false,
   userWalkThrough: false,
   isGoalCreated : false ,
+
 };
 
 const AuthSlice = createSlice({
@@ -27,10 +28,14 @@ const AuthSlice = createSlice({
     setUserLogoutAuth(state, action) {
       state.token = null;
       state.fcmToken = null;
+      state.isLoggedIn = false;
     },
     setWalkThrough(state, action) {
       state.userWalkThrough = action.payload;
     },
+    setIsLoggedIn(state,action){
+      state.isLoggedIn = true;
+    }
   },
 });
 
@@ -41,7 +46,7 @@ export const {
   setUserToken,
   SetFCMToken,
   setWalkThrough,
-  
+  setIsLoggedIn
   
 } = AuthSlice.actions;
 

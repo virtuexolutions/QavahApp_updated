@@ -12,7 +12,7 @@ import {Icon, ScaleFade} from 'native-base';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import Header from '../Components/Header';
 import CustomStatusBar from '../Components/CustomStatusBar';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
 import CustomText from '../Components/CustomText';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -27,13 +27,19 @@ import ImageContainer from '../Components/ImageContainer';
 // } from 'react-native-draggable-flatlist';
 // import SortableGridView from 'react-native-sortable-gridview'
 import {Easing} from 'react-native-reanimated';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
 const ProfilePictures = props => {
-  const profileBody = props?.route?.params?.data;
-  console.log(
-    '🚀 ~ file: ProfilePictures.js:31 ~ ProfilePictures ~ data:',
-    profileBody,
-  );
+  // const profileBody = props?.route?.params?.data;
+  const token = props?.route?.params?.token;
+  const user = props?.route?.params?.userData
+
+
+
+  // console.log(
+  //   '🚀 ~ file: ProfilePictures.js:31 ~ ProfilePictures ~ data:',
+  //   profileBody,
+  // );
   const [profilePicture, setProfilePicture] = useState({});
   // const [multiImages, setMultiImages] = useState([
   //   require('../Assets/Images/banner.jpg'),
@@ -56,6 +62,7 @@ const ProfilePictures = props => {
   const [currentPattern, setCurrentPattern] = useState([]);
   const [scrollOff, setScrollOff] = useState(false);
   const [currentIndex, setIndex] = useState('');
+  const [isloading, setisloading] = useState(false)
 
   // useEffect(() => {
   //   setUpdatedImages([]);
@@ -81,6 +88,36 @@ const ProfilePictures = props => {
     {id: '4', text: 'Item 4'},
     {id: '5', text: 'Item 5'},
   ];
+  const sendImages =async ()=>{
+    const url = 'user/update-my-gallery-image'
+
+    const formData = new FormData();
+    formData.append('profileImages',profilePicture)
+    multiImages.map((item,index)=>{
+
+    Object.keys(item).length>0 && formData.append(`galleryImages[${index}]`,item)
+   
+  })
+  console.log("🚀 ~ file: ProfilePictures.js:103 ~ sendImages ~ formData:", formData)
+    setisloading(true)
+    const response = await Post(url,formData, apiHeader(token) )
+    setisloading(false)
+    if(response != undefined){
+      
+      console.log("🚀 ~ file: ProfilePictures.js:95 ~ sendImages ~ response:", response?.data?.user?.gallery_images)
+      
+      
+      
+      navigationService.navigate('ProfileCreated',{
+        token :token ,
+        userData : response?.data?.user,
+      })
+
+    }
+    
+  }
+
+
 
   return (
     <>
@@ -227,41 +264,46 @@ const ProfilePictures = props => {
           width={windowWidth * 0.9}
           height={windowHeight * 0.09}
           onPress={() => {
-            navigationService.navigate('MoreAboutme', {
-              data: profileBody,
-              profileImages: profilePicture,
-              galleryImages: multiImages,
-              // profileImages: [
-              //   {
-              //     index: 0,
-              //     url: 'http://127.0.0.1:8000/images/profile_images/qavah-16811261746433f31ed7383.png',
-              //     name: 'qavah-16811261746433f31ed7383.png',
-              //     thumbnails:
-              //       'http://127.0.0.1:8000/images/profile_images/thumbnails/qavah-16811261746433f31ed7383.png',
-              //     web_url: 'http://127.0.0.1:8000/images/profile_images',
-              //   },
-              // ],
-              // galleryImages: [
-              //   {
-              //     index: 0,
-              //     url: 'http://127.0.0.1:8000/images/gallery_Images/qavah-16811261786433f322397a5.png',
-              //     name: 'qavah-16811261786433f322397a5.png',
-              //     thumbnails:
-              //       'http://127.0.0.1:8000/images/gallery_Images/thumbnails/qavah-16811261786433f322397a5.png',
-              //     web_url: 'http://127.0.0.1:8000/images/gallery_Images',
-              //     type: 'image',
-              //   },
-              //   {
-              //     index: 1,
-              //     url: 'http://127.0.0.1:8000/images/gallery_Images/qavah-16811261776433f321cf413.png',
-              //     name: 'qavah-16811261776433f321cf413.png',
-              //     thumbnails:
-              //       'http://127.0.0.1:8000/images/gallery_Images/thumbnails/qavah-16811261776433f321cf413.png',
-              //     web_url: 'http://127.0.0.1:8000/images/gallery_Images',
-              //     type: 'image',
-              //   },
-              // ],
-            });
+            sendImages()
+
+
+
+
+            // navigationService.navigate('MoreAboutme', {
+            //   data: profileBody,
+            //   profileImages: profilePicture,
+            //   galleryImages: multiImages,
+            //   // profileImages: [
+            //   //   {
+            //   //     index: 0,
+            //   //     url: 'http://127.0.0.1:8000/images/profile_images/qavah-16811261746433f31ed7383.png',
+            //   //     name: 'qavah-16811261746433f31ed7383.png',
+            //   //     thumbnails:
+            //   //       'http://127.0.0.1:8000/images/profile_images/thumbnails/qavah-16811261746433f31ed7383.png',
+            //   //     web_url: 'http://127.0.0.1:8000/images/profile_images',
+            //   //   },
+            //   // ],
+            //   // galleryImages: [
+            //   //   {
+            //   //     index: 0,
+            //   //     url: 'http://127.0.0.1:8000/images/gallery_Images/qavah-16811261786433f322397a5.png',
+            //   //     name: 'qavah-16811261786433f322397a5.png',
+            //   //     thumbnails:
+            //   //       'http://127.0.0.1:8000/images/gallery_Images/thumbnails/qavah-16811261786433f322397a5.png',
+            //   //     web_url: 'http://127.0.0.1:8000/images/gallery_Images',
+            //   //     type: 'image',
+            //   //   },
+            //   //   {
+            //   //     index: 1,
+            //   //     url: 'http://127.0.0.1:8000/images/gallery_Images/qavah-16811261776433f321cf413.png',
+            //   //     name: 'qavah-16811261776433f321cf413.png',
+            //   //     thumbnails:
+            //   //       'http://127.0.0.1:8000/images/gallery_Images/thumbnails/qavah-16811261776433f321cf413.png',
+            //   //     web_url: 'http://127.0.0.1:8000/images/gallery_Images',
+            //   //     type: 'image',
+            //   //   },
+            //   // ],
+            // });
           }}
           bgColor={Color.themeColor}
           borderRadius={moderateScale(15, 0.3)}

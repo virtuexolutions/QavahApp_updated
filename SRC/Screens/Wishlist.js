@@ -14,6 +14,7 @@ import {Get} from '../Axios/AxiosInterceptorFunction';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import {useIsFocused} from '@react-navigation/native';
 import NullDataComponent from '../Components/NullDataComponent';
+import navigationService from '../navigationService';
 
 const Wishlist = () => {
   const isFocused = useIsFocused();
@@ -339,7 +340,12 @@ const Wishlist = () => {
                 ]}
                 favoredYouPost ={selected=='Favored You'?favoredYouPost:youFavoured}
                 setFavoredYouPost ={setFavoredYouPost}
-                onPress={() => {}}
+                onPress={() => {navigationService.navigate('UserDetail', {
+                  item: item,
+                  fromSearch: true,
+                });
+                }
+              }
                 hideBtns={hideBtns}
               />
             );

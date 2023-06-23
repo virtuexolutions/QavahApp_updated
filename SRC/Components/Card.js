@@ -18,7 +18,7 @@ let startNode;
 const Card =memo( ({card, height , setCards , cards, fromSpotLight}) => {
 // console.log("🚀 ~ file: Card.js:19 ~ Card ~ fromSpotLight:", fromSpotLight)
 //   console.log("🚀 ~ file: Card.js:19 ~ Card ~ card:", JSON.stringify( card , null , 2))
-// console.log('card ===>' , card?.profile_images[0]?.url)
+// console.log('card ===>' , card)
 //   fromSpotLight? 'coming from spotlight': 'coming from homescreen'
 
 //   const [card, setCardData] = useState(card) 

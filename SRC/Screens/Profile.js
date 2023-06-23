@@ -8,7 +8,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
@@ -27,20 +27,25 @@ import ImagePickerModal from '../Components/ImagePickerModal';
 import CustomModal from '../Components/CustomModal';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomButton from '../Components/CustomButton';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Post } from '../Axios/AxiosInterceptorFunction';
+import { setUserData } from '../Store/slices/common';
 
 const Profile = props => {
   const data = props?.route?.params?.data;
   const user = useSelector(state => state.commonReducer.userData);
-  console.log("🚀 ~ file: Profile.js:33 ~ Profile ~ data:", data)
+  // console.log("🚀 ~ file: Profile.js:36 ~ Profile ~ user:", user)
+  // console.log("🚀 ~ file: Profile.js:33 ~ Profile ~ data:", data)
+  const token = useSelector(state => state.authReducer.token)
   const fromSearch = props?.route?.params?.fromSearch ;
   console.log("🚀 ~ file: Profile.js:26 ~ Profile ~ fromSearch:", fromSearch)
   const [type, setType] = useState('photos');
   const [isVisible, setIsVisible] = useState(false);
-  const [userData, setUserData] = useState(fromSearch ? data : user);
+  const [userData, setuserData] = useState(fromSearch ? data : user);
+  console.log("🚀 ~ file: Profile.js:45 ~ Profile ~ userData:", userData)
   const [postRef , setPostRef] = useState(null
   )
-  const [images , setImages] = useState(userData ? userData.gallery_images :  [
+  const [images , setImages] = useState(userData ? userData?.gallery_images :  [
     require('../Assets/Images/image1.jpeg'),
     require('../Assets/Images/image2.jpeg'),
     require('../Assets/Images/image3.jpeg'),
@@ -57,16 +62,60 @@ const Profile = props => {
     require('../Assets/Images/woman4.jpeg'),
     require('../Assets/Images/woman5.jpeg'),
   ],)
+  console.log("🚀 ~ file: Profile.js:64 ~ Profile ~ images:", images)
+
+  const dispatch = useDispatch()
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedImage , setSelectedImage] = useState(null)
-  const [image, setImage] = useState(userData?.profile_images[0]);
+  console.log("🚀 ~ file: Profile.js:70 ~ Profile ~ selectedImage:", selectedImage)
+  const [image, setImage] = useState({});
+  console.log("🚀 ~ file: Profile.js:70 ~ Profile ~ image:", image)
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [postImage , setPostImage] = useState({});
+  console.log("🚀 ~ file: Profile.js:76 ~ Profile ~ postImage:", postImage)
   const [postImageModal , setPostImageModal] = useState(false);
   const [pickPostImage , setPickPostImage] = useState(false)
   const [description , setDescription] = useState('')
+  
+  
+  
+  const updateProfile =async ()=>{
+    const url = 'user/update-my-profile-image';
+    const formData = new FormData()
+    // const body = {profileImages:image}
+
+    formData.append('profileImages',image)
+    const response = await Post(url, formData, apiHeader(token))
+    console.log("🚀 ~ file: Profile.js:78 ~ updateProfile ~ body:", formData)
+    
+    if(response!= undefined){
+      console.log("🚀 ~ file: Profile.js:77 ~ updateProfile ~ response:", response?.data?.user)
+
+      console.log("🚀 ~ file: Profile.js:77 ~ updateProfile ~ response:", response?.data?.user?.profile_image[0]?.uri)
+
+      dispatch(setUserData(response?.data?.user))
+      
+    }
+
+  }
+
+  const sendPost = async()=>{
+
+    const formData = new FormData();
+    // formData.append('description',description);
+    formData.append('image', postImage);
+    setPostImage(null)
+    const url = 'send-post';
+    const response = await Post(url, {formData}, apiHeader(token))
+    
+    if(response != undefined){
+
+      console.log("🚀 ~ file: Profile.js:103 ~ sendPost ~ response:", response?.data)
+      
+    }
+  }
 
 
 
@@ -75,6 +124,14 @@ const Profile = props => {
       setPostImageModal(!postImageModal)
     }
   }, [postImage])
+
+  useEffect(() => {
+    if(Object.keys(image).length > 0){
+
+      updateProfile()
+    }
+
+  }, [image])
   
 
   return (
@@ -85,7 +142,7 @@ const Profile = props => {
       />
       <Header
         showLeft={true}
-        title={fromSearch ? `${data?.profileName} Gallery` : 'Austin gallery'}
+        title={`${userData?.profileName} Gallery`}
         leftName={'left'}
         textStyle={{
           color: Color.veryLightGray,
@@ -104,19 +161,19 @@ const Profile = props => {
           alignItems: 'center',
         }}>
           {
-            fromSearch ?
+           fromSearch ?
             <CustomImage
               style={styles.image}
-              source={{uri : image?.url}}
+              source={{uri : userData?.profile_images[0]?.url}}
             />
             :
             <View>
             {Object.keys(image).length > 0 ? (
-              <CustomImage source={{uri: image?.uri}} style={styles.image} />
+              <CustomImage source={{uri: image?.url}} style={styles.image} />
             ) : (
               <CustomImage
                 style={styles.image}
-                source={require('../Assets/Images/dummyman6.png')}
+                source={userData?.profile_images?.length > 0 ? {uri:userData?.profile_images[0]?.url} : require('../Assets/Images/dummyman6.png')}
               />
             )}
             <TouchableOpacity
@@ -140,7 +197,7 @@ const Profile = props => {
           </View>
           }
         <CustomText style={styles.heading}>
-         {fromSearch ?`${fromSearch ? userData?.profileName : userData?.profileName},${userData?.age}` : 'Austin,21'}
+         {`${ userData?.profileName},${userData?.age}`}
         </CustomText>
         <CustomText
           style={[
@@ -164,7 +221,7 @@ const Profile = props => {
         </CustomText>
         
         <View style={styles.row}>
-          <View
+          {/* <View
             style={{
               width: windowWidth * 0.48,
               alignItems: 'center',
@@ -176,7 +233,7 @@ const Profile = props => {
                 color: Color.themeBlack,
                 textAlign: 'center',
               }}>
-              50
+              {images?.length}
             </CustomText>
             <CustomText
               style={{
@@ -184,10 +241,10 @@ const Profile = props => {
                 fontSize: moderateScale(12, 0.6),
                 // textAlign : 'center'
               }}>
-              Photo
+              {images?.length < 1 ? 'Photo' : 'Photos'}
             </CustomText>
-          </View>
-          <View
+          </View> */}
+          {/* <View
             style={{
               width: windowWidth * 0.48,
               alignItems: 'center',
@@ -209,10 +266,10 @@ const Profile = props => {
               }}>
               Video
             </CustomText>
-          </View>
+          </View> */}
         </View>
-        <View style={[styles.row,{width : windowWidth * 0.9}]}>
-          <TouchableOpacity
+        {/* <View style={[styles.row,{width : windowWidth * 0.9}]}> */}
+          {/* <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => {
               setType('photos');
@@ -233,8 +290,8 @@ const Profile = props => {
                 width : moderateScale(25,0.6)
               }}
             />
-          </TouchableOpacity>
-          <TouchableOpacity
+          </TouchableOpacity> */}
+          {/* <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => {
               setType('video');
@@ -255,8 +312,8 @@ const Profile = props => {
                 width : moderateScale(25,0.6)
               }}
             />
-          </TouchableOpacity>
-        </View>
+          </TouchableOpacity> */}
+        {/* </View> */}
           <View
             style={{
               flexDirection: 'row',
@@ -266,7 +323,7 @@ const Profile = props => {
               width: windowWidth * 0.9,
               marginTop : moderateScale(20,0.3)
             }}>
-            {images.map((item, index) => {
+            {images?.map((item, index) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
@@ -292,7 +349,7 @@ const Profile = props => {
                       // setIsVisible(true);
                       postRef.open()
                     }}
-                    source={item}
+                    source={{uri:item?.url}}
                     // resizeMode={'contain'}
                     style={{
                       width: '100%',
@@ -333,7 +390,7 @@ const Profile = props => {
          
          <ViewPost 
       setRef={setPostRef}
-      item={fromSearch ? data : {name : 'alison' , age : '22'}}
+      item={ userData}
       image={selectedImage}
       />
          <ImagePickerModal
@@ -401,6 +458,13 @@ const Profile = props => {
           bgColor={Color.themeColor}
           borderRadius={moderateScale(15, 0.3)}
           elevation
+          onPress ={ () => 
+            {
+              setImages(prev=>[...prev , postImage])
+              setPostImageModal(false)
+            
+            }
+          }
         />
 
 

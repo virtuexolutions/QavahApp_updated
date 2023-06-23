@@ -92,7 +92,7 @@ const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => 
       style={[styles.card, style && style]}
       activeOpacity={0.9}
       onPress={() => {
-        !hideBtns &&
+        hideBtns &&
           navigationService.navigate('UserDetail', {
             item: item,
             fromSearch: true,
@@ -100,7 +100,7 @@ const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => 
       }}>
       <CustomImage
         onPress={() => {
-          !hideBtns &&
+          hideBtns &&
           navigationService.navigate('UserDetail', {
             item: item,
             fromSearch: true,

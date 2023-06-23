@@ -64,7 +64,7 @@ const ViewPost = ({setRef, item , image}) => {
               width: '100%',
               height: '100%',
             }}
-            source={image}
+            source={{uri:image?.url}}
             // resizeMode={'contain'}
           />
             <LinearGradient
@@ -114,7 +114,7 @@ const ViewPost = ({setRef, item , image}) => {
     </LinearGradient>
         </View>
         <CustomText style={styles.heading}>
-          {item?.name},{item?.age}
+          {item?.profileName},{item?.age}
         </CustomText>
         <CustomText
           style={[

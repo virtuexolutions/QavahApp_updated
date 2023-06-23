@@ -26,7 +26,7 @@ const ProfileCreated = (props) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'OK', onPress: () => {navigationService.navigate('LoginScreen')}},
+        {text: 'OK', onPress: () => { navigationService.navigate('LoginScreen') }},
       ]);
       return true;
     }
@@ -52,7 +52,7 @@ const ProfileCreated = (props) => {
           </CustomText>
           <CustomImage
             style={styles.image}
-            source={{uri : userData?.profile_images[0]?.url ? userData?.profile_images[0]?.url : require('../Assets/Images/dummyman6.png')}}
+            source={ userData?.profile_image?.uri ? {uri : userData?.profile_image?.uri} : require('../Assets/Images/dummyman6.png')}
 
           />
         </View>

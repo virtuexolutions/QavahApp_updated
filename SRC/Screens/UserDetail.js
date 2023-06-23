@@ -40,6 +40,7 @@ const UserDetail = props => {
   console.log('🚀 ~ file: UserDetail.js:30 ~ UserDetail ~ item:', item);
   // console.log('data =============>>>>>>>>>>', item?.gallery_images[0]);
   const fromSearch = props?.route?.params?.fromSearch;
+  console.log("🚀 ~ file: UserDetail.js:43 ~ UserDetail ~ fromSearch:", fromSearch)
 
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setUserData] = useState(fromSearch ? item : user);
@@ -57,15 +58,27 @@ const UserDetail = props => {
     {id: 6, uri: require('../Assets/Images/image5.jpeg')},
   ]);
 
+  const reportUser = async ()=>{
+    const url = ''
+    const response = await Post(url, {targetsUid : userData?.id })
+    if(response != undefined){
+      
+      console.log("🚀 ~ file: UserDetail.js:64 ~ reportUser ~ response:", response)
+   
+    }
+  }
+
  
-  const images = [require('../Assets/Images/woman1.jpeg')];
-  console.log('🚀 ~ file: UserDetail.js:50 ~ UserDetail ~ images:', images);
+  // const images = [require('../Assets/Images/woman1.jpeg')];
+  // console.log('🚀 ~ file: UserDetail.js:50 ~ UserDetail ~ images:', images);
+  const [image, setImage] = useState({})
+  console.log("🚀 ~ file: UserDetail.js:65 ~ UserDetail ~ image:", image)
 
   const handleLike = async()=>{
     const url = 'swap/liked';
     const response = await Post(
       url,
-      {targetsUid: item?.id},
+      {targetsUid: userData?.id},
       apiHeader(token),
     );
     if (response?.data?.status == true) {
@@ -81,7 +94,7 @@ const UserDetail = props => {
     const url = 'swap/disliked';
     const response = await Post(
       url,
-      {targetsUid: item?.id},
+      {targetsUid: userData?.id},
       apiHeader(token),
     );
     if (response?.data?.status == true) {
@@ -118,10 +131,9 @@ const UserDetail = props => {
               height: '100%',
             }}
             source={
-              // fromSearch
-              userData?.profile_images?.length > 0 ?
-              {uri: userData?.profile_images[0]?.url}
-              :
+              
+              userData?.profile_images[0]?.url ?
+              {uri:userData?.profile_images[0]?.url}:
               require('../Assets/Images/image1.jpeg')
               // : require('../Assets/Images/image1.jpeg')
             }
@@ -226,7 +238,7 @@ const UserDetail = props => {
                     height: windowHeight * 0.04,
                   }}
                   onPress={() => {
-                    navigationService.navigate('Israeliteinfo');
+                    navigationService.navigate('Israeliteinfo',{user:userData});
                   }}
                 />
               </TouchableOpacity>
@@ -400,6 +412,7 @@ const UserDetail = props => {
                     onPress={() => {
                       setSelectedIndex(index);
                       setIsVisible(true);
+                      setImage(item)
                     }}
                     source={{uri: item?.url}}
                     // resizeMode={'contain'}
@@ -452,7 +465,7 @@ const UserDetail = props => {
       </ScrollView>
     
       <ImageView
-        images={images}
+        images={image?.url}
         imageIndex={selectedIndex}
         visible={isVisible}
         onRequestClose={() => {
