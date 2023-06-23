@@ -10,15 +10,15 @@ import {
   ToastAndroid,
   Alert,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Header from '../Components/Header';
 import CustomStatusBar from '../Components/CustomStatusBar';
-import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
 import Swiper from 'react-native-deck-swiper';
 import Card from '../Components/Card';
 import OverlayLabel from '../Components/OverlayLabel';
-import {moderateScale, ScaledSheet} from 'react-native-size-matters';
+import { moderateScale, ScaledSheet } from 'react-native-size-matters';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -27,12 +27,13 @@ import CustomImage from '../Components/CustomImage';
 import IconWithName from '../Components/IconWithName';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import LinearGradient from 'react-native-linear-gradient';
-import {Icon} from 'native-base';
+import { Icon } from 'native-base';
+
 import BtnContainer from '../Components/BtnContainer';
 import navigationService from '../navigationService';
-import {useSelector} from 'react-redux';
-import {useIsFocused} from '@react-navigation/native';
-import {Get, Post} from '../Axios/AxiosInterceptorFunction';
+import { useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
+import { Get, Post } from '../Axios/AxiosInterceptorFunction';
 import NullDataComponent from '../Components/NullDataComponent';
 import SuperLikeModal from '../Components/SuperLikeModal';
 
@@ -52,6 +53,7 @@ const SpotLight = () => {
   const [isSuperLikeVisible, setSuperLikeVisible] = useState(false);
 
   const [theyAreYourType, setTheyAreYourType] = useState([]);
+  const [YourAreThereType, setYourAreThereType] = useState([]);
   // console.log("🚀 ~ file: SpotLight.js:49 ~ SpotLight ~ theyAreYourType:", theyAreYourType)
 
   const [isLoading, setIsLoading] = useState(true);
@@ -292,10 +294,12 @@ const SpotLight = () => {
     }
     setIsLoading(false);
   };
+
+
   const getTheyAreYourType = async () => {
     const url = 'seeking/theyareyourtype';
     setIsLoading(true);
-    const response = await Post(url, {targetsUid: user.id}, apiHeader(token));
+    const response = await Post(url, { targetsUid: user.id }, apiHeader(token));
 
     if (response != undefined) {
       setTheyAreYourType(response?.data?.peoples);
@@ -305,11 +309,30 @@ const SpotLight = () => {
   };
 
 
+  const getYourAreThereType = async () => {
+
+     
+    const url = 'seeking/youaretheretype';
+    setIsLoading(true);
+    const response = await Get(url,token);
+     console.log("NEW SPOTLIGHT DATA",response?.data?.peoples[0]?.profile_images)
+    if (response != undefined) {
+      setYourAreThereType(response?.data?.peoples);
+    }
+
+    setIsLoading(false);
+ 
+  };
+
+
+
+
 
 
   useEffect(() => {
     getSpotLightData();
     getTheyAreYourType();
+    getYourAreThereType();
   }, [isFocused]);
 
   return (
@@ -385,8 +408,8 @@ const SpotLight = () => {
             style={{
               height: windowHeight * 0.48,
               width: windowWidth,
-              alignItems:'center',
-              justifyContent:'center',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}>
             {[].length > 0 ? (
               <Swiper
@@ -410,11 +433,11 @@ const SpotLight = () => {
                 animateOverlayLabelsOpacity
                 swipeBackCard
                 onSwipedLeft={async (index, item) => {
-                  
+
                   const url = 'swap/disliked';
                   const response = await Post(
                     url,
-                    {targetsUid: item?.id},
+                    { targetsUid: item?.id },
                     apiHeader(token),
                   );
 
@@ -429,9 +452,9 @@ const SpotLight = () => {
                     console.log('in else');
                     Platform.OS == 'android'
                       ? ToastAndroid.show(
-                          response?.data?.error,
-                          ToastAndroid.SHORT,
-                        )
+                        response?.data?.error,
+                        ToastAndroid.SHORT,
+                      )
                       : Alert.alert(response?.data?.error);
                   }
                 }}
@@ -441,7 +464,7 @@ const SpotLight = () => {
                   // console.log({targetsUid: selectedId});
                   const response = await Post(
                     url,
-                    {targetsUid: item?.id},
+                    { targetsUid: item?.id },
                     apiHeader(token),
                   );
                   if (response?.data?.status) {
@@ -455,31 +478,31 @@ const SpotLight = () => {
                   } else {
                     Platform.OS == 'android'
                       ? ToastAndroid.show(
-                          response?.data?.error,
-                          ToastAndroid.SHORT,
-                        )
+                        response?.data?.error,
+                        ToastAndroid.SHORT,
+                      )
                       : Alert.alert(response?.data?.error);
                   }
                 }}
                 onSwipedTop={async (index, item) => {
                   console.log("🚀 ~ file: SpotLight.js:463 ~ onSwipedTop={ ~ item:", item?.id)
-                  
-                  const url = 'swap/superLiked';
-                  const response = await Post(url, {targetsUid:item?.id}, apiHeader(token))
-                  console.log("🚀 ~ file: SpotLight.js:468 ~ onSwipedTop={ ~ response:", response?.data)
-                  if(response?.data?.status){
 
-                    
-                    setSpotLightData(spotLightData.filter((data, index)=>response?.data?.peoples?.only?.match_id != data?.id))
+                  const url = 'swap/superLiked';
+                  const response = await Post(url, { targetsUid: item?.id }, apiHeader(token))
+                  console.log("🚀 ~ file: SpotLight.js:468 ~ onSwipedTop={ ~ response:", response?.data)
+                  if (response?.data?.status) {
+
+
+                    setSpotLightData(spotLightData.filter((data, index) => response?.data?.peoples?.only?.match_id != data?.id))
                     console.log("🚀 ~ file: SpotLight.js:464 ~ onSwipedTop={ ~ response:", response?.data)
 
-                  }else{
+                  } else {
                     Platform.OS == 'android' ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT) : Alert.alert(response?.data?.error)
                   }
 
                   // setSuperLikeVisible(true);
                 }}
-                
+
                 overlayLabels={{
                   left: {
                     title: 'LO',
@@ -538,9 +561,9 @@ const SpotLight = () => {
                   width: windowWidth * 0.15,
                   height: windowWidth * 0.15,
                   fontSize: moderateScale(15, 0.6),
-                  borderWidth:2,
-                  borderColor:Color.themeColor,
-                  marginTop : moderateScale(30,0.3)
+                  borderWidth: 2,
+                  borderColor: Color.themeColor,
+                  marginTop: moderateScale(30, 0.3)
                 }}
               />
             }
@@ -557,7 +580,7 @@ const SpotLight = () => {
               // height: windowHeight * 0.4,
               // backgroundColor : Color.themeColor
             }}
-            renderItem={({item, index}) => {
+            renderItem={({ item, index }) => {
               return (
                 <TouchableOpacity
                   style={{
@@ -590,14 +613,14 @@ const SpotLight = () => {
                     source={item?.profile_images[0]?.url}
                   />
                   <LinearGradient
-                    start={{x: 0, y: 0}}
-                    end={{x: 0, y: 0.9}}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0, y: 0.9 }}
                     colors={['#000000', '#ffffff00']}
                     style={{
                       position: 'absolute',
                       top: 0,
                       // justifyContent: 'flex-end',
-                      shadowOffset: {height: 2, width: 0},
+                      shadowOffset: { height: 2, width: 0 },
                       shadowOpacity: 1,
                       shadowRadius: 4,
                       width: '100%',
@@ -649,30 +672,30 @@ const SpotLight = () => {
                       }}
                       iconSize={moderateScale(20, 0.6)}
                       onPress={async () => {
-                      // console.log("🚀 ~ file: SpotLight.js:647 ~ onPress={ ~ item:", item)
-                  
+                        // console.log("🚀 ~ file: SpotLight.js:647 ~ onPress={ ~ item:", item)
+
                         const url = 'swap/disliked';
                         const response = await Post(
                           url,
-                          {targetsUid: item?.id},
+                          { targetsUid: item?.id },
                           apiHeader(token),
                         );
                         // console.log("🚀 ~ file: SpotLight.js:655 ~ onPress={ ~ response:", response?.data)
-      
+
                         if (response?.data?.status) {
                           const filteredData2 = theyAreYourType.filter(
                             (data, index) =>
                               response?.data?.peoples?.match_id != data?.id,
                           );
-      
+
                           setTheyAreYourType(filteredData2);
                         } else {
                           console.log('in else');
                           Platform.OS == 'android'
                             ? ToastAndroid.show(
-                                response?.data?.error,
-                                ToastAndroid.SHORT,
-                              )
+                              response?.data?.error,
+                              ToastAndroid.SHORT,
+                            )
                             : Alert.alert(response?.data?.error);
                         }
                       }}
@@ -695,11 +718,11 @@ const SpotLight = () => {
                         // console.log({targetsUid: selectedId});
                         const response = await Post(
                           url,
-                          {targetsUid: item?.id},
+                          { targetsUid: item?.id },
                           apiHeader(token),
                         );
                         if (response?.data?.status) {
-      
+
                           setTheyAreYourType(
                             theyAreYourType.filter(
                               (data, index) =>
@@ -709,9 +732,9 @@ const SpotLight = () => {
                         } else {
                           Platform.OS == 'android'
                             ? ToastAndroid.show(
-                                response?.data?.error,
-                                ToastAndroid.SHORT,
-                              )
+                              response?.data?.error,
+                              ToastAndroid.SHORT,
+                            )
                             : Alert.alert(response?.data?.error);
                         }
                       }}
@@ -784,7 +807,7 @@ const SpotLight = () => {
               // marginTop: moderateScale(20, 0.3),
               flexWrap: 'wrap',
             }}>
-            {photoCards.map((x, index) => {
+            {YourAreThereType?.map((x, index) => {
               return (
                 <TouchableOpacity
                   activeOpacity={0.8}
@@ -813,17 +836,17 @@ const SpotLight = () => {
                       width: '100%',
                       height: '100%',
                     }}
-                    source={x?.photo}
+                    source={x?.profile_images.url}
                   />
                   <LinearGradient
-                    start={{x: 0, y: 0}}
-                    end={{x: 0, y: 0.9}}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0, y: 0.9 }}
                     colors={['#000000', '#ffffff00']}
                     style={{
                       position: 'absolute',
                       top: 0,
                       // justifyContent: 'flex-end',
-                      shadowOffset: {height: 2, width: 0},
+                      shadowOffset: { height: 2, width: 0 },
                       shadowOpacity: 1,
                       shadowRadius: 4,
                       width: '100%',
@@ -839,7 +862,7 @@ const SpotLight = () => {
                         fontSize: moderateScale(11, 0.6),
                         width: '90%',
                       }}>
-                      {`${x?.name} , ${x?.age}`}
+                      {`${x?.profileName} , ${x?.location.city}`}
                     </CustomText>
                     <View
                       style={{
