@@ -6,7 +6,7 @@ import {moderateScale} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import * as Animatable from 'react-native-animatable';
-import Pulse from 'react-native-pulse';
+// import Pulse from 'react-native-pulse';
 
 const NullDataComponent = ({style}) => {
   // console.log(
