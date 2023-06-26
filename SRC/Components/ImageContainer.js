@@ -31,8 +31,8 @@ const ImageContainer = ({
   key,
   onPress,
 }) => {
-  console.log("🚀 ~ file: ImageContainer.js:34 ~ key:", key)
-  console.log('🚀 ~ file: ImageContainer.js:29 ~ ImageContainer ~ item:', item?.url);
+  // console.log("🚀 ~ file: ImageContainer.js:34 ~ key:", key)
+  // console.log('🚀 ~ file: ImageContainer.js:29 ~ ImageContainer ~ item:', item?.url);
   const [remove, setRemove] = useState(false);
 
   return (

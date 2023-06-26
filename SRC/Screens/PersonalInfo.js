@@ -22,7 +22,7 @@ import { setUserData } from '../Store/slices/common';
 
 const PersonalInfo = () => {
   const user = useSelector(state => state.commonReducer.userData);
-  console.log("🚀 ~ file: PersonalInfo.js:25 ~ PersonalInfo ~ user:", user)
+  // console.log("🚀 ~ file: PersonalInfo.js:25 ~ PersonalInfo ~ user:", user)
 
   const dispatch = useDispatch();
   // console.log("🚀 ~ file: PersonalInfo.js:24 ~ PersonalInfo ~ user:", user?.gallery_images)
@@ -34,7 +34,7 @@ const PersonalInfo = () => {
   // console.log("🚀 ~ file: PersonalInfo.js:28 ~ PersonalInfo ~ ob:", dob)
   const [open, setOpen] = useState(false);
   const [gender, setGender] = useState(user?.iAm);
-  console.log("🚀 ~ file: PersonalInfo.js:37 ~ PersonalInfo ~ gender:", gender)
+  // console.log("🚀 ~ file: PersonalInfo.js:37 ~ PersonalInfo ~ gender:", gender)
   const [profileName, setProfileName] = useState(user?.profileName);
   // const [multiImages, setMultiImages] = useState([
   //   {id: 1, uri: require('../Assets/Images/image1.jpeg')},
@@ -48,9 +48,9 @@ const PersonalInfo = () => {
   const [multiImages, setMultiImages] = useState(user?.gallery_images)
 
   // const [multiImages, setMultiImages] = useState(user?.gallery_images)
-  console.log("🚀 ~ file: PersonalInfo.js:50 ~ PersonalInfo ~ multiImages:", multiImages)
+  // console.log("🚀 ~ file: PersonalInfo.js:50 ~ PersonalInfo ~ multiImages:", multiImages)
   const [tempMultiImages, setTempMultiImages] = useState([]);
-  console.log("🚀 ~ file: PersonalInfo.js:36 ~ PersonalInfo ~ tempMultiImages:", tempMultiImages)
+  // console.log("🚀 ~ file: PersonalInfo.js:36 ~ PersonalInfo ~ tempMultiImages:", tempMultiImages)
   const [multiImagesEmpty, setMultiImagesEmpty] = useState([]);
   const [currentIndex, setIndex] = useState('');
   const [showMultiImageModal, setShowMultiImageModal] = useState(false);
@@ -68,15 +68,15 @@ const PersonalInfo = () => {
     
     const onDragRelease = (itemOrder) => {
       setScrollEnabled(true)
-      console.log(value)
+      // console.log(value)
       // setMultiImages([])
       // // value?.itemOrder.map((item, index) => {
         // //   return ( setMultiImages((prev)=>[...prev , tempMultiImages[item?.key] ]))
         // // });
         const newItems = value?.itemOrder.map((item) => multiImages[item.key]);
-        console.log("🚀 ~ file: PersonalInfo.js:59 ~ onDragRelease ~ newItems:", newItems)
+        // console.log("🚀 ~ file: PersonalInfo.js:59 ~ onDragRelease ~ newItems:", newItems)
         setMultiImages(newItems)
-        console.log("🚀 ~ file: PersonalInfo.js:35 ~ PersonalInfo ~ multiImages:", multiImages)
+        // console.log("🚀 ~ file: PersonalInfo.js:35 ~ PersonalInfo ~ multiImages:", multiImages)
       };
 
       const updatePortfolio = async () =>{
@@ -90,7 +90,7 @@ const PersonalInfo = () => {
           
         })
         
-        console.log("🚀 ~ file: PersonalInfo.js:84 ~ updatePortfolio ~ formData:", formData)
+        // console.log("🚀 ~ file: PersonalInfo.js:84 ~ updatePortfolio ~ formData:", formData)
         // const body = {
         //   // targetsUid: user?.id,
         //   profileName : profileName,
@@ -104,7 +104,7 @@ const PersonalInfo = () => {
     
         if(response?.data?.status){
           
-          console.log("🚀 ~ file: UserDetail.js:71 ~ updatePortfolio ~ response:", response?.data)
+          // console.log("🚀 ~ file: UserDetail.js:71 ~ updatePortfolio ~ response:", response?.data)
           dispatch(setUserData(response?.data?.user));
           Platform.OS == 'android' ? ToastAndroid.show('Profile Updated Successfully',ToastAndroid.SHORT) :
           Alert('Profile Updated Successfully')
@@ -327,7 +327,7 @@ const PersonalInfo = () => {
            onDragStart={() => setScrollEnabled(false)}
             onDragRelease={value => {
               setScrollEnabled(true)
-              console.log(value)
+              // console.log(value)
               // setMultiImages([])
               // // value?.itemOrder.map((item, index) => {
                 // //   return ( setMultiImages((prev)=>[...prev , tempMultiImages[item?.key] ]))
@@ -336,11 +336,11 @@ const PersonalInfo = () => {
                 const newItems =  value?.itemOrder?.map((item)=> {
                   return multiImages.find((x)=>x?.id == item?.key)
                 })
-                console.log("🚀 ~ file: PersonalInfo.js:59 ~ onDragRelease ~ newItems:", newItems)
+                // console.log("🚀 ~ file: PersonalInfo.js:59 ~ onDragRelease ~ newItems:", newItems)
                 // setMultiImages(newItems)
                 setNewMultiImages(newItems)
                 
-                console.log("🚀 ~ file: PersonalInfo.js:35 ~ PersonalInfo ~ multiImages:", multiImages)
+                // console.log("🚀 ~ file: PersonalInfo.js:35 ~ PersonalInfo ~ multiImages:", multiImages)
             }}>
             {multiImages?.map((item, index) => {
               return (

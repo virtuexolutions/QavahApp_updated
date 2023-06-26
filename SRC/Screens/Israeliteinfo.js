@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 const Israeliteinfo = (props) => {
 
   const userData = props?.route?.params?.user;
-  console.log("🚀 ~ file: Israeliteinfo.js:16 ~ Israeliteinfo ~ userData:", userData)
+  // console.log("🚀 ~ file: Israeliteinfo.js:16 ~ Israeliteinfo ~ userData:", userData)
 
   const navigation = useNavigation();
 
@@ -47,14 +47,14 @@ const Israeliteinfo = (props) => {
   const SelectedKingdom = userData?.kingdom_gifts ? userData?.kingdom_gifts?.map((item,index)=>{
     return item?.options
   }) : ['Not available']
-  console.log("🚀 ~ file: Israeliteinfo.js:50 ~ SelectedKingdom ~ SelectedKingdom:", SelectedKingdom)
+  // console.log("🚀 ~ file: Israeliteinfo.js:50 ~ SelectedKingdom ~ SelectedKingdom:", SelectedKingdom)
 
   const practiceKeeping = userData?.isrealite_practice_keeping ? userData?.isrealite_practice_keeping.map((item,index)=>{
     return item?.options
   }) :['Not available']
-  console.log("🚀 ~ file: Israeliteinfo.js:55 ~ practiceKeeping ~ practiceKeeping:", practiceKeeping)
+  // console.log("🚀 ~ file: Israeliteinfo.js:55 ~ practiceKeeping ~ practiceKeeping:", practiceKeeping)
 
-  console.log("🚀 ~ file: Israeliteinfo.js:45 ~ SelectedPassions ~ SelectedPassions:", SelectedPassions)
+  // console.log("🚀 ~ file: Israeliteinfo.js:45 ~ SelectedPassions ~ SelectedPassions:", SelectedPassions)
   
   // const practiceKeeping = [
   //   'Lorem Ipsum',

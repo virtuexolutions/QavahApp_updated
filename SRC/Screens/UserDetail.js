@@ -11,9 +11,9 @@ import Color from '../Assets/Utilities/Color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import DraggableFlatList, {
-  ScaleDecorator,
-} from 'react-native-draggable-flatlist';
+// import DraggableFlatList, {
+//   ScaleDecorator,
+// } from 'react-native-draggable-flatlist';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -37,15 +37,15 @@ const UserDetail = props => {
   const navigation = useNavigation()
   const user = useSelector(state => state.commonReducer.userData);
   const item = props?.route?.params?.item;
-  console.log('🚀 ~ file: UserDetail.js:30 ~ UserDetail ~ item:', item);
+  // console.log('🚀 ~ file: UserDetail.js:30 ~ UserDetail ~ item:', item);
   // console.log('data =============>>>>>>>>>>', item?.gallery_images[0]);
   const fromSearch = props?.route?.params?.fromSearch;
-  console.log("🚀 ~ file: UserDetail.js:43 ~ UserDetail ~ fromSearch:", fromSearch)
+  // console.log("🚀 ~ file: UserDetail.js:43 ~ UserDetail ~ fromSearch:", fromSearch)
 
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setUserData] = useState(fromSearch ? item : user);
   
-  console.log("🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:", userData)
+  // console.log("🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:", userData)
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [index, setIndex] = useState('');
   const [showMultiImageModal, setShowMultiImageModal] = useState(false);
@@ -63,7 +63,7 @@ const UserDetail = props => {
     const response = await Post(url, {targetsUid : userData?.id })
     if(response != undefined){
       
-      console.log("🚀 ~ file: UserDetail.js:64 ~ reportUser ~ response:", response)
+      // console.log("🚀 ~ file: UserDetail.js:64 ~ reportUser ~ response:", response)
    
     }
   }
@@ -72,7 +72,7 @@ const UserDetail = props => {
   // const images = [require('../Assets/Images/woman1.jpeg')];
   // console.log('🚀 ~ file: UserDetail.js:50 ~ UserDetail ~ images:', images);
   const [image, setImage] = useState({})
-  console.log("🚀 ~ file: UserDetail.js:65 ~ UserDetail ~ image:", image)
+  // console.log("🚀 ~ file: UserDetail.js:65 ~ UserDetail ~ image:", image)
 
   const handleLike = async()=>{
     const url = 'swap/liked';
@@ -388,7 +388,7 @@ const UserDetail = props => {
               width: windowWidth * 0.9,
             }}>
             {userData?.gallery_images?.map((item, index) => {
-              console.log('data image =====>>>>', item?.url);
+              // console.log('data image =====>>>>', item?.url);
               return (
                 <TouchableOpacity
                   onPress={() => {

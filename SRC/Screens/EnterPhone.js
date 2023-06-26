@@ -30,7 +30,7 @@ const EnterPhone = props => {
     state => state.commonReducer.selectedRole,
   );
   const fromForgot = props?.route?.params?.fromForgot;
-  console.log('here=>', fromForgot);
+  // console.log('here=>', fromForgot);
   const [phone, setPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -45,7 +45,7 @@ const EnterPhone = props => {
     const response = await Post(url, {email: phone}, apiHeader());
     setIsLoading(false);
     if (response?.data?.status) {
-      console.log('response data =>', response?.data?.status);
+      // console.log('response data =>', response?.data?.status);
       Platform.OS == 'android'
         ? ToastAndroid.show(`Password ResetLink Sent  to ${phone}`, ToastAndroid.SHORT)
         : alert(`Password ResetLink Sent  to ${phone}`);
@@ -59,7 +59,7 @@ const EnterPhone = props => {
       //     });
     }
     else{
-      console.log(response?.data?.validation_errors?.email[0])
+      // console.log(response?.data?.validation_errors?.email[0])
       Platform.OS == 'android'
       ? ToastAndroid.show(response?.data?.validation_errors?.email[0], ToastAndroid.SHORT)
       : alert(response?.data?.validation_errors?.email[0]);

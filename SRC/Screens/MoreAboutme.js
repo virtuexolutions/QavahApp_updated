@@ -113,13 +113,13 @@ const MoreAboutme = (props) => {
       WillingToRelocate: relocate,
       
       }
-    console.log("🚀 ~ file: MoreAboutme.js:96 ~ updateMoreAboutMe ~ body:", body)
+    // console.log("🚀 ~ file: MoreAboutme.js:96 ~ updateMoreAboutMe ~ body:", body)
     
       const response = await Post(url,body, apiHeader(token));
 
     if(response?.data?.status){
 
-      console.log("🚀 ~ file: MoreAboutme.js:95 ~ updateMoreAboutMe ~ response:", response?.data?.user)
+      // console.log("🚀 ~ file: MoreAboutme.js:95 ~ updateMoreAboutMe ~ response:", response?.data?.user)
       dispatch(setUserData(response?.data?.user))
       Platform.OS == 'android' ? ToastAndroid.show('Profile Updated Successfully',ToastAndroid.SHORT) :
       Alert('Profile Updated Successfully')

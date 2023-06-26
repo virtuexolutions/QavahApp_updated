@@ -38,11 +38,11 @@ const Profile = props => {
   // console.log("🚀 ~ file: Profile.js:33 ~ Profile ~ data:", data)
   const token = useSelector(state => state.authReducer.token)
   const fromSearch = props?.route?.params?.fromSearch ;
-  console.log("🚀 ~ file: Profile.js:26 ~ Profile ~ fromSearch:", fromSearch)
+  // console.log("🚀 ~ file: Profile.js:26 ~ Profile ~ fromSearch:", fromSearch)
   const [type, setType] = useState('photos');
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setuserData] = useState(fromSearch ? data : user);
-  console.log("🚀 ~ file: Profile.js:45 ~ Profile ~ userData:", userData)
+  // console.log("🚀 ~ file: Profile.js:45 ~ Profile ~ userData:", userData)
   const [postRef , setPostRef] = useState(null
   )
   const [images , setImages] = useState(userData ? userData?.gallery_images :  [
@@ -62,19 +62,19 @@ const Profile = props => {
     require('../Assets/Images/woman4.jpeg'),
     require('../Assets/Images/woman5.jpeg'),
   ],)
-  console.log("🚀 ~ file: Profile.js:64 ~ Profile ~ images:", images)
+  // console.log("🚀 ~ file: Profile.js:64 ~ Profile ~ images:", images)
 
   const dispatch = useDispatch()
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedImage , setSelectedImage] = useState(null)
-  console.log("🚀 ~ file: Profile.js:70 ~ Profile ~ selectedImage:", selectedImage)
+  // console.log("🚀 ~ file: Profile.js:70 ~ Profile ~ selectedImage:", selectedImage)
   const [image, setImage] = useState({});
-  console.log("🚀 ~ file: Profile.js:70 ~ Profile ~ image:", image)
+  // console.log("🚀 ~ file: Profile.js:70 ~ Profile ~ image:", image)
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [postImage , setPostImage] = useState({});
-  console.log("🚀 ~ file: Profile.js:76 ~ Profile ~ postImage:", postImage)
+  // console.log("🚀 ~ file: Profile.js:76 ~ Profile ~ postImage:", postImage)
   const [postImageModal , setPostImageModal] = useState(false);
   const [pickPostImage , setPickPostImage] = useState(false)
   const [description , setDescription] = useState('')
@@ -88,12 +88,12 @@ const Profile = props => {
 
     formData.append('profileImages',image)
     const response = await Post(url, formData, apiHeader(token))
-    console.log("🚀 ~ file: Profile.js:78 ~ updateProfile ~ body:", formData)
+    // console.log("🚀 ~ file: Profile.js:78 ~ updateProfile ~ body:", formData)
     
     if(response!= undefined){
-      console.log("🚀 ~ file: Profile.js:77 ~ updateProfile ~ response:", response?.data?.user)
+      // console.log("🚀 ~ file: Profile.js:77 ~ updateProfile ~ response:", response?.data?.user)
 
-      console.log("🚀 ~ file: Profile.js:77 ~ updateProfile ~ response:", response?.data?.user?.profile_image[0]?.uri)
+      // console.log("🚀 ~ file: Profile.js:77 ~ updateProfile ~ response:", response?.data?.user?.profile_image[0]?.uri)
 
       dispatch(setUserData(response?.data?.user))
       
@@ -105,14 +105,17 @@ const Profile = props => {
 
     const formData = new FormData();
     // formData.append('description',description);
-    formData.append('image', postImage);
-    setPostImage(null)
-    const url = 'send-post';
-    const response = await Post(url, {formData}, apiHeader(token))
+    formData.append('galleryImage', postImage);
+   
+    const url = 'user/post-gallery-image';
+    const response = await Post(url, formData, apiHeader(token))
     
     if(response != undefined){
 
-      console.log("🚀 ~ file: Profile.js:103 ~ sendPost ~ response:", response?.data)
+      // console.log("🚀 ~ file: Profile.js:103 ~ sendPost ~ response:", response?.data?.user?.gallery_images)
+      dispatch(setUserData(response?.data?.user))
+      setImages(response?.data?.user?.gallery_images)
+      setPostImage({})
       
     }
   }
@@ -121,7 +124,7 @@ const Profile = props => {
 
   useEffect(() => {
     if(Object.keys(postImage).length > 0){
-      setPostImageModal(!postImageModal)
+      sendPost()
     }
   }, [postImage])
 
@@ -403,12 +406,12 @@ const Profile = props => {
           setShow={setPickPostImage}
           setFileObject={setPostImage}
         />
-         <CustomModal
+         {/* <CustomModal
       isVisible={postImageModal}
       setIsVisible={setPostImageModal}
       container={{
         width : windowWidth * 0.9 ,
-        maxHeight : windowHeight * 0.7 , 
+        maxHeight : windowHeight * 0.5 , 
         borderRadius : moderateScale(15,0.6),
         backgroundColor : 'white',
         overflow : 'hidden',
@@ -419,10 +422,10 @@ const Profile = props => {
         overflow : 'hidden',
 
     }}
-      >
-         <View style={styles.image1}>
+      > */}
+         {/* <View style={styles.image1}> */}
           {/* <SharedElement id={`item.${item.key}.image_url`}>  */}
-          <CustomImage
+          {/* <CustomImage
             style={{
               width: '100%',
               height: '100%',
@@ -430,8 +433,8 @@ const Profile = props => {
             source={postImage}
             resizeMode={'stretch'}
           />
-          </View>
-          <TextInputWithTitle
+          </View> */}
+          {/* <TextInputWithTitle
           titleText={`Write a caption`}
        
           placeholder={`Write a caption`}
@@ -448,27 +451,29 @@ const Profile = props => {
           border={1}
           color={Color.veryLightGray}
           multiline
-        />
-       <CustomButton
+        /> */}
+       {/* <CustomButton
           text={'Upload'}
           textColor={Color.white}
           width={windowWidth * 0.75}
           height={windowHeight * 0.07}
          marginTop={moderateScale(20,0.3)}
+        //  marginBottom ={moderateScale(10,0.3)}
           bgColor={Color.themeColor}
           borderRadius={moderateScale(15, 0.3)}
           elevation
           onPress ={ () => 
             {
-              setImages(prev=>[...prev , postImage])
+              // setImages(prev=>[...prev , postImage])
               setPostImageModal(false)
+              sendPost()
             
             }
           }
-        />
+        /> */}
 
 
-      </CustomModal>
+      {/* </CustomModal> */}
     </>
   );
 };

@@ -52,6 +52,7 @@ const AppNavigator = () => {
   const isVerified = useSelector(state => state.authReducer.isVerified);
   const token = useSelector(state => state.authReducer.token);
   const isLoggedIn = useSelector(state => state.authReducer.isLoggedIn);
+  console.log("🚀 ~ file: appNavigation.js:55 ~ AppNavigator ~ isLoggedIn:", isLoggedIn)
 
 
   // console.log('token>>>>', token);

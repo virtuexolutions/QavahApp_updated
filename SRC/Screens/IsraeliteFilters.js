@@ -32,7 +32,7 @@ const IsraeliteFilters = props => {
   const twoStepsData = props?.route?.params?.twoStepsData
   const user = useSelector(state => state.commonReducer.userData)
   const token = useSelector(state => state.authReducer.token)
-  console.log("🚀 ~ file: IsraeliteFilters.js:31 ~ IsraeliteFilters ~ user:", user)
+  // console.log("🚀 ~ file: IsraeliteFilters.js:31 ~ IsraeliteFilters ~ user:", user)
   // console.log("🚀 ~ file: IsraeliteFilters.js:26 ~ IsraeliteFilters ~ twoStepsData:", twoStepsData?.step2?.galleryImages)
   // console.log(
   //   '🚀 ~ file: IsraeliteFilters.js:25 ~ IsraeliteFilters ~ edit:',
@@ -62,9 +62,9 @@ const IsraeliteFilters = props => {
   // const [type, setType] = useState('');
   const [passionModalVisible, setPassionModalVisible] = useState(false);
   const [passions, setPassions] = useState(edit? user?.passions == undefined ? [] : user?.passions.map(item=>item?.options) : []);
-  console.log("🚀 ~ file: IsraeliteFilters.js:61 ~ IsraeliteFilters ~ passions:", passions)
+  // console.log("🚀 ~ file: IsraeliteFilters.js:61 ~ IsraeliteFilters ~ passions:", passions)
   const [kingdomGifts, setKingDomGifts] = useState(edit? user?.kingdom_gifts == undefined ? [] : user?.kingdom_gifts.map(item=>item?.options) : []);
-  console.log("🚀 ~ file: IsraeliteFilters.js:63 ~ IsraeliteFilters ~ kingdomGifts:", kingdomGifts)
+  // console.log("🚀 ~ file: IsraeliteFilters.js:63 ~ IsraeliteFilters ~ kingdomGifts:", kingdomGifts)
   // console.log("🚀 ~ file: IsraeliteFilters.js:69 ~ checkPassion ~ kingdomGifts:", kingdomGifts)
 
   const [arrayForModal, setArrayForModal] = useState([]);
@@ -91,9 +91,9 @@ const IsraeliteFilters = props => {
       Passions: passions,
       KingomGifts: kingdomGifts,
     };
-    console.log("🚀 ~ file: IsraeliteFilters.js:91 ~ updateIsraelLiteInfo ~ body:", body)
+    // console.log("🚀 ~ file: IsraeliteFilters.js:91 ~ updateIsraelLiteInfo ~ body:", body)
     const response = await Post(url, body, apiHeader(token));
-    console.log("🚀 ~ file: Israeliteinfo.js:58 ~ updateIsraelLiteInfo ~ response:", response?.data)
+    // console.log("🚀 ~ file: Israeliteinfo.js:58 ~ updateIsraelLiteInfo ~ response:", response?.data)
 
     if(response?.data?.status){
       
@@ -308,7 +308,7 @@ const IsraeliteFilters = props => {
     
     }
   }
-    console.log("🚀 ~ file: IsraeliteFilters.js:236 ~ IsraeliteFilters ~ completeBody:", completeBody)
+    // console.log("🚀 ~ file: IsraeliteFilters.js:236 ~ IsraeliteFilters ~ completeBody:", completeBody)
 
     const Registration =async()=>{
       const url = 'auth/register/app'
@@ -317,7 +317,7 @@ const IsraeliteFilters = props => {
       const response = await Post(url , completeBody , apiHeader())
       setIsLoading(false);
       if(response != undefined){
-         console.log('User registered =-======>' , response?.data)
+        //  console.log('User registered =-======>' , response?.data)
         Platform.OS == 'android' ?
         ToastAndroid.show('User Registered Successfully',ToastAndroid.SHORT) :
         alert('User Registered Successfully')

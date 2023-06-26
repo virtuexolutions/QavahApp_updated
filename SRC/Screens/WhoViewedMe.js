@@ -239,11 +239,11 @@ const [whoViewedMe , setWhoViewedMe] = useState([])
 
 
 const getFavouredYouPosts = async id => {
-  console.log('get favoured posts');
+  // console.log('get favoured posts');
   const url = 'favoured/someone-viewed-my-profile';
   const response = await Post(url, {}, apiHeader(token));
   if (response != undefined) {
-   console.log('response data=>>>>>>>>>>>>>>', response?.data);
+  //  console.log('response data=>>>>>>>>>>>>>>', response?.data);
    setWhoViewedMe(response?.data?.peoples);
   }
 };

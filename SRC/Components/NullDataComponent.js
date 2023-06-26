@@ -6,9 +6,13 @@ import {moderateScale} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import * as Animatable from 'react-native-animatable';
+import { useSelector } from 'react-redux';
 // import Pulse from 'react-native-pulse';
 
 const NullDataComponent = ({style}) => {
+
+  const user = useSelector(state => state?.commonReducer?.userData)
+  console.log("🚀 ~ file: NullDataComponent.js:15 ~ NullDataComponent ~ user:", user)
   // console.log(
   //   '🚀 ~ file: NullDataComponent.js:10 ~ NullDataComponent ~ style:',
   //   style,
@@ -31,7 +35,7 @@ const NullDataComponent = ({style}) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}
-          // animation="pulse" easing="ease-out" iterationCount="infinite"
+          animation="pulse" easing="ease-out" iterationCount="infinite"
         >
           {/* <Pulse
             color="rgba(161,114,46 , 0.8)"
@@ -41,7 +45,7 @@ const NullDataComponent = ({style}) => {
             // duration={20}
           /> */}
           <CustomImage
-            source={require('../Assets/Images/banner3.jpg')}
+            source={{uri : user?.profile_images[0]?.url}}
             resizeMode={'cover'}
             style={{
               width: style?.width ? style?.width : windowWidth * 0.2,

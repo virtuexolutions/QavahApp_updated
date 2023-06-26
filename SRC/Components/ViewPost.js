@@ -24,7 +24,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const ViewPost = ({setRef, item , image}) => {
     const [comment , setComment] = useState('')
-  console.log('🚀 ~ file: ViewPost.js:11 ~ ViewPost ~ item:', image);
+  // console.log('🚀 ~ file: ViewPost.js:11 ~ ViewPost ~ item:', image);
   return (
     <RBSheet
       ref={ref => {

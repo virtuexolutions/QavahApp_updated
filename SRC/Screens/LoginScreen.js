@@ -21,7 +21,7 @@ import {ScrollView} from 'native-base';
 import {useIsFocused} from '@react-navigation/native';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import {validateEmail} from '../Config';
-import {setUserLogin, setUserToken, setWalkThrough} from '../Store/slices/auth';
+import {setIsLoggedIn, setUserLogin, setUserToken, setWalkThrough} from '../Store/slices/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 import Header from '../Components/Header';
@@ -65,6 +65,7 @@ const LoginScreen = ({route}) => {
       // return console.log('response ========>' , response?.data?.user)
       dispatch(setUserData(response?.data?.user))
         dispatch(setUserToken({token: response?.data?.token}));
+        dispatch(setIsLoggedIn());
       }
       else{
         console.log(response?.data?.message)

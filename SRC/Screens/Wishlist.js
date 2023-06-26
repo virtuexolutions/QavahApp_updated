@@ -25,16 +25,16 @@ const Wishlist = () => {
   const [hideBtns, sethideBtns] = useState(false)
 
   const getFavouredYouPosts = async id => {
-    console.log('get favoured posts');
+    // console.log('get favoured posts');
     const url = 'favoured/who-likes-me';
     const response = await Post(url, {}, apiHeader(token));
     if (response != undefined) {
-      console.log('response data=>>>>>>>>>>>>>>', response?.data?.peoples);
+      // console.log('response data=>>>>>>>>>>>>>>', response?.data?.peoples);
       setFavoredYouPost(response?.data?.peoples);
     }
   };
   const getYouFavouredPosts = async id => {
-    console.log('get you favoured posts');
+    // console.log('get you favoured posts');
     const url = 'favoured/who-i-like';
     const response = await Post(url, {}, apiHeader(token));
     if (response != undefined) {

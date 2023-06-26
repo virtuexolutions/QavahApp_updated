@@ -23,11 +23,11 @@ import PlanCard from '../Components/PlanCard';
 
 const Subscription = () => {
   const [index, setIndex] = useState(0);
-  console.log("🚀 ~ file: Subscription.js:27 ~ Subscription ~ index:", index)
+  // console.log("🚀 ~ file: Subscription.js:27 ~ Subscription ~ index:", index)
   const [itemPrice, setItemPrice] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState('Month to Month');
   const [text, setText] = useState('Platinum')
-  console.log("🚀 ~ file: Subscription.js:32 ~ Subscription ~ text:", text)
+  // console.log("🚀 ~ file: Subscription.js:32 ~ Subscription ~ text:", text)
 
   const [itemColor, setItemColor] = useState(['#A97142', '#996633', '#A97142']);
   
@@ -84,10 +84,10 @@ const Subscription = () => {
     {lock: false, text: 'Top Picks'},
   ];
   const onViewableItemsChanged = ({viewableItems}) => {
-    console.log(
-      '🚀 ~ file: Walkthrough.js:62 ~ Walkthrough ~ viewableItems',
-      viewableItems[0]?.item?.color,
-    );
+    // console.log(
+    //   '🚀 ~ file: Walkthrough.js:62 ~ Walkthrough ~ viewableItems',
+    //   viewableItems[0]?.item?.color,
+    // );
     setIndex(viewableItems[0]?.index);
     setItemPrice(viewableItems[0]?.item?.price);
     setItemColor(viewableItems[0]?.item?.color);

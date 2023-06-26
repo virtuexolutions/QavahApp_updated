@@ -20,12 +20,12 @@ const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => 
   
   const token = useSelector(state => state.authReducer.token);
   
-  console.log("🚀 ~ file: UserCard.js:19 ~ UserCard ~ favoredYouPost:", favoredYouPost)
+  // console.log("🚀 ~ file: UserCard.js:19 ~ UserCard ~ favoredYouPost:", favoredYouPost)
   const profile_image = item?.profile_images[0]?.url;
-  console.log(
-    '🚀 ~ file: UserCard.js:19 ~ UserCard ~ profile_image:',
-    profile_image,
-  );
+  // console.log(
+  //   '🚀 ~ file: UserCard.js:19 ~ UserCard ~ profile_image:',
+  //   profile_image,
+  // );
 
   const sendDislike = async (item) => {
                   
@@ -35,7 +35,7 @@ const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => 
       {targetsUid: item?.id},
       apiHeader(token),
     );
-    console.log("🚀 ~ file: UserCard.js:38 ~ sendDislike ~ response:", response?.data)
+    // console.log("🚀 ~ file: UserCard.js:38 ~ sendDislike ~ response:", response?.data)
 
     if (response?.data?.status == true) {
       const filteredData2 = favoredYouPost.filter(
@@ -63,7 +63,7 @@ const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => 
       {targetsUid: item?.id},
       apiHeader(token),
     );
-    console.log("🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:", response?.data)
+    // console.log("🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:", response?.data)
 
     
     if (response?.data?.status) {

@@ -51,7 +51,7 @@ const Support = () => {
     setLoading(true);
     const response = await Get(url, token);
     setLoading(false);
-    console.log('Support response======>>>>>>>>>>>',response?.data);
+    // console.log('Support response======>>>>>>>>>>>',response?.data);
     if (response != undefined) {
         setSupportData(response?.data?.data);
     }

@@ -50,10 +50,10 @@ const ProfilePictures = props => {
   //   require('../Assets/Images/banner.jpg'),
   // ]);
   const [multiImages, setMultiImages] = useState([{},{},{},{},{},{}])
-  console.log(
-    '🚀 ~ file: ProfilePictures.js:32 ~ ProfilePictures ~ multiImages:',
-    multiImages,
-  );
+  // console.log(
+  //   '🚀 ~ file: ProfilePictures.js:32 ~ ProfilePictures ~ multiImages:',
+  //   multiImages,
+  // );
   // const [updatedImages, setUpdatedImages] = useState([{}, {}, {}]);
 
   const [showMultiImageModal, setShowMultiImageModal] = useState(false);
@@ -98,13 +98,13 @@ const ProfilePictures = props => {
     Object.keys(item).length>0 && formData.append(`galleryImages[${index}]`,item)
    
   })
-  console.log("🚀 ~ file: ProfilePictures.js:103 ~ sendImages ~ formData:", formData)
+  // console.log("🚀 ~ file: ProfilePictures.js:103 ~ sendImages ~ formData:", formData)
     setisloading(true)
     const response = await Post(url,formData, apiHeader(token) )
     setisloading(false)
     if(response != undefined){
       
-      console.log("🚀 ~ file: ProfilePictures.js:95 ~ sendImages ~ response:", response?.data?.user?.gallery_images)
+      // console.log("🚀 ~ file: ProfilePictures.js:95 ~ sendImages ~ response:", response?.data?.user?.gallery_images)
       
       
       

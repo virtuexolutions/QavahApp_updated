@@ -53,6 +53,7 @@ const SpotLight = () => {
   const [isSuperLikeVisible, setSuperLikeVisible] = useState(false);
 
   const [theyAreYourType, setTheyAreYourType] = useState([]);
+  // console.log("🚀 ~ file: SpotLight.js:56 ~ theyAreYourType:", theyAreYourType[0]?.profile_images)
   const [YourAreThereType, setYourAreThereType] = useState([]);
   // console.log("🚀 ~ file: SpotLight.js:49 ~ SpotLight ~ theyAreYourType:", theyAreYourType)
 
@@ -315,8 +316,10 @@ const SpotLight = () => {
     const url = 'seeking/youaretheretype';
     setIsLoading(true);
     const response = await Get(url,token);
-     console.log("NEW SPOTLIGHT DATA",response?.data?.peoples[0]?.profile_images)
+    //  console.log("NEW SPOTLIGHT DATA",response?.data?.peoples[0]?.profile_images)
     if (response != undefined) {
+    // console.log("🚀 ~ file: SpotLight.js:320 ~ getYourAreThereType ~ response:", response?.data?.peoples)
+
       setYourAreThereType(response?.data?.peoples);
     }
 
@@ -485,16 +488,16 @@ const SpotLight = () => {
                   }
                 }}
                 onSwipedTop={async (index, item) => {
-                  console.log("🚀 ~ file: SpotLight.js:463 ~ onSwipedTop={ ~ item:", item?.id)
+                  // console.log("🚀 ~ file: SpotLight.js:463 ~ onSwipedTop={ ~ item:", item?.id)
 
                   const url = 'swap/superLiked';
                   const response = await Post(url, { targetsUid: item?.id }, apiHeader(token))
-                  console.log("🚀 ~ file: SpotLight.js:468 ~ onSwipedTop={ ~ response:", response?.data)
+                  // console.log("🚀 ~ file: SpotLight.js:468 ~ onSwipedTop={ ~ response:", response?.data)
                   if (response?.data?.status) {
 
 
                     setSpotLightData(spotLightData.filter((data, index) => response?.data?.peoples?.only?.match_id != data?.id))
-                    console.log("🚀 ~ file: SpotLight.js:464 ~ onSwipedTop={ ~ response:", response?.data)
+                    // console.log("🚀 ~ file: SpotLight.js:464 ~ onSwipedTop={ ~ response:", response?.data)
 
                   } else {
                     Platform.OS == 'android' ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT) : Alert.alert(response?.data?.error)
@@ -807,7 +810,7 @@ const SpotLight = () => {
               // marginTop: moderateScale(20, 0.3),
               flexWrap: 'wrap',
             }}>
-            {YourAreThereType?.map((x, index) => {
+            {YourAreThereType.length > 0 ? YourAreThereType?.map((x, index) => {
               return (
                 <TouchableOpacity
                   activeOpacity={0.8}
@@ -897,6 +900,34 @@ const SpotLight = () => {
                         //    marginTop: moderateScale(-15, 0.3),
                       }}
                       iconSize={moderateScale(20, 0.6)}
+                      onPress={async () => {
+                        // console.log("🚀 ~ file: SpotLight.js:647 ~ onPress={ ~ item:", item)
+
+                        const url = 'swap/disliked';
+                        const response = await Post(
+                          url,
+                          { targetsUid: item?.id },
+                          apiHeader(token),
+                        );
+                        // console.log("🚀 ~ file: SpotLight.js:655 ~ onPress={ ~ response:", response?.data)
+
+                        if (response?.data?.status) {
+                          const filteredData2 = YourAreThereType.filter(
+                            (data, index) =>
+                              response?.data?.peoples?.match_id != data?.id,
+                          );
+
+                          setYourAreThereType(filteredData2);
+                        } else {
+                          console.log('in else');
+                          Platform.OS == 'android'
+                            ? ToastAndroid.show(
+                              response?.data?.error,
+                              ToastAndroid.SHORT,
+                            )
+                            : Alert.alert(response?.data?.error);
+                        }
+                      }}
                     />
                     <BtnContainer
                       backgroundColor={Color.themeColor}
@@ -911,11 +942,45 @@ const SpotLight = () => {
                         //    marginTop: moderateScale(-15, 0.3),
                       }}
                       iconSize={moderateScale(20, 0.6)}
+                      onPress={async () => {
+                        const url = 'swap/liked';
+                        // console.log({targetsUid: selectedId});
+                        const response = await Post(
+                          url,
+                          { targetsUid: item?.id },
+                          apiHeader(token),
+                        );
+                        if (response?.data?.status) {
+
+                          setYourAreThereType(
+                            YourAreThereType.filter(
+                              (data, index) =>
+                                response?.data?.peoples?.match_id != data?.id,
+                            ),
+                          );
+                        } else {
+                          Platform.OS == 'android'
+                            ? ToastAndroid.show(
+                              response?.data?.error,
+                              ToastAndroid.SHORT,
+                            )
+                            : Alert.alert(response?.data?.error);
+                        }
+                      }}
                     />
                   </View>
                 </TouchableOpacity>
               );
-            })}
+            }) : <NullDataComponent
+            style={{
+              width: windowWidth * 0.15,
+              height: windowWidth * 0.15,
+              fontSize: moderateScale(15, 0.6),
+              borderWidth: 2,
+              borderColor: Color.themeColor,
+              marginTop: moderateScale(30, 0.3)
+            }}
+          />}
           </View>
         </ScrollView>
       )}

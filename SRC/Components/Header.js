@@ -156,10 +156,10 @@ const Header = props => {
   const setAccountVisible = async () => {
     const url = 'user/update-my-profile-app';
     const response = await Post(url, {}, apiHeader(token));
-    console.log("🚀 ~ file: Header.js:157 ~ setAccountVisible ~ response:", response)
+    // console.log("🚀 ~ file: Header.js:157 ~ setAccountVisible ~ response:", response)
     if (response != undefined) {
-      // return console.log('data ======= = = = = = ' , response?.data)
-      dispatch(setUserData(response?.data));
+      // return console.log('data ======= = = = = = ' , response?.data?.user)
+      dispatch(setUserData(response?.data?.user));
     }
   };
 

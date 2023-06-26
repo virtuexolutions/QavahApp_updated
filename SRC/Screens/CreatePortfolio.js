@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   View,
   TouchableOpacity,
-  Animated 
+   
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
@@ -126,7 +126,7 @@ const CreatePortfolio = () => {
   };
 
   const onSelect = country => {
-    console.log('dasdasdasdads =>', country);
+    // console.log('dasdasdasdads =>', country);
     setCountryCode(country.cca2);
     setCountry(country);
   };
@@ -155,10 +155,10 @@ const CreatePortfolio = () => {
     setIsLoading(true)
     const response = await Post(url, {email: email}, apiHeader());
     setIsLoading(false)
-    console.log(
-      '🚀 ~ file: CreatePortfolio.js:155 ~ emailValidate ~ response:',
-      response?.data,
-    );
+    // console.log(
+    //   '🚀 ~ file: CreatePortfolio.js:155 ~ emailValidate ~ response:',
+    //   response?.data,
+    // );
     if (!response?.data?.status) {
       return Platform.OS == 'android'
         ? ToastAndroid.show('Email is already taken', ToastAndroid.SHORT)
@@ -174,7 +174,7 @@ const CreatePortfolio = () => {
   useEffect(() => {
     if (number && number.length < 12) {
       const formattedNumber = formatPhoneNumber(number);
-      console.log(formattedNumber);
+      // console.log(formattedNumber);
       setNumber(formattedNumber);
     }
     // else if(number && number.length == 12){
@@ -231,12 +231,12 @@ const CreatePortfolio = () => {
             ? () => {
                 clearTimeout(timeOutId);
                 settimerLabel('Resend Code '), settime(0);
-                console.log('herer');
+                // console.log('herer');
                 setProgress(prev => (prev-(windowWidth/7)))
                 setCurrentStep(prev => prev - 1);
               }
             : () => {
-                console.log('herer ae fasdasdasd');
+                // console.log('herer ae fasdasdasd');
                 setProgress(prev => (prev-(windowWidth/7)))
                 navigatioN.goBack();
               }
