@@ -30,8 +30,8 @@ const TextInputWithTitle = props => {
         fontSize : moderateScale(12,0.3),
         marginBottom : moderateScale(5,0.3),
         width : windowWidth * props.viewWidth,
-        marginTop : props.marginTop,
-        marginTop : moderateScale(10,0.3)
+        // marginTop : ,
+        marginTop :props.marginTop ? props.marginTop : moderateScale(10,0.3),
       },props?.titleStlye]}>{props?.title}</CustomText>
     }
     <View

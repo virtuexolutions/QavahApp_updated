@@ -32,6 +32,8 @@ const IsraeliteFilters = props => {
   const twoStepsData = props?.route?.params?.twoStepsData
   const user = useSelector(state => state.commonReducer.userData)
   const token = useSelector(state => state.authReducer.token)
+  const steps = props?.route?.params?.steps;
+
   // console.log("🚀 ~ file: IsraeliteFilters.js:31 ~ IsraeliteFilters ~ user:", user)
   // console.log("🚀 ~ file: IsraeliteFilters.js:26 ~ IsraeliteFilters ~ twoStepsData:", twoStepsData?.step2?.galleryImages)
   // console.log(
@@ -328,6 +330,7 @@ const IsraeliteFilters = props => {
         navigationService.navigate('ProfilePictures',{
           token : response?.data?.token ,
           userData : response?.data?.user,
+          steps : steps,
         })
       }
     }
@@ -338,7 +341,7 @@ const IsraeliteFilters = props => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header showLeft={true} leftName={'left'} title={'Israelite Filters'} />
+      <Header showLeft={true} leftName={'left'} title={edit? 'Israelite Filters' : `${steps}/3`} />
 
       <ScrollView
         showsVerticalScrollIndicator={false}

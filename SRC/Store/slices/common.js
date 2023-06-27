@@ -33,6 +33,8 @@ const initialState = {
 
   ],
   selectedRole : '',
+  // imagesTemp : [], 
+  // pp : {}
   
 };
 
@@ -62,7 +64,11 @@ const CommonSlice = createSlice({
     },
     setSelectedRole(state,action){
       state.selectedRole = action.payload
-    }
+    },
+    // setImagesTemp(state , action){
+
+    //   state.image = 
+    // }
   },
 });
 
