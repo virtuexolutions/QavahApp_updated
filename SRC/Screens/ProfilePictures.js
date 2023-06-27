@@ -32,7 +32,8 @@ import { Post } from '../Axios/AxiosInterceptorFunction';
 const ProfilePictures = props => {
   // const profileBody = props?.route?.params?.data;
   const token = props?.route?.params?.token;
-  const user = props?.route?.params?.userData
+  const user = props?.route?.params?.userData;
+  const steps = props?.route?.params?.steps;
 
 
 
@@ -125,7 +126,7 @@ const ProfilePictures = props => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header showLeft={true} leftName={'left'} showRight={true} />
+      <Header showLeft={true} leftName={'left'} showRight={true} title={`${steps}/3`} />
 
       <View
         // scrollEnabled={!scrollOff}

@@ -23,6 +23,8 @@ const MoreAboutme = (props) => {
   // const profileImages = props?.route?.params?.profileImages ;
   // console.log("🚀 ~ file: MoreAboutme.js:24 ~ MoreAboutme ~ profileImages:", [profileImages])
   const data = props?.route?.params?.data ;
+  const steps = props?.route?.params?.steps;
+  // const signup = props?.route?.params?.signup;
   // const galleryImages = props?.route?.params?.galleryImages ;
   // console.log("🚀 ~ file: MoreAboutme.js:27 ~ MoreAboutme ~ galleryImages:", galleryImages)
   const user = useSelector(state=>state.commonReducer?.userData)
@@ -238,7 +240,7 @@ const MoreAboutme = (props) => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header showLeft={true} leftName={'left'} title={'More About Me'} />
+      <Header showLeft={true} leftName={'left'} title={!edit? `${steps}/3`: 'More About Me' } />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -384,7 +386,9 @@ const MoreAboutme = (props) => {
        
        
        
-       
+       {
+        console.log(body.step2)
+       }
        
         <CustomButton
           text={ edit ?  'Save' : 'Next'}
@@ -392,8 +396,19 @@ const MoreAboutme = (props) => {
           width={windowWidth * 0.9}
           height={windowHeight * 0.09}
           onPress={() => {
-            edit ? updateMoreAboutMe() : navigationService.navigate('IsraeliteFilters', {twoStepsData : body});
-          }}
+            if(edit){
+            updateMoreAboutMe()}
+            else{
+              console.log('in the else ')
+              for(let key in body.step2){
+                if(body.step2[key] == ''){
+                  console.log(body.step2[key])
+                  return alert("Please fill all the fields")
+                  
+                }
+              } 
+              navigationService.navigate('IsraeliteFilters', {twoStepsData : body, steps: steps});
+          }}}
           bgColor={Color.themeColor}
           borderRadius={moderateScale(15, 0.3)}
           marginTop={moderateScale(30, 0.3)}

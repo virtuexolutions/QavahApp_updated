@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
   View,
   TouchableOpacity,
-   
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
@@ -40,10 +39,10 @@ import {Post} from '../Axios/AxiosInterceptorFunction';
 const CreatePortfolio = () => {
   const navigatioN = useNavigation();
   const [currentStep, setCurrentStep] = useState(1);
-  // console.log(
-  //   '🚀 ~ file: CreatePortfolio.js:17 ~ CreatePortfolio ~ currentStep:',
-  //   currentStep,
-  // );
+  console.log(
+    '🚀 ~ file: CreatePortfolio.js:17 ~ CreatePortfolio ~ currentStep:',
+    currentStep,
+  );
   //Step 1
   const [profileName, setProfileName] = useState('');
   const [governmentName, setGovernmentName] = useState('');
@@ -96,7 +95,9 @@ const CreatePortfolio = () => {
   const [withFilter, setFilter] = useState(true);
   const [timeOutId, setTimeOutId] = useState(null);
   const [chunks, setChunks] = useState('');
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState(0);
+  const [steps, setSteps] = useState(1);
+  console.log("🚀 ~ file: CreatePortfolio.js:100 ~ CreatePortfolio ~ steps:", steps)
 
   const ProfileBody = {
     step1: {
@@ -135,6 +136,9 @@ const CreatePortfolio = () => {
     time == 0 && (settimerLabel('Resend Code '), settime(0));
   };
 
+  const dateDifference = moment(dob).fromNow().split(" ")[0] >= 18;
+
+  console.log("🚀 ~ file: CreatePortfolio.js:140 ~ CreatePortfolio ~ dateDifference:", dateDifference)
   //number validator
   const phoneNumberRegex = /^(\d{3})[-]?(\d{3})[-]?(\d{4})$/;
 
@@ -152,9 +156,9 @@ const CreatePortfolio = () => {
   const emailExists = async email => {
     const url = 'pr';
 
-    setIsLoading(true)
+    setIsLoading(true);
     const response = await Post(url, {email: email}, apiHeader());
-    setIsLoading(false)
+    setIsLoading(false);
     // console.log(
     //   '🚀 ~ file: CreatePortfolio.js:155 ~ emailValidate ~ response:',
     //   response?.data,
@@ -165,11 +169,10 @@ const CreatePortfolio = () => {
         : Alert.alert('Email is already taken');
     }
     setCurrentStep(prev => prev + 1);
-    setProgress(prev => (prev+(windowWidth/7)))
-
+    setProgress(prev => prev + windowWidth / 6);
+    // setCurrentStep(prev => prev + 1);
+    // setProgress(prev => prev + windowWidth / 6);
   };
-
-  
 
   useEffect(() => {
     if (number && number.length < 12) {
@@ -210,7 +213,6 @@ const CreatePortfolio = () => {
     }
   }, [inch]);
 
-
   return (
     <>
       <CustomStatusBar
@@ -220,29 +222,46 @@ const CreatePortfolio = () => {
       <Header
         showLeft={true}
         leftName={'left'}
-        showRight ={true}
+        showRight={true}
         leftPress={
-          currentStep > 1 && currentStep != 8
+          currentStep > 1 && currentStep != 6 && currentStep != 4
             ? () => {
-              setProgress(prev => (prev-(windowWidth/7)))
-              setCurrentStep(prev => prev - 1);
+                setProgress(prev => prev - windowWidth / 7);
+                setCurrentStep(prev => prev - 1);
               }
-            : currentStep == 8
+            : currentStep == 6
             ? () => {
                 clearTimeout(timeOutId);
                 settimerLabel('Resend Code '), settime(0);
                 // console.log('herer');
-                setProgress(prev => (prev-(windowWidth/7)))
+                setProgress(prev => prev - windowWidth / 7);
                 setCurrentStep(prev => prev - 1);
+                // setSteps(steps - 1);
+              }
+            : currentStep == 4
+            ? () => {
+                setSteps(steps - 1);
+                setCurrentStep(prev => prev - 1);
+                setProgress(prev => prev - windowWidth / 7);
+                // navigatioN.goBack();
               }
             : () => {
                 // console.log('herer ae fasdasdasd');
-                setProgress(prev => (prev-(windowWidth/7)))
+                setProgress(prev => prev - windowWidth / 7);
                 navigatioN.goBack();
               }
         }
-      />{currentStep < 8 && <View style={{width:progress,height:windowHeight*0.008, backgroundColor:Color.themeColor}}></View> }
-      
+        title={currentStep < 4 ? `1/3` : '2/3'}
+      />
+      {currentStep < 6 && (
+        <View
+          style={{
+            width: progress,
+            height: windowHeight * 0.008,
+            backgroundColor: Color.themeColor,
+          }}></View>
+      )}
+
       <KeyboardAwareScrollView
         style={{
           paddingTop: windowHeight * 0.1,
@@ -274,6 +293,7 @@ const CreatePortfolio = () => {
                   fontSize: moderateScale(35, 0.6),
                 }}
                 border={1}
+                marginTop={moderateScale(-40, 0.3)}
               />
               <CustomText
                 style={{
@@ -303,7 +323,7 @@ const CreatePortfolio = () => {
                 titleStlye={{
                   color: Color.themeBlack,
                   fontSize: moderateScale(35, 0.6),
-                  marginTop: moderateScale(30, 0.3),
+                  // marginTop: moderateScale(0, 0.3),
                 }}
                 border={1}
               />
@@ -317,9 +337,6 @@ const CreatePortfolio = () => {
                 }}>
                 *Will not be shown to anyone
               </CustomText>
-            </>
-          ) : currentStep == 2 ? (
-            <>
               <TextInputWithTitle
                 title={'Email'}
                 titleText={`hello@abc.com`}
@@ -341,7 +358,7 @@ const CreatePortfolio = () => {
                 border={1}
               />
             </>
-          ) : currentStep == 3 ? (
+          ) : currentStep == 2 ? (
             <>
               <CustomText
                 style={[
@@ -386,7 +403,7 @@ const CreatePortfolio = () => {
                 </CustomText>
               </TouchableOpacity>
             </>
-          ) : currentStep == 4 ? (
+          ) : currentStep == 3 ? (
             <>
               <CustomText
                 style={[
@@ -395,7 +412,7 @@ const CreatePortfolio = () => {
                     fontSize: moderateScale(35, 0.3),
                     marginBottom: moderateScale(5, 0.3),
                     // width : windowWidth * 0.5,
-                    marginTop: moderateScale(10, 0.3),
+                    marginTop: moderateScale(-40, 0.3),
                     // textAlign : 'center',
                   },
                 ]}>
@@ -425,9 +442,6 @@ const CreatePortfolio = () => {
                   }}
                 />
               </TouchableOpacity>
-            </>
-          ) : currentStep == 5 ? (
-            <>
               <CustomText
                 style={[
                   {
@@ -435,7 +449,8 @@ const CreatePortfolio = () => {
                     fontSize: moderateScale(35, 0.3),
                     marginBottom: moderateScale(5, 0.3),
                     // width : windowWidth * 0.5,
-                    marginTop: moderateScale(10, 0.3),
+                    marginTop: moderateScale(50, 0.3),
+
                     // textAlign : 'center',
                   },
                 ]}>
@@ -485,7 +500,7 @@ const CreatePortfolio = () => {
               </View>
               <CustomText>{`${feet}ft-${inch}in`}</CustomText>
             </>
-          ) : currentStep == 6 ? (
+          ) : currentStep == 4 ? (
             <>
               <TextInputWithTitle
                 title={'Password'}
@@ -530,7 +545,7 @@ const CreatePortfolio = () => {
                 border={1}
               />
             </>
-          ) : currentStep == 7 ? (
+          ) : currentStep == 5 ? (
             <>
               <CustomText
                 style={[
@@ -547,7 +562,7 @@ const CreatePortfolio = () => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 onPress={() => {
-                  setShowNumberModal(true);
+                  //   setShowNumberModal(true);
                 }}
                 style={[styles.birthday, {justifyContent: 'flex-start'}]}>
                 <CountryPicker
@@ -559,7 +574,7 @@ const CreatePortfolio = () => {
                   }}
                   visible={showNumberModal}
                   onClose={() => {
-                    setShowNumberModal(false);
+                    // setShowNumberModal(false);
                   }}
                 />
 
@@ -577,7 +592,7 @@ const CreatePortfolio = () => {
                   size={moderateScale(20, 0.6)}
                   color={Color.themeColor}
                   onPress={() => {
-                    setShowNumberModal(true);
+                    // setShowNumberModal(true);
                   }}
                   style={{
                     position: 'absolute',
@@ -600,7 +615,7 @@ const CreatePortfolio = () => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 onPress={() => {
-                  setShowNumberModal(true);
+                  // setShowNumberModal(true);
                 }}
                 style={[styles.birthday, {justifyContent: 'flex-start'}]}>
                 <TextInputWithTitle
@@ -631,7 +646,7 @@ const CreatePortfolio = () => {
                   size={moderateScale(20, 0.6)}
                   color={Color.themeColor}
                   onPress={() => {
-                    setShowNumberModal(true);
+                    // setShowNumberModal(true);
                   }}
                   style={{
                     position: 'absolute',
@@ -643,6 +658,7 @@ const CreatePortfolio = () => {
                 {'We need your mobile number \n to get you signed in'}
               </CustomText>
             </>
+       
           ) : (
             <View
               style={{alignItems: 'center', marginTop: -windowHeight * 0.2}}>
@@ -698,20 +714,24 @@ const CreatePortfolio = () => {
         </View>
         {/* Button */}
         <CustomButton
-          text={isLoading ? (
-            <ActivityIndicator color={'#FFFFFF'} size={'small'} />
-          ) : (
-            'Next'
-          )}
+          text={
+            isLoading ? (
+              <ActivityIndicator color={'#FFFFFF'} size={'small'} />
+            ) : (
+              'Next'
+            )
+          }
           textColor={Color.white}
           width={windowWidth * 0.9}
           height={windowHeight * 0.09}
           disabled={isLoading}
           onPress={() => {
-            if (profileName != '' && governmentName != '' && currentStep == 1) {
-              setCurrentStep(prev => prev + 1);
-              setProgress(prev => (prev+(windowWidth/7)))
-            } else if (email != '' && currentStep == 2) {
+            if (
+              profileName != '' &&
+              governmentName != '' &&
+              email != '' &&
+              currentStep == 1
+            ) {
               if (!validateEmail(email)) {
                 return Platform.OS == 'android'
                   ? ToastAndroid.show('Email invalid', ToastAndroid.SHORT)
@@ -724,22 +744,33 @@ const CreatePortfolio = () => {
                     )
                   : Alert.alert('Email is already taken');
               }
-            } else if (gender != '' && currentStep == 3) {
+            } else if (gender != '' && currentStep == 2) {
               setCurrentStep(prev => prev + 1);
-              setProgress(prev => (prev+(windowWidth/7)))
+              setProgress(prev => prev + windowWidth / 6);
+            } else if (
+              dob != '' &&
+              feet != '' &&
+              inch != '' &&
+              currentStep == 3
+            ) {
+              if(dateDifference){
 
-            } else if (dob != '' && currentStep == 4) {
-              setCurrentStep(prev => prev + 1);
-              setProgress(prev => (prev+(windowWidth/7)))
-
-            } else if (feet != '' && inch != '' && currentStep == 5) {
-              setCurrentStep(prev => prev + 1);
-              setProgress(prev => (prev+(windowWidth/7)))
-
+                setCurrentStep(prev => prev + 1);
+                setProgress(prev => prev + windowWidth / 6);
+                setSteps(steps + 1);
+              }
+              else{
+                return Platform.OS == 'android'
+                ? ToastAndroid.show(
+                    'Sorry , you are not 18+',
+                    ToastAndroid.SHORT,
+                  )
+                : Alert.alert('Sorry , you are not 18+');
+              }
             } else if (
               password != '' &&
               confirmPassword != '' &&
-              currentStep == 6
+              currentStep == 4
             ) {
               if (password != confirmPassword) {
                 return Platform.OS == 'android'
@@ -754,17 +785,20 @@ const CreatePortfolio = () => {
                   : Alert.alert('Password should be atleast 6 characters long');
               }
               setCurrentStep(prev => prev + 1);
-              setProgress(prev => (prev+(windowWidth/7)))
-
-            } else if (countryCode != '' && number != '' && currentStep == 7) {
+              setProgress(prev => prev + windowWidth / 6);
+            } else if (countryCode != '' && number != '' && currentStep == 5) {
               setCurrentStep(prev => prev + 1);
               settimerLabel('ReSend in '), settime(120);
-              setProgress(prev => (prev+(windowWidth/7)))
-
-            } else if (currentStep == 8) {
+              setProgress(prev => prev + windowWidth / 6);
+            }
+            else if (currentStep == 6) {
+              setSteps(3);
               clearTimeout(timeOutId);
+              // setSteps(steps+1)
               navigationService.navigate('MoreAboutme', {
                 data: ProfileBody,
+                steps: 3,
+                // signup: true,
               });
             } else {
               Platform.OS == 'android'
