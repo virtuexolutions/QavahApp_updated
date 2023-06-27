@@ -257,7 +257,7 @@ const MoreAboutme = (props) => {
           About Me
         </CustomText>
         <TextInputWithTitle
-          maxLength={600}
+          maxLength={2000}
           titleText={'You can express your thoughts and requests in this area.'}
           secureText={false}
           placeholder={
@@ -280,7 +280,7 @@ const MoreAboutme = (props) => {
         <CustomText
           style={[
             styles.text,
-            description?.length == 600 && {color: Color.green},
+            description?.length == 2000 && {color: Color.green},
           ]}>
           {`Characters : ${description?.length}/2000`}
         </CustomText>

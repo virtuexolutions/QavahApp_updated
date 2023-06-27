@@ -9,12 +9,13 @@ import CustomImage from '../Components/CustomImage';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 import {setUserToken} from '../Store/slices/auth';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { setUserData } from '../Store/slices/common';
 
 const ProfileCreated = (props) => {
   const token = props?.route?.params?.token ;
-  const userData = props?.route?.params?.userData ;
+  // const userData = props?.route?.params?.userData ;
+  const userData = useSelector(state=> state?.commonReducer?.userData)
   console.log("🚀 ~ file: ProfileCreated.js:16 ~ ProfileCreated ~ token:", userData)
   const dispatch = useDispatch();
 
@@ -52,7 +53,7 @@ const ProfileCreated = (props) => {
           </CustomText>
           <CustomImage
             style={styles.image}
-            source={ userData?.profile_image?.uri ? {uri : userData?.profile_image?.uri} : require('../Assets/Images/dummyman6.png')}
+            source={ userData?.profile_images[0]?.url ? {uri : userData?.profile_images[0]?.url} : require('../Assets/Images/dummyman6.png')}
 
           />
         </View>

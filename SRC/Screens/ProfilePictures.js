@@ -28,12 +28,16 @@ import ImageContainer from '../Components/ImageContainer';
 // import SortableGridView from 'react-native-sortable-gridview'
 import {Easing} from 'react-native-reanimated';
 import { Post } from '../Axios/AxiosInterceptorFunction';
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../Store/slices/common';
 
 const ProfilePictures = props => {
   // const profileBody = props?.route?.params?.data;
   const token = props?.route?.params?.token;
   const user = props?.route?.params?.userData;
   const steps = props?.route?.params?.steps;
+
+  const dispatch = useDispatch();
 
 
 
@@ -51,6 +55,7 @@ const ProfilePictures = props => {
   //   require('../Assets/Images/banner.jpg'),
   // ]);
   const [multiImages, setMultiImages] = useState([{},{},{},{},{},{}])
+  console.log("🚀 ~ file: ProfilePictures.js:54 ~ ProfilePictures ~ multiImages:", multiImages)
   // console.log(
   //   '🚀 ~ file: ProfilePictures.js:32 ~ ProfilePictures ~ multiImages:',
   //   multiImages,
@@ -107,12 +112,14 @@ const ProfilePictures = props => {
       
       // console.log("🚀 ~ file: ProfilePictures.js:95 ~ sendImages ~ response:", response?.data?.user?.gallery_images)
       
-      
+      dispatch(setUserData(response?.data?.user))
       
       navigationService.navigate('ProfileCreated',{
         token :token ,
         userData : response?.data?.user,
       })
+
+      
 
     }
     

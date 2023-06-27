@@ -353,6 +353,7 @@ const PersonalInfo = () => {
                   showMultiImageModal={showMultiImageModal}
                   setShowMultiImageModal={setShowMultiImageModal}
                   key={item?.id}
+                  edit={true}
                 />
               );
             })}

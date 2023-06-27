@@ -30,9 +30,10 @@ const ImageContainer = ({
   setShowMultiImageModal,
   key,
   onPress,
+  edit
 }) => {
   // console.log("🚀 ~ file: ImageContainer.js:34 ~ key:", key)
-  // console.log('🚀 ~ file: ImageContainer.js:29 ~ ImageContainer ~ item:', item?.url);
+  console.log('🚀 ~ file: ImageContainer.js:29 ~ ImageContainer ~ item:', item);
   const [remove, setRemove] = useState(false);
 
   return (
@@ -45,7 +46,7 @@ const ImageContainer = ({
       {Object.keys(item).length >0 ? (
         <>
           <Image
-            source={{uri:item?.url}}
+            source={{uri: edit ? item?.url : item?.uri}}
             style={{width: '100%', height: '100%'}}
           />
           <TouchableOpacity

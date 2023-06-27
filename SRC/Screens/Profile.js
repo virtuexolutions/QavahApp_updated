@@ -42,7 +42,7 @@ const Profile = props => {
   const [type, setType] = useState('photos');
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setuserData] = useState(fromSearch ? data : user);
-  // console.log("🚀 ~ file: Profile.js:45 ~ Profile ~ userData:", userData)
+  console.log("🚀 ~ file: Profile.js:45 ~ Profile ~ userData:", userData)
   const [postRef , setPostRef] = useState(null
   )
   const [images , setImages] = useState(userData ? userData?.gallery_images :  [
@@ -70,7 +70,7 @@ const Profile = props => {
   const [selectedImage , setSelectedImage] = useState(null)
   // console.log("🚀 ~ file: Profile.js:70 ~ Profile ~ selectedImage:", selectedImage)
   const [image, setImage] = useState({});
-  // console.log("🚀 ~ file: Profile.js:70 ~ Profile ~ image:", image)
+  console.log("🚀 ~ file: Profile.js:70 ~ Profile ~ image:", image)
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [postImage , setPostImage] = useState({});
@@ -172,7 +172,7 @@ const Profile = props => {
             :
             <View>
             {Object.keys(image).length > 0 ? (
-              <CustomImage source={{uri: image?.url}} style={styles.image} />
+              <CustomImage source={{uri: image?.uri}} style={styles.image} />
             ) : (
               <CustomImage
                 style={styles.image}
