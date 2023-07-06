@@ -497,7 +497,7 @@ const SearchFilterScreen = () => {
     // console.log('submit clicked')
     // return console.log("location in the search screen",location);
 
-    body.push({key : 'age' , values : [age1, age2]}, { key : 'miles'  , values : distance}, {key : 'zipcode' ,values: ['11230']} ,{key : 'seeking' ,values: [user?.seeking]});
+    body.push({key : 'age' , values : [age1, age2]}, { key : 'miles'  , values : [distance]}, {key : 'zipcode' ,values: ['11230']} ,{key : 'seeking' ,values: [user?.seeking]});
 
     const dataBody = {
       uid: user?.id,
@@ -1206,8 +1206,8 @@ const SearchFilterScreen = () => {
                       onPress={() => {
                         // console.log('map index i=====>>>>',i)
                         const index = filtersOn.indexOf(item?.text);
-                        // console.log("🚀 ~ file: SearchFilterScreen.js:1209 ~ {item?.array.map ~ index:", index)
-                        // console.log("🚀 ~ file: SearchFilterScreen.js:1203 ~ x:", x)
+                        console.log("🚀 ~ file: SearchFilterScreen.js:1209 ~ {item?.array.map ~ index:", index)
+                        console.log("🚀 ~ file: SearchFilterScreen.js:1203 ~ x:", x)
                           
                           let tempData = [];
                           console.log(

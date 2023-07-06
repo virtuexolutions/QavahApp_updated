@@ -104,7 +104,7 @@ const PersonalInfo = () => {
     
         if(response?.data?.status){
           
-          // console.log("🚀 ~ file: UserDetail.js:71 ~ updatePortfolio ~ response:", response?.data)
+          console.log("🚀 ~ file: UserDetail.js:71 ~ updatePortfolio ~ response:", response?.data)
           dispatch(setUserData(response?.data?.user));
           Platform.OS == 'android' ? ToastAndroid.show('Profile Updated Successfully',ToastAndroid.SHORT) :
           Alert('Profile Updated Successfully')
@@ -269,20 +269,20 @@ const PersonalInfo = () => {
             }}
             style={[
               styles.cont,
-              gender == 'Men' && {borderColor: Color.themeColor},
+              gender == 'Man' && {borderColor: Color.themeColor},
             ]}
             activeOpacity={0.7}>
             <Icon
               name={'man'}
               as={Ionicons}
-              color={gender == 'Men' ? Color.themeColor : Color.veryLightGray}
+              color={gender == 'Man' ? Color.themeColor : Color.veryLightGray}
             />
 
             <CustomText
               isBold
               style={[
                 styles.txt6,
-                gender == 'Men' && {color: Color.themeColor},
+                gender == 'Man' && {color: Color.themeColor},
               ]}>
               {' '}
               Man
@@ -294,14 +294,14 @@ const PersonalInfo = () => {
             }}
             style={[
               styles.cont,
-              gender == 'Woman' && {borderColor: Color.themeColor},
+              gender == 'woman' && {borderColor: Color.themeColor},
             ]}
             activeOpacity={0.7}>
             <Icon
               name={'woman'}
               as={Ionicons}
               color={
-                gender == 'Woman' ? Color.themeColor : Color.veryLightGray
+                gender == 'woman' ? Color.themeColor : Color.veryLightGray
               }
             />
 
@@ -309,7 +309,7 @@ const PersonalInfo = () => {
               isBold
               style={[
                 styles.txt6,
-                gender == 'Woman' && {color: Color.themeColor},
+                gender == 'woman' && {color: Color.themeColor},
               ]}>
               {' '}
               Woman

@@ -326,7 +326,7 @@ const Profile = props => {
               width: windowWidth * 0.9,
               marginTop : moderateScale(20,0.3)
             }}>
-            {images?.map((item, index) => {
+            {images?.length > 0 ? images?.map((item, index) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
@@ -363,7 +363,15 @@ const Profile = props => {
                 
                 </TouchableOpacity>
               );
-            })}
+            }) :<CustomText
+            style={[
+              {
+                color: Color.veryLightGray,
+                fontSize: moderateScale(11, 0.6),
+                marginTop: moderateScale(2, 0.3),
+                textAlign:'center',
+              },
+            ]}>No posts yet</CustomText>}
           </View>
       </ScrollView>
       {!fromSearch &&

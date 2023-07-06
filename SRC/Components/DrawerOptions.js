@@ -52,12 +52,13 @@ const DrawerOptions = ({item}) => {
             // // value={item?.switchEnabled}
             // />
             <Switch
-            trackColor={{true: '#EDA63F' , false : Color.veryLightGray}}
-            thumbColor={userData?.prefrences?.global == 1 ? Color.themeColor : '#EEEEEE'}
+            trackColor={{true: '#EDA63d' , false : Color.veryLightGray}}
+            thumbColor={userData?.prefrences?.global ? userData?.prefrences?.global == 1 ? Color.themeColor : '#EEEEEE':'#EEEEEE' }
+            // thumbColor={{true:  Color.themeColor, false:'#EEEEEE' }}
             ios_backgroundColor="#3e3e3e"
             onValueChange={ item?.onPress}
             //value={userData?.prefrences?.global}
-            value={userData?.prefrences?.global == 0 ? false : true}
+            value={userData?.prefrences?.global ? userData?.prefrences?.global==0 ? false : true : false }
           />
  :       
         <Icon 
