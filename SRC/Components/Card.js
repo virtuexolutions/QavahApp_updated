@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
-import {View, Text, Image, ImageSourcePropType} from 'react-native';
+import {View, Text, Image, ImageSourcePropType, TouchableOpacity} from 'react-native';
 import {shape, string, number} from 'prop-types';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
@@ -16,13 +16,7 @@ let startAncestor;
 let startNode;
 
 const Card =memo( ({card, height , setCards , cards, fromSpotLight}) => {
-// console.log("🚀 ~ file: Card.js:19 ~ Card ~ fromSpotLight:", fromSpotLight)
-//   console.log("🚀 ~ file: Card.js:19 ~ Card ~ card:", JSON.stringify( card , null , 2))
-// console.log('card ===>' , card)
-//   fromSpotLight? 'coming from spotlight': 'coming from homescreen'
 
-//   const [card, setCardData] = useState(card) 
-//   console.log("🚀 ~ file: Card.js:22 ~ Card ~ CardData:", CardData)
 
 
 useEffect(() => {
@@ -30,7 +24,14 @@ useEffect(() => {
 }, [])
 
   return (
-	<View activeOpacity={1} style={[styles.card, {height: height}]}>
+	<TouchableOpacity 
+	onPress={() => {
+		navigationService.navigate('UserDetail', {
+		  item: card,
+		  fromSearch: true,
+		});
+	  }}
+	activeOpacity={1} style={[styles.card, {height: height}]}>
      	{/* console.log("🚀 ~ file: Card.js:20 ~ card:", card) */}
     		{/* <SharedElement id={`item.${card.key}.image_url`}> */}
     		<CustomImage
@@ -72,7 +73,9 @@ useEffect(() => {
             		{`${card?.location?.state}, ${card?.location?.city}`}
           		</CustomText>
         		</View>
-        		<View>
+        		<View style={{
+					alignItems : 'center'
+				}}>
           		<View
             		style={{
               		flexDirection: 'row',
@@ -86,7 +89,26 @@ useEffect(() => {
             		/>
             		<CustomText isBold style={styles.text}>{`5 Ml`}</CustomText>
           		</View>
-          		<Icon
+				  <TouchableOpacity
+                style={styles.israelite}
+                activeOpacity={0.9}
+                onPress={() => {
+                  navigationService.navigate('Israeliteinfo');
+                }}>
+                <CustomImage
+                  source={require('../Assets/Images/hebrew.png')}
+                  resizeMode={'contain'}
+                  style={{
+                    width: windowWidth * 0.2,
+                    height: windowHeight * 0.03,
+					// tintColor : Color.themeColor
+				}}
+                  onPress={() => {
+                    navigationService.navigate('Israeliteinfo',{user:card});
+                  }}
+                />
+              </TouchableOpacity>
+          		{/* <Icon
             		name={'chevron-up-circle-outline'}
             		as={Ionicons}
             		size={moderateScale(45, 0.6)}
@@ -102,11 +124,11 @@ useEffect(() => {
                 		fromSearch: true,
               		});
             		}}
-          		/>
+          		/> */}
         		</View>
       		</View>
     		</LinearGradient>
-  		</View>
+  		</TouchableOpacity>
 		);
 
 })
@@ -152,5 +174,16 @@ const styles = ScaledSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: moderateScale(20, 0.6),
     alignItems: 'center',
+  },
+  israelite: {
+    width: windowWidth * 0.22,
+    height: windowWidth * 0.1,
+    // backgroundColor: Color.themeColor,
+    borderRadius: moderateScale(8, 0.6),
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+	borderColor : Color.themeColor,
+	borderWidth : 1,
   },
 });

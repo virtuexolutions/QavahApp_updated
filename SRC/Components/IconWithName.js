@@ -47,7 +47,7 @@ const IconWithName = ({
             // backgroundColor : 'red'
           },
         ]}>
-        {text}
+        {text ? text : 'Not Mentioned'}
       </CustomText>
     </TouchableOpacity>
   );

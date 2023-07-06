@@ -79,22 +79,23 @@ const SpotLightModal = ({isVisible, setIsVisible}) => {
       alignItems: 'center',
     }}
     >
-        {/* <TouchableOpacity style={styles.closeContainer}> */}
+        <TouchableOpacity style={styles.closeContainer}>
         <Icon
           name={'close'}
           as={AntDesign}
           size={moderateScale(15, 0.6)}
-          color={Color.veryLightGray}
+          color={Color.black}
           style={{
-            position: 'absolute',
-            left: moderateScale(10, 0.3),
-            top: moderateScale(10, 0.6),
-            zIndex: 1,
+            // position: 'absolute',
+            // left: moderateScale(10, 0.3),
+            // top: moderateScale(10, 0.6),
+            // zIndex: 1,
           }}
           onPress={() => {
             setIsVisible(false);
           }}
         />
+        </TouchableOpacity>
         <View style={styles.image}>
           <CustomImage
             source={require('../Assets/Images/spotlight_cover.jpg')}
@@ -102,6 +103,7 @@ const SpotLightModal = ({isVisible, setIsVisible}) => {
               width: '100%',
               height: '100%',
             }}
+            resizeMode="stretch"
           />
         </View>
         <CustomText isBold style={{fontSize: moderateScale(15, 0.6)}}>
@@ -411,12 +413,14 @@ const styles = ScaledSheet.create({
   closeContainer: {
     width: moderateScale(20, 0.6),
     height: moderateScale(20, 0.6),
-    borderRadius: moderateScale(10, 0.6),
-    backgroundColor: Color.themeColor,
+    // borderRadius: moderateScale(10, 0.6),
+    backgroundColor: Color.white,
     position: 'absolute',
     left: moderateScale(10, 0.3),
-    top: moderateScale(10, 0.6),
+    top: moderateScale(20, 0.6),
     zIndex: 1,
+    justifyContent : 'center',
+    alignItems : 'center'
   },
   image: {
     width: windowWidth,

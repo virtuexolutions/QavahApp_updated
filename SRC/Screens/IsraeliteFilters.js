@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
   Platform,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -21,17 +21,21 @@ import {Alert, Icon, useDisclose} from 'native-base';
 import navigationService from '../navigationService';
 import CustomModal from '../Components/CustomModal';
 import BottomSheetSelect from '../Components/BottomSheetSelect';
-import { Post } from '../Axios/AxiosInterceptorFunction';
-import { useDispatch, useSelector } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
-import { setUserData } from '../Store/slices/common';
-import { setIsLoggedIn, setUserToken } from '../Store/slices/auth';
+import {Post} from '../Axios/AxiosInterceptorFunction';
+import {useDispatch, useSelector} from 'react-redux';
+import {useIsFocused} from '@react-navigation/native';
+import {setUserData} from '../Store/slices/common';
+import {setIsLoggedIn, setUserToken} from '../Store/slices/auth';
+// import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const IsraeliteFilters = props => {
+  const check = props?.route?.params?.check;
+  console.log("🚀 ~ file: IsraeliteFilters.js:33 ~ IsraeliteFilters ~ check:", check)
   const edit = props?.route?.params?.edit;
-  const twoStepsData = props?.route?.params?.twoStepsData
-  const user = useSelector(state => state.commonReducer.userData)
-  const token = useSelector(state => state.authReducer.token)
+  const twoStepsData = props?.route?.params?.twoStepsData;
+  console.log("🚀 ~ file: IsraeliteFilters.js:36 ~ IsraeliteFilters ~ twoStepsData:", twoStepsData)
+  const user = useSelector(state => state.commonReducer.userData);
+  const token = useSelector(state => state.authReducer.token);
   const steps = props?.route?.params?.steps;
 
   // console.log("🚀 ~ file: IsraeliteFilters.js:31 ~ IsraeliteFilters ~ user:", user)
@@ -40,56 +44,76 @@ const IsraeliteFilters = props => {
   //   '🚀 ~ file: IsraeliteFilters.js:25 ~ IsraeliteFilters ~ edit:',
   //   edit,
   // );
-  const focused = useIsFocused()
-  const dispatch = useDispatch()
+  const focused = useIsFocused();
+  const dispatch = useDispatch();
   const [believe, setBelieve] = useState(edit ? user?.iBelieveIAM : '');
   // console.log("🚀 ~ file: IsraeliteFilters.js:40 ~ IsraeliteFilters ~ believe:", believe)
-  const [yearsInTruth, setYearsInTruth] = useState(edit ? user?.yearsInTruth : '');
+  const [yearsInTruth, setYearsInTruth] = useState(
+    edit ? user?.yearsInTruth : '',
+  );
   const [studyHabits, setStudyHabits] = useState(edit ? user?.studyHabits : '');
   const [spiritualValues, setSpiritualValues] = useState(
     edit ? user?.spiritualValue : '',
   );
-  const [maritialBelief, setMaritialBelief] = useState(edit ? user?.maritalBeliefSystem : '');
-  const [studyBible, setStudyBible] = useState(
-    edit ? user?.studyBible : '',
+  const [maritialBelief, setMaritialBelief] = useState(
+    edit ? user?.maritalBeliefSystem : '',
   );
+  const [studyBible, setStudyBible] = useState(edit ? user?.studyBible : '');
   const [spiritualBgc, setSpiritualBgc] = useState(
     edit ? user?.spiritualBackground : '',
   );
-  const [anyAffiliation, setAnyAffiliation] = useState(edit ? user?.anyAffiliation : '');
+  const [anyAffiliation, setAnyAffiliation] = useState(
+    edit ? user?.anyAffiliation : '',
+  );
   const [selectedIndex, setIndex] = useState('');
-  const [israelitePractise , setIsraelitePractise] = useState(edit? user?.isrealite_practice_keeping == undefined ? [] : user?.isrealite_practice_keeping.map(item=>item?.options) :[]);
+  const [israelitePractise, setIsraelitePractise] = useState(
+    edit
+      ? user?.isrealite_practice_keeping == undefined
+        ? []
+        : user?.isrealite_practice_keeping.map(item => item?.options)
+      : [],
+  );
   // console.log("🚀 ~ file: IsraeliteFilters.js:55 ~ IsraeliteFilters ~ israelitePractise:", israelitePractise)
   const [modalVisible, setModalVisible] = useState(false);
   // const [type, setType] = useState('');
   const [passionModalVisible, setPassionModalVisible] = useState(false);
-  const [passions, setPassions] = useState(edit? user?.passions == undefined ? [] : user?.passions.map(item=>item?.options) : []);
+  const [passions, setPassions] = useState(
+    edit
+      ? user?.passions == undefined
+        ? []
+        : user?.passions.map(item => item?.options)
+      : [],
+  );
   // console.log("🚀 ~ file: IsraeliteFilters.js:61 ~ IsraeliteFilters ~ passions:", passions)
-  const [kingdomGifts, setKingDomGifts] = useState(edit? user?.kingdom_gifts == undefined ? [] : user?.kingdom_gifts.map(item=>item?.options) : []);
+  const [kingdomGifts, setKingDomGifts] = useState(
+    edit
+      ? user?.kingdom_gifts == undefined
+        ? []
+        : user?.kingdom_gifts.map(item => item?.options)
+      : [],
+  );
   // console.log("🚀 ~ file: IsraeliteFilters.js:63 ~ IsraeliteFilters ~ kingdomGifts:", kingdomGifts)
   // console.log("🚀 ~ file: IsraeliteFilters.js:69 ~ checkPassion ~ kingdomGifts:", kingdomGifts)
 
   const [arrayForModal, setArrayForModal] = useState([]);
   const [type, setType] = useState('passions');
-  const [isLoading , setIsLoading] = useState(false);
-
-
-  
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [checked , setIsCecked] = useState(false)
+  console.log("🚀 ~ file: IsraeliteFilters.js:101 ~ IsraeliteFilters ~ checked:", checked)
 
   const updateIsraelLiteInfo = async () => {
     const url = 'isralite_info';
     const body = {
-      targetsUid: user?.id , 
+      targetsUid: user?.id,
       iBelieveIAm: believe,
-      yearsInTruth:yearsInTruth ,
+      yearsInTruth: yearsInTruth,
       StudyHabits: studyHabits,
       SpiritualValues: spiritualValues,
       MaritalBeliefSystem: maritialBelief,
-      studyBible:studyBible,
+      studyBible: studyBible,
       SpiritualBg: spiritualBgc,
-      anyAffiliation:anyAffiliation,
-      isrealite_practice_keeping:israelitePractise,
+      anyAffiliation: anyAffiliation,
+      isrealite_practice_keeping: israelitePractise,
       Passions: passions,
       KingomGifts: kingdomGifts,
     };
@@ -97,32 +121,33 @@ const IsraeliteFilters = props => {
     const response = await Post(url, body, apiHeader(token));
     // console.log("🚀 ~ file: Israeliteinfo.js:58 ~ updateIsraelLiteInfo ~ response:", response?.data)
 
-    if(response?.data?.status){
-      
-
-      dispatch(setUserData(response?.data?.user))
-      Platform.OS == 'android' ? ToastAndroid.show('Profile Updated Successfully',ToastAndroid.SHORT) :
-      Alert('Profile Updated Successfully')
-      
+    if (response?.data?.status) {
+      dispatch(setUserData(response?.data?.user));
+      Platform.OS == 'android'
+        ? ToastAndroid.show('Profile Updated Successfully', ToastAndroid.SHORT)
+        : Alert('Profile Updated Successfully');
     }
   };
 
-
-
-  const checkPassion = ()=>{
-    
-    if(type == 'passions' ? passions.length>6 : kingdomGifts.length > 10){
-      Platform.OS == 'android' ? 
-      ToastAndroid.show(type == 'passions'? `Select atmost 6 ${type}`:`Select atmost 10 ${type}` ,ToastAndroid.SHORT) : 
-      Alert.Alert(type == 'passions'? `Select atmost 6 ${type}`:`Select atmost 10 ${type}`)
-
-    }
-    else{
+  const checkPassion = () => {
+    if (type == 'passions' ? passions.length > 6 : kingdomGifts.length > 10) {
+      Platform.OS == 'android'
+        ? ToastAndroid.show(
+            type == 'passions'
+              ? `Select atmost 6 ${type}`
+              : `Select atmost 10 ${type}`,
+            ToastAndroid.SHORT,
+          )
+        : Alert.Alert(
+            type == 'passions'
+              ? `Select atmost 6 ${type}`
+              : `Select atmost 10 ${type}`,
+          );
+    } else {
       setPassionModalVisible(false);
-      
     }
-  }
-  
+  };
+
   const PassionsArray = [
     'singing',
     'Music',
@@ -292,48 +317,55 @@ const IsraeliteFilters = props => {
     'ask me later',
   ];
 
+  const completeBody = {
+    ...twoStepsData,
+    step3: {
+      iBelieveIAM: believe,
+      maritalBeliefSystem: maritialBelief,
+      spiritualValue: spiritualValues,
+      studyHabits: studyHabits,
+      studyBible: studyBible,
+      anyAffiliation: anyAffiliation,
+      yearsInTruth: yearsInTruth,
+      isrealitePracticeKeeping: israelitePractise,
+      spiritualBackground: spiritualBgc,
+      selectedkingdomGiftsTags: kingdomGifts,
+      selectedPassions: passions,
+    },
+  };
+  // console.log("🚀 ~ file: IsraeliteFilters.js:236 ~ IsraeliteFilters ~ completeBody:", completeBody)
 
-  const completeBody ={
-    ...twoStepsData ,
-    step3 : {
-     iBelieveIAM : believe ,
-     maritalBeliefSystem : maritialBelief ,
-     spiritualValue : spiritualValues , 
-     studyHabits : studyHabits ,
-     studyBible : studyBible ,
-     anyAffiliation : anyAffiliation ,
-     yearsInTruth : yearsInTruth ,
-     isrealitePracticeKeeping : israelitePractise,
-     spiritualBackground : spiritualBgc ,
-     selectedkingdomGiftsTags : kingdomGifts ,
-     selectedPassions : passions ,
-    
+  const Registration = async () => {
+    const url = 'auth/register/app';
+    // console.log( ' body ================== ? ? ?? ',completeBody)
+    setIsLoading(true);
+    const response = await Post(url, completeBody, apiHeader());
+    console.log("🚀 ~ file: IsraeliteFilters.js:342 ~ Registration ~ completeBody:", completeBody)
+    setIsLoading(false);
+    if (response != undefined) {
+      //  console.log('User registered =-======>' , response?.data)
+      Platform.OS == 'android'
+        ? ToastAndroid.show('User Registered Successfully', ToastAndroid.SHORT)
+        : alert('User Registered Successfully');
+
+      dispatch(setUserData(response?.data?.user));
+      dispatch(setUserToken({token:response?.data?.token}));
+      
+      navigationService.navigate('ProfilePictures', {
+        // token: response?.data?.token,
+        // userData: response?.data?.user,
+        steps: steps,
+      });
     }
-  }
-    // console.log("🚀 ~ file: IsraeliteFilters.js:236 ~ IsraeliteFilters ~ completeBody:", completeBody)
+  };
 
-    const Registration =async()=>{
-      const url = 'auth/register/app'
-      // console.log( ' body ================== ? ? ?? ',completeBody)
-      setIsLoading(true);
-      const response = await Post(url , completeBody , apiHeader())
-      setIsLoading(false);
-      if(response != undefined){
-        //  console.log('User registered =-======>' , response?.data)
-        Platform.OS == 'android' ?
-        ToastAndroid.show('User Registered Successfully',ToastAndroid.SHORT) :
-        alert('User Registered Successfully')
 
-        dispatch(setUserData(response?.data?.user))
-        dispatch(setUserToken(response?.data?.token))
-        dispatch(setIsLoggedIn());
-        navigationService.navigate('ProfilePictures',{
-          token : response?.data?.token ,
-          userData : response?.data?.user,
-          steps : steps,
-        })
-      }
+  useEffect(() => {
+    if(check != undefined){
+      setIsCecked(check)
     }
+  }, [focused])
+  
 
   return (
     <>
@@ -341,7 +373,11 @@ const IsraeliteFilters = props => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header showLeft={true} leftName={'left'} title={edit? 'Israelite Filters' : `${steps}/3`} />
+      <Header
+        showLeft={true}
+        leftName={'left'}
+        title={edit ? 'Israelite Filters' : `Step ${3}`}
+      />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -441,8 +477,10 @@ const IsraeliteFilters = props => {
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => {
-                  const data =[...israelitePractise]
-                  !israelitePractise?.includes(item) ? setIsraelitePractise(prev=>[...prev ,item]): setIsraelitePractise(data.filter(value=> value != item)) 
+                  const data = [...israelitePractise];
+                  !israelitePractise?.includes(item)
+                    ? setIsraelitePractise(prev => [...prev, item])
+                    : setIsraelitePractise(data.filter(value => value != item));
                   // setIndex(index);
                 }}
                 key={index}
@@ -453,7 +491,9 @@ const IsraeliteFilters = props => {
                   marginTop: moderateScale(8, 0.3),
                 }}>
                 <Icon
-                  name={israelitePractise?.includes(item) ? 'square' : 'square-o'}
+                  name={
+                    israelitePractise?.includes(item) ? 'square' : 'square-o'
+                  }
                   as={FontAwesome}
                   size={moderateScale(12, 0.6)}
                   color={
@@ -462,7 +502,8 @@ const IsraeliteFilters = props => {
                       : Color.veryLightGray
                   }
                   onPress={() => {
-                    !israelitePractise?.includes(item) && setIsraelitePractise(prev=>[...prev ,item])
+                    !israelitePractise?.includes(item) &&
+                      setIsraelitePractise(prev => [...prev, item]);
                     // setIndex(index);
                   }}
                 />
@@ -602,20 +643,54 @@ const IsraeliteFilters = props => {
             </View>
           </View>
         </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: windowWidth * 0.95,
+            marginLeft: moderateScale(20, 0.3),
+            marginTop : moderateScale(10,0.3),
+            alignItems : 'center'
+          }}>
+            <Icon 
+            name={checked ?'check-square-o' :'square-o'}
+            as={FontAwesome}
+            onPress={()=>{
+              setIsCecked(!checked)
+            }}
+            />
+          <CustomText
+            style={{
+              fontSize: moderateScale(11, 0.7),
+            }}>
+            I Accept
+            {
+              <CustomText
+                isBold
+                style={{
+                  color: Color.themeColor,
+                  fontSize: moderateScale(11, 0.7),
+                }}
+                onPress={() => {
+                  navigationService.navigate('TermsAndConditions',{fromRegisteration : true});
+                }}> Terms And Conditions</CustomText>
+            }
+          </CustomText>
+        </View>
         <CustomButton
-          text={edit ? 'Save' : 'Submit'}
+          text={edit ? 'Save' :  'Submit'}
           textColor={Color.white}
           width={windowWidth * 0.9}
           height={windowHeight * 0.09}
           onPress={() => {
-           edit ? updateIsraelLiteInfo()  : Registration() ;
+            edit ? updateIsraelLiteInfo() : Registration();
           }}
           bgColor={Color.themeColor}
           borderRadius={moderateScale(15, 0.3)}
-          marginTop={moderateScale(30, 0.3)}
+          marginTop={moderateScale(10, 0.3)}
           elevation
-          disabled={isLoading}
+          disabled={edit ? isLoading : isLoading || !checked}
         />
+
       </ScrollView>
       <CustomModal
         isVisible={passionModalVisible}
@@ -670,13 +745,17 @@ const IsraeliteFilters = props => {
                         (index1 = kingdomGifts?.indexOf(item)),
                         tempKingdom?.splice(index1, 1),
                         setKingDomGifts(tempKingdom))
-                      : kingdomGifts.length < 10 ? setKingDomGifts(prev => [...prev, item]) : alert('you can only select 10 passions')
-                    : passions?.includes(item) 
+                      : kingdomGifts.length < 10
+                      ? setKingDomGifts(prev => [...prev, item])
+                      : alert('you can only select 10 passions')
+                    : passions?.includes(item)
                     ? ((tempPassion = [...passions]),
                       (index2 = passions?.indexOf(item)),
                       tempPassion?.splice(index2, 1),
                       setPassions(tempPassion))
-                    : passions.length < 6 ? setPassions(prev => [...prev, item]) : alert('you can select only 6 passions!!');
+                    : passions.length < 6
+                    ? setPassions(prev => [...prev, item])
+                    : alert('you can select only 6 passions!!');
                 }}
                 activeOpacity={0.8}
                 key={index}
@@ -709,14 +788,14 @@ const IsraeliteFilters = props => {
             );
           })}
         </View>
+      
         <CustomButton
           text={'Finish'}
           textColor={Color.white}
           width={windowWidth * 0.8}
           height={windowHeight * 0.06}
           onPress={() => {
-            checkPassion()
-            
+            checkPassion();
           }}
           bgColor={Color.themeColor}
           borderRadius={moderateScale(15, 0.3)}

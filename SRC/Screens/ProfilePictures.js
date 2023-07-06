@@ -28,14 +28,18 @@ import ImageContainer from '../Components/ImageContainer';
 // import SortableGridView from 'react-native-sortable-gridview'
 import {Easing} from 'react-native-reanimated';
 import { Post } from '../Axios/AxiosInterceptorFunction';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from '../Store/slices/common';
 
 const ProfilePictures = props => {
   // const profileBody = props?.route?.params?.data;
-  const token = props?.route?.params?.token;
-  const user = props?.route?.params?.userData;
-  const steps = props?.route?.params?.steps;
+  const token = useSelector(state=>state.authReducer.token)
+  const user = useSelector(state=> state?.commonReducer?.userData)
+  console.log("🚀 ~ file: ProfilePictures.js:37 ~ ProfilePictures ~ user:", user)
+  // const token = props?.route?.params?.token;
+  console.log("🚀 ~ file: ProfilePictures.js:37 ~ ProfilePictures ~ token:", token)
+  // const user = props?.route?.params?.userData;
+  // const steps = props?.route?.params?.steps;
 
   const dispatch = useDispatch();
 
@@ -55,7 +59,7 @@ const ProfilePictures = props => {
   //   require('../Assets/Images/banner.jpg'),
   // ]);
   const [multiImages, setMultiImages] = useState([{},{},{},{},{},{}])
-  console.log("🚀 ~ file: ProfilePictures.js:54 ~ ProfilePictures ~ multiImages:", multiImages)
+  // console.log("🚀 ~ file: ProfilePictures.js:54 ~ ProfilePictures ~ multiImages:", multiImages)
   // console.log(
   //   '🚀 ~ file: ProfilePictures.js:32 ~ ProfilePictures ~ multiImages:',
   //   multiImages,
@@ -104,20 +108,18 @@ const ProfilePictures = props => {
     Object.keys(item).length>0 && formData.append(`galleryImages[${index}]`,item)
    
   })
-  // console.log("🚀 ~ file: ProfilePictures.js:103 ~ sendImages ~ formData:", formData)
+  console.log("🚀 ~ file: ProfilePictures.js:103 ~ sendImages ~ formData:", formData)
     setisloading(true)
     const response = await Post(url,formData, apiHeader(token) )
     setisloading(false)
     if(response != undefined){
       
-      // console.log("🚀 ~ file: ProfilePictures.js:95 ~ sendImages ~ response:", response?.data?.user?.gallery_images)
+      console.log("🚀 ~ file: ProfilePictures.js:95 ~ sendImages ~ response:", response?.data)
       
       dispatch(setUserData(response?.data?.user))
       
-      navigationService.navigate('ProfileCreated',{
-        token :token ,
-        userData : response?.data?.user,
-      })
+      navigationService.navigate('ProfileCreated')
+       
 
       
 
@@ -133,7 +135,7 @@ const ProfilePictures = props => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header showLeft={true} leftName={'left'} showRight={true} title={`${steps}/3`} />
+      <Header showLeft={true} leftName={'left'} showRight={true} title={`3/3`} />
 
       <View
         // scrollEnabled={!scrollOff}

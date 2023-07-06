@@ -280,13 +280,14 @@ const SpotLight = () => {
   ];
 
   const getSpotLightData = async () => {
+    setSpotLightData([])
     const url = 'user_spotlights';
     setIsLoading(true);
     const response = await Get(url, token);
 
     if (response != undefined) {
       response?.data.users.map((item, index) => {
-        // console.log('data -=========== > ', item.user_spotlights.length > 0);
+        // console.log('data -=========== > ', JSON.stringify(item , null ,2)),
         return (
           item.user_spotlights.length > 0 &&
           setSpotLightData(prev => [...prev, item])
@@ -333,6 +334,7 @@ const SpotLight = () => {
 
 
   useEffect(() => {
+   
     getSpotLightData();
     getTheyAreYourType();
     getYourAreThereType();

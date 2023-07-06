@@ -251,14 +251,17 @@ const CreatePortfolio = () => {
                 navigatioN.goBack();
               }
         }
-        title={currentStep < 4 ? `1/3` : '2/3'}
+        title={currentStep < 4 ? `Step 1` : 'Step 2'}
       />
       {currentStep < 6 && (
         <View
           style={{
             width: progress,
-            height: windowHeight * 0.008,
+            height: windowHeight * 0.02,
             backgroundColor: Color.themeColor,
+            borderTopRightRadius : moderateScale(20,0.3),
+            borderBottomRightRadius : moderateScale(20,0.3),
+
           }}></View>
       )}
 

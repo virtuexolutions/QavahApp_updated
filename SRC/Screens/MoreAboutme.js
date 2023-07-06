@@ -240,7 +240,7 @@ const MoreAboutme = (props) => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header showLeft={true} leftName={'left'} title={!edit? `${steps}/3`: 'More About Me' } />
+      <Header showLeft={true} leftName={'left'} title={!edit? `Step ${steps}`: 'More About Me' } />
 
       <ScrollView
         showsVerticalScrollIndicator={false}

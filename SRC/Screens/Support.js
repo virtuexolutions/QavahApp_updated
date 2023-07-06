@@ -1,3 +1,4 @@
+
 import React, {useEffect, useState} from 'react';
 import {
   Text,
@@ -53,6 +54,7 @@ const Support = () => {
     setLoading(false);
     // console.log('Support response======>>>>>>>>>>>',response?.data);
     if (response != undefined) {
+      console.log(response?.data?.data)
         setSupportData(response?.data?.data);
     }
   };
@@ -127,15 +129,15 @@ const Support = () => {
             }}>
             <FontAwesome
               name="phone"
-              color={Color.white}
+              color={Color.themeColor}
               style={styles.icon1}
               size={moderateScale(22, 0.6)}
             />
             <CustomText style={[styles.contactInfoText]} isRegular>
               {loading
                 ? 'loading...'
-                :`tel': ${supportData?.phone}`
-                ? `tel: ${supportData?.phone}`
+                :`${supportData?.phone}`
+                ? `${supportData?.phone}`
                 : 'no contact added yet'}
             </CustomText>
           </TouchableOpacity>
@@ -147,15 +149,15 @@ const Support = () => {
             }}>
             <Entypo
               name="mail"
-              color={Color.white}
+              color={Color.themeColor}
               style={styles.icon1}
               size={moderateScale(22, 0.6)}
             />
             <CustomText style={[styles.contactInfoText]} isRegular>
               {loading
                 ? 'loading...'
-                : `mailto: ${supportData?.official_email}`
-                ? `mailto: ${supportData?.official_email}`
+                : `${supportData?.official_email}`
+                ? `${supportData?.official_email}`
                 : 'not added yet'}
             </CustomText>
           </TouchableOpacity>
@@ -256,12 +258,9 @@ const Support = () => {
             />
            <CustomButton
               text={
-                loading ? (
-                  <ActivityIndicator color={'#FFFFFF'} size={'small'} />
-                ) : (
-                  'Reset'
-                )
-              }
+              
+                  'Submit'
+                }
               textColor={Color.white}
               width={windowWidth * 0.85}
               height={windowHeight * 0.07}
@@ -276,6 +275,7 @@ const Support = () => {
               // borderColor={Color.white}
               // borderWidth={2}
               borderRadius={moderateScale(30, 0.3)}
+              disabled={loading}
             />
             </View>
       

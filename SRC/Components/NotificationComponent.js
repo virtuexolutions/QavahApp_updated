@@ -18,13 +18,14 @@ const NotificationComponent = ({
   onPress,
   item,
 }) => {
+  console.log('🚀 ~ file: NotificationComponent.js:21 ~ item:', item);
   return (
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={onPress}
       style={styles.container}>
       <View style={styles.image}>
-        <CustomImage source={item?.image} style={styles.imageBg} />
+        <CustomImage source={{uri : item?.profile_image?.uri}} style={styles.imageBg} />
       </View>
       <View
         style={{
@@ -32,9 +33,9 @@ const NotificationComponent = ({
           width: '80%',
         }}>
         <CustomText numberOfLines={1} style={styles.label}>
-          {moment.duration(moment().diff(item?.time)).asDays() >= 6
-            ? moment(item?.time).format('ll')
-            : moment(item?.time).fromNow()}
+          {moment.duration(moment().diff(item?.created_at)).asDays() >= 6
+            ? moment(item?.created_at).format('ll')
+            : moment(item?.created_at).fromNow()}
         </CustomText>
         <View
           style={{
@@ -46,7 +47,7 @@ const NotificationComponent = ({
             style={{
               color: Color.black,
               fontSize: moderateScale(11, 0.6),
-            }}>{`${item?.name},${item?.age}`}</CustomText>
+            }}>{`${item?.users?.profileName},${item?.users?.age}`}</CustomText>
           <Icon
             name={'location-outline'}
             as={Ionicons}
@@ -57,7 +58,7 @@ const NotificationComponent = ({
             style={{fontSize: moderateScale(11, 0.6)}}>{`5 Ml`}</CustomText>
         </View>
         <CustomText numberOfLines={2} style={styles.label}>
-          {item?.text}
+          {item?.title}
         </CustomText>
         {item?.photo && (
           <CustomImage
@@ -65,11 +66,11 @@ const NotificationComponent = ({
             style={{
               width: windowWidth * 0.55,
               height: windowHeight * 0.25,
-              borderRadius : moderateScale(10,0.6)
+              borderRadius: moderateScale(10, 0.6),
             }}
           />
         )}
-        {invitation && (
+        {invitation == 1 && (
           <BtnContainer
             backgroundColor={Color.themeColor}
             color={Color.white}
