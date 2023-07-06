@@ -9,16 +9,15 @@ import * as Animatable from 'react-native-animatable';
 import { useSelector } from 'react-redux';
 // import Pulse from 'react-native-pulse';
 
-const NullDataComponent = ({style}) => {
+const NullDataComponent = ({style , width}) => {
 
   const user = useSelector(state => state?.commonReducer?.userData)
-  console.log("🚀 ~ file: NullDataComponent.js:15 ~ NullDataComponent ~ user:", user)
+  // console.log("🚀 ~ file: NullDataComponent.js:15 ~ NullDataComponent ~ user:", user)
   // console.log(
   //   '🚀 ~ file: NullDataComponent.js:10 ~ NullDataComponent ~ style:',
   //   style,
   // );
   return (
-    <>
       <View style={{alignItems: 'center', marginTop: moderateScale(30, 0.6)}}>
         <Animatable.View
           style={{
@@ -71,14 +70,13 @@ const NullDataComponent = ({style}) => {
               ? style?.fontSize - 5
               : moderateScale(12, 0.6),
             marginTop: moderateScale(3, 0.3),
-            width: windowWidth * 0.8,
+            width: width ? width : windowWidth * 0.8,
             textAlign: 'center',
           }}>
           We are unable to find any potential matches right now. Try changing
           your preferences to see who is nearby
         </CustomText>
       </View>
-    </>
   );
 };
 

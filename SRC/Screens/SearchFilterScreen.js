@@ -20,7 +20,7 @@ import Color from '../Assets/Utilities/Color';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from '../Components/CustomText';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import {Icon} from 'native-base';
+import {Icon, useStyledSystemPropsResolver} from 'native-base';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 import {Post} from '../Axios/AxiosInterceptorFunction';
@@ -40,7 +40,7 @@ const SearchFilterScreen = () => {
   const [option, setOption] = useState('shortcuts');
   const [isLoading, setIsLoading] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(true);
-
+  const [people, setPeople] = useState([]);
   const [body, setBody] = useState([]);
   console.log(
     '🚀 ~ file: SearchFilterScreen.js:61 ~ SearchFilterScreen ~ body:',
@@ -519,6 +519,7 @@ const SearchFilterScreen = () => {
     if (response != undefined) {
       // console.log('Search result Response', response);
       console.log('Search result Response', response?.data?.peoples);
+      setPeople(response?.data?.peoples)
     }
   };
 
@@ -1430,6 +1431,12 @@ const SearchFilterScreen = () => {
             infinite scroll
           </CustomText>
         </View>
+        {
+          people.length > 0 ?
+          <CustomTex>Data Exist</CustomTex>
+          :
+        <>
+        
         <TouchableOpacity
           style={{
             flexDirection: 'row',
@@ -1488,6 +1495,8 @@ const SearchFilterScreen = () => {
             Try using different settings and filters
           </CustomText>
         </View>
+        </>
+        }
       </ScrollView>
     </>
   );

@@ -8,14 +8,15 @@ import CustomText from '../Components/CustomText';
 import CustomImage from '../Components/CustomImage';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
-import {setUserToken} from '../Store/slices/auth';
+import {setIsLoggedIn, setUserToken} from '../Store/slices/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import { setUserData } from '../Store/slices/common';
 
 const ProfileCreated = (props) => {
-  const token = props?.route?.params?.token ;
+  // const token = props?.route?.params?.token ;
   // const userData = props?.route?.params?.userData ;
   const userData = useSelector(state=> state?.commonReducer?.userData)
+  const token = useSelector(state=> state?.authReducer?.token)
   console.log("🚀 ~ file: ProfileCreated.js:16 ~ ProfileCreated ~ token:", userData)
   const dispatch = useDispatch();
 
@@ -38,11 +39,8 @@ const ProfileCreated = (props) => {
   return (
     <ImageBackground
       style={styles.container}
-      source={require('../Assets/Images/ProfileLanding.jpg')}>
-      <View
-        style={{
-          height: windowHeight * 0.5,
-        }}>
+      source={ require('../Assets/Images/ProfileLanding1.jpg')}>
+   
         <View style={styles.imageContainer}>
           <CustomText
             style={{color: Color.black, fontSize: moderateScale(20, 0.6)}}>
@@ -53,52 +51,33 @@ const ProfileCreated = (props) => {
           </CustomText>
           <CustomImage
             style={styles.image}
-            source={ userData?.profile_images[0]?.url ? {uri : userData?.profile_images[0]?.url} : require('../Assets/Images/dummyman6.png')}
+            source={userData?.profile_images[0] ? userData?.profile_images[0]?.url :  require('../Assets/Images/dummyman6.png')}
 
           />
-        </View>
+        {/* </View> */}
       </View>
-      <View
-        style={{
-          height: windowHeight * 0.5,
-        }}>
-        <View style={styles.downContainer}>
-          <CustomText
-            isBold
-            style={[
-              styles.text,
-              {
-                color: Color.white,
-                width: windowWidth * 0.5,
-                fontSize: moderateScale(32, 0.6),
-                textTransform: 'uppercase',
-                marginTop: moderateScale(15, 0.6),
-              },
-            ]}>
-            FIND YOUR MATCH IN TORAH
-          </CustomText>
-          <CustomImage
-            style={styles.logo}
-            source={require('../Assets/Images/logo1.png')}
-          />
-        </View>
+    
         <CustomButton
           text={'Start'}
           textColor={Color.themeColor}
           width={windowWidth * 0.9}
-          height={windowHeight * 0.09}
+          height={windowHeight * 0.07}
           onPress={() => {
-            navigationService.navigate('TabNavigation')
-            dispatch(setUserToken({token: token}));
-            dispatch(setUserData(userData))
+            // navigationService.navigate('TabNavigation')
+            // dispatch(setUserToken({token: token}));
+            // dispatch(setUserData(userData))
+            dispatch(setIsLoggedIn());
           }}
           bgColor={Color.white}
           borderRadius={moderateScale(15, 0.3)}
           marginTop={moderateScale(10, 0.3)}
           elevation
           isBold
+          containerStyle={{
+            position : 'absolute',
+            bottom    : moderateScale(35,0.6)
+          }}
         />
-      </View>
     </ImageBackground>
   );
 };
@@ -110,7 +89,7 @@ const styles = ScaledSheet.create({
     height: windowHeight,
   },
   imageContainer: {
-    marginTop: windowHeight * 0.1,
+    marginTop: windowHeight * 0.02,
     // height : windowHeight * 0.23,
     // width : windowWidth * 0.4,
     paddingLeft: moderateScale(20, 0.6),
@@ -120,7 +99,7 @@ const styles = ScaledSheet.create({
     color: Color.themeBlack,
   },
   image: {
-    marginTop: moderateScale(20, 0.3),
+    // marginTop: moderateScale(20, 0.3),
     width: moderateScale(100, 0.3),
     height: moderateScale(100, 0.3),
     borderRadius: moderateScale(50, 0.3),

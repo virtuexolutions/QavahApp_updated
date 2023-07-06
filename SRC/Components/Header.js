@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Icon} from 'native-base';
 import {
   View,
@@ -8,7 +8,11 @@ import {
   ScrollView,
 } from 'react-native';
 import SuperLikeModal from '../Components/SuperLikeModal';
-import {DrawerActions, useNavigation} from '@react-navigation/native';
+import {
+  DrawerActions,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
@@ -28,17 +32,20 @@ import LinearGradient from 'react-native-linear-gradient';
 import navigationService from '../navigationService';
 import DrawerOptions from './DrawerOptions';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {Post} from '../Axios/AxiosInterceptorFunction';
+import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {setUserData} from '../Store/slices/common';
+import {setUserData, setUserLogOut} from '../Store/slices/common';
 import LoveNotesModal from './LoveNotesModal';
 import SpotLightModal from './SpotlightModal';
 import CustomButton from './CustomButton';
 import DiscreteModal from './DiscreteModal';
+import NullDataComponent from './NullDataComponent';
 
 const Header = props => {
   const dispatch = useDispatch();
+  const focused = useIsFocused();
   const token = useSelector(state => state.authReducer.token);
+  // console.log('🚀 ~ file: Header.js:42 ~ Header ~ token:', token);
   const [isLoveNotesVisible, setLoveNotesVisible] = useState(false);
   const notification = useSelector(state => state.commonReducer.notification);
   const navigationN = useNavigation();
@@ -46,7 +53,7 @@ const Header = props => {
   const [drawerModal, setDrawerModal] = useState(false);
   // const [switchEnabled, setSwitchEnabled] = useState(false);
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
-  const [discreteModal, setDiscreteModal] = useState(false)
+  const [discreteModal, setDiscreteModal] = useState(false);
   const DrawerArray = [
     {
       key: 1,
@@ -92,7 +99,7 @@ const Header = props => {
         },
       ],
     },
-    {key: 4, title: 'Legal', onPress: () => alert('Action needed')},
+    // {key: 4, title: 'Legal', onPress: () => alert('Action needed')},
     {
       key: 5,
       title: 'Subscribe Now',
@@ -107,7 +114,6 @@ const Header = props => {
       onPress: () => {
         navigationService.navigate('Privacy'), setDrawerModal(false);
         // alert('Action needed')
-
       },
     },
     {
@@ -124,7 +130,6 @@ const Header = props => {
       onPress: () => {
         navigationService.navigate('Support'), setDrawerModal(false);
         // alert('Action needed')
-
       },
     },
     {
@@ -133,33 +138,46 @@ const Header = props => {
       onPress: () => {
         navigationService.navigate('WhoViewedMe'), setDrawerModal(false);
         // alert('Action needed')
-
       },
     },
     {
       key: 9,
       title: 'set Account visibility to global',
       onPress: data => {
-        
         // setSwitchEnabled(!switchEnabled)
         // console.log('switchEnables value=======>>>>',switchEnabled)
         setAccountVisible();
-        
       },
       switch: true,
-      
     },
   ];
   const [isVisible, setIsVisible] = useState(false);
-  const [isBoostModalvisible, setBoostModalvisible] = useState(false)
+  const [isBoostModalvisible, setBoostModalvisible] = useState(false);
+  const [notificationData, setNotificationData] = useState([]);
 
   const setAccountVisible = async () => {
     const url = 'user/update-my-profile-app';
     const response = await Post(url, {}, apiHeader(token));
-    console.log("🚀 ~ file: Header.js:157 ~ setAccountVisible ~ response:", response?.data)
+    console.log(
+      '🚀 ~ file: Header.js:157 ~ setAccountVisible ~ response:',
+      response?.data,
+    );
     if (response != undefined) {
       // return console.log('data ======= = = = = = ' , response?.data?.user)
       dispatch(setUserData(response?.data?.user));
+    }
+  };
+
+  const getNotifications = async () => {
+    const url = 'settings/notification';
+    const response = await Get(url, token);
+
+    if (response?.data?.status) {
+      console.log(
+        '🚀 ~ file: Header.js:171 ~ getNotifications ~ response:',
+        JSON.stringify(response?.data, null, 2),
+      );
+      setNotificationData(response?.data?.notification);
     }
   };
 
@@ -211,6 +229,10 @@ const Header = props => {
   const [searchText, setSearchText] = useState('');
   const user = useSelector(state => state.commonReducer.userData);
   const userRole = useSelector(state => state.commonReducer.selectedRole);
+
+  useEffect(() => {
+    rightName == 'bell' && getNotifications();
+  }, [focused]);
 
   return (
     <View style={styles.header2}>
@@ -316,6 +338,7 @@ const Header = props => {
             activeOpacity={0.8}
             onPress={() => {
               dispatch(setUserLogoutAuth());
+              dispatch(setUserLogOut());
             }}>
             <CustomText
               style={{
@@ -343,67 +366,65 @@ const Header = props => {
               // }}
             />
           </View>
-          <ScrollView 
-            showsVerticalScrollIndicator= {false}
-          >
-          {DrawerArray?.map((item, index) => {
-            return <DrawerOptions item={item} />;
-          })}
-          
-          <View
-            style={{
-              width: '93%',
-              alignSelf: 'center',
-              flexWrap: 'wrap',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop: moderateScale(25, 0.3),
-            }}>
-            <Addones
-              icon={require('../Assets/Images/spotlight.png')}
-              title={'My Boosts'}
-              text={'GET MOre'}
-              textColor={'purple'}
-              onPress={()=>{
-                setSpotLightVisible(true);
-              }}
-            />
-            <Addones
-              icon={require('../Assets/Images/note.png')}
-              title={'Love Notes'}
-              text={'GET MOre'}
-              textColor={'#AA336A'}
-              onPress={() => {
-                setLoveNotesVisible(true);
-              }}
-            />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {DrawerArray?.map((item, index) => {
+              return <DrawerOptions item={item} />;
+            })}
 
-            <Addones
-              icon={require('../Assets/Images/secret.png')}
-              title={'Discrete'}
-              text={'GET More'}
-              textColor={'#286086'}
-              onPress={()=>{
-                setDiscreteModal(true)
-              }}
+            <View
+              style={{
+                width: '93%',
+                alignSelf: 'center',
+                flexWrap: 'wrap',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginTop: moderateScale(25, 0.3),
+              }}>
+              <Addones
+                icon={require('../Assets/Images/spotlight.png')}
+                title={'My Boosts'}
+                text={'GET MOre'}
+                textColor={'purple'}
+                onPress={() => {
+                  setSpotLightVisible(true);
+                }}
+              />
+              <Addones
+                icon={require('../Assets/Images/note.png')}
+                title={'Love Notes'}
+                text={'GET MOre'}
+                textColor={'#AA336A'}
+                onPress={() => {
+                  setLoveNotesVisible(true);
+                }}
+              />
+
+              <Addones
+                icon={require('../Assets/Images/secret.png')}
+                title={'Discrete'}
+                text={'GET More'}
+                textColor={'#286086'}
+                onPress={() => {
+                  setDiscreteModal(true);
+                }}
+              />
+            </View>
+            <CustomButton
+              text={'Get Qavah gold* \n 5 free super likes every 1 week'}
+              width={windowWidth * 0.65}
+              height={windowHeight * 0.07}
+              marginTop={moderateScale(20, 0.3)}
+              bgColor={'white'}
+              borderRadius={moderateScale(25, 0.3)}
+              fontSize={moderateScale(10, 0.6)}
+              marginBottom={moderateScale(20, 0.3)}
+              borderColor={Color.themeColor}
+              textColor={Color.themeColor}
+              borderWidth={1}
+              elevation
+              isBold
             />
-          </View>
-          <CustomButton
-          text={'Get Qavah gold* \n 5 free super likes every 1 week'}
-          width={windowWidth * 0.65}
-          height={windowHeight * 0.07}
-          marginTop={moderateScale(20, 0.3)}
-          bgColor={'white'}
-          borderRadius={moderateScale(25, 0.3)}
-          fontSize={moderateScale(10, 0.6)}
-          marginBottom={moderateScale(20,0.3)}
-          borderColor={Color.themeColor}
-          textColor={Color.themeColor}
-          borderWidth={1}
-          elevation
-          isBold
-        />
-        </ScrollView>
+          </ScrollView>
         </ScrollView>
       </Modal>
       <Modal
@@ -433,7 +454,7 @@ const Header = props => {
               // }}
             />
           </View>
-          {notificaitonArray.map((item, index) => {
+          {notificationData.length > 0 ? notificationData.map((item, index) => {
             return (
               <NotificationComponent
                 commented={item?.commented}
@@ -445,18 +466,28 @@ const Header = props => {
                 }}
               />
             );
-          })}
-         
+          })
+        :
+        <View
+        style={{
+          // width: windowWidth * 0.5,
+          height: windowHeight * 0.6,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <NullDataComponent width={windowWidth * 0.7} />
+        </View>
+        }
         </ScrollView>
-
       </Modal>
       <LoveNotesModal
         isVisible={isLoveNotesVisible}
         setIsVisible={setLoveNotesVisible}
       />
-      <DiscreteModal 
+      <DiscreteModal
         isVisible={discreteModal}
-        setIsVisible={setDiscreteModal} />
+        setIsVisible={setDiscreteModal}
+      />
       {/* <SuperLikeModal
         isVisible={isBoostModalvisible}
         setIsVisible={setBoostModalvisible}

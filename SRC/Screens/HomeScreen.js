@@ -66,7 +66,7 @@ const HomeScreen = () => {
     setIsLoadingApi(false);
     if (response != undefined) {
       setPhotoCards(response?.data?.peoples);
-      // console.log(response?.data?.peoples);
+      console.log(response?.data?.peoples);
     }
   };
   const handleOnSwipedLeft = async () => {
@@ -397,7 +397,7 @@ const HomeScreen = () => {
               name={'lightning-bolt'}
               type={MaterialCommunityIcons}
               onPress={() => {
-                // setSpotLightVisible(true);
+                setSpotLightVisible(true);
               }}
             />
           </View>
@@ -412,7 +412,7 @@ const HomeScreen = () => {
             alignItems: 'center',
           }}>
           <NullDataComponent />
-          {LogData.length > 0 && photoCards.length == 0 && (
+          {/* {LogData.length > 0 && photoCards.length == 0 && (
             <BtnContainer
               backgroundColor={'white'}
               color={Color.themeColor}
@@ -424,17 +424,17 @@ const HomeScreen = () => {
                 setIsLoading(false);
               }}
             />
-          )}
+          )} */}
         </View>
       )}
       <SuperLikeModal
         isVisible={isSuperLikeVisible}
         setIsVisible={setSuperLikeVisible}
       />
-      {/* <SpotLightModal
+      <SpotLightModal
         isVisible={isSpotLightVisible}
         setIsVisible={setSpotLightVisible}
-      /> */}
+      />
     </>
   );
 };

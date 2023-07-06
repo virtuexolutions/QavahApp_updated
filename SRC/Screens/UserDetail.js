@@ -1,5 +1,12 @@
-import {StyleSheet, Text, View, TouchableOpacity , ToastAndroid , Platform} from 'react-native';
-import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ToastAndroid,
+  Platform,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import CustomImage from '../Components/CustomImage';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
@@ -29,13 +36,15 @@ import {useSelector} from 'react-redux';
 import ImageContainer from '../Components/ImageContainer';
 import ImagePickerModal from '../Components/ImagePickerModal';
 import {Image} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Post } from '../Axios/AxiosInterceptorFunction';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {Post} from '../Axios/AxiosInterceptorFunction';
 
 const UserDetail = props => {
+  const focused = useIsFocused();
   const token = useSelector(state => state.authReducer.token);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const user = useSelector(state => state.commonReducer.userData);
+  console.log('🚀 ~ file: UserDetail.js:39 ~ UserDetail ~ user:', user?.id);
   const item = props?.route?.params?.item;
   // console.log('🚀 ~ file: UserDetail.js:30 ~ UserDetail ~ item:', item);
   // console.log('data =============>>>>>>>>>>', item?.gallery_images[0]);
@@ -44,11 +53,12 @@ const UserDetail = props => {
 
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setUserData] = useState(fromSearch ? item : user);
-  
-  // console.log("🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:", userData)
+
+  console.log('🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:', userData);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [index, setIndex] = useState('');
   const [showMultiImageModal, setShowMultiImageModal] = useState(false);
+
   const [multiImages, setMultiImages] = useState([
     {id: 1, uri: require('../Assets/Images/image1.jpeg')},
     {id: 2, uri: require('../Assets/Images/image2.jpeg')},
@@ -58,23 +68,30 @@ const UserDetail = props => {
     {id: 6, uri: require('../Assets/Images/image5.jpeg')},
   ]);
 
-  const reportUser = async ()=>{
-    const url = ''
-    const response = await Post(url, {targetsUid : userData?.id })
-    if(response != undefined){
-      
-      // console.log("🚀 ~ file: UserDetail.js:64 ~ reportUser ~ response:", response)
-   
+  const reportUser = async () => {
+    const url = 'settings/report-profile';
+    const response = await Post(
+      url,
+      {targetuid: userData?.id},
+      apiHeader(token),
+    );
+    if (response?.data?.status) {
+      console.log('reported ======>', response?.data);
+      // console.log("🚀 ~ file: UserDetail.js:64 ~ reportUser ~ response:", response
+    } else {
+      // console.log('reported ======>' , response?.data)
+      Platform.OS == 'android'
+        ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
+        : alert(response?.data?.error);
     }
-  }
+  };
 
- 
   // const images = [require('../Assets/Images/woman1.jpeg')];
   // console.log('🚀 ~ file: UserDetail.js:50 ~ UserDetail ~ images:', images);
-  const [image, setImage] = useState({})
-  // console.log("🚀 ~ file: UserDetail.js:65 ~ UserDetail ~ image:", image)
+  const [image, setImage] = useState([]);
+  console.log('🚀 ~ file: UserDetail.js:65 ~ UserDetail ~ image:', image);
 
-  const handleLike = async()=>{
+  const handleLike = async () => {
     const url = 'swap/liked';
     const response = await Post(
       url,
@@ -82,15 +99,14 @@ const UserDetail = props => {
       apiHeader(token),
     );
     if (response?.data?.status == true) {
-        navigation.goBack()
+      navigation.goBack();
+    } else {
+      Platform.OS == 'android'
+        ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
+        : alert(response?.data?.error);
     }
-    else {
-        Platform.OS == 'android'
-          ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
-          : alert(response?.data?.error);
-      }
-  }
-  const handleDisLike = async()=>{
+  };
+  const handleDisLike = async () => {
     const url = 'swap/disliked';
     const response = await Post(
       url,
@@ -98,14 +114,21 @@ const UserDetail = props => {
       apiHeader(token),
     );
     if (response?.data?.status == true) {
-        navigation.goBack()
+      navigation.goBack();
+    } else {
+      Platform.OS == 'android'
+        ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
+        : alert(response?.data?.error);
     }
-    else {
-        Platform.OS == 'android'
-          ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
-          : alert(response?.data?.error);
-      }
-  }
+  };
+
+  useEffect(() => {
+    setImage([]);
+    userData?.gallery_images?.map((item, index) =>
+      setImage(prev => [...prev, {uri: item?.url}]),
+    );
+  }, [focused]);
+
   return (
     <>
       <CustomStatusBar
@@ -131,10 +154,9 @@ const UserDetail = props => {
               height: '100%',
             }}
             source={
-              
-              userData?.profile_images[0]?.url ?
-              {uri:userData?.profile_images[0]?.url}:
-              require('../Assets/Images/image1.jpeg')
+              userData?.profile_images[0]?.url
+                ? {uri: userData?.profile_images[0]?.url}
+                : require('../Assets/Images/image1.jpeg')
               // : require('../Assets/Images/image1.jpeg')
             }
             resizeMode={'contain'}
@@ -176,7 +198,9 @@ const UserDetail = props => {
                 // marginTop: moderateScale(-5, 0.3),
               }}
               onPress={() => {
-                !fromSearch ? navigationService.navigate('PersonalInfo') : handleDisLike();
+                !fromSearch
+                  ? navigationService.navigate('PersonalInfo')
+                  : handleDisLike();
               }}
               iconSize={moderateScale(30, 0.6)}
             />
@@ -238,7 +262,9 @@ const UserDetail = props => {
                     height: windowHeight * 0.04,
                   }}
                   onPress={() => {
-                    navigationService.navigate('Israeliteinfo',{user:userData});
+                    navigationService.navigate('Israeliteinfo', {
+                      user: userData,
+                    });
                   }}
                 />
               </TouchableOpacity>
@@ -392,6 +418,7 @@ const UserDetail = props => {
               return (
                 <TouchableOpacity
                   onPress={() => {
+                    // setImage(item)
                     setSelectedIndex(index);
                     setIsVisible(true);
                   }}
@@ -412,7 +439,7 @@ const UserDetail = props => {
                     onPress={() => {
                       setSelectedIndex(index);
                       setIsVisible(true);
-                      setImage(item)
+                      // setImage(item)
                     }}
                     source={{uri: item?.url}}
                     // resizeMode={'contain'}
@@ -444,14 +471,34 @@ const UserDetail = props => {
 
           </View> */}
           {fromSearch && (
-            <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={[
+                styles.btn,
+                {
+                  backgroundColor: userData?.fetch_user_report.some(
+                    (item, index) => item?.user_id == user?.id,
+                  )
+                    ? Color.veryLightGray
+                    : Color.themeColor,
+                },
+              ]}
+              onPress={() => {
+                !userData?.fetch_user_report.some(
+                  (item, index) => item?.user_id == user?.id,
+                ) && reportUser();
+              }}>
               <CustomText
                 style={{
                   color: Color.white,
                   fontSize: moderateScale(14, 0.6),
                   marginRight: moderateScale(10, 0.3),
                 }}>
-                Report/Flag User
+                {userData?.fetch_user_report.some(
+                  (item, index) => item?.user_id == user?.id,
+                )
+                  ? 'Already Reported'
+                  : 'Report/Flag User'}
               </CustomText>
               <Icon
                 name={'flag'}
@@ -463,22 +510,22 @@ const UserDetail = props => {
           )}
         </View>
       </ScrollView>
-    
+
       <ImageView
-        images={image?.url}
+        images={image}
         imageIndex={selectedIndex}
         visible={isVisible}
         onRequestClose={() => {
           setIsVisible(false);
         }}
       />
-        <ImagePickerModal
-          show={showMultiImageModal}
-          setShow={setShowMultiImageModal}
-          setMultiImages={setMultiImages}
-          images={multiImages}
-          index={index}
-        />
+      <ImagePickerModal
+        show={showMultiImageModal}
+        setShow={setShowMultiImageModal}
+        setMultiImages={setMultiImages}
+        images={multiImages}
+        index={index}
+      />
     </>
   );
 };
@@ -569,8 +616,8 @@ const styles = ScaledSheet.create({
     marginTop: moderateScale(15, 0.3),
     height: windowHeight * 0.35,
     justifyContent: 'space-between',
-    alignItems:'center',
-    paddingHorizontal:moderateScale(15,0.3),
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(15, 0.3),
   },
   imageContainer: {
     width: 100,
