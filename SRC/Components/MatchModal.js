@@ -14,6 +14,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Lottie from 'lottie-react-native';
 // import Fireworks from 'react-native-fireworks';
 import Firework from './Firework';
 
@@ -75,6 +76,7 @@ const MatchModal = ({isVisible, setIsVisible}) => {
           circular={true}
           data={icons}
         /> */}
+          <Lottie source={require('../Assets/Images/animation.json')} autoPlay loop />
         <View
           style={{
             flexDirection: 'row',
