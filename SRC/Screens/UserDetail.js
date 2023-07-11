@@ -38,13 +38,19 @@ import ImagePickerModal from '../Components/ImagePickerModal';
 import {Image} from 'react-native';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {Post} from '../Axios/AxiosInterceptorFunction';
+import ReportModal from '../Components/ReportModal';
+import DiscreteModal from '../Components/DiscreteModal';
+import LoveNotesModal from '../Components/LoveNotesModal';
 
 const UserDetail = props => {
   const focused = useIsFocused();
   const token = useSelector(state => state.authReducer.token);
   const navigation = useNavigation();
   const user = useSelector(state => state.commonReducer.userData);
-  console.log('🚀 ~ file: UserDetail.js:39 ~ UserDetail ~ user:', user?.id);
+  console.log(
+    '🚀 ~ file: UserDetail.js:39 ~ UserDetail ~ user:',
+    user?.profileName,
+  );
   const item = props?.route?.params?.item;
   // console.log('🚀 ~ file: UserDetail.js:30 ~ UserDetail ~ item:', item);
   // console.log('data =============>>>>>>>>>>', item?.gallery_images[0]);
@@ -53,11 +59,24 @@ const UserDetail = props => {
 
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setUserData] = useState(fromSearch ? item : user);
+  const [reported, setReported] = useState(false);
+  console.log('🚀 ~ file: UserDetail.js:57 ~ UserDetail ~ reported:', reported);
+  const [reason, setReason] = useState('');
 
-  console.log('🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:', userData);
+  // console.log('🚀 ~ file: UserDetail.js:35 ~ UserDetail ~ userData:', userData);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [index, setIndex] = useState('');
   const [showMultiImageModal, setShowMultiImageModal] = useState(false);
+  const [galleryImages, setGalleryImages] = useState(
+    userData?.gallery_images?.length > 5
+      ? userData?.gallery_images?.slice(0, 5)
+      : userData?.gallery_images,
+  );
+  const [reportModalVisible, setReportModalVisible] = useState(false);
+  console.log(
+    '🚀 ~ file: UserDetail.js:60 ~ UserDetail ~ reportModalVisible:',
+    reportModalVisible,
+  );
 
   const [multiImages, setMultiImages] = useState([
     {id: 1, uri: require('../Assets/Images/image1.jpeg')},
@@ -72,12 +91,15 @@ const UserDetail = props => {
     const url = 'settings/report-profile';
     const response = await Post(
       url,
-      {targetuid: userData?.id},
+      {targetuid: userData?.id, reason: reason},
       apiHeader(token),
     );
+
+    console.log('reported ======>', response?.data);
     if (response?.data?.status) {
-      console.log('reported ======>', response?.data);
       // console.log("🚀 ~ file: UserDetail.js:64 ~ reportUser ~ response:", response
+      setReported(response?.data?.status);
+      setReportModalVisible(false);
     } else {
       // console.log('reported ======>' , response?.data)
       Platform.OS == 'android'
@@ -127,6 +149,7 @@ const UserDetail = props => {
     userData?.gallery_images?.map((item, index) =>
       setImage(prev => [...prev, {uri: item?.url}]),
     );
+    setUserData(fromSearch ? item : user);
   }, [focused]);
 
   return (
@@ -413,7 +436,7 @@ const UserDetail = props => {
               alignSelf: 'center',
               width: windowWidth * 0.9,
             }}>
-            {userData?.gallery_images?.map((item, index) => {
+            {galleryImages?.map((item, index) => {
               // console.log('data image =====>>>>', item?.url);
               return (
                 <TouchableOpacity
@@ -476,27 +499,33 @@ const UserDetail = props => {
               style={[
                 styles.btn,
                 {
-                  backgroundColor: userData?.fetch_user_report.some(
-                    (item, index) => item?.user_id == user?.id,
-                  )
-                    ? Color.veryLightGray
-                    : Color.themeColor,
+                  backgroundColor:
+                    userData?.fetch_user_report.some(
+                      (item, index) => item?.user_id == user?.id,
+                    ) || reported
+                      ? Color.veryLightGray
+                      : Color.themeColor,
                 },
               ]}
               onPress={() => {
                 !userData?.fetch_user_report.some(
                   (item, index) => item?.user_id == user?.id,
-                ) && reportUser();
+                ) && !reported && setReportModalVisible(true);
               }}>
               <CustomText
                 style={{
                   color: Color.white,
                   fontSize: moderateScale(14, 0.6),
                   marginRight: moderateScale(10, 0.3),
+                }}
+                onPress={() => {
+                  !userData?.fetch_user_report.some(
+                    (item, index) => item?.user_id == user?.id,
+                  ) && !reported && setReportModalVisible(true) ;
                 }}>
                 {userData?.fetch_user_report.some(
                   (item, index) => item?.user_id == user?.id,
-                )
+                )  && !reported 
                   ? 'Already Reported'
                   : 'Report/Flag User'}
               </CustomText>
@@ -510,7 +539,14 @@ const UserDetail = props => {
           )}
         </View>
       </ScrollView>
-
+      <ReportModal
+        isVisible={reportModalVisible}
+        setIsVisible={setReportModalVisible}
+        onPress={reportUser}
+        reason={reason}
+        setReason={setReason}
+        userData ={userData}
+      />
       <ImageView
         images={image}
         imageIndex={selectedIndex}

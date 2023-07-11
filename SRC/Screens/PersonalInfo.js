@@ -33,7 +33,8 @@ const PersonalInfo = () => {
   // console.log("🚀 ~ file: PersonalInfo.js:28 ~ PersonalInfo ~ Birthday:", user?.birthday)
   // console.log("🚀 ~ file: PersonalInfo.js:28 ~ PersonalInfo ~ ob:", dob)
   const [open, setOpen] = useState(false);
-  const [gender, setGender] = useState(user?.iAm);
+  const [gender, setGender] = useState( user?.iAm);
+  console.log("🚀 ~ file: PersonalInfo.js:37 ~ PersonalInfo ~ user?.iAm:", user?.iAm)
   // console.log("🚀 ~ file: PersonalInfo.js:37 ~ PersonalInfo ~ gender:", gender)
   const [profileName, setProfileName] = useState(user?.profileName);
   // const [multiImages, setMultiImages] = useState([
@@ -104,7 +105,7 @@ const PersonalInfo = () => {
     
         if(response?.data?.status){
           
-          console.log("🚀 ~ file: UserDetail.js:71 ~ updatePortfolio ~ response:", response?.data)
+         console.log("🚀 ~ file: UserDetail.js:71 ~ updatePortfolio ~ response:", response?.data?.user)
           dispatch(setUserData(response?.data?.user));
           Platform.OS == 'android' ? ToastAndroid.show('Profile Updated Successfully',ToastAndroid.SHORT) :
           Alert('Profile Updated Successfully')
@@ -188,8 +189,8 @@ const PersonalInfo = () => {
           viewHeight={0.06}
           viewWidth={0.85}
           inputWidth={0.75}
-          borderColor={Color.veryLightGray}
-          backgroundColor={'transparent'}
+          borderColor={Color.black}
+          backgroundColor={'#eeeeee'}
           placeholderColor={Color.themeLightGray}
           borderRadius={moderateScale(0, 0.3)}
           titleStlye={{
@@ -198,6 +199,7 @@ const PersonalInfo = () => {
             marginTop: moderateScale(20, 0.3),
           }}
           border={1}
+          inputColor={Color.themeLightGray}
           color={Color.veryLightGray}
           disable
         />
@@ -215,7 +217,7 @@ const PersonalInfo = () => {
           viewWidth={0.85}
           inputWidth={0.75}
           borderColor={Color.veryLightGray}
-          backgroundColor={'white'}
+          backgroundColor={'#eeeeee'}
           placeholderColor={Color.themeLightGray}
           borderRadius={moderateScale(0, 0.3)}
           titleStlye={{
@@ -223,6 +225,7 @@ const PersonalInfo = () => {
             fontSize: moderateScale(11, 0.6),
             marginTop: moderateScale(20, 0.3),
           }}
+          inputColor={Color.themeLightGray}
           border={1}
           color={Color.veryLightGray}
           disable
@@ -241,7 +244,7 @@ const PersonalInfo = () => {
           viewWidth={0.85}
           inputWidth={0.75}
           borderColor={Color.veryLightGray}
-          backgroundColor={'transparent'}
+          backgroundColor={'#eeeeee'}
           placeholderColor={Color.themeLightGray}
           borderRadius={moderateScale(0, 0.3)}
           titleStlye={{
@@ -250,6 +253,7 @@ const PersonalInfo = () => {
             marginTop: moderateScale(20, 0.3),
           }}
           border={1}
+          inputColor={Color.themeLightGray}
           color={Color.veryLightGray}
           onPressLeft={() => {
             setOpen(true);
@@ -294,14 +298,14 @@ const PersonalInfo = () => {
             }}
             style={[
               styles.cont,
-              gender == 'woman' && {borderColor: Color.themeColor},
+              gender == 'Woman' && {borderColor: Color.themeColor},
             ]}
             activeOpacity={0.7}>
             <Icon
               name={'woman'}
               as={Ionicons}
               color={
-                gender == 'woman' ? Color.themeColor : Color.veryLightGray
+                gender == 'Woman' ? Color.themeColor : Color.veryLightGray
               }
             />
 
@@ -309,7 +313,7 @@ const PersonalInfo = () => {
               isBold
               style={[
                 styles.txt6,
-                gender == 'woman' && {color: Color.themeColor},
+                gender == 'Woman' && {color: Color.themeColor},
               ]}>
               {' '}
               Woman

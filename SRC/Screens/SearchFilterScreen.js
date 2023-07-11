@@ -575,7 +575,7 @@ const SearchFilterScreen = () => {
           state1={distance}
           title={'Distance'}
           min={0}
-          max={50}
+          max={200}
           multi={false}
           setScrollEnabled={setScrollEnabled}
         />
@@ -588,7 +588,7 @@ const SearchFilterScreen = () => {
           state2={age2}
           title={'Age'}
           min={0}
-          max={50}
+          max={120}
           setScrollEnabled={setScrollEnabled}
         />
         <View style={styles.container}>

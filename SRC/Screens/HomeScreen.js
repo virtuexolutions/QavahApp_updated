@@ -32,6 +32,7 @@ import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import CustomImage from '../Components/CustomImage';
 import NullDataComponent from '../Components/NullDataComponent';
 import {useIsFocused} from '@react-navigation/native';
+import MatchModal from '../Components/MatchModal';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ const HomeScreen = () => {
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [photoCards, setPhotoCards] = useState([]);
+  const [matchModalVisible, setMatchModalVisible] = useState(false)
   // console.log("🚀 ~ file: HomeScreen.js:45 ~ photoCards:", photoCards)
 
   const [LogData, setLogData] = useState([]);
@@ -397,7 +399,8 @@ const HomeScreen = () => {
               name={'lightning-bolt'}
               type={MaterialCommunityIcons}
               onPress={() => {
-                setSpotLightVisible(true);
+                // setSpotLightVisible(true);
+                setMatchModalVisible(true);
               }}
             />
           </View>
@@ -435,6 +438,7 @@ const HomeScreen = () => {
         isVisible={isSpotLightVisible}
         setIsVisible={setSpotLightVisible}
       />
+      <MatchModal isVisible={matchModalVisible} setIsVisible={setMatchModalVisible}/>
     </>
   );
 };

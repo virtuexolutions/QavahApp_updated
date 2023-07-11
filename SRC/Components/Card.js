@@ -36,6 +36,12 @@ useEffect(() => {
     		{/* <SharedElement id={`item.${card.key}.image_url`}> */}
     		<CustomImage
       		style={styles.image}
+			  onPress={() => {
+				navigationService.navigate('UserDetail', {
+				  item: card,
+				  fromSearch: true,
+				});
+			  }}
       		source={{
 				uri :card?.profile_images[0]?.url
 				//  'https://admin.qavah.us/images/profile_images/qavah-1671203404639c8a4cd8113.jpg'

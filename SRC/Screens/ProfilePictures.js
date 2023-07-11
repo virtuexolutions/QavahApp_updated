@@ -135,7 +135,7 @@ const ProfilePictures = props => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header showLeft={true} leftName={'left'} showRight={true} title={`3/3`} />
+      <Header showLeft={true} leftName={'left'} showRight={true} title={`step 3`} />
 
       <View
         // scrollEnabled={!scrollOff}

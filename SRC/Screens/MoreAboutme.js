@@ -16,7 +16,8 @@ import BottomSheetSelect from '../Components/BottomSheetSelect';
 import Modal from 'react-native-modal'
 import { useDispatch, useSelector } from 'react-redux';
 import { Post } from '../Axios/AxiosInterceptorFunction';
-import { setUserData } from '../Store/slices/common';
+import { setMoreAboutMeRegister, setUserData } from '../Store/slices/common';
+import { useNavigation } from '@react-navigation/native';
 
 const MoreAboutme = (props) => {
   const edit = props?.route?.params?.edit ;
@@ -29,6 +30,10 @@ const MoreAboutme = (props) => {
   // console.log("🚀 ~ file: MoreAboutme.js:27 ~ MoreAboutme ~ galleryImages:", galleryImages)
   const user = useSelector(state=>state.commonReducer?.userData)
   const token = useSelector(state => state.authReducer.token)
+  const moreAboutme = useSelector(state => state?.commonReducer?.moreAboutMeRegister)
+  console.log("🚀 ~ file: MoreAboutme.js:34 ~ MoreAboutme ~ moreAboutme:", moreAboutme)
+
+
 
   const dispatch = useDispatch();
 
@@ -38,24 +43,25 @@ const MoreAboutme = (props) => {
   // console.log("🚀 ~ file: MoreAboutme.js:21 ~ MoreAboutme ~ profileImages:", profileImages , data , galleryImages)
 
   // console.log("🚀 ~ file: MoreAboutme.js:19 ~ MoreAboutme ~ edit:", edit)
-  const [description, setDescription] = useState(edit ? user?.aboutMe : '');
-  const [maritialStatus, setMaritialStatus] = useState(edit ? user?.maritalStatus :'');
-  const [livingSituation, setLivingSituation] = useState(edit ? user?.livingSituation :'');
-  const [doYouHaveChildren, setDoYouHaveChildren] = useState(edit ? user?.doYouHaveChildren :'');
-  const [doYouwantChildren, setdoYouWantChildren] = useState(edit ? user?.doYouWantMoreChildren :'');
-  const [seeking, setSeeking] = useState(edit ? user?.relationshipIAmSeeking : '');
-  const [bodyType, setBodyType] = useState(edit ? user?.bodyType : '');
-  const [oftenExersice , setOftenExersice] = useState(edit ? user?.howOftenDoYouExercise : '');
-  const [havePets , setHavePets] = useState(edit ? user?.havePets :'');
-  const [doYouDrink , setDoYouDrink] = useState(edit ? user?.doYouDrink :'');
-  const [doYouSmoke , setDoYouSmoke] = useState(edit ? user?.doYouSmoke :'');
-  const [employmentStatus , setEmploymentStatus] = useState(edit ? user?.employmentStatus : '');
-  const [relocate , setRelocate] = useState(edit ? user?.willingToRelocate : '');
+  const [description, setDescription] = useState(edit ? user?.aboutMe : moreAboutme?.step2 ?moreAboutme?.step2?.aboutMe : '' );
+  const [maritialStatus, setMaritialStatus] = useState(edit ? user?.maritalStatus : moreAboutme?.step2 ?moreAboutme?.step2?.maritalStatus :'');
+  const [livingSituation, setLivingSituation] = useState(edit ? user?.livingSituation:moreAboutme?.step2 ?moreAboutme?.step2?.livingSituation :'');
+  const [doYouHaveChildren, setDoYouHaveChildren] = useState(edit ? user?.doYouHaveChildren:moreAboutme?.step2 ?moreAboutme?.step2?.doYouHaveChildren :'');
+  const [doYouwantChildren, setdoYouWantChildren] = useState(edit ? user?.doYouWantMoreChildren:moreAboutme?.step2 ?moreAboutme?.step2?.doYouWantMoreChildren  :'');
+  const [seeking, setSeeking] = useState(edit ? user?.relationshipIAmSeeking : moreAboutme?.step2 ?moreAboutme?.step2?.relationshipIAmSeeking : '');
+  const [bodyType, setBodyType] = useState(edit ? user?.bodyType: moreAboutme?.step2 ?moreAboutme?.step2?.bodyType  : '');
+  const [oftenExersice , setOftenExersice] = useState(edit ? user?.howOftenDoYouExercise: moreAboutme?.step2 ?moreAboutme?.step2?.howOftenDoYouExercise  : '');
+  const [havePets , setHavePets] = useState(edit ? user?.havePets : moreAboutme?.step2 ?moreAboutme?.step2?.havePets :'');
+  const [doYouDrink , setDoYouDrink] = useState(edit ? user?.doYouDrink: moreAboutme?.step2 ?moreAboutme?.step2?.doYouDrink  :'');
+  const [doYouSmoke , setDoYouSmoke] = useState(edit ? user?.doYouSmoke : moreAboutme?.step2 ?moreAboutme?.step2?.doYouSmoke :'');
+  const [employmentStatus , setEmploymentStatus] = useState(edit ? user?.employmentStatus: moreAboutme?.step2 ?moreAboutme?.step2?.employmentStatus  : '');
+  const [relocate , setRelocate] = useState(edit ? user?.willingToRelocate: moreAboutme?.step2 ?moreAboutme?.step2?.willingToRelocate  : '');
 
   const [modalVisible, setModalVisible] = useState(false);
   const [type, setType] = useState('');
   const [isVisible, setIsVisible] = useState(edit ? false : true);
   const [ref, setRef] = useState(null);
+  const navigation = useNavigation()
   // const formData = new FormData()
   // formData.append('profileImages',profileImages)
   // formData.append('galleryImages', JSON.stringify(galleryImages));
@@ -128,6 +134,11 @@ const MoreAboutme = (props) => {
       
     }
 
+  }
+
+  const leftPress =()=>{
+    dispatch(setMoreAboutMeRegister(body))
+    navigation.goBack();
   }
 
 
@@ -240,7 +251,7 @@ const MoreAboutme = (props) => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header showLeft={true} leftName={'left'} title={!edit? `Step ${steps}`: 'More About Me' } />
+      <Header showLeft={true} leftName={'left'} title={!edit? `Step ${steps}`: 'More About Me' }  leftPress={leftPress}/>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -407,6 +418,7 @@ const MoreAboutme = (props) => {
                   
                 }
               } 
+              dispatch(setMoreAboutMeRegister(body))
               navigationService.navigate('IsraeliteFilters', {twoStepsData : body, steps: steps});
           }}}
           bgColor={Color.themeColor}

@@ -190,6 +190,9 @@ elevation: 9,
             props.color && {
               color: Color.black,
             },
+            props.inputColor && {
+              color:props.inputColor
+            },
 
           ]}
 

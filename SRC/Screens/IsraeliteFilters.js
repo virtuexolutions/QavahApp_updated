@@ -23,20 +23,35 @@ import CustomModal from '../Components/CustomModal';
 import BottomSheetSelect from '../Components/BottomSheetSelect';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import {useDispatch, useSelector} from 'react-redux';
-import {useIsFocused} from '@react-navigation/native';
-import {setUserData} from '../Store/slices/common';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {
+  setIsraeliteInfoRegister,
+  setMoreAboutMeRegister,
+  setUserData,
+} from '../Store/slices/common';
 import {setIsLoggedIn, setUserToken} from '../Store/slices/auth';
 // import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const IsraeliteFilters = props => {
   const check = props?.route?.params?.check;
-  console.log("🚀 ~ file: IsraeliteFilters.js:33 ~ IsraeliteFilters ~ check:", check)
+  console.log(
+    '🚀 ~ file: IsraeliteFilters.js:33 ~ IsraeliteFilters ~ check:',
+    check,
+  );
   const edit = props?.route?.params?.edit;
   const twoStepsData = props?.route?.params?.twoStepsData;
-  console.log("🚀 ~ file: IsraeliteFilters.js:36 ~ IsraeliteFilters ~ twoStepsData:", twoStepsData)
   const user = useSelector(state => state.commonReducer.userData);
   const token = useSelector(state => state.authReducer.token);
+  const israeliteFilter = useSelector(
+    state => state?.commonReducer?.israeliteFilterRegister,
+  );
+  console.log(
+    '🚀 ~ file: IsraeliteFilters.js:40 ~ IsraeliteFilters ~ israeliteFilter:',
+    israeliteFilter,
+  );
+
   const steps = props?.route?.params?.steps;
+  const navigation = useNavigation();
 
   // console.log("🚀 ~ file: IsraeliteFilters.js:31 ~ IsraeliteFilters ~ user:", user)
   // console.log("🚀 ~ file: IsraeliteFilters.js:26 ~ IsraeliteFilters ~ twoStepsData:", twoStepsData?.step2?.galleryImages)
@@ -46,24 +61,62 @@ const IsraeliteFilters = props => {
   // );
   const focused = useIsFocused();
   const dispatch = useDispatch();
-  const [believe, setBelieve] = useState(edit ? user?.iBelieveIAM : '');
+  const [believe, setBelieve] = useState(
+    edit
+      ? user?.iBelieveIAM
+      : israeliteFilter
+      ? israeliteFilter?.iBelieveIAm
+      : '',
+  );
   // console.log("🚀 ~ file: IsraeliteFilters.js:40 ~ IsraeliteFilters ~ believe:", believe)
   const [yearsInTruth, setYearsInTruth] = useState(
-    edit ? user?.yearsInTruth : '',
+    edit
+      ? user?.yearsInTruth
+      : israeliteFilter
+      ? israeliteFilter?.yearsInTruth
+      : '',
   );
-  const [studyHabits, setStudyHabits] = useState(edit ? user?.studyHabits : '');
+  const [studyHabits, setStudyHabits] = useState(
+    edit
+      ? user?.studyHabits
+      : israeliteFilter
+      ? israeliteFilter?.StudyHabits
+      : '',
+  );
   const [spiritualValues, setSpiritualValues] = useState(
-    edit ? user?.spiritualValue : '',
+    edit
+      ? user?.spiritualValue
+      : israeliteFilter
+      ? israeliteFilter?.SpiritualValues
+      : '',
   );
   const [maritialBelief, setMaritialBelief] = useState(
-    edit ? user?.maritalBeliefSystem : '',
+    edit
+      ? user?.maritalBeliefSystem
+      : israeliteFilter
+      ? israeliteFilter?.MaritalBeliefSystem
+      : '',
   );
-  const [studyBible, setStudyBible] = useState(edit ? user?.studyBible : '');
+  const [studyBible, setStudyBible] = useState(
+    edit
+      ? user?.studyBible
+      : israeliteFilter
+      ? israeliteFilter?.studyBible
+      : '',
+  );
   const [spiritualBgc, setSpiritualBgc] = useState(
-    edit ? user?.spiritualBackground : '',
+    edit
+      ? user?.spiritualBackground
+      : israeliteFilter
+      ? israeliteFilter?.SpiritualBg
+      : '',
   );
   const [anyAffiliation, setAnyAffiliation] = useState(
-    edit ? user?.anyAffiliation : '',
+    edit
+      ? user?.anyAffiliation
+      : israeliteFilter
+      ? israeliteFilter?.anyAffiliation
+      : '',
   );
   const [selectedIndex, setIndex] = useState('');
   const [israelitePractise, setIsraelitePractise] = useState(
@@ -71,9 +124,14 @@ const IsraeliteFilters = props => {
       ? user?.isrealite_practice_keeping == undefined
         ? []
         : user?.isrealite_practice_keeping.map(item => item?.options)
+      : israeliteFilter?.isrealite_practice_keeping 
+      ? israeliteFilter?.isrealite_practice_keeping
       : [],
   );
-  // console.log("🚀 ~ file: IsraeliteFilters.js:55 ~ IsraeliteFilters ~ israelitePractise:", israelitePractise)
+  console.log(
+    '🚀 ~ file: IsraeliteFilters.js:55 ~ IsraeliteFilters ~ israelitePractise:',
+    israelitePractise,
+  );
   const [modalVisible, setModalVisible] = useState(false);
   // const [type, setType] = useState('');
   const [passionModalVisible, setPassionModalVisible] = useState(false);
@@ -82,14 +140,21 @@ const IsraeliteFilters = props => {
       ? user?.passions == undefined
         ? []
         : user?.passions.map(item => item?.options)
+      : israeliteFilter?.Passions
+      ? israeliteFilter?.Passions
       : [],
   );
-  // console.log("🚀 ~ file: IsraeliteFilters.js:61 ~ IsraeliteFilters ~ passions:", passions)
+  console.log(
+    '🚀 ~ file: IsraeliteFilters.js:61 ~ IsraeliteFilters ~ passions:',
+    passions,
+  );
   const [kingdomGifts, setKingDomGifts] = useState(
     edit
       ? user?.kingdom_gifts == undefined
         ? []
         : user?.kingdom_gifts.map(item => item?.options)
+      : israeliteFilter?.KingomGifts
+      ? israeliteFilter?.KingomGifts
       : [],
   );
   // console.log("🚀 ~ file: IsraeliteFilters.js:63 ~ IsraeliteFilters ~ kingdomGifts:", kingdomGifts)
@@ -98,8 +163,30 @@ const IsraeliteFilters = props => {
   const [arrayForModal, setArrayForModal] = useState([]);
   const [type, setType] = useState('passions');
   const [isLoading, setIsLoading] = useState(false);
-  const [checked , setIsCecked] = useState(false)
-  console.log("🚀 ~ file: IsraeliteFilters.js:101 ~ IsraeliteFilters ~ checked:", checked)
+  const [checked, setIsCecked] = useState(false);
+  console.log(
+    '🚀 ~ file: IsraeliteFilters.js:101 ~ IsraeliteFilters ~ checked:',
+    checked,
+  );
+
+  const israeliteFilterBody = {
+    iBelieveIAm: believe,
+    yearsInTruth: yearsInTruth,
+    StudyHabits: studyHabits,
+    SpiritualValues: spiritualValues,
+    MaritalBeliefSystem: maritialBelief,
+    studyBible: studyBible,
+    SpiritualBg: spiritualBgc,
+    anyAffiliation: anyAffiliation,
+    isrealite_practice_keeping: israelitePractise,
+    Passions: passions,
+    KingomGifts: kingdomGifts,
+  };
+
+  const leftPress = () => {
+    dispatch(setIsraeliteInfoRegister(israeliteFilterBody));
+    navigation.goBack();
+  };
 
   const updateIsraelLiteInfo = async () => {
     const url = 'isralite_info';
@@ -117,9 +204,7 @@ const IsraeliteFilters = props => {
       Passions: passions,
       KingomGifts: kingdomGifts,
     };
-    // console.log("🚀 ~ file: IsraeliteFilters.js:91 ~ updateIsraelLiteInfo ~ body:", body)
     const response = await Post(url, body, apiHeader(token));
-    // console.log("🚀 ~ file: Israeliteinfo.js:58 ~ updateIsraelLiteInfo ~ response:", response?.data)
 
     if (response?.data?.status) {
       dispatch(setUserData(response?.data?.user));
@@ -340,7 +425,10 @@ const IsraeliteFilters = props => {
     // console.log( ' body ================== ? ? ?? ',completeBody)
     setIsLoading(true);
     const response = await Post(url, completeBody, apiHeader());
-    console.log("🚀 ~ file: IsraeliteFilters.js:342 ~ Registration ~ completeBody:", completeBody)
+    console.log(
+      '🚀 ~ file: IsraeliteFilters.js:342 ~ Registration ~ completeBody:',
+      completeBody,
+    );
     setIsLoading(false);
     if (response != undefined) {
       //  console.log('User registered =-======>' , response?.data)
@@ -348,9 +436,11 @@ const IsraeliteFilters = props => {
         ? ToastAndroid.show('User Registered Successfully', ToastAndroid.SHORT)
         : alert('User Registered Successfully');
 
+      dispatch(setMoreAboutMeRegister([]));
+      dispatch(setIsraeliteInfoRegister([]));
       dispatch(setUserData(response?.data?.user));
-      dispatch(setUserToken({token:response?.data?.token}));
-      
+      dispatch(setUserToken({token: response?.data?.token}));
+
       navigationService.navigate('ProfilePictures', {
         // token: response?.data?.token,
         // userData: response?.data?.user,
@@ -359,13 +449,11 @@ const IsraeliteFilters = props => {
     }
   };
 
-
   useEffect(() => {
-    if(check != undefined){
-      setIsCecked(check)
+    if (check != undefined) {
+      setIsCecked(check);
     }
-  }, [focused])
-  
+  }, [focused]);
 
   return (
     <>
@@ -377,6 +465,7 @@ const IsraeliteFilters = props => {
         showLeft={true}
         leftName={'left'}
         title={edit ? 'Israelite Filters' : `Step ${3}`}
+        leftPress={leftPress}
       />
 
       <ScrollView
@@ -473,15 +562,19 @@ const IsraeliteFilters = props => {
             // justifyContent : 'space-between',
           }}>
           {IsraelitesPractise?.map((item, index) => {
+            console.log(
+              '🚀 ~ file: IsraeliteFilters.js:501 ~ {IsraelitesPractise?.map ~ item:',
+              item,
+            );
             return (
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => {
-                  const data = [...israelitePractise];
+                  const data =   [...israelitePractise] 
                   !israelitePractise?.includes(item)
                     ? setIsraelitePractise(prev => [...prev, item])
                     : setIsraelitePractise(data.filter(value => value != item));
-                  // setIndex(index);
+                  setIndex(index);
                 }}
                 key={index}
                 style={{
@@ -643,41 +736,52 @@ const IsraeliteFilters = props => {
             </View>
           </View>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: windowWidth * 0.95,
-            marginLeft: moderateScale(20, 0.3),
-            marginTop : moderateScale(10,0.3),
-            alignItems : 'center'
-          }}>
-            <Icon 
-            name={checked ?'check-square-o' :'square-o'}
-            as={FontAwesome}
-            onPress={()=>{
-              setIsCecked(!checked)
-            }}
-            />
-          <CustomText
+        {!edit && (
+          <View
             style={{
-              fontSize: moderateScale(11, 0.7),
+              flexDirection: 'row',
+              width: windowWidth * 0.95,
+              marginLeft: moderateScale(20, 0.3),
+              marginTop: moderateScale(10, 0.3),
+              alignItems: 'center',
             }}>
-            I Accept
-            {
-              <CustomText
-                isBold
-                style={{
-                  color: Color.themeColor,
-                  fontSize: moderateScale(11, 0.7),
-                }}
-                onPress={() => {
-                  navigationService.navigate('TermsAndConditions',{fromRegisteration : true});
-                }}> Terms And Conditions</CustomText>
-            }
-          </CustomText>
-        </View>
+            <Icon
+              name={checked ? 'check-square-o' : 'square-o'}
+              as={FontAwesome}
+              onPress={() => {
+                setIsCecked(!checked);
+              }}
+            />
+            <CustomText
+              style={{
+                fontSize: moderateScale(13, 0.7),
+              }}
+              onPress={() => {
+                setIsCecked(!checked);
+              }}>
+              I Accept
+              {
+                <CustomText
+                  isBold
+                  style={{
+                    color: Color.green,
+                    fontSize: moderateScale(13, 0.7),
+                  }}
+                  onPress={() => {
+                    navigationService.navigate('TermsAndConditions', {
+                      fromRegisteration: true,
+                      twoStepsData: completeBody,
+                    });
+                  }}>
+                  {' '}
+                  Terms And Conditions
+                </CustomText>
+              }
+            </CustomText>
+          </View>
+        )}
         <CustomButton
-          text={edit ? 'Save' :  'Submit'}
+          text={edit ? 'Save' : 'Submit'}
           textColor={Color.white}
           width={windowWidth * 0.9}
           height={windowHeight * 0.09}
@@ -690,7 +794,6 @@ const IsraeliteFilters = props => {
           elevation
           disabled={edit ? isLoading : isLoading || !checked}
         />
-
       </ScrollView>
       <CustomModal
         isVisible={passionModalVisible}
@@ -788,7 +891,7 @@ const IsraeliteFilters = props => {
             );
           })}
         </View>
-      
+
         <CustomButton
           text={'Finish'}
           textColor={Color.white}

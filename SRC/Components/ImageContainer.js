@@ -32,6 +32,7 @@ const ImageContainer = ({
   onPress,
   edit
 }) => {
+  // console.log("🚀 ~ file: ImageContainer.js:35 ~ data:", data)
   // console.log("🚀 ~ file: ImageContainer.js:34 ~ key:", key)
   console.log('🚀 ~ file: ImageContainer.js:29 ~ ImageContainer ~ item:', item);
   const [remove, setRemove] = useState(false);
@@ -49,14 +50,15 @@ const ImageContainer = ({
             source={{uri: edit ? item?.url : item?.uri}}
             style={{width: '100%', height: '100%'}}
           />
+          {!edit &&
           <TouchableOpacity
-            style={styles.cross}
-            onPress={() => {
-              // setImage({});
-              const tempArray = [...data];
-              tempArray[index] = {};
-              setData(tempArray);
-            }}>
+          style={styles.cross}
+          onPress={() => {
+            // setImage({});
+            const tempArray = [...data];
+            tempArray[index] = {};
+            setData(tempArray);
+          }}>
             <Icon
               name={'close'}
               as={AntDesign}
@@ -67,8 +69,9 @@ const ImageContainer = ({
                 tempArray[index] = {};
                 setData(tempArray);
               }}
-            />
+              />
           </TouchableOpacity>
+            }
         </>
       ) : (
         <TouchableOpacity
