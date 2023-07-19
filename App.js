@@ -22,10 +22,13 @@ import {
 } from './SRC/Utillity/utils';
 import SplashScreen from './SRC/Screens/SplashScreen';
 import AppNavigator, {DrawerRoot} from './SRC/appNavigation';
-import LandingPage from './SRC/Screens/LandingPage';
+import { CometChat } from "@cometchat-pro/react-native-chat";
+
 
 const App = () => {
   const [publishableKey, setPublishableKey] = useState('');
+   
+  
 
   const fetchPublishableKey = async () => {
     const key = await fetchKey(); // fetch key from your server here
@@ -54,7 +57,13 @@ const App = () => {
 
 const MainContainer = () => {
   const dispatch = useDispatch();
-
+  const appID = "2092182aee051e28";
+  const region = "US";
+  const appSetting = new CometChat.AppSettingsBuilder()
+    .subscribePresenceForAllUsers()
+    .setRegion(region)
+    .build();
+  
   // fcm
   //  useEffect(() => {
   //    Notifications.registerRemoteNotifications();
@@ -108,20 +117,27 @@ const MainContainer = () => {
   //  }, []);
   // fcm ends
 
+  const configureCometChat = async()=>{
+    console.log('here is the chat configuration')
+    CometChat.init(appID, appSetting).then(
+      () => {
+        console.log("Initialization completed successfully");
+        // You can now call login function.
+      },
+      (error) => {
+        console.log("Initialization failed with error:", error);
+        // Check the reason for error and take appropriate action.
+      }
+    );
+  }
+
   useEffect(() => {
     async function GetPermission() {
       await requestCameraPermission();
       await requestWritePermission();
-      await requestLocationPermission();
-    }
-    // console.log('hererererer');
-    //  messaging()
-    //    .getToken()
-    //    .then((_token) => {
-    //      dispatch(SetFCMToken(_token));
-    //    })
-    //    .catch(() => console.log("token error"));
+      await requestLocationPermission();}
     GetPermission();
+    configureCometChat()
   }, []);
 
   const [isloading] = useloader(true);

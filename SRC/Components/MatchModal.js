@@ -3,30 +3,17 @@ import React, {useState} from 'react';
 import Modal from 'react-native-modal';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import {windowHeight, windowWidth} from '../Utillity/utils';
-import LinearGradient from 'react-native-linear-gradient';
 import Color from '../Assets/Utilities/Color';
 import {Icon} from 'native-base';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomText from './CustomText';
 import CustomButton from './CustomButton';
 import CustomImage from './CustomImage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Lottie from 'lottie-react-native';
-// import Fireworks from 'react-native-fireworks';
-import Firework from './Firework';
 
 const MatchModal = ({isVisible, setIsVisible}) => {
-  // const icons = [
-  //   <Icon name={'star-outlined'} as={Entypo} color={Color.themeColor} size={6} />,
-  //   <Icon name={'star-outlined'} as={Entypo} color={Color.themeColor} size={6} />,
-  //   // <Icon name={'diamond'} as={MaterialCommunityIcons} color={Color.themeColor} size={6} />,
-  //   // <Icon name={'exclamation'} as={FontAwesome} color={Color.themeColor} size={6} />,
-  //   <Icon name={'exclamation'} as={FontAwesome} color={Color.themeColor} size={6} />,
-  // ];
-  return (
+ return (
     <Modal
       isVisible={isVisible}
       onBackdropPress={() => {
@@ -55,28 +42,7 @@ const MatchModal = ({isVisible, setIsVisible}) => {
           }}>
           It's a Match
         </CustomText>
-        {/* <Fireworks
-        speed={3}
-        density={8}
-        colors={['#ff0', '#ff3', '#cc0', '#ff4500', '#ff6347']}
-        iterations={5}
-        height={150}
-        width={100}
-        zIndex={2}
-        circular={true}
-      /> */}
-        {/* <Firework
-          speed={3}
-          density={1}
-          colors={['#A1722E','#A1721a']}
-          iterations={1000}
-          height={150}
-          width={100}
-          zIndex={2}
-          circular={true}
-          data={icons}
-        /> */}
-          <Lottie source={require('../Assets/Images/animation.json')} autoPlay loop />
+    <Lottie source={require('../Assets/Images/animation.json')} autoPlay loop />
         <View
           style={{
             flexDirection: 'row',
