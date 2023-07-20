@@ -9,9 +9,13 @@ import {Icon} from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomText from './CustomText';
 import CustomButton from './CustomButton';
+import navigationService from '../navigationService';
+import PaymentModal from './PaymentModal';
 
 const LoveNotesModal = ({isVisible, setIsVisible}) => {
   const [selectedIndex, setSelecetedIndex] = useState(1);
+  const [paymentModalVisible, setPaymentModalVisible] = useState(false);
+  const [price, setprice] = useState(7);
   const dummyData = [
     {days: '3', cash: '566.60', savingPercent: '10%'},
     {days: '15', cash: '466.60', savingPercent: '21%'},
@@ -70,23 +74,25 @@ const LoveNotesModal = ({isVisible, setIsVisible}) => {
             style={{
               fontSize: moderateScale(20, 0.6),
               color: Color.black,
-            }} isBold>
+            }}
+            isBold>
             Love Notes
           </CustomText>
           <CustomText
             style={{
               fontSize: moderateScale(11, 0.6),
               color: Color.veryLightGray,
-              marginTop:moderateScale(10,0.3),
-            }} >
+              marginTop: moderateScale(10, 0.3),
+            }}>
             Monthly
           </CustomText>
           <CustomText
             style={{
               fontSize: moderateScale(24, 0.6),
               color: Color.black,
-            }} isBold>
-            $7.00
+            }}
+            isBold>
+            {`$ ${price}.00`}
           </CustomText>
 
           {/* {dummyData.map((item, index) => {
@@ -180,6 +186,10 @@ const LoveNotesModal = ({isVisible, setIsVisible}) => {
           elevation
           isGradient
           fontSize={moderateScale(12, 0.6)}
+          onPress={() => {
+            // setIsVisible(false)
+            setPaymentModalVisible(true);
+          }}
         />
         <View
           style={{
@@ -228,6 +238,12 @@ const LoveNotesModal = ({isVisible, setIsVisible}) => {
           isBold
         />
       </View>
+      <PaymentModal
+        isVisible={paymentModalVisible}
+        setIsVisible={setPaymentModalVisible}
+        price={price}
+        
+      />
     </Modal>
   );
 };
@@ -261,11 +277,11 @@ const styles = ScaledSheet.create({
   },
   container2: {
     // height: windowHeight * 0.13,
-    paddingVertical:moderateScale(10,0.6),
+    paddingVertical: moderateScale(10, 0.6),
     width: '100%',
     backgroundColor: '#EEEEEE',
     flexDirection: 'column',
-    justifyContent:'center',
-    alignItems:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

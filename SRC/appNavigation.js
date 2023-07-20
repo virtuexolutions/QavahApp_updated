@@ -44,6 +44,7 @@ import TermsAndConditions from './Screens/TermsAndConditions';
 import Support from './Screens/Support';
 import GetSuperLike from './Screens/GetSuperLike';
 import PrivacyPolicy from './Screens/PrivacyPolicy';
+import PaymentModal from './Components/PaymentModal';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -79,6 +80,7 @@ const AppNavigator = () => {
           headerMode="none"
           initialRouteName={firstScreen}
            screenOptions={{headerShown: false}}>
+
            <RootNav.Screen name="LandingPage" component={LandingPage} />
            <RootNav.Screen name="LoginScreen" component={LoginScreen} />
            <RootNav.Screen name="CreatePortfolio" component={CreatePortfolio} />

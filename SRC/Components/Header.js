@@ -396,6 +396,7 @@ const Header = props => {
                 textColor={'#AA336A'}
                 onPress={() => {
                   setLoveNotesVisible(true);
+                  // setDrawerModal(false)
                 }}
               />
 
