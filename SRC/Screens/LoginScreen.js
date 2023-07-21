@@ -27,6 +27,7 @@ import navigationService from '../navigationService';
 import Header from '../Components/Header';
 import { setUserData } from '../Store/slices/common';
 
+
 const LoginScreen = ({route}) => {
   const dispatch = useDispatch();
   const text = route?.params?.text;
@@ -62,6 +63,7 @@ const LoginScreen = ({route}) => {
     const response = await Post(url, body, apiHeader());
     setIsLoading(false);
     if (response?.data?.status) {
+    
       // return console.log('response ========>' , response?.data?.user)
       dispatch(setUserData(response?.data?.user))
         dispatch(setUserToken({token: response?.data?.token}));
@@ -74,6 +76,8 @@ const LoginScreen = ({route}) => {
         : alert(response?.data?.message);
       }
   };
+
+
 
   return (
 

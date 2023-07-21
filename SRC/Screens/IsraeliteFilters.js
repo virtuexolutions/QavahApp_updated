@@ -30,6 +30,7 @@ import {
   setUserData,
 } from '../Store/slices/common';
 import {setIsLoggedIn, setUserToken} from '../Store/slices/auth';
+import { CometChat } from '@cometchat-pro/react-native-chat';
 // import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const IsraeliteFilters = props => {
@@ -435,7 +436,7 @@ const IsraeliteFilters = props => {
       Platform.OS == 'android'
         ? ToastAndroid.show('User Registered Successfully', ToastAndroid.SHORT)
         : alert('User Registered Successfully');
-
+        registerUserCometChat(response?.data?.user)
       dispatch(setMoreAboutMeRegister([]));
       dispatch(setIsraeliteInfoRegister([]));
       dispatch(setUserData(response?.data?.user));
@@ -448,6 +449,22 @@ const IsraeliteFilters = props => {
       });
     }
   };
+  const registerUserCometChat = async(user)=>{
+    let cometChatUser = new CometChat.User(user?.uid);
+        cometChatUser.setName(user?.profileName);
+        cometChatUser.avatar = user?.profile_images[0]?.url;
+
+        const cometChatRegisteredUser = await CometChat.createUser(
+          cometChatUser,
+          '07ba629476752645dbce6a6c4aad7b2fc680b511',
+        );
+        console.log("🚀 ~ file: LoginScreen.js:88 ~ registerUserCometChat ~ cometChatRegisteredUser:", cometChatRegisteredUser)
+
+        // dispatchCometAction({
+        //   type: 'COMETCHAT_REGISTER',
+        //   user: {...cometChatRegisteredUser},
+        // });
+  }
 
   useEffect(() => {
     if (check != undefined) {
