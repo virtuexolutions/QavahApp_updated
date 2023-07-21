@@ -18,16 +18,47 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
 import CustomModal from './CustomModal';
+import { Get } from '../Axios/AxiosInterceptorFunction';
+import { useSelector } from 'react-redux';
+import navigationService from '../navigationService';
 
 const SpotLightModal = ({isVisible, setIsVisible}) => {
   const [selectedIndex, setSelecetedIndex] = useState(0);
-  const dummyData = [
-    {boost: '1', cash: '566.60', savingPercent: '10%', slogon: null},
-    {boost: '5', cash: '466.60', savingPercent: '21%', slogon: 'popular'},
-    {boost: '10', cash: '566.60', savingPercent: '25%', slogon: 'best value'},
-  ];
+  const token = useSelector(state => state.authReducer.token);
+  const [packages, setPackages] = useState([])
   const [arrayForDeck, setArrayForDeck] = useState([1]);
   // console.log("🚀 ~ file: SpotlightModal.js:27 ~ SpotLightModal ~ arrayForDeck:", arrayForDeck)
+  
+  const getSubscriptionPlan = async () => {
+    const url = 'packages';
+    const response = await Get(url, token);
+    if (response != undefined) {
+      console.log(JSON.stringify(response?.data, null, 2));
+      const newData = response?.data?.packages;
+      console.log(
+        '🚀 ~ file: GetSuperLike.js:43 ~ getSubscriptionPlan ~ newData:',
+        newData?.premium,
+        );
+        setPackages(newData?.premium)
+      }
+    };
+    const dummyData = [
+      {boost: '1', cash: packages[0]?.price, savingPercent: '10%', slogon: null},
+      {boost: '5', cash: packages[1]?.price, savingPercent: '21%', slogon: 'popular'},
+      {boost: '10', cash: packages[2]?.price, savingPercent: '25%', slogon: 'best value'},
+    ];
+    
+    useEffect(() => {
+      getSubscriptionPlan()
+      
+    }, [])
+  
+
+
+
+
+
+
   const onViewableItemsChanged = ({viewableItems}) => {
     // console.log(
     //   '🚀 ~ file: Walkthrough.js:62 ~ Walkthrough ~ viewableItems',
@@ -211,7 +242,7 @@ const SpotLightModal = ({isVisible, setIsVisible}) => {
                     </View>
                   </View>
                   <CustomText style={{marginTop: moderateScale(10, 0.3)}}>
-                    ${item?.cash}/ea
+                    $ {item?.cash}
                   </CustomText>
                   <CustomText
                     isBold
@@ -232,7 +263,9 @@ const SpotLightModal = ({isVisible, setIsVisible}) => {
                     width={windowWidth * 0.35}
                     height={windowHeight * 0.06}
                     fontSize={moderateScale(12, 0.6)}
-                    // onPress={}
+                    onPress={()=>{
+                      navigationService.navigate('GetSuperLike',{item: packages[index], text:'Add-ons'}),setIsVisible(false)
+                    }}
                     bgColor={Color.themeBgColor}
                     borderRadius={moderateScale(25, 0.3)}
                     marginTop={moderateScale(20, 0.3)}

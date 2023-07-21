@@ -38,13 +38,13 @@ const ViewPost = ({setRef, item , image}) => {
       customStyles={{
         container: {
           // justifyContent: "center",
-          alignItems: 'center',
+          // alignItems: 'center',
           borderTopEndRadius: moderateScale(30, 0.6),
           borderTopLeftRadius: moderateScale(30, 0.6),
           overflow: 'hidden',
         },
       }}>
-      <ScrollView
+      {/* <ScrollView
         nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}
         style={{
@@ -56,7 +56,7 @@ const ViewPost = ({setRef, item , image}) => {
         contentContainerStyle={{
           paddingBottom: moderateScale(50, 0.6),
           alignItems: 'center',
-        }}>
+        }}> */}
         <View style={styles.image}>
           {/* <SharedElement id={`item.${item.key}.image_url`}>  */}
           <CustomImage
@@ -83,7 +83,7 @@ const ViewPost = ({setRef, item , image}) => {
         paddingTop: moderateScale(120, 0.3),
       }}
     >
-      <View style={{
+      {/* <View style={{
         flexDirection : 'row',
         height : windowHeight * 0.05 , 
         paddingLeft : moderateScale(30,0.6),
@@ -110,10 +110,10 @@ const ViewPost = ({setRef, item , image}) => {
         fontSize : moderateScale(12,0.6),
         color : Color.white,
         paddingLeft : moderateScale(30,0.6),
-      }}>2.4k likes</CustomText>
+      }}>2.4k likes</CustomText> */}
     </LinearGradient>
         </View>
-        <CustomText style={styles.heading}>
+        {/* <CustomText style={styles.heading}>
           {item?.profileName},{item?.age}
         </CustomText>
         <CustomText
@@ -193,8 +193,8 @@ const ViewPost = ({setRef, item , image}) => {
             color={comment ? Color.themeColor : Color.veryLightGray}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(5, 0.3)}
-          />
-      </ScrollView>
+          /> */}
+      {/* </ScrollView> */}
     </RBSheet>
   );
 };
@@ -204,8 +204,10 @@ export default ViewPost;
 const styles = ScaledSheet.create({
   image: {
     width: windowWidth,
-    height: windowHeight * 0.5,
+    height:windowHeight * 0.83,
     backgroundColor: '#DDDDDD',
+    position: 'absolute',
+    zIndex: -1,
   },
   heading: {
     fontSize: moderateScale(20, 0.6),

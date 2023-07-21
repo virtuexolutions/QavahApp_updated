@@ -26,19 +26,24 @@ const {height, width} = Dimensions.get('window');
 const GetSuperLike = ({route}) => {
   const token = useSelector(State => State.authReducer.token);
   const user = useSelector(state => state.commonReducer.userData);
-  console.log("🚀 ~ file: GetSuperLike.js:29 ~ GetSuperLike ~ user:", user)
-  console.log("🚀 ~ file: GetSuperLike.js:29 ~ GetSuperLike ~ user:", user)
-  const {text} = route.params;
+  console.log('🚀 ~ file: GetSuperLike.js:29 ~ GetSuperLike ~ user:', user);
+  const {text, item} = route.params;
+  console.log("🚀 ~ file: GetSuperLike.js:31 ~ GetSuperLike ~ item:", item)
 
-  const [selected, setSelected] = useState('');
   const [packages, setPackages] = useState([]);
   console.log(
     '🚀 ~ file: GetSuperLike.js:30 ~ GetSuperLike ~ packages:',
     packages,
   );
+  const [selected, setSelected] = useState(item? item :'');
+  console.log("🚀 ~ file: GetSuperLike.js:38 ~ GetSuperLike ~ selected:", selected)
 
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState(item ? item?.price : 0);
   const [paymentModalVisible, setPaymentModalVisible] = useState(false);
+const [packagesName, setpackagesName] = useState(user?.subscription?.map(item=>{
+  return(item?.pkg_name)
+}))
+console.log("🚀 ~ file: GetSuperLike.js:46 ~ GetSuperLike ~ packagesName:", packagesName)
 
   const pointsArray = [
     {lock: false, text: 'Unlimited Likes'},
@@ -56,9 +61,10 @@ const GetSuperLike = ({route}) => {
         '🚀 ~ file: GetSuperLike.js:43 ~ getSubscriptionPlan ~ newData:',
         newData?.premium,
       );
-      text == 'Platinum'
+      console.log(text.toLowerCase() , 'platinum'.toLowerCase())
+      text.toLowerCase() == 'platinum'.toLowerCase()
         ? setPackages([newData?.month_to_month[0], ...newData?.platinum])
-        : text == 'Add-ons'
+        :  text.toLowerCase() == 'add-ons'.toLowerCase()
         ? setPackages(newData?.premium)
         : setPackages([newData?.month_to_month[1], ...newData?.gold]);
     }
@@ -161,12 +167,17 @@ const GetSuperLike = ({route}) => {
         width={width * 0.8}
         height={height * 0.07}
         onPress={() => {
-          if (user?.subscription?.length > 1 ) {
-         return   Platform.OS == 'android'
-         ? ToastAndroid.show(`Already subscribed to a ${user?.subscription[1].pkg_name}`, ToastAndroid.SHORT)
-         : alert(`Already subscribed to a ${user?.subscription[1].pkg_name}`);
+          if (packagesName.includes(selected?.title)) {
+            return Platform.OS == 'android'
+              ? ToastAndroid.show(
+                  `Already subscribed to a ${selected?.title}`,
+                  ToastAndroid.SHORT,
+                )
+              : alert(
+                  `Already subscribed to a ${selected?.title}`,
+                );
           }
-          
+
           setPaymentModalVisible(true);
         }}
         marginLeft={width * 0.05}
@@ -187,6 +198,7 @@ const GetSuperLike = ({route}) => {
         isVisible={paymentModalVisible}
         setIsVisible={setPaymentModalVisible}
         item={selected}
+        setpackagesName={setpackagesName}
       />
     </>
   );

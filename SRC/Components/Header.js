@@ -6,6 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
 import SuperLikeModal from '../Components/SuperLikeModal';
 import {
@@ -40,11 +41,14 @@ import SpotLightModal from './SpotlightModal';
 import CustomButton from './CustomButton';
 import DiscreteModal from './DiscreteModal';
 import NullDataComponent from './NullDataComponent';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import SubscriptionListing from './SubscriptionListing';
 
 const Header = props => {
   const dispatch = useDispatch();
   const focused = useIsFocused();
   const token = useSelector(state => state.authReducer.token);
+
   // console.log('🚀 ~ file: Header.js:42 ~ Header ~ token:', token);
   const [isLoveNotesVisible, setLoveNotesVisible] = useState(false);
   const notification = useSelector(state => state.commonReducer.notification);
@@ -54,6 +58,7 @@ const Header = props => {
   // const [switchEnabled, setSwitchEnabled] = useState(false);
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [discreteModal, setDiscreteModal] = useState(false);
+  const userData = useSelector(state => state.commonReducer.userData);
   const DrawerArray = [
     {
       key: 1,
@@ -141,7 +146,7 @@ const Header = props => {
       },
     },
     {
-      key: 9,
+      key: 10,
       title: 'set Account visibility to global',
       onPress: data => {
         // setSwitchEnabled(!switchEnabled)
@@ -149,11 +154,29 @@ const Header = props => {
         setAccountVisible();
       },
       switch: true,
+      data: 'visibility',
+    },
+    {
+      key: 13,
+      title: 'set Account Private',
+      onPress: data => {
+        // setSwitchEnabled(!switchEnabled)
+        // console.log('switchEnables value=======>>>>',switchEnabled)
+        setAccountPrivacy();
+      },
+      switch: true,
+      data: 'privacy',
     },
   ];
   const [isVisible, setIsVisible] = useState(false);
   const [isBoostModalvisible, setBoostModalvisible] = useState(false);
   const [notificationData, setNotificationData] = useState([]);
+  const [heartHand, setHeartHand] = useState(false);
+  const [subscription, setSubscription] = useState(
+    userData?.subscription?.map(item => {
+      return item?.pkg_name;
+    }),
+  );
 
   const setAccountVisible = async () => {
     const url = 'user/update-my-profile-app';
@@ -165,6 +188,28 @@ const Header = props => {
     if (response != undefined) {
       // return console.log('data ======= = = = = = ' , response?.data?.user)
       dispatch(setUserData(response?.data?.user));
+    }
+  };
+  const setAccountPrivacy = async () => {
+    if (subscription?.includes('Discrete Mode')) {
+ 
+      const url = 'user/profile-settings';
+      const response = await Post(url, {
+        uid: userData?.id,
+        option: userData?.user_privacy.value == 'public' ? 'private' :'public'
+    }, apiHeader(token));
+      console.log(
+        '🚀 ~ file: Header.js:157 ~ setAccountVisible ~ response:',
+        response?.data,
+      );
+      if (response != undefined) {
+        // return console.log('data ======= = = = = = ' , response?.data?.user_privacy)
+        dispatch(setUserData(response?.data?.user));
+      }
+    } else {
+      Platform.OS == 'android'
+        ? ToastAndroid.show('Subscription needed', ToastAndroid.SHORT)
+        : alert('Subscription needed');
     }
   };
 
@@ -181,7 +226,7 @@ const Header = props => {
     }
   };
 
-  const notificaitonArray = [
+  const notificationsDummy = [
     {
       image: require('../Assets/Images/woman1.jpeg'),
       invitation: true,
@@ -209,6 +254,26 @@ const Header = props => {
       distance: '5',
       text: 'invites you for a match',
       photo: require('../Assets/Images/woman3.jpeg'),
+    },
+  ];
+  const notification2 = [
+    {
+      image: require('../Assets/Images/woman1.jpeg'),
+      time: '9:00 AM',
+      name: 'Clara',
+      message: 'Hey!! There',
+    },
+    {
+      image: require('../Assets/Images/woman2.jpeg'),
+      time: 'yesterday',
+      name: 'Clara',
+      message: 'Omg, that was so much fun',
+    },
+    {
+      image: require('../Assets/Images/woman1.jpeg'),
+      time: 'just Now',
+      name: 'Clara',
+      message: 'invites you for a match',
     },
   ];
 
@@ -386,10 +451,9 @@ const Header = props => {
                 text={'GET MOre'}
                 textColor={'purple'}
                 onPress={() => {
-                  navigationService.navigate('GetSuperLike',{text:'Add-ons'})
+                  navigationService.navigate('GetSuperLike', {text: 'Add-ons'});
                   // setSpotLightVisible(true);
-                  setDrawerModal(false)
-
+                  setDrawerModal(false);
                 }}
               />
               <Addones
@@ -398,9 +462,9 @@ const Header = props => {
                 text={'GET MOre'}
                 textColor={'#AA336A'}
                 onPress={() => {
-                  navigationService.navigate('GetSuperLike',{text:'Add-ons'})
+                  navigationService.navigate('GetSuperLike', {text: 'Add-ons'});
                   // setLoveNotesVisible(true);
-                  setDrawerModal(false)
+                  setDrawerModal(false);
                 }}
               />
 
@@ -410,19 +474,17 @@ const Header = props => {
                 text={'GET More'}
                 textColor={'#286086'}
                 onPress={() => {
-                  navigationService.navigate('GetSuperLike',{text:'Add-ons'})
+                  navigationService.navigate('GetSuperLike', {text: 'Add-ons'});
                   // setDiscreteModal(true);
-                  setDrawerModal(false)
-
+                  setDrawerModal(false);
                 }}
               />
             </View>
             <CustomButton
-            onPress={()=>{
-              navigationService.navigate('GetSuperLike',{text:'Gold'})
-              setDrawerModal(false)
-
-            }}
+              onPress={() => {
+                navigationService.navigate('GetSuperLike', {text: 'Gold'});
+                setDrawerModal(false);
+              }}
               text={'Get Qavah gold* \n 5 free super likes every 1 week'}
               width={windowWidth * 0.65}
               height={windowHeight * 0.07}
@@ -456,41 +518,79 @@ const Header = props => {
             paddingVertical: moderateScale(20, 0.6),
           }}>
           <View style={styles.row}>
-            <CustomText style={styles.heading}>Notification</CustomText>
+            <CustomText style={styles.heading}>
+              {heartHand ? 'Love Notes' : 'Notification'}
+            </CustomText>
+
+            <Icon
+              name={'hand-heart'}
+              as={MaterialCommunityIcons}
+              size={moderateScale(25, 0.6)}
+              color={heartHand ? Color.themeColor : Color.veryLightGray}
+              style={{right: moderateScale(30, 0.6), position: 'absolute'}}
+              onPress={() => {
+                setHeartHand(true);
+                if (user?.subscription?.length > 0) {
+                } else {
+                  Platform.OS == 'android'
+                    ? ToastAndroid.show(
+                        'Subscription needed',
+                        ToastAndroid.SHORT,
+                      )
+                    : alert('Subscription needed');
+                }
+              }}
+            />
             <Icon
               name={'bell'}
               as={FontAwesome}
               size={moderateScale(18, 0.3)}
-              color={Color.veryLightGray}
-              // onPress={()=}
+              color={!heartHand ? Color.themeColor : Color.veryLightGray}
+              onPress={() => {
+                setHeartHand(false);
+              }}
               // style={{
               // }}
             />
           </View>
-          {notificationData.length > 0 ? notificationData.map((item, index) => {
-            return (
-              <NotificationComponent
-                commented={item?.commented}
-                invitation={item?.invitation}
-                item={item}
-                messaged={item?.messaged}
-                onPress={() => {
-                  alert('No action yet');
-                }}
-              />
-            );
-          })
-        :
-        <View
-        style={{
-          // width: windowWidth * 0.5,
-          height: windowHeight * 0.6,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <NullDataComponent width={windowWidth * 0.7} />
-        </View>
-        }
+          {!heartHand ? (
+            notificationData.length > 0 ? (
+              notificationData.map((item, index) => {
+                return (
+                  <NotificationComponent
+                    commented={item?.commented}
+                    invitation={item?.invitation}
+                    item={item}
+                    messaged={item?.messaged}
+                    onPress={() => {
+                      alert('No action yet');
+                    }}
+                  />
+                );
+              })
+            ) : (
+              <View
+                style={{
+                  // width: windowWidth * 0.5,
+                  height: windowHeight * 0.6,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <NullDataComponent width={windowWidth * 0.7} />
+              </View>
+            )
+          ) : (
+            notification2.map((item, index) => {
+              return (
+                <SubscriptionListing
+                  item={item}
+                  onPress={() => {
+                    alert('No action yet');
+                  }}
+                />
+              );
+            })
+          )}
         </ScrollView>
       </Modal>
       <LoveNotesModal

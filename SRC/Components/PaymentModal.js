@@ -26,7 +26,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Icon} from 'native-base';
 import { setUserData } from '../Store/slices/common';
 
-const PaymentModal = ({isVisible, setIsVisible, item}) => {
+const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
   const dispatch = useDispatch()
   const [selectedIndex, setSelecetedIndex] = useState(1);
   const token = useSelector(state => state.authReducer.token);
@@ -78,6 +78,11 @@ const PaymentModal = ({isVisible, setIsVisible, item}) => {
           ? ToastAndroid.show('payment done', ToastAndroid.SHORT)
           : alert('payment done');
           setIsVisible(false)
+          setpackagesName(
+            responseApi?.data?.response?.subscription?.map(item=>{
+              return(item?.pkg_name)
+            })
+          )
 
         // navigationService.navigate('SetGoals');
       }

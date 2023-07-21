@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   ToastAndroid,
   Platform,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CustomImage from '../Components/CustomImage';
@@ -42,6 +42,7 @@ import TextInputWithTitle from '../Components/TextInputWithTitle';
 
 const UserDetail = props => {
   const focused = useIsFocused();
+  console.log("🚀 ~ file: UserDetail.js:45 ~ UserDetail ~ focused:", focused)
   const token = useSelector(state => state.authReducer.token);
   const navigation = useNavigation();
   const user = useSelector(state => state.commonReducer.userData);
@@ -51,7 +52,7 @@ const UserDetail = props => {
   );
   const item = props?.route?.params?.item;
   const fromSearch = props?.route?.params?.fromSearch;
-    const [isLoading , setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setUserData] = useState(fromSearch ? item : user);
   const [reported, setReported] = useState(false);
@@ -65,9 +66,9 @@ const UserDetail = props => {
       ? userData?.gallery_images?.slice(0, 5)
       : userData?.gallery_images,
   );
+  console.log("🚀 ~ file: UserDetail.js:69 ~ UserDetail ~ galleryImages:", userData?.gallery_images?.length)
   const [reportModalVisible, setReportModalVisible] = useState(false);
-  const [loveNoteData , setLoveNoteData] = useState('')
- 
+  const [loveNoteData, setLoveNoteData] = useState('');
 
   const [multiImages, setMultiImages] = useState([
     {id: 1, uri: require('../Assets/Images/image1.jpeg')},
@@ -99,40 +100,39 @@ const UserDetail = props => {
     }
   };
 
-  const sendLoveNote = async()=>{
-    const url ='send-love-note';
-    const body ={
-      targetUid : userData?.id ,
-      love_note : loveNoteData ,
+  const sendLoveNote = async () => {
+    const url = 'send-love-note';
+    const body = {
+      targetUid: userData?.id,
+      love_note: loveNoteData,
+    };
+    console.log('🚀 ~ file: UserDetail.js:123 ~ sendLoveNote ~ body:', body);
+    if (loveNoteData == '') {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show('Please send some message', ToastAndroid.SHORT)
+        : alert('Please send some message');
     }
-    console.log("🚀 ~ file: UserDetail.js:123 ~ sendLoveNote ~ body:", body)
-    if(loveNoteData == ''){
-      return  Platform.OS == 'android'
-      ? ToastAndroid.show('Please send some message', ToastAndroid.SHORT)
-      : alert('Please send some message');
-    }
-    setIsLoading(true)
-    const response = await Post(url , body , apiHeader(token))
-   
-    if(response?.data?.status){
-      setIsLoading(false)
-      Platform.OS == 'android'
-      ? ToastAndroid.show('Lovenote has been send', ToastAndroid.SHORT)
-      : alert('Lovenote has been send');
+    setIsLoading(true);
+    const response = await Post(url, body, apiHeader(token));
 
-      console.log('response ===>>' , response?.data)
-      setLoveNoteModal(false)
-    }
-    else{
-      setIsLoading(false)
+    if (response?.data?.status) {
+      setIsLoading(false);
       Platform.OS == 'android'
-      ? ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT)
-      : alert(response?.data?.message);
+        ? ToastAndroid.show('Lovenote has been send', ToastAndroid.SHORT)
+        : alert('Lovenote has been send');
 
-      console.log('response ===>>' , response?.data)
-      setLoveNoteModal(false)
+      console.log('response ===>>', response?.data);
+      setLoveNoteModal(false);
+    } else {
+      setIsLoading(false);
+      Platform.OS == 'android'
+        ? ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT)
+        : alert(response?.data?.message);
+
+      console.log('response ===>>', response?.data);
+      setLoveNoteModal(false);
     }
-  }
+  };
 
   // const images = [require('../Assets/Images/woman1.jpeg')];
   // console.log('🚀 ~ file: UserDetail.js:50 ~ UserDetail ~ images:', images);
@@ -176,6 +176,11 @@ const UserDetail = props => {
       setImage(prev => [...prev, {uri: item?.url}]),
     );
     setUserData(fromSearch ? item : user);
+    setGalleryImages(
+      userData?.gallery_images?.length > 5
+        ? userData?.gallery_images?.slice(0, 5)
+        : userData?.gallery_images,
+    );
   }, [focused]);
 
   return (
@@ -274,14 +279,15 @@ const UserDetail = props => {
                 <TouchableOpacity
                   activeOpacity={0.9}
                   onPress={() => {
-                    if(user?.subscription?.length > 0){
-
+                    if (user?.subscription?.length > 0) {
                       setLoveNoteModal(true);
-                    }
-                    else{
+                    } else {
                       Platform.OS == 'android'
-                      ? ToastAndroid.show('Subscription needed', ToastAndroid.SHORT)
-                      : alert('Subscription needed');
+                        ? ToastAndroid.show(
+                            'Subscription needed',
+                            ToastAndroid.SHORT,
+                          )
+                        : alert('Subscription needed');
                     }
                   }}
                   style={styles.likeContainer}>
@@ -291,14 +297,15 @@ const UserDetail = props => {
                     size={moderateScale(25, 0.6)}
                     color={Color.themeColor}
                     onPress={() => {
-                      if(user?.subscription?.length > 0){
-
+                      if (user?.subscription?.length > 0) {
                         setLoveNoteModal(true);
-                      }
-                      else{
+                      } else {
                         Platform.OS == 'android'
-                        ? ToastAndroid.show('Subscription needed', ToastAndroid.SHORT)
-                        : alert('Subscription needed');
+                          ? ToastAndroid.show(
+                              'Subscription needed',
+                              ToastAndroid.SHORT,
+                            )
+                          : alert('Subscription needed');
                       }
                     }}
                   />
@@ -321,7 +328,16 @@ const UserDetail = props => {
                 style={styles.israelite}
                 activeOpacity={0.9}
                 onPress={() => {
-                  navigationService.navigate('Israeliteinfo');
+                  if (user?.subscription?.length > 0) {
+                    navigationService.navigate('Israeliteinfo', {user : userData});
+                  } else {
+                    Platform.OS == 'android'
+                      ? ToastAndroid.show(
+                          'Subscription needed',
+                          ToastAndroid.SHORT,
+                        )
+                      : alert('Subscription needed');
+                  }
                 }}>
                 <CustomImage
                   source={require('../Assets/Images/hebrew.png')}
@@ -331,9 +347,16 @@ const UserDetail = props => {
                     height: windowHeight * 0.04,
                   }}
                   onPress={() => {
-                    navigationService.navigate('Israeliteinfo', {
-                      user: userData,
-                    });
+                    if (user?.subscription?.length > 0) {
+                      navigationService.navigate('Israeliteinfo', {user : userData});
+                    } else {
+                      Platform.OS == 'android'
+                        ? ToastAndroid.show(
+                            'Subscription needed',
+                            ToastAndroid.SHORT,
+                          )
+                        : alert('Subscription needed');
+                    }
                   }}
                 />
               </TouchableOpacity>
@@ -622,82 +645,78 @@ const UserDetail = props => {
           alignItems: 'center',
         }}>
         <View style={styles.container1}>
-        <View
-          style={{
-            // position: 'absolute',
-            width: '100%',
-            alignItems: 'center',
-            marginBottom: moderateScale(10, 0.3),
-            flexDirection: 'row',
-            // backgroundColor: 'black',
-            // height: windowHeight * 0.1,
-            height: windowHeight * 0.07,
-            justifyContent: 'center',
-            backgroundColor: Color.themeColor,
-            // marginLeft:moderateScale(10,.3),
-          }}>
-         
-          <CustomText
-            style={[
-              {
-                color: Color.white,
-                fontSize: moderateScale(15, 0.3),
-               },
-            ]}
-            isBold>
-            Send Love Note
-          </CustomText>
-
-        </View>
-        <TextInputWithTitle
-              titleText={'Enter Description'}
-              secureText={false}
-              placeholder={'Enter Description'}
-              setText={setLoveNoteData}
-              value={loveNoteData}
-              viewHeight={0.15}
-              viewWidth={0.8}
-              inputWidth={0.7}
-              inputHeight={0.1}
-              border={1}
-              borderColor={Color.themeLightGray}
-              backgroundColor={'#F5F5F5'}
-              marginTop={moderateScale(20, 0.3)}
-              multiline={true}
-              inputStyle={{textAlign: 'vertical'}}
-              borderRadius={moderateScale(10, 0.3)}
-              placeholderColor={Color.black}
-            />
-        <CustomButton
-     text={
-                isLoading ? (
-                  <ActivityIndicator color={'#ffffff'} size={'small'} />
-                ) : (
-                  'Send'
-                )
-              }
-        textColor={Color.white}
-        width={windowWidth * 0.8}
-        height={windowHeight * 0.07}
-        onPress={sendLoveNote}
-        marginLeft={windowWidth * 0.05}
-        marginRight={windowWidth * 0.05}
-        bgColor={[Color.themeColor,Color.themeColor ]}
-        borderRadius={moderateScale(10, 0.6)}
-        marginTop={moderateScale(20, 0.6)}
-        marginBottom={moderateScale(10, 0.6)}
-        elevation
-        isBold
-        fontSize={moderateScale(15, 0.6)}
-        isGradient
-       
-      />
+          <View
+            style={{
+              // position: 'absolute',
+              width: '100%',
+              alignItems: 'center',
+              marginBottom: moderateScale(10, 0.3),
+              flexDirection: 'row',
+              // backgroundColor: 'black',
+              // height: windowHeight * 0.1,
+              height: windowHeight * 0.07,
+              justifyContent: 'center',
+              backgroundColor: Color.themeColor,
+              // marginLeft:moderateScale(10,.3),
+            }}>
+            <CustomText
+              style={[
+                {
+                  color: Color.white,
+                  fontSize: moderateScale(15, 0.3),
+                },
+              ]}
+              isBold>
+              Send Love Note
+            </CustomText>
+          </View>
+          <TextInputWithTitle
+            titleText={'Enter Description'}
+            secureText={false}
+            placeholder={'Enter Description'}
+            setText={setLoveNoteData}
+            value={loveNoteData}
+            viewHeight={0.15}
+            viewWidth={0.8}
+            inputWidth={0.7}
+            inputHeight={0.1}
+            border={1}
+            borderColor={Color.themeLightGray}
+            backgroundColor={'#F5F5F5'}
+            marginTop={moderateScale(20, 0.3)}
+            multiline={true}
+            inputStyle={{textAlign: 'vertical'}}
+            borderRadius={moderateScale(10, 0.3)}
+            placeholderColor={Color.black}
+          />
+          <CustomButton
+            text={
+              isLoading ? (
+                <ActivityIndicator color={'#ffffff'} size={'small'} />
+              ) : (
+                'Send'
+              )
+            }
+            textColor={Color.white}
+            width={windowWidth * 0.8}
+            height={windowHeight * 0.07}
+            onPress={sendLoveNote}
+            marginLeft={windowWidth * 0.05}
+            marginRight={windowWidth * 0.05}
+            bgColor={[Color.themeColor, Color.themeColor]}
+            borderRadius={moderateScale(10, 0.6)}
+            marginTop={moderateScale(20, 0.6)}
+            marginBottom={moderateScale(10, 0.6)}
+            elevation
+            isBold
+            fontSize={moderateScale(15, 0.6)}
+            isGradient
+          />
         </View>
       </Modal>
     </>
   );
 };
-
 
 export default UserDetail;
 
@@ -713,7 +732,7 @@ const styles = ScaledSheet.create({
     backgroundColor: Color.white,
     borderRadius: moderateScale(10, 0.6),
     overflow: 'hidden',
-    alignItems : 'center'
+    alignItems: 'center',
   },
   container: {
     marginTop: moderateScale(-30, 0.3),

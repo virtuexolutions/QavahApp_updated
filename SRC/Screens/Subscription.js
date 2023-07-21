@@ -5,6 +5,7 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  Platform, ToastAndroid
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -23,54 +24,39 @@ import PlanCard from '../Components/PlanCard';
 
 const Subscription = () => {
   const [index, setIndex] = useState(0);
-  // console.log("🚀 ~ file: Subscription.js:27 ~ Subscription ~ index:", index)
   const [itemPrice, setItemPrice] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState('Month to Month');
-  const [text, setText] = useState('Platinum')
-  // console.log("🚀 ~ file: Subscription.js:32 ~ Subscription ~ text:", text)
-
+  const [text, setText] = useState('platinum');
+  const userData = useSelector(state => state.commonReducer.userData);
+  console.log(
+    '🚀 ~ file: Subscription.js:30 ~ Subscription ~ userData:',
+    userData?.subscription[0].pkg_catogery,
+  );
   const [itemColor, setItemColor] = useState(['#A97142', '#996633', '#A97142']);
-  
+
+  const pkg_category =userData?.subscription.map(item => {
+     return (item?.pkg_catogery);
+  });
+  console.log("🚀 ~ file: Subscription.js:39 ~ Subscription ~ pkg_category:", pkg_category)
+
 
   const subscriptions = [
     {
-      text: 'Platinum',
+      text: 'platinum',
       color: ['#acacac', '#e1e1e1'],
       price: 350,
     },
     {
-      text: 'Gold',
+      text: 'gold',
       color: ['#B78628', '#FCC201', '#DBA514', '#B78628'],
       price: 450,
     },
     {
-      text: 'Add-ons',
+      text: 'add-ons',
       color: ['#DBA514', '#B78628'],
       price: 350,
     },
-    
-    
   ];
-  // const topPakages = [
-  //   {
-  //     title: 'Monthly',
-  //     description:
-  //       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.',
-  //     price: '3,274.93',
-  //   },
-  //   {
-  //     title: 'Weekly',
-  //     description:
-  //       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.',
-  //     price: '1,274.93',
-  //   },
-  //   {
-  //     title: 'yearly',
-  //     description:
-  //       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.',
-  //     price: '4,274.93',
-  //   },
-  // ];
 
   const pointsArray = [
     {lock: false, text: 'Unlimited Likes'},
@@ -96,11 +82,10 @@ const Subscription = () => {
     setIndex(viewableItems[0]?.index);
     setItemPrice(viewableItems[0]?.item?.price);
     setItemColor(viewableItems[0]?.item?.color);
-    setText(viewableItems[0]?.item?.text)
+    setText(viewableItems[0]?.item?.text);
     // Do stuff
   };
   const viewabilityConfigCallbackPairs = useRef([{onViewableItemsChanged}]);
-
 
   return (
     <>
@@ -128,39 +113,10 @@ const Subscription = () => {
           alignItems: 'center',
           paddingBottom: moderateScale(80, 0.6),
         }}>
-        {/* <View style={styles.selector}>
-          <CustomText
-            onPress={() => {
-              setSelectedIndex('Month to Month');
-            }}
-            style={[
-              styles.text,
-              selectedIndex == 'Month to Month' && {
-                backgroundColor: Color.themeColor,
-                color: Color.white,
-                borderRadius: moderateScale(10, 0.6),
-              },
-            ]}>
-            Month to Month
-          </CustomText>
-          <CustomText
-            onPress={() => {
-              setSelectedIndex('Other packages');
-            }}
-            style={[
-              styles.text,
-              selectedIndex == 'Other packages' && {
-                backgroundColor: Color.themeColor,
-                color: Color.white,
-                borderRadius: moderateScale(10, 0.6),
-              },
-            ]}>
-            Other packages
-          </CustomText>
-        </View> */}
+       
 
         <FlatList
-          data={ subscriptions}
+          data={subscriptions}
           horizontal
           showsHorizontalScrollIndicator={false}
           pagingEnabled
@@ -192,7 +148,7 @@ const Subscription = () => {
                 isGradient
                 fontSize={moderateScale(25, 0.6)}
               />
-            ) 
+            );
           }}
         />
         <View
@@ -202,7 +158,7 @@ const Subscription = () => {
             // position: 'absolute',
             bottom: moderateScale(0, 0.6),
           }}>
-          {(subscriptions).map((x, i) => {
+          {subscriptions.map((x, i) => {
             return (
               <View
                 style={{
@@ -228,16 +184,43 @@ const Subscription = () => {
       </ScrollView>
 
       <CustomButton
-       text={itemPrice == 0 ? 'Continue' : `${itemPrice}$`}
+        // disabled={
+        //   pkg_catogery == 'gold' && text == 'Platinum'
+        //     ? false
+        //     : pkg_catogery == 'gold' && text == 'gold'
+        //     ? true
+        //     : pkg_catogery == 'platinum' && text == 'Platinum'
+        //     ? true
+        //     : pkg_catogery == 'platinum' && text == 'Gold'
+        //     ? true
+        //     : false
+        // }
+        text={itemPrice == 0 ? 'Continue' : `${itemPrice}$`}
         textColor={Color.white}
         width={windowWidth * 0.8}
         height={windowHeight * 0.07}
         onPress={() => {
-          navigationService.navigate('GetSuperLike',{text: text});
+          if (pkg_category?.includes(text) && text.toLowerCase() != 'add-ons'.toLowerCase()) {
+            Platform.OS == 'android'
+              ? ToastAndroid.show(
+                  'You have already subscribed',
+                  ToastAndroid.SHORT,
+                )
+              : alert('You have already subscribed');
+          } else if (pkg_category?.includes('platinum') && text.toLowerCase() == 'gold'.toLowerCase()) {
+            Platform.OS == 'android'
+              ? ToastAndroid.show(
+                  'You cannot buy this package',
+                  ToastAndroid.SHORT,
+                )
+              : alert('You cannot buy this package');
+          } else {
+            navigationService.navigate('GetSuperLike', {text: text});
+          }
         }}
         marginLeft={windowWidth * 0.05}
         marginRight={windowWidth * 0.05}
-        bgColor={itemColor ? itemColor : [Color.themeColor,Color.themeColor ]}
+        bgColor={itemColor ? itemColor : [Color.themeColor, Color.themeColor]}
         borderRadius={moderateScale(10, 0.6)}
         marginTop={moderateScale(40, 0.6)}
         marginBottom={moderateScale(10, 0.6)}

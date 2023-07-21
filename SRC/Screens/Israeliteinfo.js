@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 const Israeliteinfo = (props) => {
 
   const userData = props?.route?.params?.user;
+  console.log("🚀 ~ file: Israeliteinfo.js:17 ~ Israeliteinfo ~ userData:", userData)
   // console.log("🚀 ~ file: Israeliteinfo.js:16 ~ Israeliteinfo ~ userData:", userData)
 
   const navigation = useNavigation();

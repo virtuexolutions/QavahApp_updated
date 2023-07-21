@@ -391,8 +391,8 @@ const HomeScreen = () => {
               name={'lightning-bolt'}
               type={MaterialCommunityIcons}
               onPress={() => {
-                // setSpotLightVisible(true);
-                setMatchModalVisible(true);
+                setSpotLightVisible(true);
+                // setMatchModalVisible(true);
               }}
             />
           </View>
