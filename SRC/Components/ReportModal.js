@@ -15,11 +15,6 @@ import {useSelector} from 'react-redux';
 import { mode } from 'native-base/lib/typescript/theme/tools';
 
 const ReportModal = ({isVisible, setIsVisible, onPress, reason, setReason,userData}) => {
-  console.log("🚀 ~ file: ReportModal.js:17 ~ ReportModal ~ userData:", userData)
-  console.log(
-    '🚀 ~ file: ReportModal.js:15 ~ ReportModal ~ isVisible:',
-    isVisible,
-  );
   const token = useSelector(state => state.authReducer.token);
   
 

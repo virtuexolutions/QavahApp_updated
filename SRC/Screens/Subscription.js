@@ -43,6 +43,11 @@ const Subscription = () => {
       color: ['#B78628', '#FCC201', '#DBA514', '#B78628'],
       price: 450,
     },
+    {
+      text: 'Add-ons',
+      color: ['#DBA514', '#B78628'],
+      price: 350,
+    },
     
     
   ];

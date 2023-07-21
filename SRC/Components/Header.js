@@ -386,7 +386,10 @@ const Header = props => {
                 text={'GET MOre'}
                 textColor={'purple'}
                 onPress={() => {
-                  setSpotLightVisible(true);
+                  navigationService.navigate('GetSuperLike',{text:'Add-ons'})
+                  // setSpotLightVisible(true);
+                  setDrawerModal(false)
+
                 }}
               />
               <Addones
@@ -395,8 +398,9 @@ const Header = props => {
                 text={'GET MOre'}
                 textColor={'#AA336A'}
                 onPress={() => {
-                  setLoveNotesVisible(true);
-                  // setDrawerModal(false)
+                  navigationService.navigate('GetSuperLike',{text:'Add-ons'})
+                  // setLoveNotesVisible(true);
+                  setDrawerModal(false)
                 }}
               />
 
@@ -406,11 +410,19 @@ const Header = props => {
                 text={'GET More'}
                 textColor={'#286086'}
                 onPress={() => {
-                  setDiscreteModal(true);
+                  navigationService.navigate('GetSuperLike',{text:'Add-ons'})
+                  // setDiscreteModal(true);
+                  setDrawerModal(false)
+
                 }}
               />
             </View>
             <CustomButton
+            onPress={()=>{
+              navigationService.navigate('GetSuperLike',{text:'Gold'})
+              setDrawerModal(false)
+
+            }}
               text={'Get Qavah gold* \n 5 free super likes every 1 week'}
               width={windowWidth * 0.65}
               height={windowHeight * 0.07}

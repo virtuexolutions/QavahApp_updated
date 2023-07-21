@@ -38,7 +38,7 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const focused = useIsFocused();
   const user = useSelector(state => state.commonReducer.userData);
-  // console.log("🚀 ~ file: HomeScreen.js:40 ~ user:", user)
+  console.log("🚀 ~ file: HomeScreen.js:40 ~ user:", user)
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ token:", token)
@@ -118,7 +118,6 @@ const HomeScreen = () => {
     if (LogData.length > 0) {
       const undoData = [...LogData];
       LogData.pop();
-      // console.log("🚀 ~ file: HomeScreen.js:173 ~ UndoLog ~ undoData:", undoData)
 
       const url = 'swap/rewind';
 
@@ -128,20 +127,13 @@ const HomeScreen = () => {
         targetsUid: undoData[undoData?.length - 1]?.id,
         targetName: undoData[undoData?.length - 1]?.profileName,
       };
-      // return console.log("🚀 ~ file: HomeScreen.js:127 ~ UndoLog ~ body:", body)
-      setIsLoading(true);
+     setIsLoading(true);
 
       const response = await Post(url, body, apiHeader(token));
       setIsLoading(false);
 
       if (response?.data?.status) {
-        // console.log("🚀 ~ file: HomeScreen.js:180 ~ UndoLog ~ response:", response?.data?.response?.target_user)
         setPhotoCards(prev => [undoData[undoData?.length - 1], ...prev]);
-        // console.log(
-        //   '🚀 ~ file: HomeScreen.js:136 ~ UndoLeft ~ leftLogData:',
-        //   LogData,
-        // );
-        // console.log('photoCards after undo', photoCards);
         allow && (await swiperRef.swipeBack());
       }
     }

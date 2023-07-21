@@ -4,6 +4,8 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
+  ToastAndroid,
+  Platform,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../Components/Header';
@@ -17,29 +19,32 @@ import {PointsComponent} from './Subscription';
 import CustomButton from '../Components/CustomButton';
 import {Get} from '../Axios/AxiosInterceptorFunction';
 import {useSelector} from 'react-redux';
+import PaymentModal from '../Components/PaymentModal';
 
 const {height, width} = Dimensions.get('window');
 
 const GetSuperLike = ({route}) => {
   const token = useSelector(State => State.authReducer.token);
+  const user = useSelector(state => state.commonReducer.userData);
+  console.log("🚀 ~ file: GetSuperLike.js:29 ~ GetSuperLike ~ user:", user)
+  console.log("🚀 ~ file: GetSuperLike.js:29 ~ GetSuperLike ~ user:", user)
+  const {text} = route.params;
 
   const [selected, setSelected] = useState('');
   const [packages, setPackages] = useState([]);
-  const {text} = route.params;
+  console.log(
+    '🚀 ~ file: GetSuperLike.js:30 ~ GetSuperLike ~ packages:',
+    packages,
+  );
+
   const [price, setPrice] = useState(0);
+  const [paymentModalVisible, setPaymentModalVisible] = useState(false);
 
   const pointsArray = [
     {lock: false, text: 'Unlimited Likes'},
     {lock: false, text: 'See who likes you'},
     {lock: true, text: 'Priority Likes'},
   ];
-
-  //   const packages = [
-  //     {title: 'Monthly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
-  //     {title: 'Weekly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
-  //     {title: 'yearly', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.', price: '4,274.93'},
-
-  // ];
 
   const getSubscriptionPlan = async () => {
     const url = 'packages';
@@ -49,15 +54,12 @@ const GetSuperLike = ({route}) => {
       const newData = response?.data?.packages;
       console.log(
         '🚀 ~ file: GetSuperLike.js:43 ~ getSubscriptionPlan ~ newData:',
-        ...newData?.platinum,
+        newData?.premium,
       );
-      // console.log(
-      //   '🚀 ~ file: GetSuperLike.js:43 ~ getSubscriptionPlan ~ newData2:',
-      //   ...newData?.gold.flat(),
-      // );
-
       text == 'Platinum'
         ? setPackages([newData?.month_to_month[0], ...newData?.platinum])
+        : text == 'Add-ons'
+        ? setPackages(newData?.premium)
         : setPackages([newData?.month_to_month[1], ...newData?.gold]);
     }
   };
@@ -97,6 +99,7 @@ const GetSuperLike = ({route}) => {
         <View
           style={{
             marginTop: moderateScale(20, 0.3),
+            // marginLeft:moderateScale(10,.3),
             marginHorizontal: moderateScale(20, 0.3),
           }}>
           <CustomText
@@ -108,10 +111,10 @@ const GetSuperLike = ({route}) => {
               },
             ]}
             isBold>
-            {'Lorem Ipsum Dol Consectetur Adipiscing Elit.'}
+            {`${text} Packages`}
           </CustomText>
           <CustomText
-          isBold
+            isBold
             style={[
               styles.Txt1,
               {
@@ -123,26 +126,25 @@ const GetSuperLike = ({route}) => {
             Select a plan
           </CustomText>
         </View>
-        
+
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           // style={{marginHorizontal: moderateScale(10, 0.3)}}
           contentContainerStyle={{
-            paddingHorizontal : moderateScale(10,0.6),
-          }}
->
+            paddingHorizontal: moderateScale(10, 0.6),
+          }}>
           {packages.map((item, index) => (
             <TouchableOpacity
               onPress={() => {
-                setSelected(item?.title);
+                setSelected(item);
                 setPrice(item?.price);
               }}>
               <PlanCard
                 key={index}
-                title={item.title}
-                description={item.description}
-                price={item.price}
+                title={item?.title}
+                description={item?.description}
+                price={item?.price}
                 selected={selected}
                 item={item}
               />
@@ -152,12 +154,21 @@ const GetSuperLike = ({route}) => {
 
         <PointsComponent array={pointsArray} title={'Upgrade your likes'} />
       </ScrollView>
+
       <CustomButton
         text={price == 0 ? 'continue' : `$${price}`}
         textColor={Color.white}
         width={width * 0.8}
         height={height * 0.07}
-        onPress={() => {}}
+        onPress={() => {
+          if (user?.subscription?.length > 1 ) {
+         return   Platform.OS == 'android'
+         ? ToastAndroid.show(`Already subscribed to a ${user?.subscription[1].pkg_name}`, ToastAndroid.SHORT)
+         : alert(`Already subscribed to a ${user?.subscription[1].pkg_name}`);
+          }
+          
+          setPaymentModalVisible(true);
+        }}
         marginLeft={width * 0.05}
         marginRight={width * 0.05}
         bgColor={Color.themeColor}
@@ -171,6 +182,11 @@ const GetSuperLike = ({route}) => {
           position: 'absolute',
           bottom: moderateScale(5, 0.3),
         }}
+      />
+      <PaymentModal
+        isVisible={paymentModalVisible}
+        setIsVisible={setPaymentModalVisible}
+        item={selected}
       />
     </>
   );
