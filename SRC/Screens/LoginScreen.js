@@ -34,6 +34,7 @@ import {setUserData} from '../Store/slices/common';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
+
 const LoginScreen = ({route}) => {
   const navigationN = useNavigation();
   const dispatch = useDispatch();
@@ -69,6 +70,7 @@ const LoginScreen = ({route}) => {
     const response = await Post(url, body, apiHeader());
     setIsLoading(false);
     if (response?.data?.status) {
+    
       // return console.log('response ========>' , response?.data?.user)
       dispatch(setUserData(response?.data?.user));
       dispatch(setUserToken({token: response?.data?.token}));
@@ -80,6 +82,8 @@ const LoginScreen = ({route}) => {
         : alert(response?.data?.message);
     }
   };
+
+
 
   return (
     <ScrollView

@@ -129,6 +129,9 @@ const MatchModal = ({isVisible, setIsVisible}) => {
           />
         </View>
         <CustomText
+        onPress={()=>{
+          setIsVisible(false)
+        }}
           style={{
             marginTop: moderateScale(30, 0.3),
             color: Color.veryLightGray,

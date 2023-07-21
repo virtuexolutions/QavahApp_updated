@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Alert, Platform, ToastAndroid} from 'react-native';
 import React, {useState} from 'react';
 import Modal from 'react-native-modal';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
@@ -28,6 +28,11 @@ const ReportModal = ({isVisible, setIsVisible, onPress, reason, setReason,userDa
   ];
 
   const handlePrompt = () => {
+    if([undefined , null , ''].includes(reason)){
+    return  Platform.OS == 'android' ?
+      ToastAndroid.show('Please Select some reason first' , ToastAndroid.SHORT) :
+      alert('Please Select some reason first')
+    }
     Alert.alert(
       'Confirmation',
       'Are you sure you want to perform this action?',
@@ -102,33 +107,12 @@ const ReportModal = ({isVisible, setIsVisible, onPress, reason, setReason,userDa
         </CustomText>) 
       })}
 
-        {/* <TextInputWithTitle
-          maxLength={2000}
-          titleText={'Reason'}
-          secureText={false}
-          placeholder={
-            'Reason for reporting'
-          }
-          setText={setReason}
-          value={reason}
-          viewHeight={0.18}
-          viewWidth={0.7}
-          inputWidth={0.86}
-          border={1}
-          borderColor={Color.veryLightGray}
-          backgroundColor={'#FFFFFF'}
-          marginTop={moderateScale(5, 0.3)}
-          color={Color.red}
-          placeholderColor={Color.themeLightGray}
-          borderRadius={moderateScale(5, 0.3)}
-          multiline
-        /> */}
-        <View style={{flexDirection:'row'}}>
+        <View style={{flexDirection:'row' , width : windowWidth * 0.55 , justifyContent : 'space-between' , marginTop : moderateScale(20,0.3)}}>
         <CustomButton
           text={'Cancel'}
           textColor={Color.white}
-          width={windowWidth * 0.3}
-          height={windowHeight * 0.06}
+          width={windowWidth * 0.25}
+          height={windowHeight * 0.05}
           marginTop={moderateScale(10, 0.3)}
           bgColor={Color.themeColor}
           borderRadius={moderateScale(25, 0.3)}
@@ -142,8 +126,8 @@ const ReportModal = ({isVisible, setIsVisible, onPress, reason, setReason,userDa
          <CustomButton
           text={'Report'}
           textColor={Color.white}
-          width={windowWidth * 0.3}
-          height={windowHeight * 0.06}
+          width={windowWidth * 0.25}
+          height={windowHeight * 0.05}
           marginTop={moderateScale(10, 0.3)}
           bgColor={Color.themeColor}
           borderRadius={moderateScale(25, 0.3)}

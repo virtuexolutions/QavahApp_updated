@@ -277,6 +277,7 @@ const MoreAboutme = (props) => {
           setText={setDescription}
           value={description}
           viewHeight={0.22}
+          inputHeight={0.2}
           viewWidth={0.9}
           inputWidth={0.86}
           border={1}

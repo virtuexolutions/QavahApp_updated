@@ -7,7 +7,7 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {Platform} from 'react-native';
+import {PermissionsAndroid, Platform} from 'react-native';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider, useDispatch, useSelector} from 'react-redux';
 import {StripeProvider} from '@stripe/stripe-react-native';
@@ -57,12 +57,7 @@ const App = () => {
 
 const MainContainer = () => {
   const dispatch = useDispatch();
-  const appID = "2092182aee051e28";
-  const region = "US";
-  const appSetting = new CometChat.AppSettingsBuilder()
-    .subscribePresenceForAllUsers()
-    .setRegion(region)
-    .build();
+
   
   // fcm
   //  useEffect(() => {
@@ -117,27 +112,37 @@ const MainContainer = () => {
   //  }, []);
   // fcm ends
 
-  const configureCometChat = async()=>{
-    console.log('here is the chat configuration')
-    CometChat.init(appID, appSetting).then(
-      () => {
-        console.log("Initialization completed successfully");
-        // You can now call login function.
-      },
-      (error) => {
-        console.log("Initialization failed with error:", error);
-        // Check the reason for error and take appropriate action.
-      }
-    );
-  }
+
+  // const requestVibratePermission = async () => {
+  //   try {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.VIBRATE,
+  //       {
+  //         title: 'Vibrate Permission',
+  //         message:
+  //           'Qavah App needs access to your vibration sensor '
+           
+  //       },
+  //     );
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       console.log('You can use the vibration');
+  //     } else {
+  //       console.log('Camera permission denied');
+  //     }
+  //   } catch (err) {
+  //     console.warn(err);
+  //   }
+  // };
 
   useEffect(() => {
     async function GetPermission() {
       await requestCameraPermission();
       await requestWritePermission();
-      await requestLocationPermission();}
+      await requestLocationPermission();
+      // await requestVibratePermission();
+    }
     GetPermission();
-    configureCometChat()
+    // configureCometChat()
   }, []);
 
   const [isloading] = useloader(true);
