@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   ToastAndroid,
   Platform,
+  Alert
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Header from '../Components/Header';
@@ -18,13 +19,8 @@ import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import BtnContainer from '../Components/BtnContainer';
-import Modal from 'react-native-modal';
-import CustomText from '../Components/CustomText';
-import {Icon} from 'native-base';
-import NotificationComponent from '../Components/NotificationComponent';
 import {useDispatch, useSelector} from 'react-redux';
 import SuperLikeModal from '../Components/SuperLikeModal';
 import SpotLightModal from '../Components/SpotlightModal';
@@ -33,6 +29,8 @@ import CustomImage from '../Components/CustomImage';
 import NullDataComponent from '../Components/NullDataComponent';
 import {useIsFocused} from '@react-navigation/native';
 import MatchModal from '../Components/MatchModal';
+import { setUserData } from '../Store/slices/common';
+
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -53,6 +51,7 @@ const HomeScreen = () => {
   const [selectedId, setSelectedId] = useState(0);
   const [photoCards, setPhotoCards] = useState([]);
   const [matchModalVisible, setMatchModalVisible] = useState(false)
+  
   // console.log("🚀 ~ file: HomeScreen.js:45 ~ photoCards:", photoCards)
 
   const [LogData, setLogData] = useState([]);
@@ -71,6 +70,23 @@ const HomeScreen = () => {
       // console.log(response?.data?.peoples);
     }
   };
+
+  const ActiveSpotLight = async()=>{
+    const url = 'swap/activate_spotlight';
+    setIsLoading(true)
+    const response = await Post(url , {} , apiHeader(token))
+    setIsLoading(false)
+    if(response != undefined){
+      console.log(response?.data)
+      Platform.OS == 'android'
+      ? ToastAndroid.show(
+          response?.data?.message,
+          ToastAndroid.SHORT,
+        )
+      : alert(response?.data?.message);
+      dispatch(setUserData(response?.data?.resp));
+    }
+  }
   const handleOnSwipedLeft = async () => {
     swiperRef.swipeLeft();
   };
@@ -303,7 +319,7 @@ const HomeScreen = () => {
                         response?.data?.error,
                         ToastAndroid.SHORT,
                       )
-                    : Alert.Alert(response?.data?.error);
+                    : Alert.alert(response?.data?.error);
                 }
               }}
               onSwiping={(x, y) => {
@@ -391,6 +407,24 @@ const HomeScreen = () => {
               name={'lightning-bolt'}
               type={MaterialCommunityIcons}
               onPress={() => {
+                user?.subscription.some((item , index)=>item.spotlights > 0) ?
+                Alert.alert(
+                  'Confirmation',
+                  'Are you sure you want to Active the spotlight?',
+                  [
+                    {
+                      text: 'Cancel',
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'Confirm',
+                      onPress: () => {
+                        ActiveSpotLight();
+                      },
+                    },
+                  ],
+                )
+                :
                 setSpotLightVisible(true);
                 // setMatchModalVisible(true);
               }}

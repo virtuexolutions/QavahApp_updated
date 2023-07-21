@@ -17,17 +17,25 @@ import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomButton from '../Components/CustomButton';
-import {ScrollView} from 'native-base';
-import {useIsFocused} from '@react-navigation/native';
+import {Icon, ScrollView} from 'native-base';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import {validateEmail} from '../Config';
-import {setIsLoggedIn, setUserLogin, setUserToken, setWalkThrough} from '../Store/slices/auth';
+import {
+  setIsLoggedIn,
+  setUserLogin,
+  setUserToken,
+  setWalkThrough,
+} from '../Store/slices/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 import Header from '../Components/Header';
-import { setUserData } from '../Store/slices/common';
+import {setUserData} from '../Store/slices/common';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+
 
 const LoginScreen = ({route}) => {
+  const navigationN = useNavigation();
   const dispatch = useDispatch();
   const text = route?.params?.text;
   console.log('🚀 ~ file: LoginScreen.js:30 ~ LoginScreen ~ text:', text);
@@ -36,7 +44,6 @@ const LoginScreen = ({route}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
 
   const handleLogin = async () => {
     // console.log(
@@ -63,127 +70,129 @@ const LoginScreen = ({route}) => {
     setIsLoading(false);
     if (response?.data?.status) {
       // return console.log('response ========>' , response?.data?.user)
-      dispatch(setUserData(response?.data?.user))
-        dispatch(setUserToken({token: response?.data?.token}));
-        dispatch(setIsLoggedIn());
-      }
-      else{
-        console.log(response?.data?.message)
-        Platform.OS == 'android'
+      dispatch(setUserData(response?.data?.user));
+      dispatch(setUserToken({token: response?.data?.token}));
+      dispatch(setIsLoggedIn());
+    } else {
+      console.log(response?.data?.message);
+      Platform.OS == 'android'
         ? ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT)
         : alert(response?.data?.message);
-      }
+    }
   };
 
   return (
-
-      <ScrollView
+    <ScrollView
       contentContainerStyle={{
         alignItems: 'center',
-        
       }}
-        style={{
-          minHeight: windowHeight,
-          backgroundColor: Color.white,
-          flexGrow : 0
+      style={{
+        minHeight: windowHeight,
+        backgroundColor: Color.white,
+        flexGrow: 0,
+      }}>
+      <CustomStatusBar
+        backgroundColor={Color.white}
+        barStyle={'dark-content'}
+      />
+      <Icon
+        name={'left'}
+        as={AntDesign}
+        size={moderateScale(25, 0.3)}
+        color={Color.themeLightGray}
+        onPress={() => {
+          navigationN.goBack();
         }}
-      >
-        <CustomStatusBar
-          backgroundColor={Color.white}
-          barStyle={'dark-content'}
-        />
-        <Header
-          showLeft={true}
-          leftName={'left'} />
-        <View
+        style={{
+          position: 'absolute',
+          left: moderateScale(10, 0.3),
+        }}
+      />
+  <View
+        style={{
+          width: windowWidth * 0.37,
+          height: windowHeight * 0.17,
+          marginTop: windowHeight * 0.05,
+        }}>
+        <CustomImage
+          source={require('../Assets/Images/splashLogo.png')}
+          resizeMode={'contain'}
           style={{
-            width: windowWidth * 0.37,
-            height: windowHeight * 0.17,
-        marginTop: windowHeight * 0.05,
-
+            width: '100%',
+            height: '100%',
           }}
-        >
-          <CustomImage
-            source={require('../Assets/Images/splashLogo.png')}
-            resizeMode={'contain'}
-            style={{
-              width: '100%',
-              height: '100%',
-            }}
-          />
-        </View>
-
-        <TextInputWithTitle
-          iconName={'user'}
-          iconType={FontAwesome}
-          titleText={`Enter Your email`}
-          secureText={false}
-          placeholder={`Enter Your email`}
-          setText={setEmail}
-          value={email}
-          viewHeight={0.07}
-          viewWidth={0.9}
-          inputWidth={0.86}
-          borderColor={'#ffffff'}
-          backgroundColor={'#FFFFFF'}
-          marginTop={windowHeight * 0.1}
-          color={Color.themeColor}
-          placeholderColor={Color.themeLightGray}
-          borderRadius={moderateScale(10, 0.3)}
-          elevation
         />
-        <TextInputWithTitle
-          iconName={'lock'}
-          iconType={FontAwesome}
-          titleText={'password'}
-          secureText={true}
-          placeholder={'password'}
-          setText={setPassword}
-          value={password}
-          viewHeight={0.07}
-          viewWidth={0.9}
-          inputWidth={0.86}
-          backgroundColor={'#FFFFFF'}
-          marginTop={moderateScale(15, 0.6)}
-          color={Color.themeColor}
-          placeholderColor={Color.themeLightGray}
-          // borderRadius={moderateScale(25, 0.3)}
-          marginBottom={moderateScale(10, 0.3)}
-          elevation
-        />
-        <CustomText
-          onPress={() => {
-            navigationService.navigate('EnterPhone', {fromForgot: true});
-          }}
-          style={[
-            styles.txt3,
-            {
-              color: Color.themeColor,
-              marginTop: moderateScale(20, 0.3),
-            },
-          ]}
-        >
-          {'Forgot Password?'}
-        </CustomText>
+      </View>
 
-        <CustomButton
-          text={
-            isLoading ? (
-              <ActivityIndicator color={'#FFFFFF'} size={'small'} />
-            ) : (
-              'Login'
-            )
-          }
-          textColor={Color.white}
-          width={windowWidth * 0.9}
-          height={windowHeight * 0.08}
-          marginTop={moderateScale(10, 0.3)}
-          onPress={handleLogin}
-          bgColor={Color.themeColor}
-          borderRadius={moderateScale(15, 0.3)}
-        />
+      <TextInputWithTitle
+        iconName={'user'}
+        iconType={FontAwesome}
+        titleText={`Enter Your email`}
+        secureText={false}
+        placeholder={`Enter Your email`}
+        setText={setEmail}
+        value={email}
+        viewHeight={0.07}
+        viewWidth={0.9}
+        inputWidth={0.86}
+        borderColor={'#ffffff'}
+        backgroundColor={'#FFFFFF'}
+        marginTop={windowHeight * 0.1}
+        color={Color.themeColor}
+        placeholderColor={Color.themeLightGray}
+        borderRadius={moderateScale(10, 0.3)}
+        elevation
+      />
+      <TextInputWithTitle
+        iconName={'lock'}
+        iconType={FontAwesome}
+        titleText={'password'}
+        secureText={true}
+        placeholder={'password'}
+        setText={setPassword}
+        value={password}
+        viewHeight={0.07}
+        viewWidth={0.9}
+        inputWidth={0.86}
+        backgroundColor={'#FFFFFF'}
+        marginTop={moderateScale(15, 0.6)}
+        color={Color.themeColor}
+        placeholderColor={Color.themeLightGray}
+        // borderRadius={moderateScale(25, 0.3)}
+        marginBottom={moderateScale(10, 0.3)}
+        elevation
+      />
+      <CustomText
+        onPress={() => {
+          navigationService.navigate('EnterPhone', {fromForgot: true});
+        }}
+        style={[
+          styles.txt3,
+          {
+            color: Color.themeColor,
+            marginTop: moderateScale(20, 0.3),
+          },
+        ]}>
+        {'Forgot Password?'}
+      </CustomText>
 
-      </ScrollView>
+      <CustomButton
+        text={
+          isLoading ? (
+            <ActivityIndicator color={'#FFFFFF'} size={'small'} />
+          ) : (
+            'Login'
+          )
+        }
+        textColor={Color.white}
+        width={windowWidth * 0.9}
+        height={windowHeight * 0.08}
+        marginTop={moderateScale(10, 0.3)}
+        onPress={handleLogin}
+        bgColor={Color.themeColor}
+        borderRadius={moderateScale(15, 0.3)}
+      />
+    </ScrollView>
   );
 };
 
