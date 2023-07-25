@@ -43,6 +43,7 @@ import DiscreteModal from './DiscreteModal';
 import NullDataComponent from './NullDataComponent';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SubscriptionListing from './SubscriptionListing';
+import { Pusher } from '@pusher/pusher-websocket-react-native';
 
 const Header = props => {
   const dispatch = useDispatch();
@@ -297,10 +298,61 @@ const Header = props => {
   const [searchText, setSearchText] = useState('');
   const user = useSelector(state => state.commonReducer.userData);
   const userRole = useSelector(state => state.commonReducer.selectedRole);
+  const pusher = Pusher.getInstance();
+
 
   useEffect(() => {
     rightName == 'bell' && getNotifications();
   }, [focused]);
+
+  useEffect(() => {
+    console.log(
+    'useEffect runs'
+    )
+    async function connectPusher() {
+      try {
+        await pusher.init({
+          apiKey : '4efccc4b7d5f1c9677a9',
+          cluster : 'ap2',
+        });
+      
+        myChannel = await pusher.subscribe({channelName: `my-channel-${data?.id}` ,
+        onSubscriptionSucceeded: (channelName, data) => {
+          // console.log("🚀 ~ file: SelectedChat.js:77 ~ connectPusher ~ myChannel:", myChannel)
+              // console.log(`Subscribed to ${JSON.stringify(channelName , null ,2)}`);
+              // console.log(`And here are the channel members: ${myChannel.members}`)
+            },
+            onEvent: (event) => {
+              console.log("🚀 ~ file: SelectedChat.js:127 ~ connectPusher ~ event:", event)
+              console.log('Got channel event:' , JSON.parse(event.data) );
+              const dataString = JSON.parse(event.data) ;
+              console.log("🚀 ~ file: SelectedChat.js:116 ~ connectPusher ~ dataString:", dataString?.response , dataString?.target_id , user?.id)
+              if(dataString.target_id == user?.id ){
+              //  alert('here' , user?._id)
+              setMessages(previousMessages =>
+                GiftedChat.append(previousMessages, dataString?.response),
+              );
+              // return 
+              }
+            } ,
+      })
+        // await pusher.subscribe({ channelName });
+        await pusher.connect();
+      } catch (e) {
+        console.log(`ERROR: ${e}`);
+      }
+
+    }
+    connectPusher()
+    
+
+      
+     
+ 
+    return async()=>{
+      await pusher.unsubscribe({channelName:`my-channel-${data?.id}`});
+    }
+  }, [])
 
   return (
     <View style={styles.header2}>
@@ -454,7 +506,7 @@ const Header = props => {
                 text={'GET MOre'}
                 textColor={'purple'}
                 onPress={() => {
-                  navigationService.navigate('GetSuperLike', {text: 'Add-ons'});
+                  navigationService.navigate('GetSuperLike', {text: 'premium features'});
                   // setSpotLightVisible(true);
                   setDrawerModal(false);
                 }}
@@ -465,7 +517,7 @@ const Header = props => {
                 text={'GET MOre'}
                 textColor={'#AA336A'}
                 onPress={() => {
-                  navigationService.navigate('GetSuperLike', {text: 'Add-ons'});
+                  navigationService.navigate('GetSuperLike', {text: 'premium features'});
                   // setLoveNotesVisible(true);
                   setDrawerModal(false);
                 }}
@@ -477,7 +529,7 @@ const Header = props => {
                 text={'GET More'}
                 textColor={'#286086'}
                 onPress={() => {
-                  navigationService.navigate('GetSuperLike', {text: 'Add-ons'});
+                  navigationService.navigate('GetSuperLike', {text: 'premium features'});
                   // setDiscreteModal(true);
                   setDrawerModal(false);
                 }}

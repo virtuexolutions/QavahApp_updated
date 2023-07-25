@@ -6,6 +6,7 @@ import {
   View,
   Platform,
   ToastAndroid,
+  BackHandler
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -470,6 +471,15 @@ const IsraeliteFilters = props => {
     if (check != undefined) {
       setIsCecked(check);
     }
+    const backhandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        leftPress()
+        // console.log('data here');
+        return true;
+      },
+    );
+    return () => backhandler.remove();
   }, [focused]);
 
   return (

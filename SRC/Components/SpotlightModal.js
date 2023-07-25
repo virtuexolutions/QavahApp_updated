@@ -264,7 +264,7 @@ const SpotLightModal = ({isVisible, setIsVisible}) => {
                     height={windowHeight * 0.06}
                     fontSize={moderateScale(12, 0.6)}
                     onPress={()=>{
-                      navigationService.navigate('GetSuperLike',{item: packages[index], text:'Add-ons'}),setIsVisible(false)
+                      navigationService.navigate('GetSuperLike',{item: packages[index], text:'premium features'}),setIsVisible(false)
                     }}
                     bgColor={Color.themeBgColor}
                     borderRadius={moderateScale(25, 0.3)}

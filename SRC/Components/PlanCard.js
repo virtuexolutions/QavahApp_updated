@@ -10,7 +10,8 @@ import {windowWidth} from '../Utillity/utils';
 const {height, width} = Dimensions.get('window');
 
 const PlanCard = ({title, description, price, selected, item}) => {
-  console.log("🚀 ~ file: PlanCard.js:13 ~ PlanCard ~ selected:", selected)
+  console.log("🚀 ~ file: PlanCard.js:13 ~ PlanCard ~ item:", item)
+  console.log('🚀 ~ file: PlanCard.js:13 ~ PlanCard ~ selected:', selected);
   const splitedItem = title.split(' ');
   console.log(
     '🚀 ~ file: PlanCard.js:13 ~ PlanCard ~ splitedItem:',
@@ -21,9 +22,13 @@ const PlanCard = ({title, description, price, selected, item}) => {
       style={[
         styles.container,
         {
-          borderColor:
-          selected?.title ? 
-            selected?.title === item?.title ? Color.themeColor : Color.veryLightGray: selected?.pkg_name == item?.title ? Color.themeColor : Color.veryLightGray,
+          borderColor: selected?.title
+            ? selected?.title === item?.title
+              ? Color.themeColor
+              : Color.veryLightGray
+            : selected?.pkg_name == item?.title
+            ? Color.themeColor
+            : Color.veryLightGray,
         },
       ]}>
       <View style={styles.iconContainer}>
@@ -35,14 +40,20 @@ const PlanCard = ({title, description, price, selected, item}) => {
               fontSize: moderateScale(22, 0.6),
               width: windowWidth * 0.4,
               // backgroundColor:'red',
-              color:  selected?.title ? 
-              selected?.title === item?.title ? Color.themeColor : Color.veryLightGray: selected?.pkg_name == item?.title ? Color.themeColor : Color.veryLightGray,
+              color: selected?.title
+                ? selected?.title === item?.title
+                  ? Color.themeColor
+                  : Color.veryLightGray
+                : selected?.pkg_name == item?.title
+                ? Color.themeColor
+                : Color.veryLightGray,
             },
           ]}
           bold>
           {splitedItem[0] == 'Qavah' ? 'Month To Month' : title}
         </CustomText>
-        {   ((selected?.pkg_name && selected?.pkg_name == item?.title ) || (selected?.title && selected?.title == item?.title))&&  (
+        {((selected?.pkg_name && selected?.pkg_name == item?.title) ||
+          (selected?.title && selected?.title == item?.title)) && (
           <Icon
             name={'checkcircleo'}
             as={AntDesign}
@@ -53,7 +64,7 @@ const PlanCard = ({title, description, price, selected, item}) => {
               //   navigationN.goBack()
             }}
           />
-        ) }
+        )}
       </View>
       <CustomText
         numberOfLines={7}
@@ -65,7 +76,7 @@ const PlanCard = ({title, description, price, selected, item}) => {
             marginTop: moderateScale(20, 0.3),
           },
         ]}>
-        {`  Plan Includes \n\n -> ${
+        {selected?.pkg_catogery == 'platinum' && splitedItem[0] != 'Qavah' ? item?.description : `Plan Includes \n\n -> ${
           item?.lovenotes ? item?.lovenotes : '0'
         } Love Notes \n\n -> ${
           item?.spotlights ? item?.spotlights : '0'
@@ -77,7 +88,13 @@ const PlanCard = ({title, description, price, selected, item}) => {
           {
             fontSize: moderateScale(15, 0.6),
             marginTop: moderateScale(5, 0.3),
-            color: selected?.title ? selected?.title == item?.title ? Color.themeColor : 'black' : selected?.pkg_name == item?.title ? Color.themeColor : 'black',
+            color: selected?.title
+              ? selected?.title == item?.title
+                ? Color.themeColor
+                : 'black'
+              : selected?.pkg_name == item?.title
+              ? Color.themeColor
+              : 'black',
             position: 'absolute',
             bottom: 10,
             left: 10,
