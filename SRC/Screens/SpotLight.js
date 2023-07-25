@@ -338,7 +338,7 @@ const SpotLight = () => {
     getSpotLightData();
     getTheyAreYourType();
     getYourAreThereType();
-  }, [isFocused]);
+  }, []);
 
   return (
     <>

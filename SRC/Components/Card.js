@@ -5,6 +5,7 @@ import {
   Image,
   ImageSourcePropType,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import {shape, string, number} from 'prop-types';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
@@ -26,10 +27,10 @@ const Card = memo(({card, height, setCards, cards, fromSpotLight}) => {
   const userData = useSelector(state => state.commonReducer.userData);
   console.log(
     '🚀 ~ file: Card.js:27 ~ Card ~ userData:',
-    userData?.subscription.length,
+    userData?.subscription?.length,
   );
   const [subscription, setSubscription] = useState(
-    userData?.subscription.length > 0 ? true : false,
+    userData?.subscription?.length > 0 ? true : false,
   );
   console.log('🚀 ~ file: Card.js:29 ~ Card ~ subscription:', subscription);
 

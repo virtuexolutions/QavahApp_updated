@@ -30,14 +30,11 @@ const Subscription = () => {
   const userData = useSelector(state => state.commonReducer.userData);
   console.log(
     '🚀 ~ file: Subscription.js:30 ~ Subscription ~ userData:',
-    userData?.subscription[0].pkg_catogery,
+    userData?.subscription[0]?.pkg_catogery,
   );
   const [itemColor, setItemColor] = useState(['#A97142', '#996633', '#A97142']);
 
-  const pkg_category =userData?.subscription.map(item => {
-     return (item?.pkg_catogery);
-  });
-  console.log("🚀 ~ file: Subscription.js:39 ~ Subscription ~ pkg_category:", pkg_category)
+  
 
 
   const subscriptions = [
@@ -200,23 +197,9 @@ const Subscription = () => {
         width={windowWidth * 0.8}
         height={windowHeight * 0.07}
         onPress={() => {
-          if (pkg_category?.includes(text) && text.toLowerCase() != 'add-ons'.toLowerCase()) {
-            Platform.OS == 'android'
-              ? ToastAndroid.show(
-                  'You have already subscribed',
-                  ToastAndroid.SHORT,
-                )
-              : alert('You have already subscribed');
-          } else if (pkg_category?.includes('platinum') && text.toLowerCase() == 'gold'.toLowerCase()) {
-            Platform.OS == 'android'
-              ? ToastAndroid.show(
-                  'You cannot buy this package',
-                  ToastAndroid.SHORT,
-                )
-              : alert('You cannot buy this package');
-          } else {
-            navigationService.navigate('GetSuperLike', {text: text});
-          }
+
+          navigationService.navigate('GetSuperLike',{text:text});
+          
         }}
         marginLeft={windowWidth * 0.05}
         marginRight={windowWidth * 0.05}

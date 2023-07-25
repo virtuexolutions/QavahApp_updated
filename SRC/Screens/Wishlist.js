@@ -43,9 +43,15 @@ const Wishlist = () => {
     }
   };
   useEffect(() => {
-    getFavouredYouPosts();
-    getYouFavouredPosts();
-  }, [isFocused]);
+    if(selected == 'Favored You'){
+
+      getFavouredYouPosts();
+    }
+    else if(selected == 'You Favored'){
+      
+      getYouFavouredPosts();
+    }
+  }, [isFocused ,selected]);
 
   const [photoCards, setPhotoCards] = useState([
     {

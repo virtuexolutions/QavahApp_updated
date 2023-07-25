@@ -1433,7 +1433,7 @@ const SearchFilterScreen = () => {
         </View>
         {
           people.length > 0 ?
-          <CustomTex>Data Exist</CustomTex>
+          <CustomText>Data Exist</CustomText>
           :
         <>
         

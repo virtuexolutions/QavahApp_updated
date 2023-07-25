@@ -26,24 +26,50 @@ const {height, width} = Dimensions.get('window');
 const GetSuperLike = ({route}) => {
   const token = useSelector(State => State.authReducer.token);
   const user = useSelector(state => state.commonReducer.userData);
-  console.log('🚀 ~ file: GetSuperLike.js:29 ~ GetSuperLike ~ user:', user);
+  // console.log('🚀 ~ file: GetSuperLike.js:29 ~ GetSuperLike ~ user:', user);
   const {text, item} = route.params;
-  console.log("🚀 ~ file: GetSuperLike.js:31 ~ GetSuperLike ~ item:", item)
+  
+  console.log('🚀 ~ file: GetSuperLike.js:31 ~ GetSuperLike ~ item:', text);
+  // console.log('🚀 ~ file: GetSuperLike.js:31 ~ GetSuperLike ~ item:', user?.subscription);
 
   const [packages, setPackages] = useState([]);
-  console.log(
-    '🚀 ~ file: GetSuperLike.js:30 ~ GetSuperLike ~ packages:',
-    packages,
+  // console.log(
+  //   '🚀 ~ file: GetSuperLike.js:30 ~ GetSuperLike ~ packages:',
+  //   packages,
+  // );
+
+
+  const [selected, setSelected] = useState(
+    user?.subscription
+      ? user?.subscription.find(
+          item => item?.pkg_catogery.toLowerCase() == (text.toLowerCase()== 'add-ons' ? 'premium' : text.toLowerCase())
+        )
+      : ' ',
   );
-  const [selected, setSelected] = useState(item? item :'');
-  console.log("🚀 ~ file: GetSuperLike.js:38 ~ GetSuperLike ~ selected:", selected)
+  console.log(
+    '🚀 ~ file: GetSuperLike.js:38 ~ GetSuperLike ~ selected:',
+    selected,
+  );
 
   const [price, setPrice] = useState(item ? item?.price : 0);
   const [paymentModalVisible, setPaymentModalVisible] = useState(false);
-const [packagesName, setpackagesName] = useState(user?.subscription?.map(item=>{
-  return(item?.pkg_name)
-}))
-console.log("🚀 ~ file: GetSuperLike.js:46 ~ GetSuperLike ~ packagesName:", packagesName)
+  const [packagesName, setpackagesName] = useState(
+    user?.subscription?.map(item => {
+      return item?.pkg_name;
+    }),
+  );
+  const pkg_category = user?.subscription.map(item => {
+    return item?.pkg_catogery;
+  });
+  console.log("🚀 ~ file: GetSuperLike.js:64 ~ GetSuperLike ~ pkg_category:", pkg_category)
+  console.log(
+    '🚀 ~ file: GetSuperLike.js:54 ~ GetSuperLike ~ pkg_category:',
+    packagesName,
+  );
+  // console.log(
+  //   '🚀 ~ file: GetSuperLike.js:46 ~ GetSuperLike ~ packagesName:',
+  //   packagesName,
+  // );
 
   const pointsArray = [
     {lock: false, text: 'Unlimited Likes'},
@@ -59,12 +85,12 @@ console.log("🚀 ~ file: GetSuperLike.js:46 ~ GetSuperLike ~ packagesName:", pa
       const newData = response?.data?.packages;
       console.log(
         '🚀 ~ file: GetSuperLike.js:43 ~ getSubscriptionPlan ~ newData:',
-        newData?.premium,
+        newData,
       );
-      console.log(text.toLowerCase() , 'platinum'.toLowerCase())
+      console.log(text.toLowerCase(), 'platinum'.toLowerCase());
       text.toLowerCase() == 'platinum'.toLowerCase()
         ? setPackages([newData?.month_to_month[0], ...newData?.platinum])
-        :  text.toLowerCase() == 'add-ons'.toLowerCase()
+        : text.toLowerCase() == 'add-ons'.toLowerCase()
         ? setPackages(newData?.premium)
         : setPackages([newData?.month_to_month[1], ...newData?.gold]);
     }
@@ -167,18 +193,50 @@ console.log("🚀 ~ file: GetSuperLike.js:46 ~ GetSuperLike ~ packagesName:", pa
         width={width * 0.8}
         height={height * 0.07}
         onPress={() => {
-          if (packagesName.includes(selected?.title)) {
-            return Platform.OS == 'android'
-              ? ToastAndroid.show(
-                  `Already subscribed to a ${selected?.title}`,
-                  ToastAndroid.SHORT,
-                )
-              : alert(
-                  `Already subscribed to a ${selected?.title}`,
-                );
-          }
+          if (selected == '') {
+            Platform.OS == 'android'
+              ? ToastAndroid.show('Please select a package', ToastAndroid.SHORT)
+              : alert('Please select a package');
+          } else {
+            if (
+              pkg_category?.includes(text) &&
+              text.toLowerCase() != 'add-ons'.toLowerCase()
+            ) {
+              Platform.OS == 'android'
+                ? ToastAndroid.show(
+                    `You have already subscribed to ${text}` ,
+                    ToastAndroid.SHORT,
+                  )
+                : alert( `You have already subscribed to ${text}`);
+            } else if (
+              pkg_category?.includes('platinum') &&
+              text.toLowerCase() == 'gold'.toLowerCase()
+            ) {
+              Platform.OS == 'android'
+                ? ToastAndroid.show(
+                    'You already have subscribed platinum so you cannot buy gold ',
+                    ToastAndroid.SHORT,
+                  )
+                : alert(
+                    'You already have subscribed platinum so you cannot buy gold',
+                  );
+            } else if (text.toLowerCase() == 'add-ons'.toLowerCase()) {
+              if (packagesName.includes(selected?.title)) {
+                return Platform.OS == 'android'
+                  ? ToastAndroid.show(
+                      `Already subscribed to ${selected?.title}`,
+                      ToastAndroid.SHORT,
+                    )
+                  : alert(`Already subscribed to ${selected?.title}`);
+              }
+              setPaymentModalVisible(true);
 
-          setPaymentModalVisible(true);
+            }
+            else{
+              setPaymentModalVisible(true);
+
+            }
+          }
         }}
         marginLeft={width * 0.05}
         marginRight={width * 0.05}

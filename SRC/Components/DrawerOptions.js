@@ -21,10 +21,12 @@ const DrawerOptions = ({item}) => {
   const [data, setData] = useState(
     item?.data == 'visibility' ? userData?.prefrences?.global : 0,
   );
-  //   console.log("🚀 ~ file: DrawerOptions.js:22 ~ DrawerOptions ~ data:", data)
+  console.log("🚀 ~ file: DrawerOptions.js:22 ~ DrawerOptions ~ data:",userData?.user_privacy?.value)
+  console.log("🚀 ~ file: DrawerOptions.js:22 ~ DrawerOptions ~ data:",userData?.prefrences?.global)
   const [packages, setPackages] = useState(
     userData?.subscription?.map(item => item.pkg_name),
   );
+  console.log("🚀 ~ file: DrawerOptions.js:28 ~ DrawerOptions ~ packages:", packages)
 
   useEffect(() => {
     //  setData(item?.data == 'visibility' ? userData?.prefrences?.global : 0)
@@ -75,7 +77,7 @@ const DrawerOptions = ({item}) => {
             <Switch
               trackColor={{true: '#EDA63d', false: Color.veryLightGray}}
               thumbColor={
-                userData?.prefrences ? (userData?.prefrences.global ==1 ? Color.themeColor : '#EEEEEE') : '#EEEEEE'
+                userData?.prefrences ? (userData?.prefrences?.global ==1 ? Color.themeColor : '#EEEEEE') : '#EEEEEE'
               }
               // thumbColor={{true:  Color.themeColor, false:'#EEEEEE' }}
               ios_backgroundColor="#3e3e3e"
@@ -86,13 +88,13 @@ const DrawerOptions = ({item}) => {
           ) : (
             <Switch
               trackColor={{true: '#EDA63d', false: Color.veryLightGray}}
-              thumbColor={userData?.user_privacy ? userData?.user_privacy.value=='private' ? Color?.themeColor : '#EEEEEE' :'#EEEEEE' }
+              thumbColor={userData?.user_privacy ? userData?.user_privacy?.value=='private' ? Color?.themeColor : '#EEEEEE' :'#EEEEEE' }
               // thumbColor={{true:  Color.themeColor, false:'#EEEEEE' }}
               ios_backgroundColor="#3e3e3e"
               onValueChange={item?.onPress}
               //value={userData?.prefrences?.global}
               value={userData?.user_privacy ? (userData?.user_privacy?.value == 'private' ? true : false) : false}
-              disabled={packages?.includes('Discrete Mode') ? false : true}
+              // disabled={packages?.includes('Discrete Mode') ? false : true}
             />
           )
         ) : (

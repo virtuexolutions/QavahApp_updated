@@ -51,7 +51,7 @@ const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
       // billingDetails: {
     });
     console.log(
-      '🚀 ~ file: AddCard.js:90 ~ addCard ~ responseData',
+    '🚀 ~ file: AddCard.js:90 ~ addCard ~ responseData',
       JSON.stringify(responseData?.paymentMethod?.id, null, 2),
     );
 
@@ -84,7 +84,6 @@ const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
             })
           )
 
-        // navigationService.navigate('SetGoals');
       }
     }
   };

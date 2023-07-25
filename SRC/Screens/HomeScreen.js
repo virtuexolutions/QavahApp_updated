@@ -76,7 +76,7 @@ const HomeScreen = () => {
     setIsLoading(true)
     const response = await Post(url , {} , apiHeader(token))
     setIsLoading(false)
-    if(response != undefined){
+    if(response?.data?.status){
       console.log(response?.data)
       Platform.OS == 'android'
       ? ToastAndroid.show(
@@ -84,7 +84,16 @@ const HomeScreen = () => {
           ToastAndroid.SHORT,
         )
       : alert(response?.data?.message);
-      dispatch(setUserData(response?.data?.resp));
+      response?.data?.message != 'spotlight already activated' && dispatch(setUserData(response?.data?.resp));
+    }
+    else{
+      Platform.OS == 'android'
+      ? ToastAndroid.show(
+        
+          response?.data?.error,
+          ToastAndroid.SHORT,
+        )
+      : alert(response?.data?.error);
     }
   }
   const handleOnSwipedLeft = async () => {

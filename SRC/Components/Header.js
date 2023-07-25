@@ -56,7 +56,7 @@ const Header = props => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [drawerModal, setDrawerModal] = useState(false);
   // const [switchEnabled, setSwitchEnabled] = useState(false);
-  const [isSpotLightVisible, setSpotLightVisible] = useState(false);
+  // const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [discreteModal, setDiscreteModal] = useState(false);
   const userData = useSelector(state => state.commonReducer.userData);
   const DrawerArray = [
@@ -148,7 +148,7 @@ const Header = props => {
     {
       key: 10,
       title: 'set Account visibility to global',
-      onPress: data => {
+      onPress: () => {
         // setSwitchEnabled(!switchEnabled)
         // console.log('switchEnables value=======>>>>',switchEnabled)
         setAccountVisible();
@@ -159,7 +159,7 @@ const Header = props => {
     {
       key: 13,
       title: 'set Account Private',
-      onPress: data => {
+      onPress: () => {
         // setSwitchEnabled(!switchEnabled)
         // console.log('switchEnables value=======>>>>',switchEnabled)
         setAccountPrivacy();
@@ -177,31 +177,34 @@ const Header = props => {
       return item?.pkg_name;
     }),
   );
+  // console.log("🚀 ~ file: Header.js:180 ~ Header ~ subscription:", subscription)
 
   const setAccountVisible = async () => {
     const url = 'user/update-my-profile-app';
     const response = await Post(url, {}, apiHeader(token));
-    console.log(
-      '🚀 ~ file: Header.js:157 ~ setAccountVisible ~ response:',
-      response?.data,
-    );
+    // console.log(
+    //   '🚀 ~ file: Header.js:157 ~ setAccountVisible ~ response:',
+    //   response?.data,
+    // );
     if (response != undefined) {
       // return console.log('data ======= = = = = = ' , response?.data?.user)
       dispatch(setUserData(response?.data?.user));
     }
   };
   const setAccountPrivacy = async () => {
-    if (subscription?.includes('Discrete Mode')) {
+    if ( userData?.subscription?.map(item => {
+      return item?.pkg_name;
+    }).includes('Discrete Mode')) {
  
       const url = 'user/profile-settings';
       const response = await Post(url, {
         uid: userData?.id,
-        option: userData?.user_privacy.value == 'public' ? 'private' :'public'
+        option: ['public',null,undefined,''].includes(userData?.user_privacy?.value)  ? 'private' :'public'
     }, apiHeader(token));
-      console.log(
-        '🚀 ~ file: Header.js:157 ~ setAccountVisible ~ response:',
-        response?.data,
-      );
+      // console.log(
+      //   '🚀 ~ file: Header.js:157 ~ setAccountVisible ~ response:',
+      //   response?.data,
+      // );
       if (response != undefined) {
         // return console.log('data ======= = = = = = ' , response?.data?.user_privacy)
         dispatch(setUserData(response?.data?.user));
@@ -218,10 +221,10 @@ const Header = props => {
     const response = await Get(url, token);
 
     if (response?.data?.status) {
-      console.log(
-        '🚀 ~ file: Header.js:171 ~ getNotifications ~ response:',
-        JSON.stringify(response?.data, null, 2),
-      );
+      // console.log(
+      //   '🚀 ~ file: Header.js:171 ~ getNotifications ~ response:',
+      //   JSON.stringify(response?.data, null, 2),
+      // );
       setNotificationData(response?.data?.notification);
     }
   };
@@ -605,10 +608,10 @@ const Header = props => {
         isVisible={isBoostModalvisible}
         setIsVisible={setBoostModalvisible}
       /> */}
-      <SpotLightModal
+      {/* <SpotLightModal
         isVisible={isSpotLightVisible}
         setIsVisible={setSpotLightVisible}
-      />
+      /> */}
     </View>
   );
 };
