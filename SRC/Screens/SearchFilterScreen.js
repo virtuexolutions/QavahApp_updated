@@ -44,10 +44,10 @@ const SearchFilterScreen = () => {
   const [scrollEnabled, setScrollEnabled] = useState(true);
   const [people, setPeople] = useState([]);
   const [body, setBody] = useState([]);
-  console.log(
-    '🚀 ~ file: SearchFilterScreen.js:61 ~ SearchFilterScreen ~ body:',
-    body,
-  );
+  // console.log(
+  //   '🚀 ~ file: SearchFilterScreen.js:61 ~ SearchFilterScreen ~ body:',
+  //   body,
+  // );
 
   const [nestedOptions, setNestedOptions] = useState([
     (Visibility = true),
@@ -499,7 +499,7 @@ const SearchFilterScreen = () => {
     const url = 'seeking/seeking/app';
     // console.log('submit clicked')
     // return console.log("location in the search screen",location);
-
+    setPeople([])
     body.push(
       {key: 'age', values: [age1, age2]},
       {key: 'miles', values: [distance]},
