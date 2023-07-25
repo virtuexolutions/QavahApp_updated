@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ToastAndroid,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../Components/Header';
@@ -28,7 +29,7 @@ const GetSuperLike = ({route}) => {
   const user = useSelector(state => state.commonReducer.userData);
   // console.log('🚀 ~ file: GetSuperLike.js:29 ~ GetSuperLike ~ user:', user);
   const {text, item} = route.params;
-  
+
   console.log('🚀 ~ file: GetSuperLike.js:31 ~ GetSuperLike ~ item:', text);
   // console.log('🚀 ~ file: GetSuperLike.js:31 ~ GetSuperLike ~ item:', user?.subscription);
 
@@ -38,6 +39,7 @@ const GetSuperLike = ({route}) => {
   //   packages,
   // );
 
+  const [loading, setLoading] = useState(false);
 
   const [selected, setSelected] = useState(
     user?.subscription
@@ -61,7 +63,10 @@ const GetSuperLike = ({route}) => {
   const pkg_category = user?.subscription.map(item => {
     return item?.pkg_catogery;
   });
-  console.log("🚀 ~ file: GetSuperLike.js:64 ~ GetSuperLike ~ pkg_category:", pkg_category)
+  console.log(
+    '🚀 ~ file: GetSuperLike.js:64 ~ GetSuperLike ~ pkg_category:',
+    pkg_category,
+  );
   console.log(
     '🚀 ~ file: GetSuperLike.js:54 ~ GetSuperLike ~ pkg_category:',
     packagesName,
@@ -79,7 +84,9 @@ const GetSuperLike = ({route}) => {
 
   const getSubscriptionPlan = async () => {
     const url = 'packages';
+    setLoading(true);
     const response = await Get(url, token);
+    setLoading(false);
     if (response != undefined) {
       console.log(JSON.stringify(response?.data, null, 2));
       const newData = response?.data?.packages;
@@ -159,30 +166,38 @@ const GetSuperLike = ({route}) => {
           </CustomText>
         </View>
 
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          // style={{marginHorizontal: moderateScale(10, 0.3)}}
-          contentContainerStyle={{
-            paddingHorizontal: moderateScale(10, 0.6),
-          }}>
-          {packages.map((item, index) => (
-            <TouchableOpacity
-              onPress={() => {
-                setSelected(item);
-                setPrice(item?.price);
-              }}>
-              <PlanCard
-                key={index}
-                title={item?.title}
-                description={item?.description}
-                price={item?.price}
-                selected={selected}
-                item={item}
-              />
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+        {loading ? (
+          <ActivityIndicator
+            color={Color.themeColor}
+            size={'large'}
+            style={{marginTop: moderateScale(10, 0.3)}}
+          />
+        ) : (
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            // style={{marginHorizontal: moderateScale(10, 0.3)}}
+            contentContainerStyle={{
+              paddingHorizontal: moderateScale(10, 0.6),
+            }}>
+            {packages.map((item, index) => (
+              <TouchableOpacity
+                onPress={() => {
+                  setSelected(item);
+                  setPrice(item?.price);
+                }}>
+                <PlanCard
+                  key={index}
+                  title={item?.title}
+                  description={item?.description}
+                  price={item?.price}
+                  selected={selected}
+                  item={item}
+                />
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
 
         <PointsComponent array={pointsArray} title={'Upgrade your likes'} />
       </ScrollView>
@@ -204,10 +219,10 @@ const GetSuperLike = ({route}) => {
             ) {
               Platform.OS == 'android'
                 ? ToastAndroid.show(
-                    `You have already subscribed to ${text}` ,
+                    `You have already subscribed to ${text}`,
                     ToastAndroid.SHORT,
                   )
-                : alert( `You have already subscribed to ${text}`);
+                : alert(`You have already subscribed to ${text}`);
             } else if (
               pkg_category?.includes('platinum') &&
               text.toLowerCase() == 'gold'.toLowerCase()
@@ -230,11 +245,8 @@ const GetSuperLike = ({route}) => {
                   : alert(`Already subscribed to ${selected?.title}`);
               }
               setPaymentModalVisible(true);
-
-            }
-            else{
+            } else {
               setPaymentModalVisible(true);
-
             }
           }
         }}

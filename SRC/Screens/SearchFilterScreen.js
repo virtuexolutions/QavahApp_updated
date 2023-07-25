@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  FlatList
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -20,12 +21,13 @@ import Color from '../Assets/Utilities/Color';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from '../Components/CustomText';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import {Icon, useStyledSystemPropsResolver} from 'native-base';
+import { Icon, useStyledSystemPropsResolver} from 'native-base';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import {useSelector} from 'react-redux';
-import { parse } from 'react-native-svg';
+import {parse} from 'react-native-svg';
+import UserCard from '../Components/UserCard';
 
 const SearchFilterScreen = () => {
   const token = useSelector(state => state.authReducer.token);
@@ -87,7 +89,7 @@ const SearchFilterScreen = () => {
   //step2
   const RoutineArray = [
     {
-      text: 'Routine',
+      text: 'Exercise',
       array: [
         'I don’t exercise regularly',
         'I exercise 1-2 times per week',
@@ -123,11 +125,12 @@ const SearchFilterScreen = () => {
       array: ['yes', 'not sure', 'no'],
     },
     {
-      text: 'have children',
+      text: 'does have children',
       array: [
-        'yes-they dont live at home',
-        'yes-they sometimes live at home',
-        'yes-they live at home',
+        `yes - they don't live at home`,
+        'yes - they sometimes live at home',
+        'yes - they live at home',
+        'No'
       ],
     },
   ];
@@ -138,7 +141,7 @@ const SearchFilterScreen = () => {
         'birds',
         'cats',
         'exotic pets',
-        'dog',
+        'dogs',
         'fish',
         'horses',
         'no',
@@ -153,14 +156,14 @@ const SearchFilterScreen = () => {
       array: [
         'spouse',
         'community',
-        'sister wife',
+        `sister's wife`,
         'friendship',
         'study partner',
-        'my polygyny family is availble for courtship',
-        'biblical concubine',
+        'My Poly Family Is Available For Courtship',
+        'Concubine',
         'non-working wife to manage home affairs',
         'working wife',
-        'husband allows me to run business',
+        'husband - allows me to run business',
       ],
     },
   ];
@@ -168,7 +171,7 @@ const SearchFilterScreen = () => {
   //step 4
   const livingArray = [
     {
-      text: 'Living',
+      text: 'Living Situation',
       array: [
         'None',
         'Live alone',
@@ -176,7 +179,7 @@ const SearchFilterScreen = () => {
         'Live with family',
         'Live with kids',
         'Live with spouse',
-        'Live as sister wife',
+        'Live as a sister wife',
         'Other',
         'Prefer not to say',
       ],
@@ -199,7 +202,7 @@ const SearchFilterScreen = () => {
   ];
   const maritialArray = [
     {
-      text: 'Maritial status',
+      text: 'Marital status',
       array: [
         'Never Married',
         'currently seperated',
@@ -207,7 +210,7 @@ const SearchFilterScreen = () => {
         'divorced',
         'put away',
         'its complicated',
-        'biblical ploygyny marriage',
+        'Poly Marriage',
       ],
     },
   ];
@@ -215,8 +218,8 @@ const SearchFilterScreen = () => {
     {
       text: 'Willing to relocate',
       array: [
-        'willing to relocate within state',
-        'willing to relocate outside the state',
+        'willing to relocate within my state',
+        'Willing To Relocate Out Of State',
         'not willing to relocate',
         'not sure about relocating',
       ],
@@ -238,13 +241,13 @@ const SearchFilterScreen = () => {
       ],
     },
     {
-      text: 'Maritial belief system',
+      text: 'Marital belief system',
       array: [
         'none',
         'monogamy',
         'polygyny',
         'still on the fence',
-        'i believe in polygyny but dont practice it',
+        `i believe in polygyny but don't practice it`,
       ],
     },
     {
@@ -267,24 +270,24 @@ const SearchFilterScreen = () => {
       array: [
         'none',
         'king james version',
-        '1611 king james a/Apocrypha',
-        'ceapher',
-        'scriptures',
-        'i have a library',
-        'book of rememberance',
-        'ask me when we talk',
-        'other',
+        '1611 King James W/Apocrypha',
+        'Cepher Bible',
+        'Scriptures',
+        'I Have A Library',
+        'Book Of Remembrance',
+        'Ask Me When We Talk',
+        'Other',
       ],
     },
     {
       text: 'Affiliation',
       array: [
-        'no',
-        'i study alone',
+        'None',
+        'No, I Study Alone',
         'i am a member of an online org',
         'i am a member of a camp or group',
         'i go to an assembley',
-        'i follow social i attend assembley',
+        'I Follow A Social I Attend An Assembly',
         'i follow a ministry on social media',
         'ask me when we talk',
         'i am  seeking a fellowship',
@@ -497,11 +500,16 @@ const SearchFilterScreen = () => {
     // console.log('submit clicked')
     // return console.log("location in the search screen",location);
 
-    body.push({key : 'age' , values : [age1, age2]}, { key : 'miles'  , values : [distance]}, {key : 'zipcode' ,values: ['11230']} ,{key : 'seeking' ,values: [user?.seeking]});
+    body.push(
+      {key: 'age', values: [age1, age2]},
+      {key: 'miles', values: [distance]},
+      {key: 'zipcode', values: ['11230']},
+      {key: 'seeking', values: [user?.seeking]},
+    );
 
     const dataBody = {
       uid: user?.id,
-      filters:  body,
+      filters: body,
       from: 1,
       lat: user?.location?.latitude,
       lng: user?.location?.longitude,
@@ -512,14 +520,14 @@ const SearchFilterScreen = () => {
       dataBody,
     );
     console.log('Databosy filters===========????', dataBody.filters);
- 
+
     setIsLoading(true);
     const response = await Post(url, dataBody, apiHeader(token));
     setIsLoading(false);
     if (response != undefined) {
       // console.log('Search result Response', response);
       console.log('Search result Response', response?.data?.peoples);
-      setPeople(response?.data?.peoples)
+      setPeople(response?.data?.peoples);
     }
   };
 
@@ -1203,13 +1211,19 @@ const SearchFilterScreen = () => {
                   {item?.array.map((x, index) => {
                     return (
                       <TouchableOpacity
-                      activeOpacity={0.8}
-                      onPress={() => {
-                        // console.log('map index i=====>>>>',i)
-                        const index = filtersOn.indexOf(item?.text);
-                        console.log("🚀 ~ file: SearchFilterScreen.js:1209 ~ {item?.array.map ~ index:", index)
-                        console.log("🚀 ~ file: SearchFilterScreen.js:1203 ~ x:", x)
-                          
+                        activeOpacity={0.8}
+                        onPress={() => {
+                          // console.log('map index i=====>>>>',i)
+                          const index = filtersOn.indexOf(item?.text);
+                          console.log(
+                            '🚀 ~ file: SearchFilterScreen.js:1209 ~ {item?.array.map ~ index:',
+                            index,
+                          );
+                          console.log(
+                            '🚀 ~ file: SearchFilterScreen.js:1203 ~ x:',
+                            x,
+                          );
+
                           let tempData = [];
                           console.log(
                             '🚀 ~ file: SearchFilterScreen.js:1220 ~ {item?.array.map ~ index:',
@@ -1247,7 +1261,6 @@ const SearchFilterScreen = () => {
                                 setFiltersOn(newData);
                               }
                             }
-
                           } else {
                             setBody(prev => [
                               ...prev,
@@ -1265,8 +1278,10 @@ const SearchFilterScreen = () => {
                         }}>
                         <Icon
                           name={
-                             filtersOn.indexOf(item?.text) > -1
-                              ? body[filtersOn.indexOf(item?.text)]?.values.includes(x)
+                            filtersOn.indexOf(item?.text) > -1
+                              ? body[
+                                  filtersOn.indexOf(item?.text)
+                                ]?.values.includes(x)
                                 ? 'square'
                                 : 'square-o'
                               : 'square-o'
@@ -1275,7 +1290,9 @@ const SearchFilterScreen = () => {
                           size={moderateScale(12, 0.6)}
                           color={
                             filtersOn.indexOf(item?.text) > -1
-                              ? body[filtersOn.indexOf(item?.text)]?.values.includes(x)
+                              ? body[
+                                  filtersOn.indexOf(item?.text)
+                                ]?.values.includes(x)
                                 ? Color.themeColor
                                 : Color.veryLightGray
                               : Color.veryLightGray
@@ -1416,7 +1433,7 @@ const SearchFilterScreen = () => {
               fontSize: moderateScale(13, 0.6),
               color: Color.black,
             }}>
-            0 Matches
+            {`${people?.length} matches`}
           </CustomText>
           <CustomText
             style={{
@@ -1431,72 +1448,126 @@ const SearchFilterScreen = () => {
             infinite scroll
           </CustomText>
         </View>
-        {
-          people.length > 0 ?
-          <CustomText>Data Exist</CustomText>
-          :
-        <>
-        
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'flex-end',
-            paddingHorizontal: moderateScale(10, 0.6),
-            marginTop: moderateScale(10, 0.3),
-          }}
-          activeOpacity={0.8}
-          onPress={() => {
-            navigationService.navigate('Seeking');
-          }}>
-          <CustomText
+      
+             {people?.length > 0 && <TouchableOpacity
+             style={{
+               flexDirection: 'row',
+               alignSelf: 'flex-end',
+               paddingHorizontal: moderateScale(10, 0.6),
+               marginTop: moderateScale(10, 0.3),
+             }}
+             activeOpacity={0.8}
+             onPress={() => {
+               navigationService.navigate('Seeking',{data:people});
+             }}>
+             <CustomText
+               style={{
+                 color: Color.themeColor,
+                 fontSize: moderateScale(10, 0.6),
+               }}>
+               See All
+             </CustomText>
+             <Icon
+               name={'arrow-forward'}
+               as={Ionicons}
+               size={moderateScale(15, 0.6)}
+               color={Color.themeColor}
+               style={{
+                 marginLeft: moderateScale(5, 0.3),
+               }}
+             />
+           </TouchableOpacity>}
+          <FlatList
+            data={people}
+            numColumns={2}
+            showsVerticalScrollIndicator={false}
             style={{
-              color: Color.themeColor,
-              fontSize: moderateScale(10, 0.6),
-            }}>
-            See All
-          </CustomText>
-          <Icon
-            name={'arrow-forward'}
-            as={Ionicons}
-            size={moderateScale(15, 0.6)}
-            color={Color.themeColor}
-            style={{
-              marginLeft: moderateScale(5, 0.3),
+              width: windowWidth,
+              backgroundColor: 'white',
+            }}
+            contentContainerStyle={{
+              alignItems: 'center',
+              paddingTop: moderateScale(20, 0.6),
+            }}
+            renderItem={({item, index}) => {
+              return (
+                <UserCard
+                  item={item}
+                  style={[
+                    index % 2 == 0
+                      ? {
+                          marginRight: moderateScale(10, 0.3),
+                        }
+                      : {
+                          marginLeft: moderateScale(10, 0.3),
+                        },
+                    {},
+                  ]}
+                />
+              );
+            }}
+            // ListHeaderComponent={() => {
+            //   return (
+            //     people?.length > 0 && (
+            //       <TextInputWithTitle
+            //         iconName={'search'}
+            //         iconType={FontAwesome}
+            //         titleText={`Search Match Request`}
+            //         secureText={false}
+            //         placeholder={`Search Match Request`}
+            //         setText={setSearch}
+            //         value={search}
+            //         viewHeight={0.06}
+            //         viewWidth={0.85}
+            //         inputWidth={0.83}
+            //         borderColor={Color.veryLightGray}
+            //         backgroundColor={'transparent'}
+            //         placeholderColor={Color.themeLightGray}
+            //         borderRadius={moderateScale(0, 0.3)}
+            //         marginTop={moderateScale(20, 0.3)}
+            //         marginBottom={moderateScale(20, 0.3)}
+            //         border={1}
+            //         color={Color.veryLightGray}
+            //       />
+            //     )
+            //   );
+            // }}
+            ListEmptyComponent={() => {
+              return (
+                <View
+                style={{
+                  width: windowWidth * 0.95,
+                  paddingVertical: moderateScale(20, 0.6),
+                  // backgroundColor : 'red',
+                  alignItems: 'center',
+                }}>
+                <Icon
+                  name={'heart'}
+                  as={AntDesign}
+                  size={moderateScale(35, 0.6)}
+                  color={Color.black}
+                />
+                <CustomText
+                  // isBold
+                  style={{
+                    fontSize: moderateScale(20, 0.6),
+                    color: Color.black,
+                  }}>
+                  Could Not Found Users
+                </CustomText>
+                <CustomText
+                  // isBold
+                  style={{
+                    fontSize: moderateScale(10, 0.6),
+                    color: Color.black,
+                  }}>
+                  Try using different settings and filters
+                </CustomText>
+              </View>
+              );
             }}
           />
-        </TouchableOpacity>
-        <View
-          style={{
-            width: windowWidth * 0.95,
-            paddingVertical: moderateScale(20, 0.6),
-            // backgroundColor : 'red',
-            alignItems: 'center',
-          }}>
-          <Icon
-            name={'heart'}
-            as={AntDesign}
-            size={moderateScale(35, 0.6)}
-            color={Color.black}
-          />
-          <CustomText
-            // isBold
-            style={{
-              fontSize: moderateScale(20, 0.6),
-              color: Color.black,
-            }}>
-            Could Not Found Users
-          </CustomText>
-          <CustomText
-            // isBold
-            style={{
-              fontSize: moderateScale(10, 0.6),
-              color: Color.black,
-            }}>
-            Try using different settings and filters
-          </CustomText>
-        </View>
-        </>
-        }
+         
       </ScrollView>
     </>
   );

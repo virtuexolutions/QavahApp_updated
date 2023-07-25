@@ -55,6 +55,7 @@ const CommonSlice = createSlice({
   initialState: initialState,
   reducers: {
     setMoreAboutMeRegister(state, action) {
+      console.log('More about me data=========>>>>>>>>>',action.payload)
       state.moreAboutMeRegister = action.payload;
     },
     setIsraeliteInfoRegister(state, action) {

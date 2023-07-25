@@ -33,12 +33,12 @@ const SpotLightModal = ({isVisible, setIsVisible}) => {
     const url = 'packages';
     const response = await Get(url, token);
     if (response != undefined) {
-      console.log(JSON.stringify(response?.data, null, 2));
+      // console.log(JSON.stringify(response?.data, null, 2));
       const newData = response?.data?.packages;
-      console.log(
-        '🚀 ~ file: GetSuperLike.js:43 ~ getSubscriptionPlan ~ newData:',
-        newData?.premium,
-        );
+      // console.log(
+      //   '🚀 ~ file: GetSuperLike.js:43 ~ getSubscriptionPlan ~ newData:',
+      //   newData?.premium,
+      //   );
         setPackages(newData?.premium)
       }
     };
