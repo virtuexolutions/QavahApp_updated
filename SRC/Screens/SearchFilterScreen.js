@@ -296,6 +296,7 @@ const SearchFilterScreen = () => {
     {
       text: 'years spent in truth',
       array: [
+        'None',
         '1 years',
         '2 years',
         '3 years',
@@ -312,12 +313,12 @@ const SearchFilterScreen = () => {
       text: 'spiritual background',
       array: [
         'none',
-        'i came out of the chiristian church',
+        'i came out of the christian church',
         'i came out of islam',
-        'i came out out the nation of islam',
-        'i didnot believe in anything',
-        'i came out of the pan-africanism',
-        'i was orthodox jew',
+        'I Came Out Of The Nation Of Islam',
+        'i did not believe in anything',
+        'I Came Out Of Pan - Africanism',
+        'i was an orthodox jew',
         'ask me later',
       ],
     },
@@ -335,9 +336,13 @@ const SearchFilterScreen = () => {
         'Eating clean',
         'Set apart living',
         'Wearing fringes',
+        'Women Don’t Wear Pants',
         'Lunar sabbath keeper',
         'Friday sundown to Sat sundown 24 hr sabbath',
         'Sat sun up to Sat sun down 12 hr sabbath',
+        'I Submit To My Spouse In Yah As Head',
+        'I Service And Provide For My Household Buck Stops With Me'
+
       ],
     },
     {
@@ -354,7 +359,7 @@ const SearchFilterScreen = () => {
         'technical skills',
         'how to start a business',
         'business skills',
-        'effective communications',
+        'effective communication',
         'how to use a computer',
         'emergency preparedness',
         'basic first aid',
@@ -376,6 +381,27 @@ const SearchFilterScreen = () => {
         'i can maintain a garden',
         'i am a good hunter',
         'i can catch fish',
+        'I Can Home School Children','Money Management Skills',
+        'Avoid/Get Out Of Debt','How To Use Coupons',
+        'How To Balancing A Bank Account',
+        'Money/Management Investing',
+        'Prepare Taxes',
+        'Effective Negotiation',
+        'Self-Awareness Skills',
+        'Relationship Skills',
+        'Listening And Communicating',
+        'Expressing Love',
+        'Expressing Respect',
+        'Emotional Intelligence',
+        'Critical Thinking & Problem Solving',
+        'Self- Discipline',
+        'Exercise & Nutrition',
+        'Self-Care Sleep & Hygiene',
+        'Family Protection',
+        'Community Law Enforcement',
+        'I Know Gun Safety',
+        'I Can Shoot And Teach Shooting'
+
       ],
     },
     {
@@ -445,7 +471,7 @@ const SearchFilterScreen = () => {
     },
   ];
 
-  const heightArray = [{text: 'Height measurment', array: ['foots', 'inches']}];
+  const heightArray = [{text: 'Height measurment', array: ['feets', 'inches']}];
 
   useEffect(() => {
     if (nestedOptions[0] && step == 1) {
@@ -1492,6 +1518,8 @@ const SearchFilterScreen = () => {
             renderItem={({item, index}) => {
               return (
                 <UserCard
+                favoredYouPost={people}
+                setFavoredYouPost={setPeople}
                   item={item}
                   style={[
                     index % 2 == 0

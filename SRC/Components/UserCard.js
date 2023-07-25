@@ -39,7 +39,7 @@ const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => 
     // console.log("🚀 ~ file: UserCard.js:38 ~ sendDislike ~ response:", response?.data)
 
     if (response?.data?.status == true) {
-      const filteredData2 = favoredYouPost.filter(
+      const filteredData2 = favoredYouPost?.filter(
         (data, index) =>
           response?.data?.peoples?.match_id != data?.id,
       );
