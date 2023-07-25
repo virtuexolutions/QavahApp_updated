@@ -5,7 +5,8 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
-  Platform, ToastAndroid
+  Platform,
+  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -34,24 +35,44 @@ const Subscription = () => {
   );
   const [itemColor, setItemColor] = useState(['#A97142', '#996633', '#A97142']);
 
-  
-
-
   const subscriptions = [
     {
       text: 'platinum',
       color: ['#acacac', '#e1e1e1'],
       price: 350,
+      details: 'Platinum plans include full access to these great features:',
+      features: [
+        'Love Notes',
+        'Unlimited Fancys',
+        'Sojourn Pass',
+        'Super Fancys',
+        'Exclusive',
+        'Discrete Mode',
+        'Spotlight Me 4 per month',
+        'Unlimited (rewinds) of Say Whats',
+      ],
     },
     {
       text: 'gold',
       color: ['#B78628', '#FCC201', '#DBA514', '#B78628'],
       price: 450,
+      details: 'These platinum features are not included in the gold plan:',
+      features: [
+        'Sojourn',
+        'Say what?',
+        'Messaging',
+        'Fancys',
+        'Super Fancys 4 per month',
+        'Spotlight Me 4 per month',
+        'Read Receipts',
+      ],
     },
     {
       text: 'add-ons',
       color: ['#DBA514', '#B78628'],
       price: 350,
+      details: '',
+      features: [],
     },
   ];
 
@@ -72,10 +93,10 @@ const Subscription = () => {
     {lock: false, text: 'Top Picks'},
   ];
   const onViewableItemsChanged = ({viewableItems}) => {
-    // console.log(
-    //   '🚀 ~ file: Walkthrough.js:62 ~ Walkthrough ~ viewableItems',
-    //   viewableItems[0]?.item?.color,
-    // );
+    console.log(
+      '🚀 ~ file: Walkthrough.js:62 ~ Walkthrough ~ viewableItems',
+      viewableItems,
+    );
     setIndex(viewableItems[0]?.index);
     setItemPrice(viewableItems[0]?.item?.price);
     setItemColor(viewableItems[0]?.item?.color);
@@ -106,12 +127,9 @@ const Subscription = () => {
         }}
         contentContainerStyle={{
           // height: windowHeight * 0.95,
-
           alignItems: 'center',
           paddingBottom: moderateScale(80, 0.6),
         }}>
-       
-
         <FlatList
           data={subscriptions}
           horizontal
@@ -178,6 +196,53 @@ const Subscription = () => {
           title={'Enhance your experience'}
         />
         <PointsComponent array={pointsArray2} title={'Premium discovery'} />
+        <View
+          style={{
+            marginTop: moderateScale(10, 0.3),
+            paddingHorizontal: moderateScale(10, 0.6),
+          }}>
+          {subscriptions.map(item => {
+            return (
+              item?.text.toLowerCase() == text.toLowerCase() && (
+                <>
+                  <CustomText
+                    style={{
+                      fontSize: moderateScale(15, 0.6),
+                      color: Color.veryLightGray,
+                      width: windowWidth * 0.85,
+                      // textAlign: 'center',
+                    }}
+                    numberOfLines={2}>
+                    {item?.details}
+                  </CustomText>
+                  {item?.features.map(x => {
+                    return (
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          width: windowWidth * 0.8,
+                          alignItems: 'center',
+                          marginLeft:moderateScale(20,.3),
+                          paddingVertical: moderateScale(8, 0.6),
+                        }}>
+                        <Icon
+                          name={'check'}
+                          size={moderateScale(12, 0.6)}
+                          color={Color.themeColor}
+                          as={AntDesign}
+                          style={{
+                            marginRight: moderateScale(10, 0.3),
+                          }}
+                        />
+                        <CustomText>{x}</CustomText>
+                      </View>
+                    );
+                  })}
+                </>
+              )
+            );
+          })}
+        </View>
       </ScrollView>
 
       <CustomButton
@@ -197,9 +262,7 @@ const Subscription = () => {
         width={windowWidth * 0.8}
         height={windowHeight * 0.07}
         onPress={() => {
-
-          navigationService.navigate('GetSuperLike',{text:text});
-          
+          navigationService.navigate('GetSuperLike', {text: text});
         }}
         marginLeft={windowWidth * 0.05}
         marginRight={windowWidth * 0.05}
@@ -282,7 +345,7 @@ export const PointsComponent = ({array, title}) => {
             }}>
             <Icon
               name={x.lock == true ? 'lock' : 'check'}
-              size={moderateScale(10, 0.6)}
+              size={moderateScale(12, 0.6)}
               color={x.lock == true ? Color.veryLightGray : Color.themeColor}
               as={AntDesign}
               style={{

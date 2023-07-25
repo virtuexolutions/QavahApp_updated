@@ -16,12 +16,13 @@ import { Post } from '../Axios/AxiosInterceptorFunction';
 import { useSelector } from 'react-redux';
 
 const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => {
+  console.log("🚀 ~ file: UserCard.js:19 ~ UserCard ~ item:", item)
   // console.log("🚀 ~ file: UserCard.js:17 ~ UserCard ~ item:", item?.profile_images[0]?.url)
   
   const token = useSelector(state => state.authReducer.token);
   
   // console.log("🚀 ~ file: UserCard.js:19 ~ UserCard ~ favoredYouPost:", favoredYouPost)
-  const profile_image = item?.profile_images[0]?.url;
+  // const profile_image = item?.profile_images[0]?.url;
   // console.log(
   //   '🚀 ~ file: UserCard.js:19 ~ UserCard ~ profile_image:',
   //   profile_image,
@@ -92,7 +93,7 @@ const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => 
       style={[styles.card, style && style]}
       activeOpacity={0.9}
       onPress={() => {
-        hideBtns &&
+        !hideBtns &&
           navigationService.navigate('UserDetail', {
             item: item,
             fromSearch: true,
@@ -100,13 +101,13 @@ const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => 
       }}>
       <CustomImage
         onPress={() => {
-          hideBtns &&
+          !hideBtns &&
           navigationService.navigate('UserDetail', {
             item: item,
             fromSearch: true,
           });
         }}
-        source={{uri: item?.profile_images[0]?.url}}
+        source={item?.profile_images[0]?.url ? {uri: item?.profile_images[0]?.url}: require('../Assets/Images/woman1.jpeg')}
         style={[
           {
             width: '100%',

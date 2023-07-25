@@ -21,12 +21,12 @@ const DrawerOptions = ({item}) => {
   const [data, setData] = useState(
     item?.data == 'visibility' ? userData?.prefrences?.global : 0,
   );
-  console.log("🚀 ~ file: DrawerOptions.js:22 ~ DrawerOptions ~ data:",userData?.user_privacy?.value)
-  console.log("🚀 ~ file: DrawerOptions.js:22 ~ DrawerOptions ~ data:",userData?.prefrences?.global)
+  // console.log("🚀 ~ file: DrawerOptions.js:22 ~ DrawerOptions ~ data:",userData?.user_privacy?.value)
+  // console.log("🚀 ~ file: DrawerOptions.js:22 ~ DrawerOptions ~ data:",userData?.prefrences?.global)
   const [packages, setPackages] = useState(
     userData?.subscription?.map(item => item.pkg_name),
   );
-  console.log("🚀 ~ file: DrawerOptions.js:28 ~ DrawerOptions ~ packages:", packages)
+  // console.log("🚀 ~ file: DrawerOptions.js:28 ~ DrawerOptions ~ packages:", packages)
 
   useEffect(() => {
     //  setData(item?.data == 'visibility' ? userData?.prefrences?.global : 0)
