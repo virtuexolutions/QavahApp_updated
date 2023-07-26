@@ -15,6 +15,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 const Seeking = (props) => {
   const data = props?.route?.params?.data ;
   console.log("🚀 ~ file: Seeking.js:16 ~ Seeking ~ data:", data)
+
+  const [cardsData, setCardsData] = useState(data? data : [])
   const [isVisible, setIsVisible] = useState(false);
   const [seekingType, setSeekingType] = useState('Seeking');
   const [photoCards, setPhotoCards] = useState([
@@ -268,7 +270,7 @@ const Seeking = (props) => {
      
 
       <FlatList
-        data={data}
+        data={cardsData}
         numColumns={2}
         showsVerticalScrollIndicator={false}
         style={{
@@ -283,6 +285,8 @@ const Seeking = (props) => {
           return (
             <UserCard
               item={item}
+              favoredYouPost={cardsData}
+              setFavoredYouPost= {setCardsData}
               style={[
                 index % 2 == 0
                   ? {
