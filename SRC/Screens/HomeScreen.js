@@ -416,26 +416,26 @@ const HomeScreen = () => {
               name={'lightning-bolt'}
               type={MaterialCommunityIcons}
               onPress={() => {
-                user?.subscription.some((item , index)=>item.spotlights > 0) ?
-                Alert.alert(
-                  'Confirmation',
-                  'Are you sure you want to Active the spotlight?',
-                  [
-                    {
-                      text: 'Cancel',
-                      style: 'cancel',
-                    },
-                    {
-                      text: 'Confirm',
-                      onPress: () => {
-                        ActiveSpotLight();
-                      },
-                    },
-                  ],
-                )
-                :
-                setSpotLightVisible(true);
-                // setMatchModalVisible(true);
+                // user?.subscription.some((item , index)=>item.spotlights > 0) ?
+                // Alert.alert(
+                //   'Confirmation',
+                //   'Are you sure you want to Active the spotlight?',
+                //   [
+                //     {
+                //       text: 'Cancel',
+                //       style: 'cancel',
+                //     },
+                //     {
+                //       text: 'Confirm',
+                //       onPress: () => {
+                //         ActiveSpotLight();
+                //       },
+                //     },
+                //   ],
+                // )
+                // :
+                // setSpotLightVisible(true);
+                setMatchModalVisible(true);
               }}
             />
           </View>
