@@ -346,7 +346,7 @@ const PersonalInfo = () => {
                 
                 // console.log("🚀 ~ file: PersonalInfo.js:35 ~ PersonalInfo ~ multiImages:", multiImages)
             }}>
-            {multiImages?.map((item, index) => {
+            {(multiImages?.length >6 ? multiImages?.slice(0,6) : multiImages)?.map((item, index) => {
               return (
                 <ImageContainer
                   data={multiImages}

@@ -17,15 +17,16 @@ import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomImage from '../Components/CustomImage';
-import {CometChatUI} from '../cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
+import {CometChatConversationListWithMessages, CometChatUI} from '../cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
 import {CometChat} from '@cometchat-pro/react-native-chat';
 
 // import { CometChatUI } from '../../SRC/cometchat-chat-uikit-react-native-3';
 
-const ChatScreen = () => {
+const ChatScreen = ({navigation}) => {
   const userData = useSelector(state => state.commonReducer.userData);
   console.log("🚀 ~ file: ChatScreen.js:27 ~ ChatScreen ~ userData:", userData?.uid)
   const [searchData, setSearchData] = useState('');
+  const [userinfo , setUserData] = useState({})
 
   const chatListingData = [
     {
@@ -126,6 +127,7 @@ const ChatScreen = () => {
     CometChat.login(userData?.uid, authKey).then(
       user => {
         console.log('Login Successful:', {user});
+        setUserData(user?.user)
       },
       error => {
         console.log('Login failed with exception:', {error});
@@ -154,8 +156,7 @@ const ChatScreen = () => {
 
   return (
     <View style={{flex: 1}}>
-      <CometChatUI  isGroupListEnabled={false} />
-      {/* <CometChat  isGroupListEnabled={false}/> */}
+      <CometChatConversationListWithMessages navigation={navigation} />
     </View>
 
     // <>

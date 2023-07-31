@@ -11,99 +11,44 @@ import CustomText from '../Components/CustomText'
 import { GiftedChat } from 'react-native-gifted-chat'
 import TextInputWithTitle from '../Components/TextInputWithTitle'
 import { useNavigation } from '@react-navigation/native'
+import { CometChatMessages } from '../cometchat-chat-uikit-react-native-3/CometChatWorkspace/src'
+import { CometChat } from '@cometchat-pro/react-native-chat'
+import { useSelector } from 'react-redux'
 
 const SelectedChat = ({route}) => {
   const navigation = useNavigation()
-  const secondUser = route?.params?.user2
-  console.log("🚀 ~ file: SelectedChat.js:8 ~ SelectedChat ~ secondUser:", secondUser)
-
-  const [messages, setMessages] = useState([]);
-  const [text , setText] = useState('');
-
+  const item = route?.params?.item
+  console.log("🚀 ~ file: SelectedChat.js:20 ~ SelectedChat ~ item:", item)
+  const userData = useSelector(State => State.commonReducer.userData);
+  const [localUser, setLocalUser] = useState(null);
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
+    var user = CometChat.getLoggedinUser().then(
+      (user) => {
+        console.log('user details:', {user});
+        setLocalUser(user);
       },
-    ])
-  }, [])
-  const onSend = useCallback((messages = []) => {
-    setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-  }, [])
+      (error) => {
+        console.log('error getting details:', {error});
+      },
+    );
+    console.log("🚀 ~ file: SelectedChat.js:32 ~ useEffect ~ user:", user)
+  }, []);
   
   return (
-    <ScreenBoiler
-    statusBarBackgroundColor={['#273443','#273443']}
-    statusBarContentStyle={'light-content'}
-    showHeader={false}
-    // headerColor={['#273443','#273443']}
-    //  showBack={true}
-  >
-    <View style={styles.chatHeader}>
+    <View style={{flex: 1}}>
+    {localUser ? (
+      <CometChatMessages
+        type={'user'}
+        item={item}//The object will be of user or group depending on type
+        loggedInUser={localUser}
+        actionGenerated={(actionType) => {
+          console.log(actionType);
+        }}
+        navigation={navigation}
 
-    <Icon 
-    name={'arrowleft'}
-    as={AntDesign}
-    color={Color.white}
-    size={moderateScale(20,0.3)}
-    onPress={()=>{
-      navigation.goBack()
-    }}
-    />
-     <CustomImage source={secondUser?.image} style={styles.image} />
-     <CustomText style={styles.name}>{secondUser?.name}</CustomText>
-     </View>
-     <View style={{height : windowHeight * 0.9}}>
-     {/* <GiftedChat
-            messages={messages}
-            showAvatarForEveryMessage={true}
-            onSend={messages => onSend(messages)}
-            user={{
-                _id: 1,
-                name: secondUser?.name,
-                avatar: "https://images.unsplash.com/photo-1571501679680-de32f1e7aad4"
-            }}
-            renderFooter={()=>{
-              return(
-                <View style={{
-                  width : windowWidth,
-                  height : 50,
-                  backgroundColor : 'red'
-                  
-                }}></View>
-              )
-            }}
-            renderInputToolbar={()=>{
-              <TextInputWithTitle
-              titleText={'Current Passwrod'}
-              secureText={false}
-              placeholder={'Current Passwrod'}
-              setText={setText}
-              value={text}
-              viewHeight={0.07}
-              viewWidth={0.75}
-              inputWidth={0.7}
-              // border={1}
-              borderColor={'#ffffff'}
-              backgroundColor={'#FFFFFF'}
-              marginTop={moderateScale(35, 0.3)}
-              color={Color.themeColor}
-              placeholderColor={Color.themeLightGray}
-              borderRadius={moderateScale(25, 0.3)}
-              elevation
-            />
-            }}
-        />       */}
-    
-     </View> 
-    </ScreenBoiler>
+      />
+    ) : null}
+  </View>
   ) 
 }
 

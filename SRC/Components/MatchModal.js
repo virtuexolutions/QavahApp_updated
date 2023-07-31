@@ -11,13 +11,16 @@ import CustomImage from './CustomImage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Lottie from 'lottie-react-native';
+import { useDispatch } from 'react-redux';
+import { setIsMatched } from '../Store/slices/auth';
 
-const MatchModal = ({isVisible, setIsVisible}) => {
+const MatchModal = ({isVisible }) => {
+   const dispatch = useDispatch();
  return (
     <Modal
       isVisible={isVisible}
       onBackdropPress={() => {
-        setIsVisible(false);
+        dispatch(setIsMatched(false))
       }}
       style={{
         justifyContent: 'center',
@@ -129,8 +132,8 @@ const MatchModal = ({isVisible, setIsVisible}) => {
           />
         </View>
         <CustomText
-        onPress={()=>{
-          setIsVisible(false)
+        onPress={() => {
+          dispatch(setIsMatched(false))
         }}
           style={{
             marginTop: moderateScale(30, 0.3),

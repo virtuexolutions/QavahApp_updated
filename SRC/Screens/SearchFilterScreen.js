@@ -5,7 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-  FlatList
+  FlatList,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -21,7 +21,7 @@ import Color from '../Assets/Utilities/Color';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from '../Components/CustomText';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import { Icon, useStyledSystemPropsResolver} from 'native-base';
+import {Icon, useStyledSystemPropsResolver} from 'native-base';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 import {Post} from '../Axios/AxiosInterceptorFunction';
@@ -44,10 +44,10 @@ const SearchFilterScreen = () => {
   const [scrollEnabled, setScrollEnabled] = useState(true);
   const [people, setPeople] = useState([]);
   const [body, setBody] = useState([]);
-  // console.log(
-  //   '🚀 ~ file: SearchFilterScreen.js:61 ~ SearchFilterScreen ~ body:',
-  //   body,
-  // );
+  console.log(
+    '🚀 ~ file: SearchFilterScreen.js:61 ~ SearchFilterScreen ~ body:',
+    body,
+  );
 
   const [nestedOptions, setNestedOptions] = useState([
     (Visibility = true),
@@ -130,7 +130,7 @@ const SearchFilterScreen = () => {
         `yes - they don't live at home`,
         'yes - they sometimes live at home',
         'yes - they live at home',
-        'No'
+        'No',
       ],
     },
   ];
@@ -341,8 +341,7 @@ const SearchFilterScreen = () => {
         'Friday sundown to Sat sundown 24 hr sabbath',
         'Sat sun up to Sat sun down 12 hr sabbath',
         'I Submit To My Spouse In Yah As Head',
-        'I Service And Provide For My Household Buck Stops With Me'
-
+        'I Service And Provide For My Household Buck Stops With Me',
       ],
     },
     {
@@ -381,8 +380,10 @@ const SearchFilterScreen = () => {
         'i can maintain a garden',
         'i am a good hunter',
         'i can catch fish',
-        'I Can Home School Children','Money Management Skills',
-        'Avoid/Get Out Of Debt','How To Use Coupons',
+        'I Can Home School Children',
+        'Money Management Skills',
+        'Avoid/Get Out Of Debt',
+        'How To Use Coupons',
         'How To Balancing A Bank Account',
         'Money/Management Investing',
         'Prepare Taxes',
@@ -400,8 +401,7 @@ const SearchFilterScreen = () => {
         'Family Protection',
         'Community Law Enforcement',
         'I Know Gun Safety',
-        'I Can Shoot And Teach Shooting'
-
+        'I Can Shoot And Teach Shooting',
       ],
     },
     {
@@ -523,27 +523,26 @@ const SearchFilterScreen = () => {
 
   const getSearchResult = async () => {
     const url = 'seeking/seeking/app';
-    // console.log('submit clicked')
-    // return console.log("location in the search screen",location);
-    setPeople([])
-    body.push(
-      {key: 'age', values: [age1, age2]},
-      {key: 'miles', values: [distance]},
-      {key: 'zipcode', values: ['11230']},
-      {key: 'seeking', values: [user?.seeking]},
-    );
+    setPeople([]);
+  
 
     const dataBody = {
       uid: user?.id,
-      filters: body,
+      filters: [
+        ...body,
+        {key: 'age', values: [age1, age2]},
+        {key: 'miles', values: [...distance]},
+        {key: 'zipcode', values: ['11230']},
+        {key: 'seeking', values: [user?.seeking]},
+      ],
       from: 1,
       lat: user?.location?.latitude,
       lng: user?.location?.longitude,
     };
 
-    console.log(
+   console.log(
       '🚀 ~ file: SearchFilterScreen.js:546 ~ getSearchResult ~ dataBody:',
-      dataBody,
+      JSON.stringify(dataBody, null, 2),
     );
     console.log('Databosy filters===========????', dataBody.filters);
 
@@ -1474,95 +1473,97 @@ const SearchFilterScreen = () => {
             infinite scroll
           </CustomText>
         </View>
-      
-             {people?.length > 0 && <TouchableOpacity
-             style={{
-               flexDirection: 'row',
-               alignSelf: 'flex-end',
-               paddingHorizontal: moderateScale(10, 0.6),
-               marginTop: moderateScale(10, 0.3),
-             }}
-             activeOpacity={0.8}
-             onPress={() => {
-               navigationService.navigate('Seeking',{data:people});
-             }}>
-             <CustomText
-               style={{
-                 color: Color.themeColor,
-                 fontSize: moderateScale(10, 0.6),
-               }}>
-               See All
-             </CustomText>
-             <Icon
-               name={'arrow-forward'}
-               as={Ionicons}
-               size={moderateScale(15, 0.6)}
-               color={Color.themeColor}
-               style={{
-                 marginLeft: moderateScale(5, 0.3),
-               }}
-             />
-           </TouchableOpacity>}
-          <FlatList
-            data={people}
-            numColumns={2}
-            showsVerticalScrollIndicator={false}
+
+        {people?.length > 0 && (
+          <TouchableOpacity
             style={{
-              width: windowWidth,
-              backgroundColor: 'white',
+              flexDirection: 'row',
+              alignSelf: 'flex-end',
+              paddingHorizontal: moderateScale(10, 0.6),
+              marginTop: moderateScale(10, 0.3),
             }}
-            contentContainerStyle={{
-              alignItems: 'center',
-              paddingTop: moderateScale(20, 0.6),
-            }}
-            renderItem={({item, index}) => {
-              return (
-                <UserCard
+            activeOpacity={0.8}
+            onPress={() => {
+              navigationService.navigate('Seeking', {data: people});
+            }}>
+            <CustomText
+              style={{
+                color: Color.themeColor,
+                fontSize: moderateScale(10, 0.6),
+              }}>
+              See All
+            </CustomText>
+            <Icon
+              name={'arrow-forward'}
+              as={Ionicons}
+              size={moderateScale(15, 0.6)}
+              color={Color.themeColor}
+              style={{
+                marginLeft: moderateScale(5, 0.3),
+              }}
+            />
+          </TouchableOpacity>
+        )}
+        <FlatList
+          data={people}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+          style={{
+            width: windowWidth,
+            backgroundColor: 'white',
+          }}
+          contentContainerStyle={{
+            alignItems: 'center',
+            paddingTop: moderateScale(20, 0.6),
+          }}
+          renderItem={({item, index}) => {
+            return (
+              <UserCard
                 favoredYouPost={people}
                 setFavoredYouPost={setPeople}
-                  item={item}
-                  style={[
-                    index % 2 == 0
-                      ? {
-                          marginRight: moderateScale(10, 0.3),
-                        }
-                      : {
-                          marginLeft: moderateScale(10, 0.3),
-                        },
-                    {},
-                  ]}
-                />
-              );
-            }}
-            // ListHeaderComponent={() => {
-            //   return (
-            //     people?.length > 0 && (
-            //       <TextInputWithTitle
-            //         iconName={'search'}
-            //         iconType={FontAwesome}
-            //         titleText={`Search Match Request`}
-            //         secureText={false}
-            //         placeholder={`Search Match Request`}
-            //         setText={setSearch}
-            //         value={search}
-            //         viewHeight={0.06}
-            //         viewWidth={0.85}
-            //         inputWidth={0.83}
-            //         borderColor={Color.veryLightGray}
-            //         backgroundColor={'transparent'}
-            //         placeholderColor={Color.themeLightGray}
-            //         borderRadius={moderateScale(0, 0.3)}
-            //         marginTop={moderateScale(20, 0.3)}
-            //         marginBottom={moderateScale(20, 0.3)}
-            //         border={1}
-            //         color={Color.veryLightGray}
-            //       />
-            //     )
-            //   );
-            // }}
-            ListEmptyComponent={() => {
-              return (
-                <View
+                item={item}
+                style={[
+                  index % 2 == 0
+                    ? {
+                        marginRight: moderateScale(10, 0.3),
+                      }
+                    : {
+                        marginLeft: moderateScale(10, 0.3),
+                      },
+                  {},
+                ]}
+              />
+            );
+          }}
+          // ListHeaderComponent={() => {
+          //   return (
+          //     people?.length > 0 && (
+          //       <TextInputWithTitle
+          //         iconName={'search'}
+          //         iconType={FontAwesome}
+          //         titleText={`Search Match Request`}
+          //         secureText={false}
+          //         placeholder={`Search Match Request`}
+          //         setText={setSearch}
+          //         value={search}
+          //         viewHeight={0.06}
+          //         viewWidth={0.85}
+          //         inputWidth={0.83}
+          //         borderColor={Color.veryLightGray}
+          //         backgroundColor={'transparent'}
+          //         placeholderColor={Color.themeLightGray}
+          //         borderRadius={moderateScale(0, 0.3)}
+          //         marginTop={moderateScale(20, 0.3)}
+          //         marginBottom={moderateScale(20, 0.3)}
+          //         border={1}
+          //         color={Color.veryLightGray}
+          //       />
+          //     )
+          //   );
+          // }}
+          ListEmptyComponent={() => {
+            return (
+              <View
                 style={{
                   width: windowWidth * 0.95,
                   paddingVertical: moderateScale(20, 0.6),
@@ -1592,10 +1593,9 @@ const SearchFilterScreen = () => {
                   Try using different settings and filters
                 </CustomText>
               </View>
-              );
-            }}
-          />
-         
+            );
+          }}
+        />
       </ScrollView>
     </>
   );

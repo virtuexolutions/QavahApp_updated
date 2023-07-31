@@ -45,6 +45,8 @@ import Support from './Screens/Support';
 import GetSuperLike from './Screens/GetSuperLike';
 import PrivacyPolicy from './Screens/PrivacyPolicy';
 import PaymentModal from './Components/PaymentModal';
+import { CometChatConversationListWithMessages, CometChatUserListWithMessages } from './cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
+import SelectedChat from './Screens/SelectedChat';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -91,6 +93,8 @@ const AppNavigator = () => {
            <RootNav.Screen name="EnterPhone" component={EnterPhone} />
            <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
            <RootNav.Screen name="ResetPassword" component={ResetPassword} />
+           <RootNav.Screen name="SelectedChat" component={SelectedChat} />
+
 
            <RootNav.Screen
              name="IsraeliteFilters"
@@ -202,6 +206,9 @@ export const TabNavigation = () => {
       <Tabs.Screen name={'SearchFilterScreen'} component={SearchFilterScreen} />
       <Tabs.Screen name={'Wishlist'} component={Wishlist} />
       <Tabs.Screen name={'ChatScreen'} component={ChatScreen} />
+      {/* <Tabs.Screen name="UserListWithMessages" component={CometChatUserListWithMessages} /> */}
+      {/* <Tabs.Screen name="ConversationListWithMessages" component={CometChatConversationListWithMessages} /> */}
+
       <Tabs.Screen name={'SpotLight'} component={SpotLight} 
       // options={{
       //   // Pass data as a parameter to the component

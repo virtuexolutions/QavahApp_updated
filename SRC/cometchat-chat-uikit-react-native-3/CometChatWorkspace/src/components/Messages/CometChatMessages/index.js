@@ -46,7 +46,7 @@ class CometChatMessages extends React.PureComponent {
   loggedInUser = null;
   constructor(props) {
     super(props);
-    const { route } = props;
+    const { route , navigation } = props;
     const params = route?.params || props;
     this.state = {
       messageList: [],
@@ -116,7 +116,7 @@ class CometChatMessages extends React.PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     const { route: prevRoute } = prevProps;
-    const { route } = this.props;
+    const { route , navigation } = this.props;
     const params = route?.params || this.props;
     const prevParams = prevRoute?.params || prevProps;
 
@@ -188,6 +188,12 @@ class CometChatMessages extends React.PureComponent {
       },
     );
   };
+
+   GoBack = ()=>{
+    // const { navigation } = this.props;
+    // return console.log("🚀 ~ file: index.js:194 ~ CometChatMessages ~ navigation:",  )
+    this?.props?.navigation?.goBack()
+  }
 
   updateMembersCount = (item, count) => {
     const { route } = this.props;
@@ -315,7 +321,7 @@ class CometChatMessages extends React.PureComponent {
         this.reactToMessage(messages);
         break;
       case actions.GO_BACK:
-        this.props.navigation?.goBack();
+        this.props?.navigation?.navigate('ChatScreen');
         break;
       case actions.CLOSE_DETAIL:
         this.setState({ userDetailVisible: false, groupDetailVisible: false });
@@ -1031,7 +1037,7 @@ class CometChatMessages extends React.PureComponent {
                     backgroundColor: 'white',
                     height: Dimensions.get('window').height - 80,
                   }}>
-                  <CometChatMessageThread
+                  {/* <CometChatMessageThread
                     theme={this.theme}
                     tab={this.state.tab}
                     item={this.state.threadMessageItem}
@@ -1040,7 +1046,7 @@ class CometChatMessages extends React.PureComponent {
                     loggedInUser={this.loggedInUser}
                     actionGenerated={this.actionHandler}
                     getConversationId={this.getConversationId}
-                  />
+                  /> */}
                 </View>
               );
             }}
@@ -1127,6 +1133,7 @@ class CometChatMessages extends React.PureComponent {
               // widgetsettings={route.params.widgetsettings}
               loggedInUser={params.loggedInUser}
               actionGenerated={this.actionHandler}
+              GoBack={this.GoBack}
             />
             <CometChatMessageList
               theme={this.theme}
