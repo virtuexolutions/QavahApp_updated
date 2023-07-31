@@ -354,7 +354,7 @@ class CometChatMessageHeader extends React.Component {
     return (
       <View style={styles.headerContainer}>
         <TouchableOpacity
-          onPress={() => this.props.actionGenerated(actions.GO_BACK)}
+          onPress={() => this.props.GoBack()}
           style={styles.backButtonContainer}>
           <Icon
             name="chevron-back-sharp"

@@ -58,7 +58,7 @@ export const LIVE_REACTIONS = {
 };
 
 export const NAVIGATION_CONSTANTS = {
-  COMET_CHAT_MESSAGES: 'CometChatMessages',
+  COMET_CHAT_MESSAGES: 'SelectedChat',
 };
 
 export const LOCALE_KEY = 'cometchat:locale';

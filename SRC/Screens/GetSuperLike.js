@@ -44,9 +44,7 @@ const GetSuperLike = ({route}) => {
   const [selected, setSelected] = useState(
     user?.subscription
       ? user?.subscription.find(
-          item =>
-            item?.pkg_catogery.toLowerCase() ==
-            (text.toLowerCase() == 'add-ons' ? 'premium' : text.toLowerCase()),
+          item => item?.pkg_catogery.toLowerCase() == (text.toLowerCase()== 'premium features' ? 'premium' : text.toLowerCase())
         )
       : ' ',
   );
@@ -99,7 +97,7 @@ const GetSuperLike = ({route}) => {
       console.log(text.toLowerCase(), 'platinum'.toLowerCase());
       text.toLowerCase() == 'platinum'.toLowerCase()
         ? setPackages([newData?.month_to_month[0], ...newData?.platinum])
-        : text.toLowerCase() == 'add-ons'.toLowerCase()
+        : text.toLowerCase() == 'premium features'.toLowerCase()
         ? setPackages(newData?.premium)
         : setPackages([newData?.month_to_month[1], ...newData?.gold]);
     }
@@ -217,7 +215,7 @@ const GetSuperLike = ({route}) => {
           } else {
             if (
               pkg_category?.includes(text) &&
-              text.toLowerCase() != 'add-ons'.toLowerCase()
+              text.toLowerCase() != 'premium features'.toLowerCase()
             ) {
               Platform.OS == 'android'
                 ? ToastAndroid.show(
@@ -237,7 +235,7 @@ const GetSuperLike = ({route}) => {
                 : alert(
                     'You already have subscribed platinum so you cannot buy gold',
                   );
-            } else if (text.toLowerCase() == 'add-ons'.toLowerCase()) {
+            } else if (text.toLowerCase() == 'premium features'.toLowerCase()) {
               if (packagesName.includes(selected?.title)) {
                 return Platform.OS == 'android'
                   ? ToastAndroid.show(

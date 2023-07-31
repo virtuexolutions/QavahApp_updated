@@ -64,9 +64,9 @@ export class UIKitSettings {
     this.enableSoundForCalls = true;
 
     this.userVideoCall = true;
-    this.groupVideoCall = true;
+    this.groupVideoCall = false;
     this.userAudioCall = true;
-    this.groupAudioCall = true;
+    this.groupAudioCall = false;
 
     this.sendTypingIndicator = true;
     this.showUserPresence = true;
