@@ -7,7 +7,6 @@ const initialState = {
   isVerified: false,
   userWalkThrough: false,
   isGoalCreated : false ,
-  matched: false,
 
 };
 
@@ -37,9 +36,7 @@ const AuthSlice = createSlice({
     setIsLoggedIn(state,action){
       state.isLoggedIn = true;
     },
-    setIsMatched(state,action){
-      state.matched = action.payload;
-    }
+  
   },
 });
 
@@ -51,7 +48,6 @@ export const {
   SetFCMToken,
   setWalkThrough,
   setIsLoggedIn,
-  setIsMatched
   
 } = AuthSlice.actions;
 

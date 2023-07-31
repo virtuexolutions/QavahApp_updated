@@ -45,12 +45,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import SubscriptionListing from './SubscriptionListing';
 import {Pusher} from '@pusher/pusher-websocket-react-native';
 import MatchModal from './MatchModal';
+import { setIsMatched } from '../Store/slices/socket';
 
 const Header = props => {
   const dispatch = useDispatch();
   const focused = useIsFocused();
   const token = useSelector(state => state.authReducer.token);
-  const match = useSelector(state => state.authReducer.matched);
+const match = useSelector(state => state.socketReducer.matched);
+console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
 
   // console.log('🚀 ~ file: Header.js:42 ~ Header ~ token:', token);
   const [isLoveNotesVisible, setLoveNotesVisible] = useState(false);
@@ -62,7 +64,8 @@ const Header = props => {
   // const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [discreteModal, setDiscreteModal] = useState(false);
   const userData = useSelector(state => state.commonReducer.userData);
-  console.log("🚀 ~ file: Header.js:65 ~ Header ~ userData:", userData?.id)
+  const [otherData , setotherData] = useState({})
+  // console.log('🚀 ~ file: Header.js:65 ~ Header ~ userData:', userData?.id);
   const DrawerArray = [
     {
       key: 1,
@@ -328,32 +331,35 @@ const Header = props => {
         });
 
         myChannel = await pusher.subscribe({
-          channelName: `notification-channel-${userData?.id}`,
+          channelName: `match-popup-${userData?.id}`,
+          // channelName: 'my-notificatio+n-channel',
           onSubscriptionSucceeded: (channelName, data) => {
             // console.log("🚀 ~ file: SelectedChat.js:77 ~ connectPusher ~ myChannel:", myChannel)
-            console.log(`Subscribed to ${JSON.stringify(channelName , null ,2)}`);
+            console.log('Subscribed to ', channelName);
             // console.log(`And here are the channel members: ${myChannel.members}`)
           },
           onEvent: event => {
-            console.log(
-              '🚀 ~ file: SelectedChat.js:127 ~ connectPusher ~ event:',
-              event,
-            );
-            console.log('Got channel event:', JSON.parse(event.data));
+            // console.log(
+            //   '🚀 ~ file: SelectedChat.js:127 ~ connectPusher ~ event:',
+            //   event,
+            // );
+            dispatch(setIsMatched(true))
+            setotherData(JSON.parse(event.data))
+            console.log('Got channel event:', event.data);
             const dataString = JSON.parse(event.data);
-            console.log(
-              '🚀 ~ file: SelectedChat.js:116 ~ connectPusher ~ dataString:',
-              dataString?.response,
-              dataString?.target_id,
-              user?.id,
-            );
-            if (dataString.target_id == user?.id) {
-              //  alert('here' , user?._id)
-              setMessages(previousMessages =>
-                GiftedChat.append(previousMessages, dataString?.response),
-              );
-              // return
-            }
+            // console.log(
+            //   '🚀 ~ file: SelectedChat.js:116 ~ connectPusher ~ dataString:',
+            //   dataString?.response,
+            //   dataString?.target_id,
+            //   user?.id,
+            // );
+            // if (dataString.target_id == user?.id) {
+            //   //  alert('here' , user?._id)
+            //   // setMessages(previousMessages =>
+            //   //   GiftedChat.append(previousMessages, dataString?.response),
+            //   // );
+            //   // return
+            // }
           },
         });
         // await pusher.subscribe({ channelName });
@@ -365,7 +371,9 @@ const Header = props => {
     connectPusher();
 
     return async () => {
-      await pusher.unsubscribe({channelName: `my-channel-${userData?.id}`});
+      await pusher.unsubscribe({
+        channelName: `match-popup-${userData?.id}`,
+      });
     };
   }, []);
 
@@ -677,10 +685,11 @@ const Header = props => {
         isVisible={discreteModal}
         setIsVisible={setDiscreteModal}
       />
-      <MatchModal 
-      isVisible={match} 
-      // setIsVisible={setMatchModalVisible}
-       />
+      <MatchModal
+        isVisible={match}
+        otherUserData={otherData}
+        // setIsVisible={setMatchModalVisible}
+      />
     </View>
   );
 };

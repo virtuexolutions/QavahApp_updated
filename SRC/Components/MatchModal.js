@@ -11,16 +11,19 @@ import CustomImage from './CustomImage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Lottie from 'lottie-react-native';
-import { useDispatch } from 'react-redux';
-import { setIsMatched } from '../Store/slices/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsMatched } from '../Store/slices/socket';
 
-const MatchModal = ({isVisible }) => {
+const MatchModal = ({isVisible , otherUserData }) => {
+  // console.log("🚀 ~ file: MatchModal.js:18 ~ MatchModal ~ otherUserData:", otherUserData)
+  const user = useSelector(state=>state.commonReducer.userData)
+  //  console.log("🚀 ~ file: MatchModal.js:19 ~ MatchModal ~ user:", user)
    const dispatch = useDispatch();
  return (
     <Modal
       isVisible={isVisible}
       onBackdropPress={() => {
-        dispatch(setIsMatched(false))
+       
       }}
       style={{
         justifyContent: 'center',
@@ -89,7 +92,7 @@ const MatchModal = ({isVisible }) => {
             }}>
             <CustomImage
               style={{width: '100%', height: '100%'}}
-              source={require('../Assets/Images/image1.jpeg')}
+              source={{uri : user?.profile_images[0]?.url}}
             />
           </View>
           <View

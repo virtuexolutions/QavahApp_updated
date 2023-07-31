@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   socket: null,
+  matched : false
 };
 
 const socketSlice = createSlice({
@@ -16,9 +17,12 @@ const socketSlice = createSlice({
       );
       state.socket = action.payload;
     },
+    setIsMatched(state,action){
+      state.matched = action.payload;
+    }
   },
 });
 
-export const { updateSocket } = socketSlice.actions;
+export const { updateSocket , setIsMatched } = socketSlice.actions;
 
 export default socketSlice.reducer;

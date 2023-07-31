@@ -29,7 +29,7 @@ const Wishlist = () => {
     const url = 'favoured/who-likes-me';
     const response = await Post(url, {}, apiHeader(token));
     if (response != undefined) {
-      // console.log('response data=>>>>>>>>>>>>>>', response?.data?.peoples);
+      console.log('response data=>>>>>>>>>>>>>>', response?.data?.peoples);
       setFavoredYouPost(response?.data?.peoples);
     }
   };

@@ -36,7 +36,7 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const focused = useIsFocused();
   const user = useSelector(state => state.commonReducer.userData);
-  // console.log("🚀 ~ file: HomeScreen.js:40 ~ user:", user)
+  console.log("🚀 ~ file: HomeScreen.js:40 ~ user:", user?.uid)
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ token:", token)
@@ -282,7 +282,10 @@ const HomeScreen = () => {
                   {targetsUid: item?.id},
                   apiHeader(token),
                 );
+                console.log('response data'  , response?.data)
+
                 if (response?.data?.status == true) {
+                  console.log('response data'  , response?.data)
                   setLogData(prev => [
                     ...prev,
                     ...photoCards.filter((data, index) => {
