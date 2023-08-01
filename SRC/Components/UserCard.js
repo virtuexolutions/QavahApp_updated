@@ -16,7 +16,7 @@ import { Post } from '../Axios/AxiosInterceptorFunction';
 import { useSelector } from 'react-redux';
 
 const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => {
-  console.log("🚀 ~ file: UserCard.js:19 ~ UserCard ~ item:", item)
+  // console.log("🚀 ~ file: UserCard.js:19 ~ UserCard ~ item:", item)
   // console.log("🚀 ~ file: UserCard.js:17 ~ UserCard ~ item:", item?.profile_images[0]?.url)
   
   const token = useSelector(state => state.authReducer.token);

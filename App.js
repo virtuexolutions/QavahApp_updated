@@ -152,6 +152,61 @@ const MainContainer = () => {
     GetPermission();
     // configureCometChat()
   }, []);
+  // useEffect(() => {
+  //   console.log('useEffect runs');
+  //   async function connectPusher() {
+  //     try {
+  //       await pusher.init({
+  //         apiKey: '5fe9676993f3dc44fc82',
+  //         cluster: 'mt1',
+  //       });
+
+  //       myChannel = await pusher.subscribe({
+  //         channelName: `match-popup-${userData?.id}`,
+  //         // channelName: 'my-notificatio+n-channel',
+  //         onSubscriptionSucceeded: (channelName, data) => {
+  //           // console.log("🚀 ~ file: SelectedChat.js:77 ~ connectPusher ~ myChannel:", myChannel)
+  //           console.log('Subscribed to ', channelName);
+  //           // console.log(`And here are the channel members: ${myChannel.members}`)
+  //         },
+  //         onEvent: event => {
+  //           // console.log(
+  //           //   '🚀 ~ file: SelectedChat.js:127 ~ connectPusher ~ event:',
+  //           //   event,
+  //           // );
+  //           dispatch(setIsMatched(true))
+  //           setotherData(JSON.parse(event.data))
+  //           console.log('Got channel event:', event.data);
+  //           const dataString = JSON.parse(event.data);
+  //           // console.log(
+  //           //   '🚀 ~ file: SelectedChat.js:116 ~ connectPusher ~ dataString:',
+  //           //   dataString?.response,
+  //           //   dataString?.target_id,
+  //           //   user?.id,
+  //           // );
+  //           // if (dataString.target_id == user?.id) {
+  //           //   //  alert('here' , user?._id)
+  //           //   // setMessages(previousMessages =>
+  //           //   //   GiftedChat.append(previousMessages, dataString?.response),
+  //           //   // );
+  //           //   // return
+  //           // }
+  //         },
+  //       });
+  //       // await pusher.subscribe({ channelName });
+  //       await pusher.connect();
+  //     } catch (e) {
+  //       console.log(`ERROR: ${e}`);
+  //     }
+  //   }
+  //   connectPusher();
+
+  //   return async () => {
+  //     await pusher.unsubscribe({
+  //       channelName: `match-popup-${userData?.id}`,
+  //     });
+  //   };
+  // }, [focused]);
   const configureCometChat = async()=>{
     console.log('here is the chat configuration')
     CometChat.init(appID, appSetting).then(

@@ -17,6 +17,8 @@ import NullDataComponent from '../Components/NullDataComponent';
 import navigationService from '../navigationService';
 
 const Wishlist = () => {
+  const user = useSelector(state=>state.commonReducer.userData)
+  // console.log("🚀 ~ file: Wishlist.js:21 ~ Wishlist ~ user:", user)
   const isFocused = useIsFocused();
   const [selected, setSelected] = useState('Favored You');
   const token = useSelector(state => state.authReducer.token);
