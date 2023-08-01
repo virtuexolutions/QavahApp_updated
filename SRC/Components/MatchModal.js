@@ -17,7 +17,7 @@ import { setIsMatched } from '../Store/slices/socket';
 const MatchModal = ({isVisible , otherUserData }) => {
   // console.log("🚀 ~ file: MatchModal.js:18 ~ MatchModal ~ otherUserData:", otherUserData)
   const user = useSelector(state=>state.commonReducer.userData)
-  //  console.log("🚀 ~ file: MatchModal.js:19 ~ MatchModal ~ user:", user)
+   console.log("🚀 ~ file: MatchModal.js:19 ~ MatchModal ~ user:", user)
    const dispatch = useDispatch();
  return (
     <Modal
@@ -92,7 +92,7 @@ const MatchModal = ({isVisible , otherUserData }) => {
             }}>
             <CustomImage
               style={{width: '100%', height: '100%'}}
-              source={{uri : user?.profile_images[0]?.url}}
+              source={user?.profile_images && {uri : user?.profile_images[0]?.url}}
             />
           </View>
           <View
