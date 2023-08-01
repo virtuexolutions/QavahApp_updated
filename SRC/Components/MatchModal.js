@@ -11,20 +11,18 @@ import CustomImage from './CustomImage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Lottie from 'lottie-react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { setIsMatched } from '../Store/slices/socket';
+import {useDispatch, useSelector} from 'react-redux';
+import {setIsMatched} from '../Store/slices/socket';
 
-const MatchModal = ({isVisible , otherUserData }) => {
+const MatchModal = ({isVisible, otherUserData}) => {
   // console.log("🚀 ~ file: MatchModal.js:18 ~ MatchModal ~ otherUserData:", otherUserData)
-  const user = useSelector(state=>state.commonReducer.userData)
-  //  console.log("🚀 ~ file: MatchModal.js:19 ~ MatchModal ~ user:", user)
-   const dispatch = useDispatch();
- return (
+  // const user = useSelector(state => state.commonReducer.userData);
+  // console.log('🚀 ~ file: MatchModal.js:19 ~ MatchModal ~ user:', user);
+  const dispatch = useDispatch();
+  return (
     <Modal
       isVisible={isVisible}
-      onBackdropPress={() => {
-       
-      }}
+      onBackdropPress={() => {}}
       style={{
         justifyContent: 'center',
         alignItems: 'center',
@@ -48,7 +46,11 @@ const MatchModal = ({isVisible , otherUserData }) => {
           }}>
           It's a Match
         </CustomText>
-    <Lottie source={require('../Assets/Images/animation.json')} autoPlay loop />
+        <Lottie
+          source={require('../Assets/Images/animation.json')}
+          autoPlay
+          loop
+        />
         <View
           style={{
             flexDirection: 'row',
@@ -92,7 +94,13 @@ const MatchModal = ({isVisible , otherUserData }) => {
             }}>
             <CustomImage
               style={{width: '100%', height: '100%'}}
-              source={{uri : user?.profile_images[0]?.url}}
+              source={
+              //   Object.keys(user).length > 0 ? {
+              //   uri:
+              //      user?.profile_images[0]?.url
+                    
+              // } : 
+              require('../Assets/Images/banner.jpg')}
             />
           </View>
           <View
@@ -135,9 +143,9 @@ const MatchModal = ({isVisible , otherUserData }) => {
           />
         </View>
         <CustomText
-        onPress={() => {
-          dispatch(setIsMatched(false))
-        }}
+          onPress={() => {
+            dispatch(setIsMatched(false));
+          }}
           style={{
             marginTop: moderateScale(30, 0.3),
             color: Color.veryLightGray,

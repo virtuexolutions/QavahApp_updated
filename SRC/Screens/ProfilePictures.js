@@ -267,7 +267,17 @@ const ProfilePictures = props => {
       
     /> */}
         </View>
+        <CustomText style={[styles.text, ]}>
+          {
+            <CustomText
+              isBold
+              style={{fontSize: moderateScale(13, 0.3), color: Color.red}}>
+              *Attention:
+            </CustomText>
+          }{' '}
+         Upload a clear, recent modest JPEG, non-photo, or offensive image may suspend your profile until corrected.
 
+        </CustomText>
         <CustomButton
           text={'Next'}
           textColor={Color.white}
@@ -369,6 +379,12 @@ const styles = ScaledSheet.create({
     marginTop: moderateScale(15, 0.3),
     height: windowHeight * 0.35,
     justifyContent: 'space-between',
+  },
+  text: {
+    fontSize: moderateScale(9, 0.6),
+    color: Color.black,
+    width: windowWidth * 0.9,
+    lineHeight: moderateScale(15, 0.6),
   },
   imageContainer: {
     width: (windowWidth * 0.85) / 3,
