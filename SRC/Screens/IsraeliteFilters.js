@@ -462,7 +462,7 @@ const IsraeliteFilters = props => {
       Platform.OS == 'android'
         ? ToastAndroid.show('User Registered Successfully', ToastAndroid.SHORT)
         : alert('User Registered Successfully');
-      registerUserCometChat(response?.data?.user);
+      // registerUserCometChat(response?.data?.user);
       console.log(
         '🚀 ~ file: IsraeliteFilters.js:441 ~ Registration ~ user:',
         response?.data?.user,

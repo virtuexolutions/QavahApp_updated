@@ -57,6 +57,14 @@ const App = () => {
 
 const MainContainer = () => {
   const dispatch = useDispatch();
+  const authKey = '07ba629476752645dbce6a6c4aad7b2fc680b511';
+  const appID = "2092182aee051e28";
+  const region = "US";
+  const appSetting = new CometChat.AppSettingsBuilder()
+    .subscribePresenceForAllUsers()
+    .setRegion(region)
+    .build();
+
 
   
   // fcm
@@ -143,6 +151,25 @@ const MainContainer = () => {
     }
     GetPermission();
     // configureCometChat()
+  }, []);
+  const configureCometChat = async()=>{
+    console.log('here is the chat configuration')
+    CometChat.init(appID, appSetting).then(
+      () => {
+        console.log("Initialization completed successfully");
+       
+        // You can now call login function.
+      },
+      (error) => {
+        console.log("Initialization failed with error:", error);
+        // Check the reason for error and take appropriate action.
+      }
+    );
+  }
+
+  useEffect(() => {
+    configureCometChat()
+  
   }, []);
 
   const [isloading] = useloader(true);

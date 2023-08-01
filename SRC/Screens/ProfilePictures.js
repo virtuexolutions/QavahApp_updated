@@ -109,6 +109,7 @@ const ProfilePictures = props => {
     );
     let cometChatUser = new CometChat.User(user?.uid);
     cometChatUser.setName(user?.profileName);
+    cometChatUser.setre
     cometChatUser.avatar = user?.profile_images[0]?.url;
     
     console.log("🚀 ~ file: IsraeliteFilters.js:489 ~ registerUserCometChat ~ cometChatUser:", cometChatUser)
@@ -121,6 +122,7 @@ const ProfilePictures = props => {
       '🚀 ~ file: LoginScreen.js:88 ~ registerUserCometChat ~ cometChatRegisteredUser:',
       cometChatRegisteredUser,
     );
+    navigationService.navigate('ProfileCreated')
 
     // dispatchCometAction({
     //   type: 'COMETCHAT_REGISTER',
@@ -151,7 +153,7 @@ const ProfilePictures = props => {
       registerUserCometChat(response?.data?.user);
 
       
-      navigationService.navigate('ProfileCreated')
+ 
        
 
       

@@ -33,12 +33,14 @@ const SearchFilterScreen = () => {
   const token = useSelector(state => state.authReducer.token);
   // console.log('🚀 ~ file: SearchFilterScreen.js:31 ~ token:', token);
   const user = useSelector(state => state.commonReducer.userData);
+  console.log("🚀 ~ file: SearchFilterScreen.js:36 ~ user:", user?.prefrences?.global)
 
   const [location, setLocation] = useState('Jakarta, Indonesia');
-  const [distance, setDistance] = useState(0);
+  const [distance, setDistance] = useState(20);
+  console.log("🚀 ~ file: SearchFilterScreen.js:40 ~ distance:", Array.isArray(distance))
 
-  const [age1, setAge] = useState(0);
-  const [age2, setAge2] = useState(0);
+  const [age1, setAge] = useState(20);
+  const [age2, setAge2] = useState(40);
   const [option, setOption] = useState('shortcuts');
   const [isLoading, setIsLoading] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(true);
@@ -530,8 +532,8 @@ const SearchFilterScreen = () => {
       uid: user?.id,
       filters: [
         ...body,
+        {key: 'miles', values: Array.isArray(distance) ?  distance : [distance]},
         {key: 'age', values: [age1, age2]},
-        {key: 'miles', values: [...distance]},
         {key: 'zipcode', values: ['11230']},
         {key: 'seeking', values: [user?.seeking]},
       ],
@@ -540,7 +542,10 @@ const SearchFilterScreen = () => {
       lng: user?.location?.longitude,
     };
 
-   console.log(
+    // dataBody?.filters.find((item , index)=>item?.key == 'miles')
+    // !user?.prefrences?.global && dataBody?.filters.push({key: 'miles', values: Array.isArray(distance) ?  distance : [distance]})
+
+    console.log(
       '🚀 ~ file: SearchFilterScreen.js:546 ~ getSearchResult ~ dataBody:',
       JSON.stringify(dataBody, null, 2),
     );
@@ -602,7 +607,10 @@ const SearchFilterScreen = () => {
           placeholderColor={Color.themeLightGray}
           borderRadius={moderateScale(5, 0.3)}
         /> */}
-        <Silder
+        {
+          !user?.prefrences?.global &&
+          
+          <Silder
           single={true}
           setState1={setDistance}
           state1={distance}
@@ -611,7 +619,8 @@ const SearchFilterScreen = () => {
           max={200}
           multi={false}
           setScrollEnabled={setScrollEnabled}
-        />
+          />
+        }
         <Silder
           single={false}
           multi={true}
