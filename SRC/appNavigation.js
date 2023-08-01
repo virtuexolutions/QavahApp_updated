@@ -45,7 +45,10 @@ import Support from './Screens/Support';
 import GetSuperLike from './Screens/GetSuperLike';
 import PrivacyPolicy from './Screens/PrivacyPolicy';
 import PaymentModal from './Components/PaymentModal';
-import { CometChatConversationListWithMessages, CometChatUserListWithMessages } from './cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
+import {
+  CometChatConversationListWithMessages,
+  CometChatUserListWithMessages,
+} from './cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
 import SelectedChat from './Screens/SelectedChat';
 
 const AppNavigator = () => {
@@ -55,8 +58,10 @@ const AppNavigator = () => {
   const isVerified = useSelector(state => state.authReducer.isVerified);
   const token = useSelector(state => state.authReducer.token);
   const isLoggedIn = useSelector(state => state.authReducer.isLoggedIn);
-  console.log("🚀 ~ file: appNavigation.js:55 ~ AppNavigator ~ isLoggedIn:", isLoggedIn)
-
+  console.log(
+    '🚀 ~ file: appNavigation.js:55 ~ AppNavigator ~ isLoggedIn:',
+    isLoggedIn,
+  );
 
   // console.log('token>>>>', token);
   // console.log('isVerified', isGoalCreated);
@@ -74,31 +79,30 @@ const AppNavigator = () => {
   };
 
   const AppNavigatorContainer = () => {
-    const firstScreen = token != null  && isLoggedIn ? 'TabNavigation' : 'LandingPage';
+    const firstScreen =
+      token != null && isLoggedIn ? 'TabNavigation' : 'LandingPage';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
           headerMode="none"
           initialRouteName={firstScreen}
-           screenOptions={{headerShown: false}}>
+          screenOptions={{headerShown: false}}>
+          <RootNav.Screen name="LandingPage" component={LandingPage} />
+          <RootNav.Screen name="LoginScreen" component={LoginScreen} />
+          <RootNav.Screen name="CreatePortfolio" component={CreatePortfolio} />
 
-           <RootNav.Screen name="LandingPage" component={LandingPage} />
-           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
-           <RootNav.Screen name="CreatePortfolio" component={CreatePortfolio} />
-       
-           <RootNav.Screen name="MoreAboutme" component={MoreAboutme} />
+          <RootNav.Screen name="MoreAboutme" component={MoreAboutme} />
           <RootNav.Screen name="ProfilePictures" component={ProfilePictures} />
-           <RootNav.Screen name="ProfileCreated" component={ProfileCreated} />
-           <RootNav.Screen name="EnterPhone" component={EnterPhone} />
-           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
-           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
-           <RootNav.Screen name="SelectedChat" component={SelectedChat} />
+          <RootNav.Screen name="ProfileCreated" component={ProfileCreated} />
+          <RootNav.Screen name="EnterPhone" component={EnterPhone} />
+          <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
+          <RootNav.Screen name="ResetPassword" component={ResetPassword} />
+          <RootNav.Screen name="SelectedChat" component={SelectedChat} />
 
-
-           <RootNav.Screen
-             name="IsraeliteFilters"
-             component={IsraeliteFilters}
+          <RootNav.Screen
+            name="IsraeliteFilters"
+            component={IsraeliteFilters}
           />
           <RootNav.Screen name="Passions" component={Passions} />
           <RootNav.Screen name="Israeliteinfo" component={Israeliteinfo} />
@@ -110,7 +114,10 @@ const AppNavigator = () => {
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
           <RootNav.Screen name="WhoViewedMe" component={WhoViewedMe} />
           <RootNav.Screen name="Subscription" component={Subscription} />
-          <RootNav.Screen name= "TermsAndConditions" component={TermsAndConditions} />
+          <RootNav.Screen
+            name="TermsAndConditions"
+            component={TermsAndConditions}
+          />
           <RootNav.Screen name="Support" component={Support} />
           <RootNav.Screen name="GetSuperLike" component={GetSuperLike} />
           <RootNav.Screen name="Privacy" component={PrivacyPolicy} />
@@ -136,6 +143,7 @@ export const TabNavigation = () => {
   return (
     <Tabs.Navigator
       screenOptions={({route}) => ({
+        tabBarShowLabel: false,
         headerShown: false,
         tabBarIcon: ({focused}) => {
           let iconName;
@@ -187,6 +195,7 @@ export const TabNavigation = () => {
           );
         },
         tabBarShowLabel: false,
+       
         tabBarStyle: {
           shadowColor: '#000',
           shadowOffset: {
@@ -202,18 +211,20 @@ export const TabNavigation = () => {
           height: windowHeight * 0.07,
         },
       })}>
-      <Tabs.Screen name={'HomeScreen'} component={HomeScreen} />
+      <Tabs.Screen name={'HomeScreen'} component={HomeScreen}  />
       <Tabs.Screen name={'SearchFilterScreen'} component={SearchFilterScreen} />
       <Tabs.Screen name={'Wishlist'} component={Wishlist} />
       <Tabs.Screen name={'ChatScreen'} component={ChatScreen} />
       {/* <Tabs.Screen name="UserListWithMessages" component={CometChatUserListWithMessages} /> */}
       {/* <Tabs.Screen name="ConversationListWithMessages" component={CometChatConversationListWithMessages} /> */}
 
-      <Tabs.Screen name={'SpotLight'} component={SpotLight} 
-      // options={{
-      //   // Pass data as a parameter to the component
-      //   data: { fromSpotLight: true },
-      // }}
+      <Tabs.Screen
+        name={'SpotLight'}
+        component={SpotLight}
+        // options={{
+        //   // Pass data as a parameter to the component
+        //   data: { fromSpotLight: true },
+        // }}
       />
     </Tabs.Navigator>
   );
