@@ -33,7 +33,7 @@ const SearchFilterScreen = () => {
   const token = useSelector(state => state.authReducer.token);
   // console.log('🚀 ~ file: SearchFilterScreen.js:31 ~ token:', token);
   const user = useSelector(state => state.commonReducer.userData);
-  console.log("🚀 ~ file: SearchFilterScreen.js:36 ~ user:", user?.prefrences?.global)
+  console.log("🚀 ~ file: SearchFilterScreen.js:36 ~ user:", user?.id)
 
   const [location, setLocation] = useState('Jakarta, Indonesia');
   const [distance, setDistance] = useState(20);
@@ -556,7 +556,7 @@ const SearchFilterScreen = () => {
     setIsLoading(false);
     if (response != undefined) {
       // console.log('Search result Response', response);
-      console.log('Search result Response', response?.data?.peoples);
+      // console.log('Search result Response', response?.data?.peoples);
       setPeople(response?.data?.peoples);
     }
   };

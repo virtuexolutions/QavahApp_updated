@@ -7,7 +7,7 @@ import persistStore from "redux-persist/es/persistStore";
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["authReducer", "commonReducer"],
+  whitelist: ["authReducer", "commonReducer" , 'socketReducer'],
 };
 
 const persistedReducer = persistReducer(persistConfig, combineReducer);

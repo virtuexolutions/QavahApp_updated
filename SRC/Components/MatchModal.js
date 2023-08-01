@@ -13,8 +13,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Lottie from 'lottie-react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {setIsMatched} from '../Store/slices/socket';
+import { useNavigation } from '@react-navigation/native';
 
 const MatchModal = ({isVisible, otherUserData}) => {
+  const navigation = useNavigation()
   // console.log("🚀 ~ file: MatchModal.js:18 ~ MatchModal ~ otherUserData:", otherUserData)
   // const user = useSelector(state => state.commonReducer.userData);
   // console.log('🚀 ~ file: MatchModal.js:19 ~ MatchModal ~ user:', user);
@@ -122,7 +124,11 @@ const MatchModal = ({isVisible, otherUserData}) => {
             />
           </View>
         </View>
-        <View
+        <TouchableOpacity
+        onPress={()=>{
+          navigation.navigate('ChatScreen');
+          dispatch(setIsMatched(false));
+        }}
           style={{
             // position : 'absolute',
             width: moderateScale(50, 0.6),
@@ -140,8 +146,12 @@ const MatchModal = ({isVisible, otherUserData}) => {
             as={Ionicons}
             color={Color.white}
             size={moderateScale(27, 0.6)}
+            onPress={()=>{
+              navigation.navigate('ChatScreen');
+              dispatch(setIsMatched(false));
+            }}
           />
-        </View>
+        </TouchableOpacity>
         <CustomText
           onPress={() => {
             dispatch(setIsMatched(false));

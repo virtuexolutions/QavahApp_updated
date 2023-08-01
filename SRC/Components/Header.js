@@ -45,7 +45,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import SubscriptionListing from './SubscriptionListing';
 import {Pusher} from '@pusher/pusher-websocket-react-native';
 import MatchModal from './MatchModal';
-import { setIsMatched } from '../Store/slices/socket';
+import { setIsMatched, setIsSubscribed, setPusherInstance } from '../Store/slices/socket';
 
 const Header = props => {
   const dispatch = useDispatch();
@@ -315,6 +315,9 @@ console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
   const [searchText, setSearchText] = useState('');
   const user = useSelector(state => state.commonReducer.userData);
   const userRole = useSelector(state => state.commonReducer.selectedRole);
+  const isSubscribed = useSelector(state => state.socketReducer.isSubscribed);
+  console.log("🚀 ~ file: Header.js:319 ~ Header ~ isSubscribed:", isSubscribed)
+
   const pusher = Pusher.getInstance();
 
   useEffect(() => {
@@ -334,32 +337,18 @@ console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
           channelName: `match-popup-${userData?.id}`,
           // channelName: 'my-notificatio+n-channel',
           onSubscriptionSucceeded: (channelName, data) => {
-            // console.log("🚀 ~ file: SelectedChat.js:77 ~ connectPusher ~ myChannel:", myChannel)
+            dispatch(setPusherInstance(pusher))
+            dispatch(setIsSubscribed(true))
+            console.log("🚀 ~ file: SelectedChat.js:77 ~ connectPusher ~ myChannel:", myChannel)
             console.log('Subscribed to ', channelName);
-            // console.log(`And here are the channel members: ${myChannel.members}`)
+            console.log(`And here are the channel members: ${myChannel.members}`)
           },
           onEvent: event => {
-            // console.log(
-            //   '🚀 ~ file: SelectedChat.js:127 ~ connectPusher ~ event:',
-            //   event,
-            // );
-            dispatch(setIsMatched(true))
+           dispatch(setIsMatched(true))
             setotherData(JSON.parse(event.data))
             console.log('Got channel event:', event.data);
             const dataString = JSON.parse(event.data);
-            // console.log(
-            //   '🚀 ~ file: SelectedChat.js:116 ~ connectPusher ~ dataString:',
-            //   dataString?.response,
-            //   dataString?.target_id,
-            //   user?.id,
-            // );
-            // if (dataString.target_id == user?.id) {
-            //   //  alert('here' , user?._id)
-            //   // setMessages(previousMessages =>
-            //   //   GiftedChat.append(previousMessages, dataString?.response),
-            //   // );
-            //   // return
-            // }
+           
           },
         });
         // await pusher.subscribe({ channelName });
@@ -368,14 +357,19 @@ console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
         console.log(`ERROR: ${e}`);
       }
     }
-    connectPusher();
+    if(!isSubscribed){
 
-    return async () => {
-      await pusher.unsubscribe({
-        channelName: `match-popup-${userData?.id}`,
-      });
-    };
-  }, []);
+      connectPusher();
+    }
+
+   
+  }, [focused]);
+  const unsubscribePusher = async()=>{
+    await pusher.unsubscribe({
+      channelName: `match-popup-${userData?.id}`,
+    });
+    dispatch(setIsSubscribed(false))
+  }
 
   return (
     <View style={styles.header2}>
@@ -480,6 +474,7 @@ console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
             }}
             activeOpacity={0.8}
             onPress={() => {
+              unsubscribePusher()
               dispatch(setUserLogoutAuth());
               dispatch(setUserLogOut());
             }}>

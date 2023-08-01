@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   socket: null,
-  matched : false
+  matched : false,
+  isSubscribed : false,
+  pusherInstance : null,
 };
 
 const socketSlice = createSlice({
@@ -19,10 +21,17 @@ const socketSlice = createSlice({
     },
     setIsMatched(state,action){
       state.matched = action.payload;
-    }
+    },
+    setIsSubscribed(state,action){
+      state.isSubscribed = action.payload
+    },
+    setPusherInstance(state,action){
+      state.isSubscribed = action.payload
+    },
+
   },
 });
 
-export const { updateSocket , setIsMatched } = socketSlice.actions;
+export const { updateSocket , setIsMatched  , setIsSubscribed , setPusherInstance} = socketSlice.actions;
 
 export default socketSlice.reducer;
