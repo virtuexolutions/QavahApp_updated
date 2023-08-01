@@ -109,6 +109,7 @@ const ProfilePictures = props => {
     );
     let cometChatUser = new CometChat.User(user?.uid);
     cometChatUser.setName(user?.profileName);
+    cometChatUser.setre
     cometChatUser.avatar = user?.profile_images[0]?.url;
     
     console.log("🚀 ~ file: IsraeliteFilters.js:489 ~ registerUserCometChat ~ cometChatUser:", cometChatUser)
@@ -121,6 +122,7 @@ const ProfilePictures = props => {
       '🚀 ~ file: LoginScreen.js:88 ~ registerUserCometChat ~ cometChatRegisteredUser:',
       cometChatRegisteredUser,
     );
+    navigationService.navigate('ProfileCreated')
 
     // dispatchCometAction({
     //   type: 'COMETCHAT_REGISTER',
@@ -151,7 +153,7 @@ const ProfilePictures = props => {
       registerUserCometChat(response?.data?.user);
 
       
-      navigationService.navigate('ProfileCreated')
+ 
        
 
       
@@ -300,7 +302,17 @@ const ProfilePictures = props => {
       
     /> */}
         </View>
+        <CustomText style={[styles.text, ]}>
+          {
+            <CustomText
+              isBold
+              style={{fontSize: moderateScale(13, 0.3), color: Color.red}}>
+              *Attention:
+            </CustomText>
+          }{' '}
+         Upload a clear, recent modest JPEG, non-photo, or offensive image may suspend your profile until corrected.
 
+        </CustomText>
         <CustomButton
           text={'Next'}
           textColor={Color.white}
@@ -402,6 +414,12 @@ const styles = ScaledSheet.create({
     marginTop: moderateScale(15, 0.3),
     height: windowHeight * 0.35,
     justifyContent: 'space-between',
+  },
+  text: {
+    fontSize: moderateScale(9, 0.6),
+    color: Color.black,
+    width: windowWidth * 0.9,
+    lineHeight: moderateScale(15, 0.6),
   },
   imageContainer: {
     width: (windowWidth * 0.85) / 3,

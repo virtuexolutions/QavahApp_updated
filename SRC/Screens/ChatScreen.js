@@ -27,6 +27,9 @@ const ChatScreen = ({navigation}) => {
   console.log("🚀 ~ file: ChatScreen.js:27 ~ ChatScreen ~ userData:", userData?.uid)
   const [searchData, setSearchData] = useState('');
   const [userinfo , setUserData] = useState({})
+  const authKey = '07ba629476752645dbce6a6c4aad7b2fc680b511';
+  const appID = "2092182aee051e28";
+  const region = "US";
 
   const chatListingData = [
     {
@@ -115,14 +118,7 @@ const ChatScreen = ({navigation}) => {
       // time : moment().format()
     },
   ];
-  const authKey = '07ba629476752645dbce6a6c4aad7b2fc680b511';
-  const appID = "2092182aee051e28";
-  const region = "US";
-  const appSetting = new CometChat.AppSettingsBuilder()
-    .subscribePresenceForAllUsers()
-    .setRegion(region)
-    .build();
-
+ 
   const LoginUser = () => {
     CometChat.login(userData?.uid, authKey).then(
       user => {
@@ -134,25 +130,12 @@ const ChatScreen = ({navigation}) => {
       },
     );
   };
-  const configureCometChat = async()=>{
-    console.log('here is the chat configuration')
-    CometChat.init(appID, appSetting).then(
-      () => {
-        console.log("Initialization completed successfully");
-        LoginUser();
-        // You can now call login function.
-      },
-      (error) => {
-        console.log("Initialization failed with error:", error);
-        // Check the reason for error and take appropriate action.
-      }
-    );
-  }
 
   useEffect(() => {
-    configureCometChat()
+    LoginUser();
+  }, [])
   
-  }, []);
+ 
 
   return (
     <View style={{flex: 1}}>
