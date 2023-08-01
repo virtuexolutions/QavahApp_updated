@@ -172,7 +172,7 @@ const SearchFilterScreen = () => {
   const livingArray = [
     {
       text: 'Living Situation',
-      array: [
+      array:[
         'None',
         'Live alone',
         'Live with friends',

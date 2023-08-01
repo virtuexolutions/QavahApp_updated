@@ -242,59 +242,62 @@ const MoreAboutme = props => {
     'divorced',
     'put away',
     'its complicated',
-    'biblical ploygyny marriage',
+    'Poly Marriage',
   ];
-  const LivingSituation = [
+  const LivingSituation =[
     'None',
     'Live alone',
-    'live with friends',
-    'live with family',
-    'live with spouse',
-    'live as sister wife',
-    'live with kids',
-    'Others',
-    'prefer not to say',
+    'Live with friends',
+    'Live with family',
+    'Live with kids',
+    'Live with spouse',
+    'Live as a sister wife',
+    'Other',
+    'Prefer not to say',
   ];
   const childrenArray = [
-    'yes, they dont live at home',
-    'yes, they sometime live at home',
-    'yes, they  live at home',
-    'none',
+    `yes - they don't live at home`,
+    'yes - they sometimes live at home',
+    'yes - they live at home',
+    'No',
   ];
 
-  const moreChildArray = ['no', 'yes', 'not sure'];
+  const moreChildArray =['yes', 'not sure', 'no'];
   const seekingArray = [
     'spouse',
     'community',
-    'sister wife',
+    `sister's wife`,
     'friendship',
     'study partner',
-    'my polygyny family is availble for courtship',
-    'biblical concubine',
+    'My Poly Family Is Available For Courtship',
+    'Concubine',
+    'non-working wife to manage home affairs',
+    'working wife',
+    'husband - allows me to run business',
   ];
 
   const bodyTypeArray = [
-    'petite',
-    'slim',
-    'athelitic',
-    'average',
-    'few extra pound',
-    'full figured',
-    'large and lovely',
-    'big teddy bear',
+    'Petite',
+    'Slim',
+    'Athletic',
+    'Average',
+    'Few extra pounds',
+    'Full Figured',
+    'Large and lovely',
+    'Big teddy bear',
   ];
   const ExersiceArray = [
-    'i dont exersice regularly',
-    'i exersice 1-2 times per week',
-    'i exersice 3-4 times per week',
-    'i exersice 5 or more times per week',
-    'no answer',
+    'I don’t exercise regularly',
+    'I exercise 1-2 times per week',
+    'I exercise 3-4 times per week',
+    'I exercise 5 or more times per week',
+    'No answer',
   ];
   const HavePetsArray = [
     'birds',
     'cats',
     'exotic pets',
-    'dog',
+    'dogs',
     'fish',
     'horses',
     'no',
@@ -307,27 +310,27 @@ const MoreAboutme = props => {
     'on special occasions',
     'i will drink by myself',
   ];
-  const doyouSmokeArray = [
-    'i dont',
+  const doyouSmokeArray =  [
+    'i dont smoke',
     'occasionally smoke',
-    'on special occasions',
-    'i will drink by myself',
+    'only cannabis',
+    'only cigars',
   ];
 
   const employmentArray = [
-    'none',
-    'full time',
-    'part time',
-    'retired',
-    'self employed',
-    'homemaker',
-    'not employed',
-    'prefer not to say',
+    'None',
+    'Full time',
+    'Part time',
+    'Self employed',
+    'Retired',
+    'Homemaker',
+    'Not employed',
+    'Prefer not to say',
   ];
 
   const willingToRelocateArray = [
-    'willing to relocate within state',
-    'willing to relocate outside the state',
+    'willing to relocate within my state',
+    'Willing To Relocate Out Of State',
     'not willing to relocate',
     'not sure about relocating',
   ];

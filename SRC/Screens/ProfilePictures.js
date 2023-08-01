@@ -22,6 +22,8 @@ import CustomImage from '../Components/CustomImage';
 import navigationService from '../navigationService';
 // import SortableGrid from 'react-native-sortable-grid';
 import ImageContainer from '../Components/ImageContainer';
+import {CometChat} from '@cometchat-pro/react-native-chat';
+
 // import DraggableFlatList, {
 //   ScaleDecorator,
 // } from 'react-native-draggable-flatlist';
@@ -98,6 +100,35 @@ const ProfilePictures = props => {
     {id: '4', text: 'Item 4'},
     {id: '5', text: 'Item 5'},
   ];
+
+
+  const registerUserCometChat = async user => {
+    console.log(
+      '🚀 ~ file: IsraeliteFilters.js:455 ~ registerUserCometChat ~ user:',
+      user,
+    );
+    let cometChatUser = new CometChat.User(user?.uid);
+    cometChatUser.setName(user?.profileName);
+    cometChatUser.avatar = user?.profile_images[0]?.url;
+    
+    console.log("🚀 ~ file: IsraeliteFilters.js:489 ~ registerUserCometChat ~ cometChatUser:", cometChatUser)
+    const cometChatRegisteredUser = await CometChat.createUser(
+      cometChatUser,
+      '07ba629476752645dbce6a6c4aad7b2fc680b511',
+      // '07ba629476752645dbce6a6c4aad7b2fc680b511',
+    );
+    console.log(
+      '🚀 ~ file: LoginScreen.js:88 ~ registerUserCometChat ~ cometChatRegisteredUser:',
+      cometChatRegisteredUser,
+    );
+
+    // dispatchCometAction({
+    //   type: 'COMETCHAT_REGISTER',
+    //   user: {...cometChatRegisteredUser},
+    // });
+  };
+
+
   const sendImages =async ()=>{
     const url = 'user/update-my-gallery-image'
 
@@ -114,9 +145,11 @@ const ProfilePictures = props => {
     setisloading(false)
     if(response != undefined){
       
-      console.log("🚀 ~ file: ProfilePictures.js:95 ~ sendImages ~ response:", response?.data)
+      console.log("🚀 ~ file: ProfilePictures.js:95 ~ sendImages ~ response:", response?.data?.user)
       
       dispatch(setUserData(response?.data?.user))
+      registerUserCometChat(response?.data?.user);
+
       
       navigationService.navigate('ProfileCreated')
        

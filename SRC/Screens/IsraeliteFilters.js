@@ -6,7 +6,7 @@ import {
   View,
   Platform,
   ToastAndroid,
-  BackHandler
+  BackHandler,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -31,15 +31,14 @@ import {
   setUserData,
 } from '../Store/slices/common';
 import {setIsLoggedIn, setUserToken} from '../Store/slices/auth';
-import { CometChat } from '@cometchat-pro/react-native-chat';
 // import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const IsraeliteFilters = props => {
   const check = props?.route?.params?.check;
-  console.log(
-    '🚀 ~ file: IsraeliteFilters.js:33 ~ IsraeliteFilters ~ check:',
-    check,
-  );
+  // console.log(
+  //   '🚀 ~ file: IsraeliteFilters.js:33 ~ IsraeliteFilters ~ check:',
+  //   check,
+  // );
   const edit = props?.route?.params?.edit;
   const twoStepsData = props?.route?.params?.twoStepsData;
   const user = useSelector(state => state.commonReducer.userData);
@@ -47,10 +46,10 @@ const IsraeliteFilters = props => {
   const israeliteFilter = useSelector(
     state => state?.commonReducer?.israeliteFilterRegister,
   );
-  console.log(
-    '🚀 ~ file: IsraeliteFilters.js:40 ~ IsraeliteFilters ~ israeliteFilter:',
-    israeliteFilter,
-  );
+  // console.log(
+  //   '🚀 ~ file: IsraeliteFilters.js:40 ~ IsraeliteFilters ~ israeliteFilter:',
+  //   israeliteFilter,
+  // );
 
   const steps = props?.route?.params?.steps;
   const navigation = useNavigation();
@@ -126,14 +125,14 @@ const IsraeliteFilters = props => {
       ? user?.isrealite_practice_keeping == undefined
         ? []
         : user?.isrealite_practice_keeping.map(item => item?.options)
-      : israeliteFilter?.isrealite_practice_keeping 
+      : israeliteFilter?.isrealite_practice_keeping
       ? israeliteFilter?.isrealite_practice_keeping
       : [],
   );
-  console.log(
-    '🚀 ~ file: IsraeliteFilters.js:55 ~ IsraeliteFilters ~ israelitePractise:',
-    israelitePractise,
-  );
+  // console.log(
+  //   '🚀 ~ file: IsraeliteFilters.js:55 ~ IsraeliteFilters ~ israelitePractise:',
+  //   israelitePractise,
+  // );
   const [modalVisible, setModalVisible] = useState(false);
   // const [type, setType] = useState('');
   const [passionModalVisible, setPassionModalVisible] = useState(false);
@@ -146,10 +145,10 @@ const IsraeliteFilters = props => {
       ? israeliteFilter?.Passions
       : [],
   );
-  console.log(
-    '🚀 ~ file: IsraeliteFilters.js:61 ~ IsraeliteFilters ~ passions:',
-    passions,
-  );
+  // console.log(
+  //   '🚀 ~ file: IsraeliteFilters.js:61 ~ IsraeliteFilters ~ passions:',
+  //   passions,
+  // );
   const [kingdomGifts, setKingDomGifts] = useState(
     edit
       ? user?.kingdom_gifts == undefined
@@ -166,10 +165,10 @@ const IsraeliteFilters = props => {
   const [type, setType] = useState('passions');
   const [isLoading, setIsLoading] = useState(false);
   const [checked, setIsCecked] = useState(false);
-  console.log(
-    '🚀 ~ file: IsraeliteFilters.js:101 ~ IsraeliteFilters ~ checked:',
-    checked,
-  );
+  // console.log(
+  //   '🚀 ~ file: IsraeliteFilters.js:101 ~ IsraeliteFilters ~ checked:',
+  //   checked,
+  // );
 
   const israeliteFilterBody = {
     iBelieveIAm: believe,
@@ -236,7 +235,7 @@ const IsraeliteFilters = props => {
   };
 
   const PassionsArray = [
-    'singing',
+    'Singing',
     'Music',
     'Riding Horses',
     'Fitness /Exercising',
@@ -279,7 +278,7 @@ const IsraeliteFilters = props => {
     'History Buff',
     'Jazz',
   ];
-  const kingdomArray = [
+  const kingdomArray =[
     'House keeping',
     'cooking',
     'wellness planning',
@@ -291,7 +290,7 @@ const IsraeliteFilters = props => {
     'technical skills',
     'how to start a business',
     'business skills',
-    'effective communications',
+    'effective communication',
     'how to use a computer',
     'emergency preparedness',
     'basic first aid',
@@ -313,7 +312,29 @@ const IsraeliteFilters = props => {
     'i can maintain a garden',
     'i am a good hunter',
     'i can catch fish',
-  ];
+    'I Can Home School Children',
+    'Money Management Skills',
+    'Avoid/Get Out Of Debt',
+    'How To Use Coupons',
+    'How To Balancing A Bank Account',
+    'Money/Management Investing',
+    'Prepare Taxes',
+    'Effective Negotiation',
+    'Self-Awareness Skills',
+    'Relationship Skills',
+    'Listening And Communicating',
+    'Expressing Love',
+    'Expressing Respect',
+    'Emotional Intelligence',
+    'Critical Thinking & Problem Solving',
+    'Self- Discipline',
+    'Exercise & Nutrition',
+    'Self-Care Sleep & Hygiene',
+    'Family Protection',
+    'Community Law Enforcement',
+    'I Know Gun Safety',
+    'I Can Shoot And Teach Shooting',
+  ]
 
   const IsraelitesPractise = [
     'None',
@@ -324,21 +345,25 @@ const IsraeliteFilters = props => {
     'Eating clean',
     'Set apart living',
     'Wearing fringes',
+    'Women Don’t Wear Pants',
     'Lunar sabbath keeper',
     'Friday sundown to Sat sundown 24 hr sabbath',
     'Sat sun up to Sat sun down 12 hr sabbath',
+    'I Submit To My Spouse In Yah As Head',
+    'I Service And Provide For My Household Buck Stops With Me',
   ];
 
   const believeArray = [
     'none',
-    'i am a diaspora israelite',
-    'grafted in',
-    'i believe i am of the 12 tribes',
-    'of the northern tribe',
-    'of the southern tribe',
+    'I am a diaspora israelite',
+    'Grafted in',
+    'I believe i am of the 12 tribes',
+    'Of the northern tribe',
+    'Of the southern tribe',
   ];
 
-  const yearsInTruthArray = [
+  const yearsInTruthArray =  [
+    'None',
     '1 years',
     '2 years',
     '3 years',
@@ -355,18 +380,18 @@ const IsraeliteFilters = props => {
   const maritialBeliefArray = [
     'none',
     'monogamy',
-    'ploygyny',
+    'polygyny',
     'still on the fence',
-    'i believe in the ploygyny but dont practice it',
+    `i believe in polygyny but don't practice it`,
   ];
 
   const affiliationArray = [
-    'no',
-    'i study alone',
+    'None',
+    'No, I Study Alone',
     'i am a member of an online org',
     'i am a member of a camp or group',
     'i go to an assembley',
-    'i follow social i attend assembley',
+    'I Follow A Social I Attend An Assembly',
     'i follow a ministry on social media',
     'ask me when we talk',
     'i am  seeking a fellowship',
@@ -381,26 +406,26 @@ const IsraeliteFilters = props => {
     '66 , apocrypha and any other considered (lost books)',
   ];
 
-  const studyBibleArray = [
+  const studyBibleArray =  [
     'none',
     'king james version',
-    '1611 king james a/Apocrypha',
-    'ceapher',
-    'scriptures',
-    'i have a library',
-    'book of rememberance',
-    'ask me when we talk',
-    'other',
+    '1611 King James W/Apocrypha',
+    'Cepher Bible',
+    'Scriptures',
+    'I Have A Library',
+    'Book Of Remembrance',
+    'Ask Me When We Talk',
+    'Other',
   ];
 
-  const SpiritualbackgroundArray = [
+  const SpiritualbackgroundArray =  [
     'none',
-    'i came out of the chiristian church',
+    'i came out of the christian church',
     'i came out of islam',
-    'i came out out the nation of islam',
-    'i didnot believe in anything',
-    'i came out of the pan-africanism',
-    'i was orthodox jew',
+    'I Came Out Of The Nation Of Islam',
+    'i did not believe in anything',
+    'I Came Out Of Pan - Africanism',
+    'i was an orthodox jew',
     'ask me later',
   ];
 
@@ -427,17 +452,21 @@ const IsraeliteFilters = props => {
     // console.log( ' body ================== ? ? ?? ',completeBody)
     setIsLoading(true);
     const response = await Post(url, completeBody, apiHeader());
-    console.log(
-      '🚀 ~ file: IsraeliteFilters.js:342 ~ Registration ~ completeBody:',
-      completeBody,
-    );
+    // console.log(
+    //   '🚀 ~ file: IsraeliteFilters.js:342 ~ Registration ~ completeBody:',
+    //   completeBody,
+    // );
     setIsLoading(false);
     if (response != undefined) {
       //  console.log('User registered =-======>' , response?.data)
       Platform.OS == 'android'
         ? ToastAndroid.show('User Registered Successfully', ToastAndroid.SHORT)
         : alert('User Registered Successfully');
-        registerUserCometChat(response?.data?.user)
+      registerUserCometChat(response?.data?.user);
+      console.log(
+        '🚀 ~ file: IsraeliteFilters.js:441 ~ Registration ~ user:',
+        response?.data?.user,
+      );
       dispatch(setMoreAboutMeRegister([]));
       dispatch(setIsraeliteInfoRegister([]));
       dispatch(setUserData(response?.data?.user));
@@ -450,22 +479,7 @@ const IsraeliteFilters = props => {
       });
     }
   };
-  const registerUserCometChat = async(user)=>{
-    let cometChatUser = new CometChat.User(user?.uid);
-        cometChatUser.setName(user?.profileName);
-        cometChatUser.avatar = user?.profile_images[0]?.url;
 
-        const cometChatRegisteredUser = await CometChat.createUser(
-          cometChatUser,
-          '07ba629476752645dbce6a6c4aad7b2fc680b511',
-        );
-        console.log("🚀 ~ file: LoginScreen.js:88 ~ registerUserCometChat ~ cometChatRegisteredUser:", cometChatRegisteredUser)
-
-        // dispatchCometAction({
-        //   type: 'COMETCHAT_REGISTER',
-        //   user: {...cometChatRegisteredUser},
-        // });
-  }
 
   useEffect(() => {
     if (check != undefined) {
@@ -474,7 +488,7 @@ const IsraeliteFilters = props => {
     const backhandler = BackHandler.addEventListener(
       'hardwareBackPress',
       () => {
-        leftPress()
+        leftPress();
         // console.log('data here');
         return true;
       },
@@ -589,15 +603,15 @@ const IsraeliteFilters = props => {
             // justifyContent : 'space-between',
           }}>
           {IsraelitesPractise?.map((item, index) => {
-            console.log(
-              '🚀 ~ file: IsraeliteFilters.js:501 ~ {IsraelitesPractise?.map ~ item:',
-              item,
-            );
+            // console.log(
+            //   '🚀 ~ file: IsraeliteFilters.js:501 ~ {IsraelitesPractise?.map ~ item:',
+            //   item,
+            // );
             return (
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => {
-                  const data =   [...israelitePractise] 
+                  const data = [...israelitePractise];
                   !israelitePractise?.includes(item)
                     ? setIsraelitePractise(prev => [...prev, item])
                     : setIsraelitePractise(data.filter(value => value != item));
