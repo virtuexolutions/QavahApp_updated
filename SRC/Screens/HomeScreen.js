@@ -44,7 +44,7 @@ const HomeScreen = () => {
   const isSubscribed = useSelector(state => state.socketReducer.isSubscribed);
   console.log("🚀 ~ file: HomeScreen.js:45 ~ isSubscribed:", isSubscribed)
 
-  console.log("🚀 ~ file: HomeScreen.js:40 ~ user:", user?.uid)
+  console.log("🚀 ~ file: HomeScreen.js:40 ~ user:", user?.id , user?.profileName)
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ token:", token)

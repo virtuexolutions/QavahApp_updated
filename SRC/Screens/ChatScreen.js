@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View , ActivityIndicator} from 'react-native';
 import React, {useEffect} from 'react';
 import ScreenBoiler from '../Components/ScreenBoiler';
 import moment from 'moment';
@@ -25,9 +25,10 @@ import {CometChat} from '@cometchat-pro/react-native-chat';
 const ChatScreen = ({navigation}) => {
   console.log("🚀 ~ file: ChatScreen.js:26 ~ ChatScreen ~ navigation:", navigation)
   const userData = useSelector(state => state.commonReducer.userData);
-  console.log("🚀 ~ file: ChatScreen.js:27 ~ ChatScreen ~ userData:", userData?.uid)
+  // console.log("🚀 ~ file: ChatScreen.js:27 ~ ChatScreen ~ userData:", userData?.uid)
   const [searchData, setSearchData] = useState('');
-  const [userinfo , setUserData] = useState({})
+  const [userinfo , setUserData] = useState(false)
+  console.log("🚀 ~ file: ChatScreen.js:31 ~ ChatScreen ~ userinfo:", userinfo)
   const authKey = '07ba629476752645dbce6a6c4aad7b2fc680b511';
   const appID = "2092182aee051e28";
   const region = "US";
@@ -149,7 +150,7 @@ const ChatScreen = ({navigation}) => {
     CometChat.login(userData?.uid, authKey).then(
       user => {
         console.log('Login Successful:', {user});
-        // setUserData(user?.user)
+        setUserData(true)
       },
       error => {
         console.log('Login failed with exception:', {error});
@@ -160,14 +161,34 @@ const ChatScreen = ({navigation}) => {
   useEffect(() => {
     // configureCometChat()
     LoginUser();
+
+    return()=>{
+      setUserData(false)
+    }
   }, [])
   
  
 
   return (
-    <View style={{flex: 1}}>
+    userinfo ?
+
+      <View style={{flex: 1}}>
       <CometChatConversationListWithMessages navigation={navigation} />
-    </View>
+      </View>
+      :
+      <View style={{
+        width : windowWidth ,
+        height : windowHeight * 0.8,
+        justifyContent : 'center' ,
+        aligntems : 'center',
+      }}>
+      <ActivityIndicator 
+      size={'large'}
+      color={Color.themeColor}
+
+      />
+      </View>
+    
 
     // <>
     //   <CustomStatusBar

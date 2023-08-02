@@ -40,7 +40,7 @@ const ProfileCreated = (props) => {
   return (
     <ImageBackground
       style={styles.container}
-      source={ require('../Assets/Images/ProfileLanding1.png')}>
+      source={ require('../Assets/Images/ProfileLanding2.jpg')}>
    
         <View style={styles.imageContainer}>
           <CustomText

@@ -28,6 +28,9 @@ const UserCard = ({
   hideBtns,
   favoredYouPost,
   setFavoredYouPost,
+  youFavoured,
+  setYouFavoured,
+  getYouFavoredPosts
 }) => {
   console.log(
     '🚀 ~ file: UserCard.js:19 ~ UserCard ~ item:',
@@ -95,7 +98,7 @@ const UserCard = ({
   };
 
 const unfriend = async (item)=>{
-  const url = ''
+  const url = 'settings/unmatch_user'
   const response = await Post(url, {targetsUid: item?.id}, apiHeader(token))
 
   if (response?.data?.status) {
@@ -103,12 +106,12 @@ const unfriend = async (item)=>{
       '🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:',
       response?.data,
     );
-
-    setFavoredYouPost(
-      favoredYouPost.filter(
-        (data, index) => response?.data?.peoples?.match_id != data?.id,
-      ),
-    );
+    getYouFavoredPosts()
+    // setFavoredYouPost(                
+    //   favoredYouPost.filter(
+    //     (data, index) => response?.data?.peoples?.match_id != data?.id,
+    //   ),
+    // );
   } else {
     Platform.OS == 'android'
       ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)

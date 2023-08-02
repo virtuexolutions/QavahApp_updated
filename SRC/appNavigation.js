@@ -50,6 +50,7 @@ import {
   CometChatUserListWithMessages,
 } from './cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
 import SelectedChat from './Screens/SelectedChat';
+import CallScreen from './Screens/CallScreen';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -114,6 +115,8 @@ const AppNavigator = () => {
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
           <RootNav.Screen name="WhoViewedMe" component={WhoViewedMe} />
           <RootNav.Screen name="Subscription" component={Subscription} />
+          <RootNav.Screen name="CallScreen" component={CallScreen} />
+
           <RootNav.Screen
             name="TermsAndConditions"
             component={TermsAndConditions}

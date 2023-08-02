@@ -336,6 +336,10 @@ const Wishlist = () => {
             return (
               <UserCard
                 item={item}
+                youFavoured = {youFavoured}
+                setYouFavoured = {setYouFavoured}
+                getYouFavoredPosts = {getYouFavouredPosts}
+
                 style={[
                   index % 2 == 0
                     ? {

@@ -194,6 +194,14 @@ class CometChatMessages extends React.PureComponent {
     // return console.log("🚀 ~ file: index.js:194 ~ CometChatMessages ~ navigation:",  )
     this?.props?.navigation?.goBack()
   }
+  makeACall = (type , recieverInfo , method)=>{
+    console.log('data ======== >>>' , type ,',,,,' , recieverInfo , '///' , method)
+    // const { navigation } = this.props;
+    // return console.log("🚀 ~ file: index.js:194 ~ CometChatMessages ~ navigation:",  )
+    this?.props?.navigation?.navigate(enums.NAVIGATION_CONSTANTS?.COMET_CHAT_CALLS,{
+      reciverInfo : recieverInfo, type : type, method : method
+    })
+  }
 
   updateMembersCount = (item, count) => {
     const { route } = this.props;
@@ -291,6 +299,7 @@ class CometChatMessages extends React.PureComponent {
         this.appendPollMessage(messages);
         break;
       case actions.VIEW_ACTUAL_IMAGE:
+        console.log('image')
         this.setState({ imageView: messages});
         break;
       case actions.VIEW_ACTUAL_VIDEO:
@@ -298,13 +307,18 @@ class CometChatMessages extends React.PureComponent {
         break;
       case actions.AUDIO_CALL:
       case actions.VIDEO_CALL:
+        // console.log('dataataafafa')
         if (params.type === CometChat.RECEIVER_TYPE.GROUP) {
           this.setState({ joinDirectCall: false, ongoingDirectCall: true });
         } else {
-          params.actionGenerated(action, { ...params.item, type: params.type });
+          this.makeACall(action == 'audioCall' ? 'audio' : 'video' , params?.item , 'init')
+          // this.setState({ userDetailVisible: true });
+          console.log('here' , params?.item , action)
+          // params.actionGenerated(action, { ...params.item, type: params.type });
         }
         break;
       case actions.MENU_CLICKED:
+        // console.log('action' , action)
         // case actions.JOIN_DIRECT_CALL:
         params.actionGenerated(action);
         break;
