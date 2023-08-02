@@ -64,25 +64,25 @@ const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => 
       {targetsUid: item?.id},
       apiHeader(token),
     );
-    // console.log("🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:", response?.data)
-
+    
     
     if (response?.data?.status) {
-
+      
       setFavoredYouPost(
         favoredYouPost.filter(
           (data, index) =>
-            response?.data?.peoples?.match_id != data?.id,
-        ),
-      );
-    } else {
-      Platform.OS == 'android'
-        ? ToastAndroid.show(
+          response?.data?.peoples?.match_id != data?.id,
+          ),
+          );
+        } else {
+          Platform.OS == 'android'
+          ? ToastAndroid.show(
             response?.data?.error,
             ToastAndroid.SHORT,
-          )
-        : Alert.alert(response?.data?.error);
-    }
+            )
+            : Alert.alert(response?.data?.error);
+          }
+          console.log("🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:", response?.data?.status)
   }
 
 

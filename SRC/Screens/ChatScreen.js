@@ -23,6 +23,7 @@ import {CometChat} from '@cometchat-pro/react-native-chat';
 // import { CometChatUI } from '../../SRC/cometchat-chat-uikit-react-native-3';
 
 const ChatScreen = ({navigation}) => {
+  console.log("🚀 ~ file: ChatScreen.js:26 ~ ChatScreen ~ navigation:", navigation)
   const userData = useSelector(state => state.commonReducer.userData);
   console.log("🚀 ~ file: ChatScreen.js:27 ~ ChatScreen ~ userData:", userData?.uid)
   const [searchData, setSearchData] = useState('');
@@ -30,6 +31,11 @@ const ChatScreen = ({navigation}) => {
   const authKey = '07ba629476752645dbce6a6c4aad7b2fc680b511';
   const appID = "2092182aee051e28";
   const region = "US";
+  const appSetting = new CometChat.AppSettingsBuilder()
+  .subscribePresenceForAllUsers()
+  .setRegion(region)
+  .build();
+
 
   const chatListingData = [
     {
@@ -118,12 +124,32 @@ const ChatScreen = ({navigation}) => {
       // time : moment().format()
     },
   ];
+
+  const configureCometChat = async()=>{
+    console.log('here is the chat configuration')
+    CometChat.init(appID, appSetting).then(
+      () => {
+        console.log("Initialization completed successfully");
+       
+        // You can now call login function.
+      },
+      (error) => {
+        console.log("Initialization failed with error:", error);
+        // Check the reason for error and take appropriate action.
+      }
+    );
+  }
+
+  // useEffect(() => {
+    
+  
+  // }, []);
  
   const LoginUser = () => {
     CometChat.login(userData?.uid, authKey).then(
       user => {
         console.log('Login Successful:', {user});
-        setUserData(user?.user)
+        // setUserData(user?.user)
       },
       error => {
         console.log('Login failed with exception:', {error});
@@ -132,6 +158,7 @@ const ChatScreen = ({navigation}) => {
   };
 
   useEffect(() => {
+    // configureCometChat()
     LoginUser();
   }, [])
   

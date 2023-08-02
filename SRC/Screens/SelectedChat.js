@@ -42,7 +42,7 @@ const SelectedChat = ({route}) => {
         item={item}//The object will be of user or group depending on type
         loggedInUser={localUser}
         actionGenerated={(actionType) => {
-          console.log(actionType);
+          // console.log(actionType);
         }}
         navigation={navigation}
 
