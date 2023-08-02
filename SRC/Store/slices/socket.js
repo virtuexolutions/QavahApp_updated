@@ -26,7 +26,7 @@ const socketSlice = createSlice({
       state.isSubscribed = action.payload
     },
     setPusherInstance(state,action){
-      state.isSubscribed = action.payload
+      state.pusherInstance = action.payload
     },
 
   },

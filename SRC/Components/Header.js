@@ -53,19 +53,18 @@ const Header = props => {
   const token = useSelector(state => state.authReducer.token);
 const match = useSelector(state => state.socketReducer.matched);
 console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
+const user = useSelector(state => state.commonReducer.userData);
+const userRole = useSelector(state => state.commonReducer.selectedRole);
+const pusherInstance = useSelector(state => state.socketReducer.pusherInstance);
+// console.log("🚀 ~ file: Header.js:320 ~ Header ~ pusherInstance:", pusherInstance)
 
-  // console.log('🚀 ~ file: Header.js:42 ~ Header ~ token:', token);
   const [isLoveNotesVisible, setLoveNotesVisible] = useState(false);
   const notification = useSelector(state => state.commonReducer.notification);
   const navigationN = useNavigation();
-  const [isModalVisible, setModalVisible] = useState(false);
   const [drawerModal, setDrawerModal] = useState(false);
-  // const [switchEnabled, setSwitchEnabled] = useState(false);
-  // const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [discreteModal, setDiscreteModal] = useState(false);
   const userData = useSelector(state => state.commonReducer.userData);
   const [otherData , setotherData] = useState({})
-  // console.log('🚀 ~ file: Header.js:65 ~ Header ~ userData:', userData?.id);
   const DrawerArray = [
     {
       key: 1,
@@ -247,36 +246,7 @@ console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
     }
   };
 
-  const notificationsDummy = [
-    {
-      image: require('../Assets/Images/woman1.jpeg'),
-      invitation: true,
-      time: '2023-03-24',
-      name: 'Clara',
-      age: '22',
-      distance: '5',
-      text: 'invites you for a match',
-    },
-    {
-      image: require('../Assets/Images/woman2.jpeg'),
-      messaged: true,
-      time: '2023-03-24',
-      name: 'Clara',
-      age: '22',
-      distance: '5',
-      text: 'Patricia,23 messaged you, reply now! “Omg, that was so much fun. Let',
-    },
-    {
-      image: require('../Assets/Images/woman1.jpeg'),
-      commented: true,
-      time: '2023-03-24',
-      name: 'Clara',
-      age: '22',
-      distance: '5',
-      text: 'invites you for a match',
-      photo: require('../Assets/Images/woman3.jpeg'),
-    },
-  ];
+ 
   const notification2 = [
     {
       image: require('../Assets/Images/woman1.jpeg'),
@@ -312,63 +282,22 @@ console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
     rightType,
   } = props;
 
-  const [searchText, setSearchText] = useState('');
-  const user = useSelector(state => state.commonReducer.userData);
-  const userRole = useSelector(state => state.commonReducer.selectedRole);
-  const isSubscribed = useSelector(state => state.socketReducer.isSubscribed);
-  console.log("🚀 ~ file: Header.js:319 ~ Header ~ isSubscribed:", isSubscribed)
 
-  const pusher = Pusher.getInstance();
+
+
+
 
   useEffect(() => {
     rightName == 'bell' && getNotifications();
   }, [focused]);
 
-  useEffect(() => {
-    console.log('useEffect runs');
-    async function connectPusher() {
-      try {
-        await pusher.init({
-          apiKey: '5fe9676993f3dc44fc82',
-          cluster: 'mt1',
-        });
 
-        myChannel = await pusher.subscribe({
-          channelName: `match-popup-${userData?.id}`,
-          // channelName: 'my-notificatio+n-channel',
-          onSubscriptionSucceeded: (channelName, data) => {
-            dispatch(setPusherInstance(pusher))
-            dispatch(setIsSubscribed(true))
-            console.log("🚀 ~ file: SelectedChat.js:77 ~ connectPusher ~ myChannel:", myChannel)
-            console.log('Subscribed to ', channelName);
-            console.log(`And here are the channel members: ${myChannel.members}`)
-          },
-          onEvent: event => {
-           dispatch(setIsMatched(true))
-            setotherData(JSON.parse(event.data))
-            console.log('Got channel event:', event.data);
-            const dataString = JSON.parse(event.data);
-           
-          },
-        });
-        // await pusher.subscribe({ channelName });
-        await pusher.connect();
-      } catch (e) {
-        console.log(`ERROR: ${e}`);
-      }
-    }
-    if(!isSubscribed){
-
-      connectPusher();
-    }
-
-   
-  }, [focused]);
   const unsubscribePusher = async()=>{
-    await pusher.unsubscribe({
+    await pusherInstance.unsubscribe({
       channelName: `match-popup-${userData?.id}`,
     });
     dispatch(setIsSubscribed(false))
+    dispatch(setPusherInstance(null))
   }
 
   return (
