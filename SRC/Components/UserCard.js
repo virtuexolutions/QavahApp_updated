@@ -1,4 +1,11 @@
-import {StyleSheet, Text, TouchableOpacity, View,Platform,ToastAndroid} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+  ToastAndroid,
+} from 'react-native';
 import React from 'react';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
@@ -12,15 +19,24 @@ import CustomTextWithMask from './CustomTextWithMask';
 import {Icon} from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import navigationService from '../navigationService';
-import { Post } from '../Axios/AxiosInterceptorFunction';
-import { useSelector } from 'react-redux';
+import {Post} from '../Axios/AxiosInterceptorFunction';
+import {useSelector} from 'react-redux';
 
-const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => {
-  // console.log("🚀 ~ file: UserCard.js:19 ~ UserCard ~ item:", item)
+const UserCard = ({
+  style,
+  item,
+  hideBtns,
+  favoredYouPost,
+  setFavoredYouPost,
+}) => {
+  console.log(
+    '🚀 ~ file: UserCard.js:19 ~ UserCard ~ item:',
+    item?.useractions?.matched,
+  );
   // console.log("🚀 ~ file: UserCard.js:17 ~ UserCard ~ item:", item?.profile_images[0]?.url)
-  
+
   const token = useSelector(state => state.authReducer.token);
-  
+
   // console.log("🚀 ~ file: UserCard.js:19 ~ UserCard ~ favoredYouPost:", favoredYouPost)
   // const profile_image = item?.profile_images[0]?.url;
   // console.log(
@@ -28,66 +44,78 @@ const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => 
   //   profile_image,
   // );
 
-  const sendDislike = async (item) => {
-                  
+  const sendDislike = async item => {
     const url = 'swap/disliked';
-    const response = await Post(
-      url,
-      {targetsUid: item?.id},
-      apiHeader(token),
-    );
+    const response = await Post(url, {targetsUid: item?.id}, apiHeader(token));
     // console.log("🚀 ~ file: UserCard.js:38 ~ sendDislike ~ response:", response?.data)
 
     if (response?.data?.status == true) {
       const filteredData2 = favoredYouPost?.filter(
-        (data, index) =>
-          response?.data?.peoples?.match_id != data?.id,
+        (data, index) => response?.data?.peoples?.match_id != data?.id,
       );
 
       setFavoredYouPost(filteredData2);
     } else {
       console.log('in else');
       Platform.OS == 'android'
-        ? ToastAndroid.show(
-            response?.data?.error,
-            ToastAndroid.SHORT,
-          )
+        ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
         : Alert.alert(response?.data?.error);
     }
-  }
+  };
 
-  const sendLike = async (item) => {
+  const sendLike = async item => {
     const url = 'swap/liked';
     // console.log({targetsUid: selectedId});
-    const response = await Post(
-      url,
-      {targetsUid: item?.id},
-      apiHeader(token),
+    const response = await Post(url, {targetsUid: item?.id}, apiHeader(token));
+    console.log(
+      '🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:',
+      response?.data,
     );
-    console.log("🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:", response?.data)
 
-    
     if (response?.data?.status) {
-    console.log("🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:", response?.data)
+      console.log(
+        '🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:',
+        response?.data,
+      );
 
       setFavoredYouPost(
         favoredYouPost.filter(
-          (data, index) =>
-          response?.data?.peoples?.match_id != data?.id,
-          ),
-          );
-        } else {
-          Platform.OS == 'android'
-          ? ToastAndroid.show(
-            response?.data?.error,
-            ToastAndroid.SHORT,
-            )
-            : Alert.alert(response?.data?.error);
-          }
-          console.log("🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:", response?.data?.status)
+          (data, index) => response?.data?.peoples?.match_id != data?.id,
+        ),
+      );
+    } else {
+      Platform.OS == 'android'
+        ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
+        : Alert.alert(response?.data?.error);
+    }
+    console.log(
+      '🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:',
+      response?.data?.status,
+    );
+  };
+
+const unfriend = async (item)=>{
+  const url = ''
+  const response = await Post(url, {targetsUid: item?.id}, apiHeader(token))
+
+  if (response?.data?.status) {
+    console.log(
+      '🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:',
+      response?.data,
+    );
+
+    setFavoredYouPost(
+      favoredYouPost.filter(
+        (data, index) => response?.data?.peoples?.match_id != data?.id,
+      ),
+    );
+  } else {
+    Platform.OS == 'android'
+      ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
+      : Alert.alert(response?.data?.error);
   }
-
-
+  
+}
 
 
   return (
@@ -95,21 +123,23 @@ const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => 
       style={[styles.card, style && style]}
       activeOpacity={0.9}
       onPress={() => {
-        !hideBtns &&
-          navigationService.navigate('UserDetail', {
-            item: item,
-            fromSearch: true,
-          });
+        navigationService.navigate('UserDetail', {
+          item: item,
+          fromSearch: true,
+        });
       }}>
       <CustomImage
         onPress={() => {
-          !hideBtns &&
           navigationService.navigate('UserDetail', {
             item: item,
             fromSearch: true,
           });
         }}
-        source={item?.profile_images[0]?.url ? {uri: item?.profile_images[0]?.url}: require('../Assets/Images/woman1.jpeg')}
+        source={
+          item?.profile_images[0]?.url
+            ? {uri: item?.profile_images[0]?.url}
+            : require('../Assets/Images/woman1.jpeg')
+        }
         style={[
           {
             width: '100%',
@@ -177,9 +207,7 @@ const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => 
         </View>
       </LinearGradient>
 
-      {hideBtns ? (
-        <></>
-      ) : (
+      {!hideBtns && (
         <View style={styles.absoluteContainer}>
           <BtnContainer
             backgroundColor={Color.white}
@@ -209,7 +237,26 @@ const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => 
               //    marginTop: moderateScale(-15, 0.3),
             }}
             iconSize={moderateScale(20, 0.6)}
-            onPress={()=>sendLike(item)}
+            onPress={() => sendLike(item)}
+          />
+        </View>
+      )}
+      {item?.useractions?.matched > 0 && (
+        <View style={styles.absoluteContainer}>
+          <BtnContainer
+            backgroundColor={Color.white}
+            color={Color.red}
+            name={'heart-dislike'}
+            type={Ionicons}
+            style={{
+              width: moderateScale(40, 0.6),
+              height: moderateScale(40, 0.6),
+              borderRadius: moderateScale(20, 0.6),
+
+              //    marginTop: moderateScale(-15, 0.3),
+            }}
+            iconSize={moderateScale(20, 0.6)}
+            onPress={() => unfriend(item)}
           />
         </View>
       )}
@@ -235,7 +282,7 @@ const styles = ScaledSheet.create({
     },
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
-
+    backgroundColor:'white',
     elevation: 6,
   },
   absoluteContainer: {

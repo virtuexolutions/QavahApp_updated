@@ -61,7 +61,7 @@ const LoginScreen = ({route}) => {
         ? ToastAndroid.show('Required Field is empty', ToastAndroid.SHORT)
         : alert('Required Field is empty');
     }
-    if (!validateEmail(email)) {
+    if (!validateEmail(email.trim())) {
       return Platform.OS == 'android'
         ? ToastAndroid.show('Please use valid email', ToastAndroid.SHORT)
         : alert('Please use valid email');
