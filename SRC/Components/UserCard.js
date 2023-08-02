@@ -64,10 +64,12 @@ const UserCard = ({ style, item, hideBtns,favoredYouPost,setFavoredYouPost}) => 
       {targetsUid: item?.id},
       apiHeader(token),
     );
-    
+    console.log("🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:", response?.data)
+
     
     if (response?.data?.status) {
-      
+    console.log("🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:", response?.data)
+
       setFavoredYouPost(
         favoredYouPost.filter(
           (data, index) =>

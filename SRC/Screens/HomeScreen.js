@@ -30,13 +30,21 @@ import NullDataComponent from '../Components/NullDataComponent';
 import {useIsFocused} from '@react-navigation/native';
 import MatchModal from '../Components/MatchModal';
 import { setUserData } from '../Store/slices/common';
+import { Pusher } from '@pusher/pusher-websocket-react-native';
+import { setIsMatched, setIsSubscribed, setPusherInstance } from '../Store/slices/socket';
+
 
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const focused = useIsFocused();
+  const pusher = Pusher.getInstance();
+
   const user = useSelector(state => state.commonReducer.userData);
-  console.log("🚀 ~ file: HomeScreen.js:40 ~ user:", user)
+  const isSubscribed = useSelector(state => state.socketReducer.isSubscribed);
+  console.log("🚀 ~ file: HomeScreen.js:45 ~ isSubscribed:", isSubscribed)
+
+  console.log("🚀 ~ file: HomeScreen.js:40 ~ user:", user?.uid)
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ token:", token)
@@ -70,6 +78,47 @@ const HomeScreen = () => {
       // console.log(response?.data?.peoples);
     }
   };
+
+  useEffect(() => {
+    console.log('useEffect runs');
+    async function connectPusher() {
+      try {
+        await pusher.init({
+          apiKey: '5fe9676993f3dc44fc82',
+          cluster: 'mt1',
+        });
+
+        myChannel = await pusher.subscribe({
+          channelName: `match-popup-${user?.id}`,
+          // channelName: 'my-notificatio+n-channel',
+          onSubscriptionSucceeded: (channelName, data) => {
+            dispatch(setPusherInstance(pusher))
+            dispatch(setIsSubscribed(true))
+            console.log("🚀 ~ file: SelectedChat.js:77 ~ connectPusher ~ myChannel:", myChannel)
+            console.log('Subscribed to ', channelName);
+            console.log(`And here are the channel members: ${myChannel.members}`)
+          },
+          onEvent: event => {
+           dispatch(setIsMatched(true))
+            // setotherData(JSON.parse(event.data))
+            console.log('Got channel event:', event.data);
+            const dataString = JSON.parse(event.data);
+           
+          },
+        });
+        // await pusher.subscribe({ channelName });
+        await pusher.connect();
+      } catch (e) {
+        console.log(`ERROR: ${e}`);
+      }
+    }
+    if(!isSubscribed){
+
+      connectPusher();
+    }
+
+   
+  }, [focused]);
 
   const ActiveSpotLight = async()=>{
     const url = 'swap/activate_spotlight';
