@@ -122,7 +122,7 @@ const HomeScreen = () => {
             //   '🚀 ~ file: HomeScreen.js:108 ~ connectPusher ~ event?.data?.user:',
             //   JSON.parse(event?.data?.user)
             // );
-            console.log('Got channel event:', JSON.parse(event?.data));
+            console.log('Got channel event:', event?.data?.message);
             dispatch(setotherData(event?.data?.message?.user));
             // const dataString = JSON.parse(event.data);
           },

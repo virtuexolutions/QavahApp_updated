@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, ToastAndroid, Platform} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, ActivityIndicator} from 'react-native';
 import React, {useState} from 'react';
 import Modal from 'react-native-modal';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';

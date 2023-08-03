@@ -296,8 +296,9 @@ console.log("🚀 ~ file: Header.js:320 ~ Header ~ pusherInstance:", pusherInsta
 
 
   const unsubscribePusher = async()=>{
+    console.log('here')
     dispatch(setPusherInstance(null))
-    await pusherInstance.unsubscribe({
+    await pusherInstance.triggers.unsubscribe({
       channelName: `match-popup-${userData?.id}`,
     });
    
