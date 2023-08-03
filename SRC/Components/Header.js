@@ -52,9 +52,6 @@ const Header = props => {
   const focused = useIsFocused();
   const token = useSelector(state => state.authReducer.token);
 const match = useSelector(state => state.socketReducer.matched);
-const otherData = useSelector(state => state.socketReducer.otherData);
-// console.log("🚀 ~ file: Header.js:56 ~ Header ~ otherData:", otherData)
-
 console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
 const user = useSelector(state => state.commonReducer.userData);
 const userRole = useSelector(state => state.commonReducer.selectedRole);
@@ -67,7 +64,7 @@ console.log("🚀 ~ file: Header.js:320 ~ Header ~ pusherInstance:", pusherInsta
   const [drawerModal, setDrawerModal] = useState(false);
   const [discreteModal, setDiscreteModal] = useState(false);
   const userData = useSelector(state => state.commonReducer.userData);
-  // const [otherData , setotherData] = useState({})
+  const [otherData , setotherData] = useState({})
   const DrawerArray = [
     {
       key: 1,
@@ -296,12 +293,11 @@ console.log("🚀 ~ file: Header.js:320 ~ Header ~ pusherInstance:", pusherInsta
 
 
   const unsubscribePusher = async()=>{
-    console.log('here')
-    dispatch(setPusherInstance(null))
-    await pusherInstance.triggers.unsubscribe({
+    await pusherInstance.unsubscribe({
       channelName: `match-popup-${userData?.id}`,
     });
-   
+    dispatch(setIsSubscribed(false))
+    dispatch(setPusherInstance(null))
   }
 
   return (
@@ -410,7 +406,6 @@ console.log("🚀 ~ file: Header.js:320 ~ Header ~ pusherInstance:", pusherInsta
               unsubscribePusher()
               dispatch(setUserLogoutAuth());
               dispatch(setUserLogOut());
-              dispatch(setIsSubscribed(false))
             }}>
             <CustomText
               style={{
@@ -617,6 +612,7 @@ console.log("🚀 ~ file: Header.js:320 ~ Header ~ pusherInstance:", pusherInsta
       <MatchModal
         isVisible={match}
         otherUserData={otherData}
+        profileImage={Object.keys(user).length > 0 ? {uri :  user?.profile_images[0]} : require('../Assets/Images/banner3.jpg')}
         // setIsVisible={setMatchModalVisible}
       />
     </View>
