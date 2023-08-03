@@ -611,7 +611,7 @@ console.log("🚀 ~ file: Header.js:320 ~ Header ~ pusherInstance:", pusherInsta
       />
       <MatchModal
         isVisible={match}
-        otherUserData={otherData}
+        // otherUserData={otherData}
         profileImage={Object.keys(user).length > 0 ? {uri :  user?.profile_images && user?.profile_images[0]?.url} : require('../Assets/Images/banner3.jpg')}
         // setIsVisible={setMatchModalVisible}
       />

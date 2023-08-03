@@ -25,9 +25,10 @@ import {useNavigation} from '@react-navigation/native';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import TextInputWithTitle from './TextInputWithTitle';
 
-const MatchModal = ({isVisible, otherUserData, profileImage}) => {
+const MatchModal = ({isVisible, profileImage}) => {
   const navigation = useNavigation();
-  // console.log("🚀 ~ file: MatchModal.js:18 ~ MatchModal ~ otherUserData:", otherUserData)
+  const otherUserData = useSelector(state => state.socketReducer.otherData)
+  console.log("🚀 ~ file: MatchModal.js:18 ~ MatchModal ~ otherUserData:", otherUserData)
   const user = useSelector(state => state.commonReducer.userData);
   const token = useSelector(state=> state.authReducer.token)
   // console.log('🚀 ~ file: MatchModal.js:19 ~ MatchModal ~ user:', user);
@@ -39,7 +40,7 @@ const MatchModal = ({isVisible, otherUserData, profileImage}) => {
   const sendLoveNote = async () => {
     const url = 'send-love-note';
     const body = {
-      targetUid: user?.id,
+      targetUid: otherUserData?.id,
       love_note: loveNoteData,
     };
     console.log('🚀 ~ file: UserDetail.js:123 ~ sendLoveNote ~ body:', body);
@@ -78,7 +79,7 @@ const MatchModal = ({isVisible, otherUserData, profileImage}) => {
     const url = 'send-love-note';
     setIsLoading(true)
     const response = await Post(url, {
-      targetUid: user?.id,
+      targetUid: otherUserData?.id,
       love_note: 'Hey there!! I am using Qavah...',
     }, apiHeader(token));
     setIsLoading(false)
