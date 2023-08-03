@@ -191,8 +191,9 @@ const MatchModal = ({isVisible, profileImage}) => {
         <TouchableOpacity
           onPress={() => {
             // navigation.navigate('ChatScreen');
-            // dispatch(setIsMatched(false));
-            setLoveNoteModal(true);
+            // setLoveNoteModal(true);
+            navigation.navigate('ChatScreen');
+            dispatch(setIsMatched(false));
           }}
           style={{
             // position : 'absolute',
@@ -212,15 +213,16 @@ const MatchModal = ({isVisible, profileImage}) => {
             color={Color.white}
             size={moderateScale(27, 0.6)}
             onPress={() => {
-              // navigation.navigate('ChatScreen');
-              // dispatch(setIsMatched(false));
-              setLoveNoteModal(true);
+              navigation.navigate('ChatScreen');
+              dispatch(setIsMatched(false));
+              // setLoveNoteModal(true);
             }}
           />
         </TouchableOpacity>
         <CustomText
           onPress={() => {
-            skipNote();
+            navigation.navigate('ChatScreen');
+            // skipNote();
           }}
           style={{
             marginTop: moderateScale(30, 0.3),
@@ -297,7 +299,12 @@ const MatchModal = ({isVisible, profileImage}) => {
             textColor={Color.white}
             width={windowWidth * 0.8}
             height={windowHeight * 0.07}
-            onPress={sendLoveNote}
+            onPress={
+              // sendLoveNote
+              () =>{
+                navigation.navigate('ChatScreen');
+              }
+            }
             marginLeft={windowWidth * 0.05}
             marginRight={windowWidth * 0.05}
             bgColor={[Color.themeColor, Color.themeColor]}
