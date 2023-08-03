@@ -41,6 +41,7 @@ const HomeScreen = () => {
   const pusher = Pusher.getInstance();
 
   const user = useSelector(state => state.commonReducer.userData);
+  // console.log("🚀 ~ file: HomeScreen.js:44 ~ user:", user)
   const isSubscribed = useSelector(state => state.socketReducer.isSubscribed);
   console.log("🚀 ~ file: HomeScreen.js:45 ~ isSubscribed:", isSubscribed)
 
@@ -299,22 +300,36 @@ const HomeScreen = () => {
                   // console.log('left', item?.id);
                   const filteredData = [...photoCards]
                   const filteredData2 = [...photoCards]
-                  // const filteredData = photoCards.filter(
-                  //   (data, index) =>
-                  //     response?.data?.peoples?.match_id == data?.id,
-                  // );
+                 
+
+
                   setLogData(prev => [...prev, filteredData.find(
                     (data, index) =>
                       response?.data?.peoples?.match_id == data?.id,
                   )]);
-                  // const filteredData2 = photoCards.filter(
-                  //   (data, index) =>
-                  //     response?.data?.peoples?.match_id != data?.id,
-                  // );
-                  setPhotoCards(filteredData2.filter(
-                    (data, index) =>
-                      response?.data?.peoples?.match_id != data?.id,
-                  ));
+
+
+
+                  {if(photoCards?.length > 1) {
+                    console.log('inn IF')
+                    
+                    const index = filteredData2.findIndex((item , index) => item?.id == response?.data?.peoples?.match_id )
+                    console.log('this is index ======>>' , index)
+                    photoCards.splice(index , 1)
+                  }
+                    else{
+
+                    console.log('inn else')
+                      
+                      setPhotoCards(filteredData2.filter(
+                        (data, index) =>
+                        response?.data?.peoples?.match_id != data?.id,
+                        ));
+                      }
+                        
+                        
+                        
+                  }
 
                 } else {
                   Platform.OS == 'android'
