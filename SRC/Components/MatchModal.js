@@ -37,45 +37,45 @@ const MatchModal = ({isVisible, profileImage}) => {
   const [loveNoteData, setLoveNoteData] = useState('');
   const dispatch = useDispatch();
 
-  const sendLoveNote = async () => {
-    const url = 'send-love-note';
-    const body = {
-      targetUid: otherUserData?.id,
-      love_note: loveNoteData,
-    };
-    console.log('🚀 ~ file: UserDetail.js:123 ~ sendLoveNote ~ body:', body);
-    if (loveNoteData == '') {
-      return Platform.OS == 'android'
-        ? ToastAndroid.show('Please send some message', ToastAndroid.SHORT)
-        : alert('Please send some message');
-    }
-    setIsLoading(true);
-    const response = await Post(url, body, apiHeader(token));
+  // const sendLoveNote = async () => {
+  //   const url = 'send-love-note';
+  //   const body = {
+  //     targetUid: otherUserData?.id,
+  //     love_note: loveNoteData,
+  //   };
+  //   console.log('🚀 ~ file: UserDetail.js:123 ~ sendLoveNote ~ body:', body);
+  //   if (loveNoteData == '') {
+  //     return Platform.OS == 'android'
+  //       ? ToastAndroid.show('Please send some message', ToastAndroid.SHORT)
+  //       : alert('Please send some message');
+  //   }
+  //   setIsLoading(true);
+  //   const response = await Post(url, body, apiHeader(token));
 
-    if (response?.data?.status) {
-      setIsLoading(false);
-      Platform.OS == 'android'
-        ? ToastAndroid.show('Lovenote has been send', ToastAndroid.SHORT)
-        : alert('Lovenote has been sent');
+  //   if (response?.data?.status) {
+  //     setIsLoading(false);
+  //     Platform.OS == 'android'
+  //       ? ToastAndroid.show('Lovenote has been send', ToastAndroid.SHORT)
+  //       : alert('Lovenote has been sent');
 
-      console.log('response ===>>', response?.data);
-      setLoveNoteModal(false);
-      dispatch(setIsMatched(false));
-      navigation.navigate('ChatScreen');
-    } else {
-      setIsLoading(false);
-      // Platform.OS == 'android'
-      //   ? ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT)
-      //   : alert(response?.data?.message);
+  //     console.log('response ===>>', response?.data);
+  //     setLoveNoteModal(false);
+  //     dispatch(setIsMatched(false));
+  //     navigation.navigate('ChatScreen');
+  //   } else {
+  //     setIsLoading(false);
+  //     // Platform.OS == 'android'
+  //     //   ? ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT)
+  //     //   : alert(response?.data?.message);
 
-      console.log('response ===>>', response?.data);
-      setLoveNoteModal(false);
-      dispatch(setIsMatched(false));
-      navigation.navigate('ChatScreen');
-    }
-  };
+  //     console.log('response ===>>', response?.data);
+  //     setLoveNoteModal(false);
+  //     dispatch(setIsMatched(false));
+  //     navigation.navigate('ChatScreen');
+  //   }
+  // };
 
-  const skipNote = async () => {
+  const skipNote = async (skip) => {
     const url = 'send-love-note';
     setIsLoading(true)
     const response = await Post(url, {
@@ -86,9 +86,9 @@ const MatchModal = ({isVisible, profileImage}) => {
     console.log('🚀 ~ file: MatchModal.js:66 ~ skipNote ~ response:', response?.data);
 
     if (response != undefined) {
-      dispatch(setIsMatched(false));
-      navigation.navigate('ChatScreen');
-      setLoveNoteModal(false);
+      // dispatch(setIsMatched(false));
+      !skip && navigation.navigate('ChatScreen');
+      // setLoveNoteModal(false);
     }
   };
   return (
@@ -191,9 +191,9 @@ const MatchModal = ({isVisible, profileImage}) => {
         <TouchableOpacity
           onPress={() => {
             // navigation.navigate('ChatScreen');
-            // setLoveNoteModal(true);
-            navigation.navigate('ChatScreen');
+            skipNote(false)
             dispatch(setIsMatched(false));
+            // navigation.navigate('ChatScreen');
           }}
           style={{
             // position : 'absolute',
@@ -213,16 +213,17 @@ const MatchModal = ({isVisible, profileImage}) => {
             color={Color.white}
             size={moderateScale(27, 0.6)}
             onPress={() => {
-              navigation.navigate('ChatScreen');
-              dispatch(setIsMatched(false));
-              // setLoveNoteModal(true);
+               skipNote(false)
+            dispatch(setIsMatched(false));
             }}
           />
         </TouchableOpacity>
         <CustomText
           onPress={() => {
-            navigation.navigate('ChatScreen');
-            // skipNote();
+            // navigation.navigate('ChatScreen');
+            skipNote(true);
+            dispatch(setIsMatched(false));
+
           }}
           style={{
             marginTop: moderateScale(30, 0.3),
@@ -234,90 +235,7 @@ const MatchModal = ({isVisible, profileImage}) => {
           Skip
         </CustomText>
       </View>
-      <Modal
-        isVisible={loveNoteModal}
-        onBackdropPress={() => {
-          setLoveNoteModal(false);
-        }}
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <View style={styles.container1}>
-          <View
-            style={{
-              // position: 'absolute',
-              width: '100%',
-              alignItems: 'center',
-              marginBottom: moderateScale(10, 0.3),
-              flexDirection: 'row',
-              // backgroundColor: 'black',
-              // height: windowHeight * 0.1,
-              height: windowHeight * 0.07,
-              justifyContent: 'center',
-              backgroundColor: Color.themeColor,
-              // marginLeft:moderateScale(10,.3),
-            }}>
-            <CustomText
-              style={[
-                {
-                  color: Color.white,
-                  fontSize: moderateScale(15, 0.3),
-                },
-              ]}
-              isBold>
-              Send Love Note
-            </CustomText>
-          </View>
-          <TextInputWithTitle
-            titleText={'Enter Description'}
-            secureText={false}
-            placeholder={'Enter Description'}
-            setText={setLoveNoteData}
-            value={loveNoteData}
-            viewHeight={0.15}
-            viewWidth={0.8}
-            inputWidth={0.7}
-            inputHeight={0.1}
-            border={1}
-            borderColor={Color.themeLightGray}
-            backgroundColor={'#F5F5F5'}
-            marginTop={moderateScale(20, 0.3)}
-            multiline={true}
-            inputStyle={{textAlign: 'vertical'}}
-            borderRadius={moderateScale(10, 0.3)}
-            placeholderColor={Color.black}
-          />
-          <CustomButton
-            text={
-              isLoading ? (
-                <ActivityIndicator color={'#ffffff'} size={'small'} />
-              ) : (
-                'Send'
-              )
-            }
-            textColor={Color.white}
-            width={windowWidth * 0.8}
-            height={windowHeight * 0.07}
-            onPress={
-              // sendLoveNote
-              () =>{
-                navigation.navigate('ChatScreen');
-              }
-            }
-            marginLeft={windowWidth * 0.05}
-            marginRight={windowWidth * 0.05}
-            bgColor={[Color.themeColor, Color.themeColor]}
-            borderRadius={moderateScale(10, 0.6)}
-            marginTop={moderateScale(20, 0.6)}
-            marginBottom={moderateScale(10, 0.6)}
-            elevation
-            isBold
-            fontSize={moderateScale(15, 0.6)}
-            isGradient
-          />
-        </View>
-      </Modal>
+     
     </Modal>
   );
 };

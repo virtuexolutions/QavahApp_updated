@@ -30,15 +30,16 @@ const UserCard = ({
   setFavoredYouPost,
   youFavoured,
   setYouFavoured,
-  getYouFavoredPosts
+  getYouFavoredPosts,
 }) => {
   console.log(
     '🚀 ~ file: UserCard.js:19 ~ UserCard ~ item:',
     item?.who_i_likes_status?.matched,
   );
-  console.log("🚀 ~ file: UserCard.js:17 ~ UserCard ~ item:", item)
+  console.log('🚀 ~ file: UserCard.js:17 ~ UserCard ~ item:', item);
 
   const token = useSelector(state => state.authReducer.token);
+  const userData = useSelector(state => state.commonReducer.userData);
 
   // console.log("🚀 ~ file: UserCard.js:19 ~ UserCard ~ favoredYouPost:", favoredYouPost)
   // const profile_image = item?.profile_images[0]?.url;
@@ -48,22 +49,34 @@ const UserCard = ({
   // );
 
   const sendDislike = async item => {
-    const url = 'swap/disliked';
-    const response = await Post(url, {targetsUid: item?.id}, apiHeader(token));
-    // console.log("🚀 ~ file: UserCard.js:38 ~ sendDislike ~ response:", response?.data)
+    const url = 'settings/unmatch_user';
+    const body =  {
+      myUid: userData?.uid,
+      targetsUid: item?.id,
+      targetName: item?.profileName,
+    }
+   console.log("🚀 ~ file: UserCard.js:58 ~ sendDislike ~ body:", body)
+    const response = await Post(
+      url,
+      body,
+      apiHeader(token),
+    );
+    console.log("🚀 ~ file: UserCard.js:38 ~ sendDislike ~ response:", response?.data?.status)
 
-    if (response?.data?.status == true) {
+    if (response?.data?.status) {
+      console.log('in if')
       const filteredData2 = favoredYouPost?.filter(
-        (data, index) => response?.data?.peoples?.match_id != data?.id,
+        (data, index) => item?.id != data?.id,
       );
 
       setFavoredYouPost(filteredData2);
-    } else {
-      console.log('in else');
-      Platform.OS == 'android'
-        ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
-        : Alert.alert(response?.data?.error);
-    }
+    } 
+    // else {
+    //   console.log('in else');
+    //   Platform.OS == 'android'
+    //     ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
+    //     : Alert.alert(response?.data?.error);
+    // }
   };
 
   const sendLike = async item => {
@@ -97,29 +110,27 @@ const UserCard = ({
     );
   };
 
-const unfriend = async (item)=>{
-  const url = 'settings/unmatch_user'
-  const response = await Post(url, {targetsUid: item?.id}, apiHeader(token))
+  const unfriend = async item => {
+    const url = 'settings/unmatch_user';
+    const response = await Post(url, {targetsUid: item?.id}, apiHeader(token));
 
-  if (response?.data?.status) {
-    console.log(
-      '🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:',
-      response?.data,
-    );
-    getYouFavoredPosts()
-    // setFavoredYouPost(                
-    //   favoredYouPost.filter(
-    //     (data, index) => response?.data?.peoples?.match_id != data?.id,
-    //   ),
-    // );
-  } else {
-    Platform.OS == 'android'
-      ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
-      : Alert.alert(response?.data?.error);
-  }
-  
-}
-
+    if (response?.data?.status) {
+      console.log(
+        '🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:',
+        response?.data,
+      );
+      getYouFavoredPosts();
+      // setFavoredYouPost(
+      //   favoredYouPost.filter(
+      //     (data, index) => response?.data?.peoples?.match_id != data?.id,
+      //   ),
+      // );
+    } else {
+      Platform.OS == 'android'
+        ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
+        : Alert.alert(response?.data?.error);
+    }
+  };
 
   return (
     <TouchableOpacity
@@ -285,7 +296,7 @@ const styles = ScaledSheet.create({
     },
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
-    backgroundColor:'white',
+    backgroundColor: 'white',
     elevation: 6,
   },
   absoluteContainer: {
