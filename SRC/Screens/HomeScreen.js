@@ -31,7 +31,7 @@ import {useIsFocused} from '@react-navigation/native';
 import MatchModal from '../Components/MatchModal';
 import { setUserData } from '../Store/slices/common';
 import { Pusher } from '@pusher/pusher-websocket-react-native';
-import { setIsMatched, setIsSubscribed, setPusherInstance } from '../Store/slices/socket';
+import { setIsMatched, setIsSubscribed, setPusherInstance, setotherData } from '../Store/slices/socket';
 
 
 
@@ -105,7 +105,7 @@ const HomeScreen = () => {
            
            const dataString = JSON.parse(event.data);
            console.log("🚀 ~ file: HomeScreen.js:108 ~ connectPusher ~ dataString:", dataString?.message?.user)
-           setotherData(JSON.parse(dataString?.message?.user))
+           dispatch(setotherData(dataString?.message?.user))
            
           },
         });
