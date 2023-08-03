@@ -52,11 +52,14 @@ const Header = props => {
   const focused = useIsFocused();
   const token = useSelector(state => state.authReducer.token);
 const match = useSelector(state => state.socketReducer.matched);
+const otherData = useSelector(state => state.socketReducer.otherData);
+// console.log("🚀 ~ file: Header.js:56 ~ Header ~ otherData:", otherData)
+
 console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
 const user = useSelector(state => state.commonReducer.userData);
 const userRole = useSelector(state => state.commonReducer.selectedRole);
 const pusherInstance = useSelector(state => state.socketReducer.pusherInstance);
-// console.log("🚀 ~ file: Header.js:320 ~ Header ~ pusherInstance:", pusherInstance)
+console.log("🚀 ~ file: Header.js:320 ~ Header ~ pusherInstance:", pusherInstance)
 
   const [isLoveNotesVisible, setLoveNotesVisible] = useState(false);
   const notification = useSelector(state => state.commonReducer.notification);
@@ -64,7 +67,7 @@ const pusherInstance = useSelector(state => state.socketReducer.pusherInstance);
   const [drawerModal, setDrawerModal] = useState(false);
   const [discreteModal, setDiscreteModal] = useState(false);
   const userData = useSelector(state => state.commonReducer.userData);
-  const [otherData , setotherData] = useState({})
+  // const [otherData , setotherData] = useState({})
   const DrawerArray = [
     {
       key: 1,
@@ -293,11 +296,11 @@ const pusherInstance = useSelector(state => state.socketReducer.pusherInstance);
 
 
   const unsubscribePusher = async()=>{
+    dispatch(setPusherInstance(null))
     await pusherInstance.unsubscribe({
       channelName: `match-popup-${userData?.id}`,
     });
-    dispatch(setIsSubscribed(false))
-    dispatch(setPusherInstance(null))
+   
   }
 
   return (
@@ -406,6 +409,7 @@ const pusherInstance = useSelector(state => state.socketReducer.pusherInstance);
               unsubscribePusher()
               dispatch(setUserLogoutAuth());
               dispatch(setUserLogOut());
+              dispatch(setIsSubscribed(false))
             }}>
             <CustomText
               style={{

@@ -5,6 +5,7 @@ const initialState = {
   matched : false,
   isSubscribed : false,
   pusherInstance : null,
+  otherData : {}
 };
 
 const socketSlice = createSlice({
@@ -20,6 +21,7 @@ const socketSlice = createSlice({
       state.socket = action.payload;
     },
     setIsMatched(state,action){
+      console.log('Matched ======>>', action.payload)
       state.matched = action.payload;
     },
     setIsSubscribed(state,action){
@@ -28,10 +30,14 @@ const socketSlice = createSlice({
     setPusherInstance(state,action){
       state.pusherInstance = action.payload
     },
+    setotherData(state,action){
+      console.log(action.payload)
+      state.otherData = action.payload
+    }
 
   },
 });
 
-export const { updateSocket , setIsMatched  , setIsSubscribed , setPusherInstance} = socketSlice.actions;
+export const { updateSocket , setIsMatched  , setIsSubscribed , setPusherInstance , setotherData} = socketSlice.actions;
 
 export default socketSlice.reducer;

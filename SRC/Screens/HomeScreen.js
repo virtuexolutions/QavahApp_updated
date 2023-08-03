@@ -5,7 +5,7 @@ import {
   ActivityIndicator,
   ToastAndroid,
   Platform,
-  Alert
+  Alert,
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Header from '../Components/Header';
@@ -29,11 +29,14 @@ import CustomImage from '../Components/CustomImage';
 import NullDataComponent from '../Components/NullDataComponent';
 import {useIsFocused} from '@react-navigation/native';
 import MatchModal from '../Components/MatchModal';
-import { setUserData } from '../Store/slices/common';
-import { Pusher } from '@pusher/pusher-websocket-react-native';
-import { setIsMatched, setIsSubscribed, setPusherInstance } from '../Store/slices/socket';
-
-
+import {setUserData} from '../Store/slices/common';
+import {Pusher} from '@pusher/pusher-websocket-react-native';
+import {
+  setIsMatched,
+  setIsSubscribed,
+  setPusherInstance,
+  setotherData,
+} from '../Store/slices/socket';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -41,10 +44,16 @@ const HomeScreen = () => {
   const pusher = Pusher.getInstance();
 
   const user = useSelector(state => state.commonReducer.userData);
+  const otherData = useSelector(state => state.socketReducer.otherData);
+  // console.log('🚀 ~ file: HomeScreen.js:45 ~ otherData:', otherData);
   const isSubscribed = useSelector(state => state.socketReducer.isSubscribed);
-  console.log("🚀 ~ file: HomeScreen.js:45 ~ isSubscribed:", isSubscribed)
+  console.log('🚀 ~ file: HomeScreen.js:45 ~ isSubscribed:', isSubscribed);
 
-  console.log("🚀 ~ file: HomeScreen.js:40 ~ user:", user?.id , user?.profileName)
+  // console.log(
+  //   '🚀 ~ file: HomeScreen.js:40 ~ user:',
+  //   user?.id,
+  //   user?.profileName,
+  // );
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ token:", token)
@@ -53,13 +62,13 @@ const HomeScreen = () => {
   const [yAxis, setYAxis] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingApi, setIsLoadingApi] = useState(false);
-
+  // const [otherData , setotherData] = useState({})
   const [isSuperLikeVisible, setSuperLikeVisible] = useState(false);
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [photoCards, setPhotoCards] = useState([]);
-  const [matchModalVisible, setMatchModalVisible] = useState(false)
-  
+  const [matchModalVisible, setMatchModalVisible] = useState(false);
+
   // console.log("🚀 ~ file: HomeScreen.js:45 ~ photoCards:", photoCards)
 
   const [LogData, setLogData] = useState([]);
@@ -82,28 +91,40 @@ const HomeScreen = () => {
   useEffect(() => {
     console.log('useEffect runs');
     async function connectPusher() {
+      console.log('here');
       try {
         await pusher.init({
           apiKey: '5fe9676993f3dc44fc82',
           cluster: 'mt1',
         });
-
+        // console.log(pusher)
         myChannel = await pusher.subscribe({
           channelName: `match-popup-${user?.id}`,
+
           // channelName: 'my-notificatio+n-channel',
           onSubscriptionSucceeded: (channelName, data) => {
-            dispatch(setPusherInstance(pusher))
-            dispatch(setIsSubscribed(true))
-            console.log("🚀 ~ file: SelectedChat.js:77 ~ connectPusher ~ myChannel:", myChannel)
-            console.log('Subscribed to ', channelName);
-            console.log(`And here are the channel members: ${myChannel.members}`)
+            console.log('in succedded');
+            console.log("🚀 ~ file: HomeScreen.js:108 ~ connectPusher ~ pusher:", pusher?.pusherEventEmitter?._nativeModule)
+            dispatch(setPusherInstance({triggers : pusher?.pusherEventEmitter?._nativeModule}));
+            dispatch(setIsSubscribed(true));
+            // console.log(
+            //   '🚀 ~ file: SelectedChat.js:77 ~ connectPusher ~ myChannel:',
+            //   myChannel,
+            // );
+            console.log('Subscribed to  ', myChannel);
+            // console.log(
+            //   // `And here are the channel members: ${myChannel.members}`
+            // )
           },
           onEvent: event => {
-           dispatch(setIsMatched(true))
-            // setotherData(JSON.parse(event.data))
-            console.log('Got channel event:', event.data);
-            const dataString = JSON.parse(event.data);
-           
+            dispatch(setIsMatched(true));
+            // console.log(
+            //   '🚀 ~ file: HomeScreen.js:108 ~ connectPusher ~ event?.data?.user:',
+            //   JSON.parse(event?.data?.user)
+            // );
+            console.log('Got channel event:', JSON.parse(event?.data));
+            dispatch(setotherData(event?.data?.message?.user));
+            // const dataString = JSON.parse(event.data);
           },
         });
         // await pusher.subscribe({ channelName });
@@ -112,39 +133,29 @@ const HomeScreen = () => {
         console.log(`ERROR: ${e}`);
       }
     }
-    if(!isSubscribed){
-
+    if (!isSubscribed) {
       connectPusher();
     }
-
-   
   }, [focused]);
 
-  const ActiveSpotLight = async()=>{
+  const ActiveSpotLight = async () => {
     const url = 'swap/activate_spotlight';
-    setIsLoading(true)
-    const response = await Post(url , {} , apiHeader(token))
-    setIsLoading(false)
-    if(response?.data?.status){
-      console.log(response?.data)
+    setIsLoading(true);
+    const response = await Post(url, {}, apiHeader(token));
+    setIsLoading(false);
+    if (response?.data?.status) {
+      // console.log(response?.data);
       Platform.OS == 'android'
-      ? ToastAndroid.show(
-          response?.data?.message,
-          ToastAndroid.SHORT,
-        )
-      : alert(response?.data?.message);
-      response?.data?.message != 'spotlight already activated' && dispatch(setUserData(response?.data?.resp));
-    }
-    else{
+        ? ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT)
+        : alert(response?.data?.message);
+      response?.data?.message != 'spotlight already activated' &&
+        dispatch(setUserData(response?.data?.resp));
+    } else {
       Platform.OS == 'android'
-      ? ToastAndroid.show(
-        
-          response?.data?.error,
-          ToastAndroid.SHORT,
-        )
-      : alert(response?.data?.error);
+        ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
+        : alert(response?.data?.error);
     }
-  }
+  };
   const handleOnSwipedLeft = async () => {
     swiperRef.swipeLeft();
   };
@@ -201,7 +212,7 @@ const HomeScreen = () => {
         targetsUid: undoData[undoData?.length - 1]?.id,
         targetName: undoData[undoData?.length - 1]?.profileName,
       };
-     setIsLoading(true);
+      setIsLoading(true);
 
       const response = await Post(url, body, apiHeader(token));
       setIsLoading(false);
@@ -214,7 +225,7 @@ const HomeScreen = () => {
   };
 
   const setXY = useCallback((x, y) => {
-    console.log(x, y);
+    // console.log(x, y);
     setXAxis(x);
     setYAxis(y);
   }, []);
@@ -291,28 +302,32 @@ const HomeScreen = () => {
                   {targetsUid: item?.id},
                   apiHeader(token),
                 );
-                console.log('response ======= >', response?.data);
+                // console.log('response ======= >', response?.data);
                 if (response?.data?.status == true) {
                   // console.log('left', item?.id);
-                  const filteredData = [...photoCards]
-                  const filteredData2 = [...photoCards]
+                  const filteredData = [...photoCards];
+                  const filteredData2 = [...photoCards];
                   // const filteredData = photoCards.filter(
                   //   (data, index) =>
                   //     response?.data?.peoples?.match_id == data?.id,
                   // );
-                  setLogData(prev => [...prev, filteredData.find(
-                    (data, index) =>
-                      response?.data?.peoples?.match_id == data?.id,
-                  )]);
+                  setLogData(prev => [
+                    ...prev,
+                    filteredData.find(
+                      (data, index) =>
+                        response?.data?.peoples?.match_id == data?.id,
+                    ),
+                  ]);
                   // const filteredData2 = photoCards.filter(
                   //   (data, index) =>
                   //     response?.data?.peoples?.match_id != data?.id,
                   // );
-                  setPhotoCards(filteredData2.filter(
-                    (data, index) =>
-                      response?.data?.peoples?.match_id != data?.id,
-                  ));
-
+                  setPhotoCards(
+                    filteredData2.filter(
+                      (data, index) =>
+                        response?.data?.peoples?.match_id != data?.id,
+                    ),
+                  );
                 } else {
                   Platform.OS == 'android'
                     ? ToastAndroid.show(
@@ -331,10 +346,10 @@ const HomeScreen = () => {
                   {targetsUid: item?.id},
                   apiHeader(token),
                 );
-                console.log('response data'  , response?.data)
+                // console.log('response data', response?.data);
 
                 if (response?.data?.status == true) {
-                  console.log('response data'  , response?.data)
+                  console.log('response data', response?.data);
                   setLogData(prev => [
                     ...prev,
                     ...photoCards.filter((data, index) => {
@@ -468,25 +483,24 @@ const HomeScreen = () => {
               name={'lightning-bolt'}
               type={MaterialCommunityIcons}
               onPress={() => {
-                user?.subscription.some((item , index)=>item.spotlights > 0) ?
-                Alert.alert(
-                  'Confirmation',
-                  'Are you sure you want to Active the spotlight?',
-                  [
-                    {
-                      text: 'Cancel',
-                      style: 'cancel',
-                    },
-                    {
-                      text: 'Confirm',
-                      onPress: () => {
-                        ActiveSpotLight();
-                      },
-                    },
-                  ],
-                )
-                :
-                setSpotLightVisible(true);
+                user?.subscription.some((item, index) => item.spotlights > 0)
+                  ? Alert.alert(
+                      'Confirmation',
+                      'Are you sure you want to Active the spotlight?',
+                      [
+                        {
+                          text: 'Cancel',
+                          style: 'cancel',
+                        },
+                        {
+                          text: 'Confirm',
+                          onPress: () => {
+                            ActiveSpotLight();
+                          },
+                        },
+                      ],
+                    )
+                  : setSpotLightVisible(true);
                 // setMatchModalVisible(true);
               }}
             />
@@ -525,7 +539,7 @@ const HomeScreen = () => {
         isVisible={isSpotLightVisible}
         setIsVisible={setSpotLightVisible}
       />
-      <MatchModal isVisible={matchModalVisible} setIsVisible={setMatchModalVisible}/>
+      {/* <MatchModal isVisible={matchModalVisible} setIsVisible={setMatchModalVisible} otherUserData={otherData}/> */}
     </>
   );
 };

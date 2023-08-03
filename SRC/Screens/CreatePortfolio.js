@@ -154,7 +154,7 @@ const CreatePortfolio = () => {
   };
 
   const emailExists = async email => {
-    const url = 'pr';
+    const url = 'auth/check-email-registered';
 
     setIsLoading(true);
     const response = await Post(url, {email: email}, apiHeader());
