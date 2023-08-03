@@ -42,7 +42,7 @@ import TextInputWithTitle from '../Components/TextInputWithTitle';
 
 const UserDetail = props => {
   const focused = useIsFocused();
-  console.log("🚀 ~ file: UserDetail.js:45 ~ UserDetail ~ focused:", focused)
+  console.log('🚀 ~ file: UserDetail.js:45 ~ UserDetail ~ focused:', focused);
   const token = useSelector(state => state.authReducer.token);
   const navigation = useNavigation();
   const user = useSelector(state => state.commonReducer.userData);
@@ -66,7 +66,10 @@ const UserDetail = props => {
       ? userData?.gallery_images?.slice(0, 5)
       : userData?.gallery_images,
   );
-  console.log("🚀 ~ file: UserDetail.js:69 ~ UserDetail ~ galleryImages:", userData?.gallery_images?.length)
+  console.log(
+    '🚀 ~ file: UserDetail.js:69 ~ UserDetail ~ galleryImages:',
+    userData?.gallery_images?.length,
+  );
   const [reportModalVisible, setReportModalVisible] = useState(false);
   const [loveNoteData, setLoveNoteData] = useState('');
 
@@ -134,6 +137,23 @@ const UserDetail = props => {
     }
   };
 
+  
+const viewSomeOneProfile = async id => {
+  // console.log('get favoured posts');
+  const url = 'favoured/view-someone-profile';
+  const body = {
+    targetName : userData?.profileName,
+    targetuid : userData?.id,
+    uid : user?.uid
+  }
+  console.log("🚀 ~ file: UserDetail.js:149 ~ viewSomeOneProfile ~ body:", body)
+  const response = await Post(url, body, apiHeader(token));
+  if (response != undefined) {
+   console.log('response data for viewing profile   =>>>>>>>>>>>>>>', response?.data);
+  //  setWhoViewedMe(response?.data?.peoples);
+  }
+};
+
   // const images = [require('../Assets/Images/woman1.jpeg')];
   // console.log('🚀 ~ file: UserDetail.js:50 ~ UserDetail ~ images:', images);
   const [image, setImage] = useState([]);
@@ -182,6 +202,12 @@ const UserDetail = props => {
         : userData?.gallery_images,
     );
   }, [focused]);
+
+  useEffect(() => {
+    viewSomeOneProfile()
+    
+  }, [])
+  
 
   return (
     <>
@@ -329,7 +355,9 @@ const UserDetail = props => {
                 activeOpacity={0.9}
                 onPress={() => {
                   if (user?.subscription?.length > 0) {
-                    navigationService.navigate('Israeliteinfo', {user : userData});
+                    navigationService.navigate('Israeliteinfo', {
+                      user: userData,
+                    });
                   } else {
                     Platform.OS == 'android'
                       ? ToastAndroid.show(
@@ -348,7 +376,9 @@ const UserDetail = props => {
                   }}
                   onPress={() => {
                     if (user?.subscription?.length > 0) {
-                      navigationService.navigate('Israeliteinfo', {user : userData});
+                      navigationService.navigate('Israeliteinfo', {
+                        user: userData,
+                      });
                     } else {
                       Platform.OS == 'android'
                         ? ToastAndroid.show(

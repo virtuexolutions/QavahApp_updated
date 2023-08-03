@@ -34,9 +34,9 @@ const UserCard = ({
 }) => {
   console.log(
     '🚀 ~ file: UserCard.js:19 ~ UserCard ~ item:',
-    item?.useractions?.matched,
+    item?.who_i_likes_status?.matched,
   );
-  // console.log("🚀 ~ file: UserCard.js:17 ~ UserCard ~ item:", item?.profile_images[0]?.url)
+  console.log("🚀 ~ file: UserCard.js:17 ~ UserCard ~ item:", item)
 
   const token = useSelector(state => state.authReducer.token);
 
@@ -244,7 +244,7 @@ const unfriend = async (item)=>{
           />
         </View>
       )}
-      {item?.useractions?.matched > 0 && (
+      {item?.who_i_likes_status?.matched > 0 && (
         <View style={styles.absoluteContainer}>
           <BtnContainer
             backgroundColor={Color.white}

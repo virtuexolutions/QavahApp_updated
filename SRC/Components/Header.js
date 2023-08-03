@@ -52,11 +52,11 @@ const Header = props => {
   const focused = useIsFocused();
   const token = useSelector(state => state.authReducer.token);
 const match = useSelector(state => state.socketReducer.matched);
-console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
+// console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
 const user = useSelector(state => state.commonReducer.userData);
 const userRole = useSelector(state => state.commonReducer.selectedRole);
 const pusherInstance = useSelector(state => state.socketReducer.pusherInstance);
-console.log("🚀 ~ file: Header.js:320 ~ Header ~ pusherInstance:", pusherInstance)
+// console.log("🚀 ~ file: Header.js:320 ~ Header ~ pusherInstance:", pusherInstance)
 
   const [isLoveNotesVisible, setLoveNotesVisible] = useState(false);
   const notification = useSelector(state => state.commonReducer.notification);
