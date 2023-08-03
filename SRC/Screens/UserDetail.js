@@ -138,21 +138,7 @@ const UserDetail = props => {
   };
 
   
-const viewSomeOneProfile = async id => {
-  // console.log('get favoured posts');
-  const url = 'favoured/view-someone-profile';
-  const body = {
-    targetName : userData?.profileName,
-    targetuid : userData?.id,
-    uid : user?.uid
-  }
-  console.log("🚀 ~ file: UserDetail.js:149 ~ viewSomeOneProfile ~ body:", body)
-  const response = await Post(url, body, apiHeader(token));
-  if (response != undefined) {
-   console.log('response data for viewing profile   =>>>>>>>>>>>>>>', response?.data);
-  //  setWhoViewedMe(response?.data?.peoples);
-  }
-};
+
 
   // const images = [require('../Assets/Images/woman1.jpeg')];
   // console.log('🚀 ~ file: UserDetail.js:50 ~ UserDetail ~ images:', images);
@@ -190,6 +176,23 @@ const viewSomeOneProfile = async id => {
     }
   };
 
+
+  const viewSomeOneProfile = async id => {
+    // console.log('get favoured posts');
+    const url = 'favoured/view-someone-profile';
+    const body = {
+      targetName : userData?.profileName,
+      targetuid : userData?.id,
+      uid : user?.uid
+    }
+    console.log("🚀 ~ file: UserDetail.js:149 ~ viewSomeOneProfile ~ body:", body)
+    const response = await Post(url, body, apiHeader(token));
+    if (response != undefined) {
+     console.log('response data for viewing profile   =>>>>>>>>>>>>>>', response?.data);
+    //  setWhoViewedMe(response?.data?.peoples);
+    }
+  };
+
   useEffect(() => {
     setImage([]);
     userData?.gallery_images?.map((item, index) =>
@@ -204,7 +207,10 @@ const viewSomeOneProfile = async id => {
   }, [focused]);
 
   useEffect(() => {
-    viewSomeOneProfile()
+    if(fromSearch){
+
+      viewSomeOneProfile()
+    }
     
   }, [])
   

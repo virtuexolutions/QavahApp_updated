@@ -28,15 +28,15 @@ const UserCard = ({
   hideBtns,
   favoredYouPost,
   setFavoredYouPost,
-  youFavoured,
-  setYouFavoured,
+  // youFavoured,
+  // setYouFavoured,
   getYouFavoredPosts,
 }) => {
-  console.log(
-    '🚀 ~ file: UserCard.js:19 ~ UserCard ~ item:',
-    item?.who_i_likes_status?.matched,
-  );
-  console.log('🚀 ~ file: UserCard.js:17 ~ UserCard ~ item:', item);
+  // console.log(
+  //   '🚀 ~ file: UserCard.js:19 ~ UserCard ~ item:',
+  //   item?.who_i_likes_status?.matched,
+  // );
+  // console.log('🚀 ~ file: UserCard.js:17 ~ UserCard ~ item:', item);
 
   const token = useSelector(state => state.authReducer.token);
   const userData = useSelector(state => state.commonReducer.userData);
@@ -55,21 +55,20 @@ const UserCard = ({
       targetsUid: item?.id,
       targetName: item?.profileName,
     }
-   console.log("🚀 ~ file: UserCard.js:58 ~ sendDislike ~ body:", body)
     const response = await Post(
       url,
       body,
       apiHeader(token),
     );
-    console.log("🚀 ~ file: UserCard.js:38 ~ sendDislike ~ response:", response?.data?.status)
 
     if (response?.data?.status) {
       console.log('in if')
       const filteredData2 = favoredYouPost?.filter(
         (data, index) => item?.id != data?.id,
       );
+      console.log("🚀 ~ file: UserCard.js:71 ~ sendDislike ~ filteredData2:", filteredData2)
 
-      setFavoredYouPost(filteredData2);
+      setFavoredYouPost(filteredData2 ? filteredData2 : []);
     } 
     // else {
     //   console.log('in else');
@@ -119,7 +118,11 @@ const UserCard = ({
         '🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:',
         response?.data,
       );
-      getYouFavoredPosts();
+      const filteredData2 = favoredYouPost?.filter(
+        (data, index) => item?.id != data?.id,
+      );
+
+      setFavoredYouPost(filteredData2);
       // setFavoredYouPost(
       //   favoredYouPost.filter(
       //     (data, index) => response?.data?.peoples?.match_id != data?.id,
