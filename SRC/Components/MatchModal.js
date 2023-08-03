@@ -1,8 +1,16 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+  Platform, 
+  ToastAndroid
+} from 'react-native';
 import React, {useState} from 'react';
 import Modal from 'react-native-modal';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
 import {Icon} from 'native-base';
 import CustomText from './CustomText';
@@ -13,14 +21,75 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Lottie from 'lottie-react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {setIsMatched} from '../Store/slices/socket';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {Post} from '../Axios/AxiosInterceptorFunction';
+import TextInputWithTitle from './TextInputWithTitle';
 
-const MatchModal = ({isVisible, otherUserData , profileImage}) => {
-  const navigation = useNavigation()
-  console.log("🚀 ~ file: MatchModal.js:18 ~ MatchModal ~ otherUserData:", otherUserData)
+const MatchModal = ({isVisible, otherUserData, profileImage}) => {
+  const navigation = useNavigation();
+  // console.log("🚀 ~ file: MatchModal.js:18 ~ MatchModal ~ otherUserData:", otherUserData)
   const user = useSelector(state => state.commonReducer.userData);
-  console.log('🚀 ~ file: MatchModal.js:19 ~ MatchModal ~ user:', user);
+  const token = useSelector(state=> state.authReducer.token)
+  // console.log('🚀 ~ file: MatchModal.js:19 ~ MatchModal ~ user:', user);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loveNoteModal, setLoveNoteModal] = useState(false);
+  const [loveNoteData, setLoveNoteData] = useState('');
   const dispatch = useDispatch();
+
+  const sendLoveNote = async () => {
+    const url = 'send-love-note';
+    const body = {
+      targetUid: user?.id,
+      love_note: loveNoteData,
+    };
+    console.log('🚀 ~ file: UserDetail.js:123 ~ sendLoveNote ~ body:', body);
+    if (loveNoteData == '') {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show('Please send some message', ToastAndroid.SHORT)
+        : alert('Please send some message');
+    }
+    setIsLoading(true);
+    const response = await Post(url, body, apiHeader(token));
+
+    if (response?.data?.status) {
+      setIsLoading(false);
+      Platform.OS == 'android'
+        ? ToastAndroid.show('Lovenote has been send', ToastAndroid.SHORT)
+        : alert('Lovenote has been sent');
+
+      console.log('response ===>>', response?.data);
+      setLoveNoteModal(false);
+      dispatch(setIsMatched(false));
+      navigation.navigate('ChatScreen');
+    } else {
+      setIsLoading(false);
+      // Platform.OS == 'android'
+      //   ? ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT)
+      //   : alert(response?.data?.message);
+
+      console.log('response ===>>', response?.data);
+      setLoveNoteModal(false);
+      dispatch(setIsMatched(false));
+      navigation.navigate('ChatScreen');
+    }
+  };
+
+  const skipNote = async () => {
+    const url = 'send-love-note';
+    setIsLoading(true)
+    const response = await Post(url, {
+      targetUid: user?.id,
+      love_note: 'Hey there!! I am using Qavah...',
+    }, apiHeader(token));
+    setIsLoading(false)
+    console.log('🚀 ~ file: MatchModal.js:66 ~ skipNote ~ response:', response?.data);
+
+    if (response != undefined) {
+      dispatch(setIsMatched(false));
+      navigation.navigate('ChatScreen');
+      setLoveNoteModal(false);
+    }
+  };
   return (
     <Modal
       isVisible={isVisible}
@@ -96,7 +165,8 @@ const MatchModal = ({isVisible, otherUserData , profileImage}) => {
             }}>
             <CustomImage
               style={{width: '100%', height: '100%'}}
-              source={profileImage}/>
+              source={profileImage}
+            />
           </View>
           <View
             style={{
@@ -118,10 +188,11 @@ const MatchModal = ({isVisible, otherUserData , profileImage}) => {
           </View>
         </View>
         <TouchableOpacity
-        onPress={()=>{
-          navigation.navigate('ChatScreen');
-          dispatch(setIsMatched(false));
-        }}
+          onPress={() => {
+            // navigation.navigate('ChatScreen');
+            // dispatch(setIsMatched(false));
+            setLoveNoteModal(true);
+          }}
           style={{
             // position : 'absolute',
             width: moderateScale(50, 0.6),
@@ -139,15 +210,16 @@ const MatchModal = ({isVisible, otherUserData , profileImage}) => {
             as={Ionicons}
             color={Color.white}
             size={moderateScale(27, 0.6)}
-            onPress={()=>{
-              navigation.navigate('ChatScreen');
-              dispatch(setIsMatched(false));
+            onPress={() => {
+              // navigation.navigate('ChatScreen');
+              // dispatch(setIsMatched(false));
+              setLoveNoteModal(true);
             }}
           />
         </TouchableOpacity>
         <CustomText
           onPress={() => {
-            dispatch(setIsMatched(false));
+            skipNote();
           }}
           style={{
             marginTop: moderateScale(30, 0.3),
@@ -159,6 +231,85 @@ const MatchModal = ({isVisible, otherUserData , profileImage}) => {
           Skip
         </CustomText>
       </View>
+      <Modal
+        isVisible={loveNoteModal}
+        onBackdropPress={() => {
+          setLoveNoteModal(false);
+        }}
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <View style={styles.container1}>
+          <View
+            style={{
+              // position: 'absolute',
+              width: '100%',
+              alignItems: 'center',
+              marginBottom: moderateScale(10, 0.3),
+              flexDirection: 'row',
+              // backgroundColor: 'black',
+              // height: windowHeight * 0.1,
+              height: windowHeight * 0.07,
+              justifyContent: 'center',
+              backgroundColor: Color.themeColor,
+              // marginLeft:moderateScale(10,.3),
+            }}>
+            <CustomText
+              style={[
+                {
+                  color: Color.white,
+                  fontSize: moderateScale(15, 0.3),
+                },
+              ]}
+              isBold>
+              Send Love Note
+            </CustomText>
+          </View>
+          <TextInputWithTitle
+            titleText={'Enter Description'}
+            secureText={false}
+            placeholder={'Enter Description'}
+            setText={setLoveNoteData}
+            value={loveNoteData}
+            viewHeight={0.15}
+            viewWidth={0.8}
+            inputWidth={0.7}
+            inputHeight={0.1}
+            border={1}
+            borderColor={Color.themeLightGray}
+            backgroundColor={'#F5F5F5'}
+            marginTop={moderateScale(20, 0.3)}
+            multiline={true}
+            inputStyle={{textAlign: 'vertical'}}
+            borderRadius={moderateScale(10, 0.3)}
+            placeholderColor={Color.black}
+          />
+          <CustomButton
+            text={
+              isLoading ? (
+                <ActivityIndicator color={'#ffffff'} size={'small'} />
+              ) : (
+                'Send'
+              )
+            }
+            textColor={Color.white}
+            width={windowWidth * 0.8}
+            height={windowHeight * 0.07}
+            onPress={sendLoveNote}
+            marginLeft={windowWidth * 0.05}
+            marginRight={windowWidth * 0.05}
+            bgColor={[Color.themeColor, Color.themeColor]}
+            borderRadius={moderateScale(10, 0.6)}
+            marginTop={moderateScale(20, 0.6)}
+            marginBottom={moderateScale(10, 0.6)}
+            elevation
+            isBold
+            fontSize={moderateScale(15, 0.6)}
+            isGradient
+          />
+        </View>
+      </Modal>
     </Modal>
   );
 };
@@ -175,6 +326,14 @@ const styles = ScaledSheet.create({
     height: windowHeight,
     // justifyContent: 'center',
     paddingTop: windowHeight * 0.1,
+    alignItems: 'center',
+  },
+  container1: {
+    width: windowWidth * 0.85,
+    paddingBottom: moderateScale(20, 0.6),
+    backgroundColor: Color.white,
+    borderRadius: moderateScale(10, 0.6),
+    overflow: 'hidden',
     alignItems: 'center',
   },
   circle: {
