@@ -27,9 +27,11 @@ const ChatScreen = ({navigation}) => {
   const userData = useSelector(state => state.commonReducer.userData);
   // console.log("🚀 ~ file: ChatScreen.js:27 ~ ChatScreen ~ userData:", userData?.uid)
   const [searchData, setSearchData] = useState('');
-  const [userinfo , setUserData] = useState(false)
-  console.log("🚀 ~ file: ChatScreen.js:31 ~ ChatScreen ~ userinfo:", userinfo)
-  const authKey = '07ba629476752645dbce6a6c4aad7b2fc680b511';
+  // const [userinfo , setUserData] = useState(false)
+  const commetChatUser = useSelector(state=> state.commonReducer.commetChatUserData)
+  console.log("🚀 ~ file: ChatScreen.js:32 ~ ChatScreen ~ commetChatUser:", commetChatUser)
+  // console.log("🚀 ~ file: ChatScreen.js:31 ~ ChatScreen ~ userinfo:", userinfo)
+  
   const appID = "2092182aee051e28";
   const region = "US";
   const appSetting = new CometChat.AppSettingsBuilder()
@@ -146,48 +148,17 @@ const ChatScreen = ({navigation}) => {
   
   // }, []);
  
-  const LoginUser = () => {
-    CometChat.login(userData?.uid, authKey).then(
-      user => {
-        console.log('Login Successful:', {user});
-        setUserData(true)
-      },
-      error => {
-        console.log('Login failed with exception:', {error});
-      },
-    );
-  };
-
-  useEffect(() => {
-    // configureCometChat()
-    LoginUser();
-
-    return()=>{
-      setUserData(false)
-    }
-  }, [])
+ 
   
  
 
   return (
-    userinfo ?
+
 
       <View style={{flex: 1}}>
       <CometChatConversationListWithMessages navigation={navigation} />
       </View>
-      :
-      <View style={{
-        width : windowWidth ,
-        height : windowHeight * 0.8,
-        justifyContent : 'center' ,
-        aligntems : 'center',
-      }}>
-      <ActivityIndicator 
-      size={'large'}
-      color={Color.themeColor}
-
-      />
-      </View>
+     
     
 
     // <>

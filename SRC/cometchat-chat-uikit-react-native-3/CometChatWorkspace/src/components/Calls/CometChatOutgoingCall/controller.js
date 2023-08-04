@@ -9,6 +9,7 @@ export class CallScreenManager {
   
 
   attachListeners(callback) {
+    console.log('call Screen here ==============>>>>>>>>')
     CometChat.addCallListener(
       '5k8vnxoupgoo7lk',
       new CometChat.CallListener({

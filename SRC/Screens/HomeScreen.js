@@ -29,7 +29,7 @@ import CustomImage from '../Components/CustomImage';
 import NullDataComponent from '../Components/NullDataComponent';
 import {useIsFocused} from '@react-navigation/native';
 import MatchModal from '../Components/MatchModal';
-import {setUserData} from '../Store/slices/common';
+import {setCommetChatUserData, setUserData} from '../Store/slices/common';
 import {Pusher} from '@pusher/pusher-websocket-react-native';
 import {
   setIsMatched,
@@ -37,6 +37,7 @@ import {
   setPusherInstance,
   setotherData,
 } from '../Store/slices/socket';
+
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -94,8 +95,11 @@ const HomeScreen = () => {
     }
   };
 
+
+ 
+
   useEffect(() => {
-    console.log('useEffect runs');
+    console.log('useEffect runs'); 
     async function connectPusher() {
       try {
         await pusher.init({

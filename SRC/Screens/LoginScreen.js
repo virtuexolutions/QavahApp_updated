@@ -30,8 +30,9 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 import Header from '../Components/Header';
-import {setUserData} from '../Store/slices/common';
+import {setCommetChatUserData, setUserData} from '../Store/slices/common';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { CometChat } from '@cometchat-pro/react-native-chat';
 
 
 
@@ -44,6 +45,7 @@ const LoginScreen = ({route}) => {
   const [firstSection, setFirstSection] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
+  const authKey = '07ba629476752645dbce6a6c4aad7b2fc680b511';
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
@@ -75,6 +77,7 @@ const LoginScreen = ({route}) => {
       dispatch(setUserData(response?.data?.user));
       dispatch(setUserToken({token: response?.data?.token}));
       dispatch(setIsLoggedIn());
+      LoginUser(response?.data?.user?.uid)
     } else {
       console.log(response?.data?.message);
       Platform.OS == 'android'
@@ -82,6 +85,28 @@ const LoginScreen = ({route}) => {
         : alert(response?.data?.message);
     }
   };
+
+  const LoginUser = (uid) => {
+    console.log('In login commet chat==============????')
+    CometChat.login(uid, authKey).then(
+      user => {
+        console.log('Login Successful:', {user});
+        dispatch(setCommetChatUserData(true))
+      },
+      error => {
+        console.log('Login failed with exception:', {error});
+      },
+    );
+  };
+
+  // useEffect(() => {
+  //   // configureCometChat()
+  //   LoginUser();
+
+  //   return()=>{
+  //     setUserData(false)
+  //   }
+  // }, [])
 
 
 

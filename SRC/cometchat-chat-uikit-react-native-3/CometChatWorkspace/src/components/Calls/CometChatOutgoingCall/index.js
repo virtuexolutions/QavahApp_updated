@@ -58,10 +58,10 @@ class CometChatOutgoingCall extends React.PureComponent {
         // const call = this.props.outgoingCall  ;
         // console.log('call is what', call)
         // var recieverId = reciverInfo?.uid;
-        var callType = this.props?.type == 'audio' ? CometChat.CALL_TYPE.AUDIO : CometChat.CALL_TYPE.VIDEO;
-        var recieverType = CometChat.RECEIVER_TYPE.USER;
-        var call = new CometChat.Call(this.props?.item?.uid, callType, 'user');
-        CometChat.initiateCall(call).then(
+        var callType = this.props?.type == 'audio' ? CallScreenManager.CALL_TYPE.AUDIO : CallScreenManager.CALL_TYPE.VIDEO;
+        var recieverType = CallScreenManager.RECEIVER_TYPE.USER;
+        var call = new CallScreenManager.Call(this.props?.item?.uid, callType, 'user');
+        CallScreenManager.initiateCall(call).then(
           (outGointCall) => {
             console.log('Call initiated Successfully');
           },
