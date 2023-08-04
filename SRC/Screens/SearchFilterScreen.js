@@ -524,7 +524,7 @@ const SearchFilterScreen = () => {
   }, [nestedOptions, step]);
 
   const getSearchResult = async () => {
-    const url = 'seeking/seeking/app';
+    const url = 'seeking/seeking';
     setPeople([]);
   
 
@@ -545,10 +545,10 @@ const SearchFilterScreen = () => {
     // dataBody?.filters.find((item , index)=>item?.key == 'miles')
     // !user?.prefrences?.global && dataBody?.filters.push({key: 'miles', values: Array.isArray(distance) ?  distance : [distance]})
 
-    console.log(
-      '🚀 ~ file: SearchFilterScreen.js:546 ~ getSearchResult ~ dataBody:',
-      JSON.stringify(dataBody, null, 2),
-    );
+    // console.log(
+    //   '🚀 ~ file: SearchFilterScreen.js:546 ~ getSearchResult ~ dataBody:',
+    //   JSON.stringify(dataBody, null, 2),
+    // );
     console.log('Databosy filters===========????', dataBody.filters);
 
     setIsLoading(true);
@@ -556,6 +556,8 @@ const SearchFilterScreen = () => {
     setIsLoading(false);
     if (response != undefined) {
       console.log('Search result Response', response?.data?.peoples);
+      console.log('Search result Response', response?.data);
+
       // console.log('Search result Response', response?.data?.peoples);
       setPeople(response?.data?.peoples);
     }
@@ -1469,7 +1471,7 @@ const SearchFilterScreen = () => {
             }}>
             {`${people?.length} matches`}
           </CustomText>
-          <CustomText
+          {/* <CustomText
             style={{
               fontSize: moderateScale(11, 0.6),
               color: Color.themeColor,
@@ -1480,7 +1482,7 @@ const SearchFilterScreen = () => {
               paddingVertical: moderateScale(4, 0.6),
             }}>
             infinite scroll
-          </CustomText>
+          </CustomText> */}
         </View>
 
         {people?.length > 0 && (

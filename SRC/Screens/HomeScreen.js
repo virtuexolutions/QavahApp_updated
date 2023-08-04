@@ -5,7 +5,7 @@ import {
   ActivityIndicator,
   ToastAndroid,
   Platform,
-  Alert
+  Alert,
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Header from '../Components/Header';
@@ -29,11 +29,14 @@ import CustomImage from '../Components/CustomImage';
 import NullDataComponent from '../Components/NullDataComponent';
 import {useIsFocused} from '@react-navigation/native';
 import MatchModal from '../Components/MatchModal';
-import { setUserData } from '../Store/slices/common';
-import { Pusher } from '@pusher/pusher-websocket-react-native';
-import { setIsMatched, setIsSubscribed, setPusherInstance, setotherData } from '../Store/slices/socket';
-
-
+import {setUserData} from '../Store/slices/common';
+import {Pusher} from '@pusher/pusher-websocket-react-native';
+import {
+  setIsMatched,
+  setIsSubscribed,
+  setPusherInstance,
+  setotherData,
+} from '../Store/slices/socket';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -43,13 +46,21 @@ const HomeScreen = () => {
   const user = useSelector(state => state.commonReducer.userData);
   // console.log("🚀 ~ file: HomeScreen.js:44 ~ user:", user)
   const isSubscribed = useSelector(state => state.socketReducer.isSubscribed);
-  console.log("🚀 ~ file: HomeScreen.js:45 ~ isSubscribed:", isSubscribed)
+  console.log('🚀 ~ file: HomeScreen.js:45 ~ isSubscribed:', isSubscribed);
 
-  console.log("🚀 ~ file: HomeScreen.js:40 ~ user:", user?.id , user?.profileName)
+  console.log(
+    '🚀 ~ file: HomeScreen.js:40 ~ user:',
+    user?.id,
+    user?.profileName,
+  );
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ token:", token)
   const [swiperRef, setSwiperRef] = useState();
+  console.log(
+    '🚀 ~ file: HomeScreen.js:53 ~ swiperRef:',
+    swiperRef?.state?.swipeBackXYPositions?.length,
+  );
   const [xAxis, setXAxis] = useState(0);
   const [yAxis, setYAxis] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,11 +70,14 @@ const HomeScreen = () => {
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [photoCards, setPhotoCards] = useState([]);
-  const [matchModalVisible, setMatchModalVisible] = useState(false)
-  
+  console.log('🚀 ~ file: HomeScreen.js:62 ~ photoCards:', photoCards.length);
+  const [matchModalVisible, setMatchModalVisible] = useState(false);
+
   // console.log("🚀 ~ file: HomeScreen.js:45 ~ photoCards:", photoCards)
 
   const [LogData, setLogData] = useState([]);
+  console.log('🚀 ~ file: HomeScreen.js:67 ~ LogData:', LogData);
+  console.log('🚀 ~ file: HomeScreen.js:67 ~ LogData:', LogData.length);
   // console.log("🚀 ~ file: HomeScreen.js:56 ~ LogData:", LogData)
 
   const [drawerType, setDrawerType] = useState('notification');
@@ -93,21 +107,28 @@ const HomeScreen = () => {
           channelName: `match-popup-${user?.id}`,
           // channelName: 'my-notificatio+n-channel',
           onSubscriptionSucceeded: (channelName, data) => {
-            dispatch(setPusherInstance(pusher))
-            dispatch(setIsSubscribed(true))
-            console.log("🚀 ~ file: SelectedChat.js:77 ~ connectPusher ~ myChannel:", myChannel)
+            dispatch(setPusherInstance(pusher));
+            dispatch(setIsSubscribed(true));
+            console.log(
+              '🚀 ~ file: SelectedChat.js:77 ~ connectPusher ~ myChannel:',
+              myChannel,
+            );
             console.log('Subscribed to ', channelName);
-            console.log(`And here are the channel members: ${myChannel.members}`)
+            console.log(
+              `And here are the channel members: ${myChannel.members}`,
+            );
           },
           onEvent: event => {
-           dispatch(setIsMatched(true))
-           console.log('data from pusher:', event.data.message);
-           // console.log('Got channel event:', JSON.parse(event.data));
-           
-           const dataString = JSON.parse(event.data);
-           console.log("🚀 ~ file: HomeScreen.js:108 ~ connectPusher ~ dataString:", dataString?.message?.user)
-           dispatch(setotherData(dataString?.message?.user))
-           
+            dispatch(setIsMatched(true));
+            console.log('data from pusher:', event.data.message);
+            // console.log('Got channel event:', JSON.parse(event.data));
+
+            const dataString = JSON.parse(event.data);
+            console.log(
+              '🚀 ~ file: HomeScreen.js:108 ~ connectPusher ~ dataString:',
+              dataString?.message?.user,
+            );
+            dispatch(setotherData(dataString?.message?.user));
           },
         });
         // await pusher.subscribe({ channelName });
@@ -116,39 +137,29 @@ const HomeScreen = () => {
         console.log(`ERROR: ${e}`);
       }
     }
-    if(!isSubscribed){
-
+    if (!isSubscribed) {
       connectPusher();
     }
-
-   
   }, [focused]);
 
-  const ActiveSpotLight = async()=>{
+  const ActiveSpotLight = async () => {
     const url = 'swap/activate_spotlight';
-    setIsLoading(true)
-    const response = await Post(url , {} , apiHeader(token))
-    setIsLoading(false)
-    if(response?.data?.status){
-      console.log(response?.data)
+    setIsLoading(true);
+    const response = await Post(url, {}, apiHeader(token));
+    setIsLoading(false);
+    if (response?.data?.status) {
+      console.log(response?.data);
       Platform.OS == 'android'
-      ? ToastAndroid.show(
-          response?.data?.message,
-          ToastAndroid.SHORT,
-        )
-      : alert(response?.data?.message);
-      response?.data?.message != 'spotlight already activated' && dispatch(setUserData(response?.data?.resp));
-    }
-    else{
+        ? ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT)
+        : alert(response?.data?.message);
+      response?.data?.message != 'spotlight already activated' &&
+        dispatch(setUserData(response?.data?.resp));
+    } else {
       Platform.OS == 'android'
-      ? ToastAndroid.show(
-        
-          response?.data?.error,
-          ToastAndroid.SHORT,
-        )
-      : alert(response?.data?.error);
+        ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
+        : alert(response?.data?.error);
     }
-  }
+  };
   const handleOnSwipedLeft = async () => {
     swiperRef.swipeLeft();
   };
@@ -160,7 +171,7 @@ const HomeScreen = () => {
     swiperRef.swipeRight();
   };
 
-  //  let obj = array.find(o => o.name === 'string 1');
+
 
   const notificaitonArray = [
     {
@@ -192,29 +203,40 @@ const HomeScreen = () => {
       photo: require('../Assets/Images/woman3.jpeg'),
     },
   ];
-  const UndoLog = async allow => {
-    if (LogData.length > 0) {
-      const undoData = [...LogData];
-      LogData.pop();
-
+  const UndoLog = async () => {
+    if (
+      swiperRef?.state?.swipeBackXYPositions?.length > 0 &&
+      LogData.length > 0
+    ) {
       const url = 'swap/rewind';
-
       const body = {
         myName: user?.profileName,
         myUid: user?.id,
-        targetsUid: undoData[undoData?.length - 1]?.id,
-        targetName: undoData[undoData?.length - 1]?.profileName,
+        targetsUid: LogData[LogData?.length - 1]?.targetsId,
+        targetName: LogData[LogData?.length - 1]?.targetsName,
       };
-     setIsLoading(true);
+      console.log('🚀 ~ file: HomeScreen.js:207 ~ UndoLog ~ body:', body);
+      setIsLoading(true);
 
       const response = await Post(url, body, apiHeader(token));
-      setIsLoading(false);
+      console.log(
+        '🚀 ~ file: HomeScreen.js:212 ~ UndoLog ~ response:',
+        response?.data,
+      );
 
       if (response?.data?.status) {
-        setPhotoCards(prev => [undoData[undoData?.length - 1], ...prev]);
-        allow && (await swiperRef.swipeBack());
+        setIsLoading(false);
+
+        console.log('Here');
+
+        LogData.pop();
+        console.log('after Pop');
+
+        await swiperRef.swipeBack();
       }
     }
+
+   
   };
 
   const setXY = useCallback((x, y) => {
@@ -225,6 +247,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     getUsers();
+    setLogData([]);
   }, [focused]);
 
   return (
@@ -281,103 +304,31 @@ const HomeScreen = () => {
               cardVerticalMargin={moderateScale(5, 0.6)}
               backgroundColor="white"
               stackSize={photoCards?.length > 1 ? 2 : 1}
-              infinite
+              // infinite
               showSecondCard={true}
               animateOverlayLabelsOpacity
               swipeBackCard
               onSwipedLeft={async (index, item) => {
-                // return console.log("🚀 ~ file: HomeScreen.js:215 ~ onSwipedLeft={ ~ item:", item)
-                // return console.log('item in left ', item?.id)
-                // console.log(' hererererere  ===  >> > > ');
                 const url = 'swap/disliked';
                 const response = await Post(
                   url,
                   {targetsUid: item?.id},
                   apiHeader(token),
                 );
-                console.log('response ======= >', response?.data);
-                if (response?.data?.status == true) {
-                  // console.log('left', item?.id);
-                  const filteredData = [...photoCards]
-                  const filteredData2 = [...photoCards]
-                 
+                if (response?.data?.status) {
+                  console.log(
+                    '🚀 ~ file: HomeScreen.js:294 ~ onSwipedLeft={async ~ response?.data:',
+                    response?.data,
+                  );
 
-
-                  setLogData(prev => [...prev, filteredData.find(
-                    (data, index) =>
-                      response?.data?.peoples?.match_id == data?.id,
-                  )]);
-
-
-
-                  {if(photoCards?.length > 1) {
-                    console.log('inn IF')
-                    
-                    const index = filteredData2.findIndex((item , index) => item?.id == response?.data?.peoples?.match_id )
-                    console.log('this is index ======>>' , index)
-                    photoCards.splice(index , 1)
-                  }
-                    else{
-
-                    console.log('inn else')
-                      
-                      setPhotoCards(filteredData2.filter(
-                        (data, index) =>
-                        response?.data?.peoples?.match_id != data?.id,
-                        ));
-                      }
-                        
-                        
-                        
-                  }
-
-                } else {
-                  Platform.OS == 'android'
-                    ? ToastAndroid.show(
-                        response?.data?.error,
-                        ToastAndroid.SHORT,
-                      )
-                    : alert(response?.data?.error);
-                }
-              }}
-              disableBottomSwipe={true}
-              onSwipedRight={async (index, item) => {
-                const url = 'swap/liked';
-                // console.log({targetsUid: selectedId});
-                const response = await Post(
-                  url,
-                  {targetsUid: item?.id},
-                  apiHeader(token),
-                );
-                console.log('response data'  , response?.data)
-
-                if (response?.data?.status == true) {
-                  console.log('response data'  , response?.data)
                   setLogData(prev => [
                     ...prev,
-                    ...photoCards.filter((data, index) => {
-                      return response?.data?.peoples?.match_id == data?.id;
-                    }),
+                    {targetsId: item?.id, targetsName: item?.profileName},
                   ]);
-
-                  setPhotoCards(
-                    photoCards.filter(
-                      (data, index) =>
-                        response?.data?.peoples?.match_id != data?.id,
-                    ),
-                  );
-                } else {
-                  Platform.OS == 'android'
-                    ? ToastAndroid.show(
-                        response?.data?.error,
-                        ToastAndroid.SHORT,
-                      )
-                    : alert(response?.data?.error);
                 }
               }}
-              onSwipedTop={async (index, item) => {
-                // console.log("🚀 ~ file: HomeScreen.js:276 ~ onSwipedTop={ ~ item:", item?.id)
-                const url = 'swap/superLiked';
+              onSwipedRight={async (index, item) => {
+                const url = 'swap/liked';
                 const response = await Post(
                   url,
                   {targetsUid: item?.id},
@@ -385,21 +336,18 @@ const HomeScreen = () => {
                 );
 
                 if (response?.data?.status) {
-                  // console.log("🚀 ~ file: SpotLight.js:464 ~ onSwipedTop={ ~ response:", response?.data)
-                  const filteredData2 = photoCards.filter(
-                    (data, index) =>
-                      response?.data?.peoples?.only?.match_id != data?.id,
-                  );
-
-                  setPhotoCards(filteredData2);
-                } else {
-                  Platform.OS == 'android'
-                    ? ToastAndroid.show(
-                        response?.data?.error,
-                        ToastAndroid.SHORT,
-                      )
-                    : Alert.alert(response?.data?.error);
+                  setLogData(prev => [
+                    ...prev,
+                    {targetsId: item?.id, targetsName: item?.profileName},
+                  ]);
                 }
+              }}
+              swipeBack={async index => {
+                console.log('index============>>>>>>>>', index);
+              }}
+              disableBottomSwipe={true}
+              onSwipedAll={() => {
+                getUsers();
               }}
               onSwiping={(x, y) => {
                 setXY(x, y);
@@ -451,7 +399,7 @@ const HomeScreen = () => {
               name={isLoading ? 'cloud-download' : 'undo'}
               type={FontAwesome}
               onPress={() => {
-                UndoLog(true);
+                UndoLog();
               }}
             />
 
@@ -486,25 +434,24 @@ const HomeScreen = () => {
               name={'lightning-bolt'}
               type={MaterialCommunityIcons}
               onPress={() => {
-                user?.subscription.some((item , index)=>item.spotlights > 0) ?
-                Alert.alert(
-                  'Confirmation',
-                  'Are you sure you want to Active the spotlight?',
-                  [
-                    {
-                      text: 'Cancel',
-                      style: 'cancel',
-                    },
-                    {
-                      text: 'Confirm',
-                      onPress: () => {
-                        ActiveSpotLight();
-                      },
-                    },
-                  ],
-                )
-                :
-                setSpotLightVisible(true);
+                user?.subscription.some((item, index) => item.spotlights > 0)
+                  ? Alert.alert(
+                      'Confirmation',
+                      'Are you sure you want to Active the spotlight?',
+                      [
+                        {
+                          text: 'Cancel',
+                          style: 'cancel',
+                        },
+                        {
+                          text: 'Confirm',
+                          onPress: () => {
+                            ActiveSpotLight();
+                          },
+                        },
+                      ],
+                    )
+                  : setSpotLightVisible(true);
                 // setMatchModalVisible(true);
               }}
             />

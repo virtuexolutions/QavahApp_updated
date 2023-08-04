@@ -144,6 +144,7 @@ export default (props) => {
           incomingCallReceived(call);
           break;
         case enums.INCOMING_CALL_CANCELLED: // occurs(call dismissed) at the callee end, caller cancels the call
+          console.log('INCOMING_CALL_CANCELLED=======>>>>>>>> CANCELLED')
           incomingCallCancelled(call);
           break;
         default:

@@ -66,6 +66,7 @@ class CometChatMessages extends React.PureComponent {
       user: params.type === 'user' ? params.item : null,
       showProfile: false,
       ongoingDirectCall: false,
+      type:'audio',
       imageView:null,
       joinDirectCall:false,
       outgoingCall: null,
@@ -307,15 +308,17 @@ class CometChatMessages extends React.PureComponent {
         break;
       case actions.AUDIO_CALL:
       case actions.VIDEO_CALL:
-        // console.log('dataataafafa')
-        if (params.type === CometChat.RECEIVER_TYPE.GROUP) {
-          this.setState({ joinDirectCall: false, ongoingDirectCall: true });
-        } else {
-          this.makeACall(action == 'audioCall' ? 'audio' : 'video' , params?.item , 'init')
-          // this.setState({ userDetailVisible: true });
-          console.log('here' , params?.item , action)
-          // params.actionGenerated(action, { ...params.item, type: params.type });
-        }
+        console.log('dataataafafa')
+        this.setState({outgoingCall: true, type : action == 'audioCall' ? 'audio' : 'video' })
+        
+        // if (params.type === CometChat.RECEIVER_TYPE.GROUP) {
+        //   this.setState({ joinDirectCall: false, ongoingDirectCall: true });
+        // } else {
+        //   this.makeACall(action == 'audioCall' ? 'audio' : 'video' , params?.item , 'init')
+        //   // this.setState({ userDetailVisible: true });
+        //   console.log('here' , params?.item , action)
+        //   // params.actionGenerated(action, { ...params.item, type: params.type });
+        // }
         break;
       case actions.MENU_CLICKED:
         // console.log('action' , action)
@@ -396,6 +399,7 @@ class CometChatMessages extends React.PureComponent {
       case actions.CALL_ENDED:
       case actions.OUTGOING_CALL_REJECTED:
       case actions.OUTGOING_CALL_CANCELLED:
+        console.log('Here================>>>>>>>>>>>>>>>>>>>>>')
         params.actionGenerated(action, messages);
         break;
       case actions.REJECTED_INCOMING_CALL:

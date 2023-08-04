@@ -111,7 +111,12 @@ const UserCard = ({
 
   const unfriend = async item => {
     const url = 'settings/unmatch_user';
-    const response = await Post(url, {targetsUid: item?.id}, apiHeader(token));
+    const body =  {
+      myUid: userData?.uid,
+      targetsUid: item?.id,
+      targetName: item?.profileName,
+    }
+    const response = await Post(url, body, apiHeader(token));
 
     if (response?.data?.status) {
       console.log(

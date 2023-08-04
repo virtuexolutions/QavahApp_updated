@@ -15,6 +15,7 @@ const BtnContainer = ({ onPress, name, backgroundColor, color , type  , style , 
       as={type}
       size={iconSize ? iconSize : moderateScale(25,0.6)}
       color={color}
+      onPress={onPress}
       />
   </TouchableOpacity>
 )

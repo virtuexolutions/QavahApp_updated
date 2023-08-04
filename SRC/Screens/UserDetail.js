@@ -23,7 +23,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Modal from 'react-native-modal';
 
 import BtnContainer from '../Components/BtnContainer';
-import {Icon} from 'native-base';
+import {Icon, Toast} from 'native-base';
 import CustomText from '../Components/CustomText';
 import navigationService from '../navigationService';
 import IconWithName from '../Components/IconWithName';
@@ -189,6 +189,7 @@ const UserDetail = props => {
     const response = await Post(url, body, apiHeader(token));
     if (response != undefined) {
      console.log('response data for viewing profile   =>>>>>>>>>>>>>>', response?.data);
+    //  ToastAndroid.show('response')
     //  setWhoViewedMe(response?.data?.peoples);
     }
   };

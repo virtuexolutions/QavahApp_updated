@@ -279,6 +279,7 @@ class CometChatMessageList extends React.PureComponent {
       case enums.INCOMING_CALL_CANCELLED:
       case enums.OUTGOING_CALL_ACCEPTED:
       case enums.OUTGOING_CALL_REJECTED:
+        console.log('cancelled call================>>>>>>>>>>>>>>')
         this.callUpdated(message);
         break;
 

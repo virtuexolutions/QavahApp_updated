@@ -228,6 +228,8 @@ export class MessageListManager {
           callback(enums.OUTGOING_CALL_ACCEPTED, call);
         },
         onOutgoingCallRejected: (call) => {
+          console.log('Here I am calling')
+
           callback(enums.OUTGOING_CALL_REJECTED, call);
         },
       }),

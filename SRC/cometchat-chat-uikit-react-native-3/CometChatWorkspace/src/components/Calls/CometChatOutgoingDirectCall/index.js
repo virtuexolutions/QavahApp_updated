@@ -84,6 +84,7 @@ class CometChatOutgoingDirectCall extends React.Component {
   };
 
   startCall = () => {
+    console.log('Here')
     let sessionID = `${this.props.item.guid}`;
     let audioOnly = false;
     let defaultLayout = true;

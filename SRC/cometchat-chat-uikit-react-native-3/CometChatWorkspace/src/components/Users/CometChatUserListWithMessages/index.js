@@ -104,6 +104,7 @@ class CometChatUserListWithMessages extends React.Component {
       case actions.OUTGOING_CALL_REJECTED:
       case actions.OUTGOING_CALL_CANCELLED:
       case actions.CALL_ENDED:
+        console.log('Here=========>>>>>>>>')
         this.outgoingCallEnded(item);
         break;
       case actions.USER_JOINED_CALL:
