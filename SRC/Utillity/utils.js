@@ -1,5 +1,6 @@
 import React from 'react';
 import {Dimensions, PermissionsAndroid} from 'react-native';
+import navigationService from '../navigationService';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -17,6 +18,7 @@ const requestLocationPermission = async () => {
       console.log('You can use the Location');
     } else {
       console.log('Location permission denied');
+     
     }
   } catch (err) {
     console.warn(err);

@@ -28,11 +28,13 @@ import {Post} from '../Axios/AxiosInterceptorFunction';
 import {useSelector} from 'react-redux';
 import {parse} from 'react-native-svg';
 import UserCard from '../Components/UserCard';
+import { useIsFocused } from '@react-navigation/native';
 
 const SearchFilterScreen = () => {
   const token = useSelector(state => state.authReducer.token);
   // console.log('🚀 ~ file: SearchFilterScreen.js:31 ~ token:', token);
   const user = useSelector(state => state.commonReducer.userData);
+  const isFocused = useIsFocused()
   console.log("🚀 ~ file: SearchFilterScreen.js:36 ~ user:", user?.id)
 
   const [location, setLocation] = useState('Jakarta, Indonesia');
@@ -562,6 +564,11 @@ const SearchFilterScreen = () => {
       setPeople(response?.data?.peoples);
     }
   };
+
+  useEffect(() => {
+    getSearchResult()
+  }, [isFocused])
+  
 
   return (
     <>
@@ -1516,7 +1523,7 @@ const SearchFilterScreen = () => {
           </TouchableOpacity>
         )}
         <FlatList
-          data={people}
+          data={people.slice(0,3)}
           numColumns={2}
           showsVerticalScrollIndicator={false}
           style={{

@@ -33,6 +33,8 @@ import {
 } from 'react-native-confirmation-code-field';
 import {validateEmail} from '../Config';
 import {Post} from '../Axios/AxiosInterceptorFunction';
+import GetLocation from 'react-native-get-location';
+import axios from 'axios';
 
 // import DatePicker from 'react-native-date-picker';
 
@@ -56,6 +58,11 @@ const CreatePortfolio = () => {
   //Step 5
   const [feet, setFeet] = useState('');
   const [inch, setInch] = useState('');
+  const [location, setLocation] = useState('');
+  console.log(
+    '🚀 ~ file: CreatePortfolio.js:61 ~ CreatePortfolio ~ location:',
+    location,
+  );
 
   //Step 6
   const [password, setPassword] = useState('');
@@ -97,7 +104,67 @@ const CreatePortfolio = () => {
   const [chunks, setChunks] = useState('');
   const [progress, setProgress] = useState(0);
   const [steps, setSteps] = useState(1);
-  console.log("🚀 ~ file: CreatePortfolio.js:100 ~ CreatePortfolio ~ steps:", steps)
+  const [zipCode, setZipCode] = useState('')
+  const [city, setCity] = useState('')
+  console.log("🚀 ~ file: CreatePortfolio.js:109 ~ CreatePortfolio ~ city:", city)
+  const [state, setState] = useState('')
+  console.log("🚀 ~ file: CreatePortfolio.js:111 ~ CreatePortfolio ~ state:", state)
+  const [region, setRegion] = useState('')
+  console.log("🚀 ~ file: CreatePortfolio.js:113 ~ CreatePortfolio ~ region:", region)
+  console.log("🚀 ~ file: CreatePortfolio.js:108 ~ CreatePortfolio ~ zipCode:", zipCode)
+  console.log(
+    '🚀 ~ file: CreatePortfolio.js:100 ~ CreatePortfolio ~ steps:',
+    steps,
+  );
+
+  const fetchZipCode = async (latitude, longitude, apiKey) => {
+    try {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`,
+      );
+      const results = response.data.results;
+      if (results && results.length > 0) {
+        const addressComponents = results[0].address_components;
+        const postalCodeComponent = addressComponents.find(component =>
+          component.types.includes('postal_code'),
+        );
+        const cityComponent = addressComponents.find(component =>
+          component.types.includes('locality')
+        );
+        const stateComponent = addressComponents.find(component =>
+          component.types.includes('administrative_area_level_1')
+        );
+        const regionComponent = addressComponents.find(component =>
+          component.types.includes('administrative_area_level_2')
+        );
+
+        setZipCode(postalCodeComponent ? postalCodeComponent.long_name :'')
+        setCity(cityComponent ? cityComponent.long_name : '')
+        setState(stateComponent ? stateComponent.short_name : '')
+        setRegion(regionComponent ? regionComponent.long_name : '')
+
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getLocation = () => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 60000,
+    }).then(location => {
+      console.log(
+        'this is the main location ======================= >>>>>>',
+        location,
+      );
+      const {longitude, latitude} = location;
+      const apiKey = 'AIzaSyAsJQ2w7vW2D7_d92Mg3TI1yojbJC64wso';
+      fetchZipCode(latitude, longitude, apiKey);
+
+      setLocation({...location, zipCode: zipCode});
+    });
+  };
 
   const ProfileBody = {
     step1: {
@@ -116,15 +183,16 @@ const CreatePortfolio = () => {
       seeking: gender == 'woman' ? 'man' : 'woman',
       zipcode: '10001',
       location: {
-        zipcode: '10001',
-        state_abbr: 'NY',
-        latitude: '40.750742',
-        longitude: '-73.99653',
-        city: 'New York',
-        state: 'New York',
+        zipcode: zipCode,
+        state_abbr: region,
+        latitude: location?.latitude,
+        longitude: location?.longitude,
+        city: city,
+        state: state,
       },
     },
   };
+  console.log("🚀 ~ file: CreatePortfolio.js:195 ~ CreatePortfolio ~ ProfileBody:", ProfileBody)
 
   const onSelect = country => {
     // console.log('dasdasdasdads =>', country);
@@ -136,9 +204,12 @@ const CreatePortfolio = () => {
     time == 0 && (settimerLabel('Resend Code '), settime(0));
   };
 
-  const dateDifference = moment(dob).fromNow().split(" ")[0] >= 18;
+  const dateDifference = moment(dob).fromNow().split(' ')[0] >= 18;
 
-  console.log("🚀 ~ file: CreatePortfolio.js:140 ~ CreatePortfolio ~ dateDifference:", dateDifference)
+  console.log(
+    '🚀 ~ file: CreatePortfolio.js:140 ~ CreatePortfolio ~ dateDifference:',
+    dateDifference,
+  );
   //number validator
   const phoneNumberRegex = /^(\d{3})[-]?(\d{3})[-]?(\d{4})$/;
 
@@ -212,6 +283,9 @@ const CreatePortfolio = () => {
       setInch('');
     }
   }, [inch]);
+  useEffect(() => {
+    getLocation();
+  }, []);
 
   return (
     <>
@@ -259,9 +333,8 @@ const CreatePortfolio = () => {
             width: progress,
             height: windowHeight * 0.02,
             backgroundColor: Color.themeColor,
-            borderTopRightRadius : moderateScale(20,0.3),
-            borderBottomRightRadius : moderateScale(20,0.3),
-
+            borderTopRightRadius: moderateScale(20, 0.3),
+            borderBottomRightRadius: moderateScale(20, 0.3),
           }}></View>
       )}
 
@@ -661,7 +734,6 @@ const CreatePortfolio = () => {
                 {'We need your mobile number \n to get you signed in'}
               </CustomText>
             </>
-       
           ) : (
             <View
               style={{alignItems: 'center', marginTop: -windowHeight * 0.2}}>
@@ -735,11 +807,11 @@ const CreatePortfolio = () => {
               email != '' &&
               currentStep == 1
             ) {
-              if (!validateEmail(email)) {
+              if (!validateEmail(email.trim())) {
                 return Platform.OS == 'android'
                   ? ToastAndroid.show('Email invalid', ToastAndroid.SHORT)
                   : Alert.alert('Email invalid');
-              } else if (!emailExists(email)) {
+              } else if (!emailExists(email.trim())) {
                 return Platform.OS == 'android'
                   ? ToastAndroid.show(
                       'Email is already taken',
@@ -756,19 +828,17 @@ const CreatePortfolio = () => {
               inch != '' &&
               currentStep == 3
             ) {
-              if(dateDifference){
-
+              if (dateDifference) {
                 setCurrentStep(prev => prev + 1);
                 setProgress(prev => prev + windowWidth / 6);
                 setSteps(steps + 1);
-              }
-              else{
+              } else {
                 return Platform.OS == 'android'
-                ? ToastAndroid.show(
-                    'Sorry , you are not 18+',
-                    ToastAndroid.SHORT,
-                  )
-                : Alert.alert('Sorry , you are not 18+');
+                  ? ToastAndroid.show(
+                      'Sorry , you are not 18+',
+                      ToastAndroid.SHORT,
+                    )
+                  : Alert.alert('Sorry , you are not 18+');
               }
             } else if (
               password != '' &&
@@ -793,8 +863,7 @@ const CreatePortfolio = () => {
               setCurrentStep(prev => prev + 1);
               settimerLabel('ReSend in '), settime(120);
               setProgress(prev => prev + windowWidth / 6);
-            }
-            else if (currentStep == 6) {
+            } else if (currentStep == 6) {
               setSteps(3);
               clearTimeout(timeOutId);
               // setSteps(steps+1)

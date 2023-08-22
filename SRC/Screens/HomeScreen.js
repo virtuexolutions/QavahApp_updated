@@ -10,7 +10,7 @@ import {
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Header from '../Components/Header';
 import CustomStatusBar from '../Components/CustomStatusBar';
-import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, requestLocationPermission, windowHeight, windowWidth} from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
 import Swiper from 'react-native-deck-swiper';
 import Card from '../Components/Card';
@@ -28,7 +28,6 @@ import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import CustomImage from '../Components/CustomImage';
 import NullDataComponent from '../Components/NullDataComponent';
 import {useIsFocused} from '@react-navigation/native';
-import MatchModal from '../Components/MatchModal';
 import {setCommetChatUserData, setUserData} from '../Store/slices/common';
 import {Pusher} from '@pusher/pusher-websocket-react-native';
 import {
@@ -37,6 +36,8 @@ import {
   setPusherInstance,
   setotherData,
 } from '../Store/slices/socket';
+
+
 
 
 const HomeScreen = () => {
@@ -82,6 +83,8 @@ const HomeScreen = () => {
   // console.log("🚀 ~ file: HomeScreen.js:56 ~ LogData:", LogData)
 
   const [drawerType, setDrawerType] = useState('notification');
+  
+
 
   const getUsers = async () => {
     const url = `discover/getPeople/${user?.uid}/${user?.seeking}/${user?.location?.latitude}/${user?.location?.longitude}/${user?.location?.city}/${user?.location?.zipcode}`;
@@ -94,10 +97,7 @@ const HomeScreen = () => {
       // console.log(response?.data?.peoples);
     }
   };
-
-
  
-
   useEffect(() => {
     console.log('useEffect runs'); 
     async function connectPusher() {
