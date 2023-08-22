@@ -15,30 +15,41 @@ import {windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import CustomText from './CustomText';
 import {Icon} from 'native-base';
+import WheelPicker from 'react-native-wheely';
+
 
 const BottomSheetSelect = ({title, data, setData, array}) => {
+  
+  const [selectedIndex, setSelectedIndex] = useState();
+
+  const refRBSheet = useRef();
+
   // const [flatListRef, setflatListRef] = useState(null)
-   const flatListRef = useRef(null);
+  const flatListRef = useRef(null);
   // console.log("🚀 ~ file: BottomSheetSelect.js:21 ~ BottomSheetSelect ~ flatListRef:", flatListRef)
 
-  const [highlightedIndex, setHighlightedIndex] = useState(data !='' ? array.indexOf(data): 0);
+  const [highlightedIndex, setHighlightedIndex] = useState(
+    data != '' ? array.indexOf(data) : 0,
+  );
   // console.log("🚀 ~ file: BottomSheetSelect.js:22 ~ BottomSheetSelect ~ highlightedIndex:", highlightedIndex)
   const [ref, setRef] = useState(null);
   // console.log("🚀 ~ file: BottomSheetSelect.js:27 ~ BottomSheetSelect ~ ref:", ref.current)
- 
-  const handleScroll = (event) => {
+
+  const handleScroll = event => {
     const yOffset = event.nativeEvent.contentOffset.y;
     const index = Math.floor(yOffset / ITEM_HEIGHT);
     setHighlightedIndex(index);
   };
 
-  const scrollToIndex = (index) => {
-    console.log("🚀 ~ file: BottomSheetSelect.js:50 ~ scrollToIndex ~ index:", index)
-    flatListRef.current.scrollToIndex({ animated: true, index });
+  const scrollToIndex = index => {
+    console.log(
+      '🚀 ~ file: BottomSheetSelect.js:50 ~ scrollToIndex ~ index:',
+      index,
+    );
+    flatListRef.current.scrollToIndex({animated: true, index});
   };
 
   const ITEM_HEIGHT = 50; // Adjust this value based on your item's height
-
 
   return (
     <>
@@ -103,16 +114,33 @@ const BottomSheetSelect = ({title, data, setData, array}) => {
           setRef(ref);
         }}
         closeOnDragDown={true}
+        dragFromTopOnly={true}
+
         openDuration={250}
         customStyles={{
           container: {
             borderTopEndRadius: moderateScale(30, 0.6),
             borderTopLeftRadius: moderateScale(30, 0.6),
-  
             overflow: 'hidden',
           },
         }}>
-        <FlatList
+
+         
+        <WheelPicker
+          selectedIndicatorStyle={{
+            backgroundColor: '#eeee',
+            width: 250,
+            alignSelf: 'center',
+            borderRadius: 50,
+          }}
+          selectedIndex={[null , '' ,undefined].includes(data) ? 0 : array.indexOf(data)}
+          options={array}
+          onChange={index => setData(array[index])}
+          
+        />
+        
+      
+        {/* <FlatList
           ref = {flatListRef}
           nestedScrollEnabled={true}
           showsVerticalScrollIndicator={false}
@@ -161,7 +189,7 @@ const BottomSheetSelect = ({title, data, setData, array}) => {
               </CustomText>
             </TouchableOpacity>
           )}
-        />
+        /> */}
       </RBSheet>
     </>
   );
@@ -179,7 +207,6 @@ const styles = ScaledSheet.create({
     paddingHorizontal: moderateScale(10, 0.6),
     alignItems: 'center',
     borderRadius: moderateScale(5, 0.6),
-  
   },
   selected: {
     color: Color.black,
@@ -195,7 +222,6 @@ const styles = ScaledSheet.create({
     // textShadowOffset: { width: -1, height: 1 },
     // textShadowRadius: 2,
     // backgroundColor: 'rgba(0, 0, 0, 0.1)',
-  
   },
   notSelected: {
     color: Color.veryLightGray,
@@ -203,5 +229,5 @@ const styles = ScaledSheet.create({
     width: '100%',
     textAlign: 'center',
     paddingVertical: moderateScale(5, 0.3),
-  }
+  },
 });
