@@ -15,7 +15,7 @@ import Color from '../Assets/Utilities/Color';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomText from './CustomText';
-import CustomTextWithMask from './CustomTextWithMask';
+// import CustomTextWithMask from './CustomTextWithMask';
 import {Icon} from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import navigationService from '../navigationService';
