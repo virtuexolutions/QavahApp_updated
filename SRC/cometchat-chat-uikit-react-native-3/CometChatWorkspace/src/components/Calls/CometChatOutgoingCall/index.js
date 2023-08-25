@@ -346,7 +346,7 @@ class CometChatOutgoingCall extends React.PureComponent {
    */
   pauseOutgoingAlert = () => {
     try {
-      console.log('canceled call');
+      console.log('canceled call fsgsgse');
       this.outgoingAlert.pause();
       Vibration.cancel();
     } catch (error) {
@@ -363,7 +363,7 @@ class CometChatOutgoingCall extends React.PureComponent {
     try {
       this.pauseOutgoingAlert();
       console.log('Session id is', this.props?.item?.uid);
-
+// break point of the call 
       CometChatManager.rejectCall(
         this.props?.item?.uid,
         CometChat.CALL_STATUS.CANCELLED,
@@ -388,6 +388,8 @@ class CometChatOutgoingCall extends React.PureComponent {
         });
     } catch (error) {
       console.log('Here canceled call');
+      console.log( 'error in rejecting outgoing call === >> ', error)
+
       logger(error);
     }
   };
