@@ -95,7 +95,7 @@ const AppNavigator = () => {
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
           headerMode="none"
-          initialRouteName={firstScreen}
+          initialRouteName={'VerificationScreen'}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LandingPage" component={LandingPage} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
