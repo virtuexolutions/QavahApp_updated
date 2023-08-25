@@ -52,6 +52,7 @@ import {
 import SelectedChat from './Screens/SelectedChat';
 import CallScreen from './Screens/CallScreen';
 import LocationEnabler from './Screens/LocationEnabler';
+import VerificationScreen from './Screens/VerificationScreen';
 // import LocationEnabler from './Screens/LocationEnabler';
 
 const AppNavigator = () => {
@@ -124,6 +125,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="WhoViewedMe" component={WhoViewedMe} />
           <RootNav.Screen name="Subscription" component={Subscription} />
           <RootNav.Screen name="CallScreen" component={CallScreen} />
+          <RootNav.Screen name="VerificationScreen" component={VerificationScreen} />
 
           <RootNav.Screen
             name="TermsAndConditions"

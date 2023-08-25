@@ -53,7 +53,7 @@ const CreatePortfolio = () => {
 
   //Step 2
   const [email, setEmail] = useState('');
-  const [emailCode, setEmailCode] = useState('');
+  // const [emailCode, setEmailCode] = useState('');
   const [emailAvailble, setEmailAvailble] = useState(false);
 
   //Step 3
@@ -430,9 +430,9 @@ const CreatePortfolio = () => {
                   fontSize: moderateScale(35, 0.6),
                 }}
                 border={1}
-                disable={emailAvailble}
+                // disable={emailAvailble}
               />
-              {emailAvailble &&
+              {/* {emailAvailble &&
               <View style={{
                 alignItems : 'center'
               }}>
@@ -472,7 +472,7 @@ const CreatePortfolio = () => {
                 *Enter Verification Code sent to your email
               </CustomText>
 </View>
-              }
+              } */}
             </>
           ) : currentStep == 2 ? (
             <>
@@ -828,29 +828,8 @@ const CreatePortfolio = () => {
           )}
         </View>
         {/* Button */}
-        {currentStep == 1 && !emailAvailble ?
-          <CustomButton
-          text={
-            isLoading ? (
-              <ActivityIndicator color={'#FFFFFF'} size={'small'} />
-            ) : (
-              'Submit'
-            )
-          }
-          textColor={Color.white}
-          width={windowWidth * 0.9}
-          height={windowHeight * 0.09}
-          disabled={isLoading}
-          onPress={() => {
-            emailExists(email)
-            // Alert.alert('verification api will be hit')
-            // setEmailAvailble(true)
-          }}
-          bgColor={Color.themeColor}
-          borderRadius={moderateScale(15, 0.3)}
-          elevation
-        />
-        :
+       
+    
 
         
         <CustomButton
@@ -870,8 +849,8 @@ const CreatePortfolio = () => {
               profileName != '' &&
               governmentName != '' &&
               email != '' &&
-              currentStep == 1 &&
-              emailCode != ''
+              currentStep == 1 
+              // emailCode != ''
               
              
             ) {
@@ -883,14 +862,6 @@ const CreatePortfolio = () => {
                 setCurrentStep(prev=> prev+1)
                  setProgress(prev => prev + windowWidth / 6);
               }
-              // else if (!emailExists(email.trim())) {
-              //   return Platform.OS == 'android'
-              //     ? ToastAndroid.show(
-              //         'Email is already taken',
-              //         ToastAndroid.SHORT,
-              //       )
-              //     : Alert.alert('Email is already taken');
-              // }
             } else if (gender != '' && currentStep == 2) {
               setCurrentStep(prev => prev + 1);
               setProgress(prev => prev + windowWidth / 6);
@@ -957,7 +928,6 @@ const CreatePortfolio = () => {
           borderRadius={moderateScale(15, 0.3)}
           elevation
         />
-}
         <DatePicker
           maximumDate={new Date()}
           modal

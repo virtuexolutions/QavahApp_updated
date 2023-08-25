@@ -454,7 +454,7 @@ const IsraeliteFilters = props => {
 
   const Registration = async () => {
     const url = 'auth/register/app';
-    // console.log( ' body ================== ? ? ?? ',completeBody)
+    console.log( ' body ================== ? ? ?? ',completeBody)
     setIsLoading(true);
     const response = await Post(url, completeBody, apiHeader());
     // console.log(
@@ -477,7 +477,7 @@ const IsraeliteFilters = props => {
       dispatch(setUserData(response?.data?.user));
       dispatch(setUserToken({token: response?.data?.token}));
 
-      navigationService.navigate('ProfilePictures', {
+      navigationService.navigate('VerificationScreen', {
         // token: response?.data?.token,
         // userData: response?.data?.user,
         steps: steps,
