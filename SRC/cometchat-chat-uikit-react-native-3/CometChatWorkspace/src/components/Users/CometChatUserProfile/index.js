@@ -22,6 +22,7 @@ class CometChatUserProfile extends React.Component {
     super(props);
     this.sheetRef = React.createRef(null);
     this.isLoading = true;
+    console.log('props url=====>>>>',this.props)
   }
 
   render() {
@@ -72,6 +73,7 @@ class CometChatUserProfile extends React.Component {
                           console.warn('WebView error: ', nativeEvent);
                         }}
                         onLoad={(syntheticEvent) => {
+                          console.log('synthetic event========>>>>>>>>',syntheticEvent)
                           this.isLoading = false;
                         }}
                         onHttpError={(syntheticEvent) => {

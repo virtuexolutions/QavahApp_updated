@@ -35,6 +35,8 @@ import {validateEmail} from '../Config';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import GetLocation from 'react-native-get-location';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setIsraeliteInfoRegister, setMoreAboutMeRegister } from '../Store/slices/common';
 
 // import DatePicker from 'react-native-date-picker';
 
@@ -51,6 +53,9 @@ const CreatePortfolio = () => {
 
   //Step 2
   const [email, setEmail] = useState('');
+  const [emailCode, setEmailCode] = useState('');
+  const [emailAvailble, setEmailAvailble] = useState(false);
+
   //Step 3
   const [gender, setGender] = useState('');
   //Step 4
@@ -117,10 +122,12 @@ const CreatePortfolio = () => {
     steps,
   );
 
+  const dispatch = useDispatch()
+
   const fetchZipCode = async (latitude, longitude, apiKey) => {
     try {
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`,
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${'40.619063'},${'-73.965372'}&key=${apiKey}`,
       );
       const results = response.data.results;
       if (results && results.length > 0) {
@@ -183,12 +190,12 @@ const CreatePortfolio = () => {
       seeking: gender == 'woman' ? 'man' : 'woman',
       zipcode: '10001',
       location: {
-        zipcode: zipCode,
-        state_abbr: region,
-        latitude: location?.latitude,
-        longitude: location?.longitude,
-        city: city,
-        state: state,
+        zipcode: '11230',
+        state_abbr: 'Kings County',
+        latitude: '40.619063',
+        longitude: '-73.965372',
+        city: 'Brooklyn',
+        state: 'New York',
       },
     },
   };
@@ -206,10 +213,7 @@ const CreatePortfolio = () => {
 
   const dateDifference = moment(dob).fromNow().split(' ')[0] >= 18;
 
-  console.log(
-    '🚀 ~ file: CreatePortfolio.js:140 ~ CreatePortfolio ~ dateDifference:',
-    dateDifference,
-  );
+
   //number validator
   const phoneNumberRegex = /^(\d{3})[-]?(\d{3})[-]?(\d{4})$/;
 
@@ -230,32 +234,24 @@ const CreatePortfolio = () => {
     setIsLoading(true);
     const response = await Post(url, {email: email}, apiHeader());
     setIsLoading(false);
-    // console.log(
-    //   '🚀 ~ file: CreatePortfolio.js:155 ~ emailValidate ~ response:',
-    //   response?.data,
-    // );
+   console.log('response?.data' , response?.data)
     if (!response?.data?.status) {
       return Platform.OS == 'android'
         ? ToastAndroid.show('Email is already taken', ToastAndroid.SHORT)
         : Alert.alert('Email is already taken');
     }
-    setCurrentStep(prev => prev + 1);
-    setProgress(prev => prev + windowWidth / 6);
     // setCurrentStep(prev => prev + 1);
     // setProgress(prev => prev + windowWidth / 6);
+    setEmailAvailble(true)
+
   };
 
   useEffect(() => {
     if (number && number.length < 12) {
       const formattedNumber = formatPhoneNumber(number);
-      // console.log(formattedNumber);
       setNumber(formattedNumber);
     }
-    // else if(number && number.length == 12){
-    //   const formattedNumber = formatPhoneNumber(number.substring(0,number.length -2));
-    //   console.log(formattedNumber);
-    //   setNumber(formattedNumber);
-    // }
+  
   }, [number]);
 
   useEffect(() => {
@@ -300,7 +296,7 @@ const CreatePortfolio = () => {
         leftPress={
           currentStep > 1 && currentStep != 6 && currentStep != 4
             ? () => {
-                setProgress(prev => prev - windowWidth / 7);
+                setProgress(prev => (prev - (windowWidth / 6)));
                 setCurrentStep(prev => prev - 1);
               }
             : currentStep == 6
@@ -308,7 +304,7 @@ const CreatePortfolio = () => {
                 clearTimeout(timeOutId);
                 settimerLabel('Resend Code '), settime(0);
                 // console.log('herer');
-                setProgress(prev => prev - windowWidth / 7);
+                setProgress(prev => (prev - (windowWidth / 6)));
                 setCurrentStep(prev => prev - 1);
                 // setSteps(steps - 1);
               }
@@ -316,12 +312,14 @@ const CreatePortfolio = () => {
             ? () => {
                 setSteps(steps - 1);
                 setCurrentStep(prev => prev - 1);
-                setProgress(prev => prev - windowWidth / 7);
+                setProgress(prev => (prev - (windowWidth / 6)));
                 // navigatioN.goBack();
               }
             : () => {
                 // console.log('herer ae fasdasdasd');
-                setProgress(prev => prev - windowWidth / 7);
+                setProgress(prev => (prev - (windowWidth / 6)));
+                dispatch(setMoreAboutMeRegister([]))
+                dispatch(setIsraeliteInfoRegister([]))
                 navigatioN.goBack();
               }
         }
@@ -432,7 +430,49 @@ const CreatePortfolio = () => {
                   fontSize: moderateScale(35, 0.6),
                 }}
                 border={1}
+                disable={emailAvailble}
               />
+              {emailAvailble &&
+              <View style={{
+                alignItems : 'center'
+              }}>
+               <CodeField
+               placeholder={'0'}
+               ref={ref}
+               value={emailCode}
+               onChangeText={setEmailCode}
+               cellCount={CELL_COUNT}
+               rootStyle={styles.codeFieldRoot1}
+               keyboardType="number-pad"
+               textContentType="oneTimeCode"
+               renderCell={({index, symbol, isFocused}) => (
+                 <View
+                   onLayout={getCellOnLayoutHandler(index)}
+                   key={index}
+                   style={[styles.cellRoot1, isFocused && styles.focusCell]}>
+                   <CustomText
+                     style={[
+                       styles.cellText1,
+                       isFocused && {color: Color.black},
+                     ]}>
+                     {symbol || (isFocused ? <Cursor /> : null)}
+                   </CustomText>
+                 </View>
+               )}
+             />
+   <CustomText
+                style={{
+                  fontSize: moderateScale(11, 0.6),
+                  color: Color.themeLightGray,
+                  width: windowWidth * 0.7,
+                  textAlignVertical:'center',
+                  // lineHeight: moderateScale(15, 0.6),
+                  // marginTop: moderateScale(6, 0.3),
+                }}>
+                *Enter Verification Code sent to your email
+              </CustomText>
+</View>
+              }
             </>
           ) : currentStep == 2 ? (
             <>
@@ -788,6 +828,31 @@ const CreatePortfolio = () => {
           )}
         </View>
         {/* Button */}
+        {currentStep == 1 && !emailAvailble ?
+          <CustomButton
+          text={
+            isLoading ? (
+              <ActivityIndicator color={'#FFFFFF'} size={'small'} />
+            ) : (
+              'Submit'
+            )
+          }
+          textColor={Color.white}
+          width={windowWidth * 0.9}
+          height={windowHeight * 0.09}
+          disabled={isLoading}
+          onPress={() => {
+            emailExists(email)
+            // Alert.alert('verification api will be hit')
+            // setEmailAvailble(true)
+          }}
+          bgColor={Color.themeColor}
+          borderRadius={moderateScale(15, 0.3)}
+          elevation
+        />
+        :
+
+        
         <CustomButton
           text={
             isLoading ? (
@@ -805,20 +870,27 @@ const CreatePortfolio = () => {
               profileName != '' &&
               governmentName != '' &&
               email != '' &&
-              currentStep == 1
+              currentStep == 1 &&
+              emailCode != ''
+              
+             
             ) {
               if (!validateEmail(email.trim())) {
                 return Platform.OS == 'android'
                   ? ToastAndroid.show('Email invalid', ToastAndroid.SHORT)
                   : Alert.alert('Email invalid');
-              } else if (!emailExists(email.trim())) {
-                return Platform.OS == 'android'
-                  ? ToastAndroid.show(
-                      'Email is already taken',
-                      ToastAndroid.SHORT,
-                    )
-                  : Alert.alert('Email is already taken');
+              } else{
+                setCurrentStep(prev=> prev+1)
+                 setProgress(prev => prev + windowWidth / 6);
               }
+              // else if (!emailExists(email.trim())) {
+              //   return Platform.OS == 'android'
+              //     ? ToastAndroid.show(
+              //         'Email is already taken',
+              //         ToastAndroid.SHORT,
+              //       )
+              //     : Alert.alert('Email is already taken');
+              // }
             } else if (gender != '' && currentStep == 2) {
               setCurrentStep(prev => prev + 1);
               setProgress(prev => prev + windowWidth / 6);
@@ -885,6 +957,7 @@ const CreatePortfolio = () => {
           borderRadius={moderateScale(15, 0.3)}
           elevation
         />
+}
         <DatePicker
           maximumDate={new Date()}
           modal
@@ -958,9 +1031,27 @@ const styles = ScaledSheet.create({
     marginRight: 'auto',
     // backgroundColor : 'red'
   },
+  codeFieldRoot1: {
+    marginTop: moderateScale(30, 0.3),
+    marginBottom: moderateScale(5, 0.3),
+    width: windowWidth * 0.7,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    // backgroundColor : 'red'
+  },
   cellRoot: {
     width: moderateScale(60, 0.6),
     height: moderateScale(60, 0.6),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: Color.veryLightGray,
+    borderWidth: 1,
+    // backgroundColor: Color.black,
+    borderRadius: moderateScale(5, 0.3),
+  },
+  cellRoot1: {
+    width: moderateScale(40, 0.6),
+    height: moderateScale(40, 0.6),
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: Color.veryLightGray,
@@ -978,6 +1069,11 @@ const styles = ScaledSheet.create({
   cellText: {
     color: Color.themeColor,
     fontSize: moderateScale(36, 0.3),
+    textAlign: 'center',
+  },
+  cellText1: {
+    color: Color.themeColor,
+    fontSize: moderateScale(20, 0.3),
     textAlign: 'center',
   },
   txt4: {

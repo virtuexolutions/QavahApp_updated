@@ -17,12 +17,8 @@ import CustomText from './CustomText';
 import {Icon} from 'native-base';
 import WheelPicker from 'react-native-wheely';
 
-
 const BottomSheetSelect = ({title, data, setData, array}) => {
-  
   const [selectedIndex, setSelectedIndex] = useState();
-
-  const refRBSheet = useRef();
 
   // const [flatListRef, setflatListRef] = useState(null)
   const flatListRef = useRef(null);
@@ -58,12 +54,13 @@ const BottomSheetSelect = ({title, data, setData, array}) => {
         onPress={() => {
           // scrollToIndex(highlightedIndex)
           ref.open();
-        }}>
+        }}
+        style={{marginTop: moderateScale(5, 0.3)}}>
         <CustomText
           style={[
             {
               color: Color.veryLightGray,
-              fontSize: moderateScale(12, 0.3),
+              fontSize: moderateScale(14, 0.3),
               marginBottom: moderateScale(5, 0.3),
               width: windowWidth * 0.9,
               marginTop: moderateScale(10, 0.3),
@@ -75,11 +72,11 @@ const BottomSheetSelect = ({title, data, setData, array}) => {
         <View style={styles.container}>
           <CustomText
             style={{
-              fontSize: moderateScale(11, 0.6),
-              color: Color.black,
+              fontSize: moderateScale(12, 0.6),
+              color: data ? Color.black : Color.veryLightGray,
               width: '95%',
             }}>
-            {data}
+            {data ? data : 'Please select an Option'}
           </CustomText>
           <Icon
             name={'angle-down'}
@@ -88,26 +85,6 @@ const BottomSheetSelect = ({title, data, setData, array}) => {
             size={moderateScale(17, 0.6)}
           />
         </View>
-
-        {/* <TextInputWithTitle
-          iconName={'angle-down'}
-          iconType={FontAwesome}
-          placeholder={''}
-          title={title}
-          setText={setData}
-          value={data}
-          viewHeight={0.05}
-          viewWidth={0.9}
-          inputWidth={0.86}
-          border={1}
-          borderColor={Color.veryLightGray}
-          backgroundColor={'#FFFFFF'}
-          color={Color.themeColor}
-          placeholderColor={Color.themeLightGray}
-          borderRadius={moderateScale(5, 0.3)}
-          rightIcon
-          disable
-          /> */}
       </TouchableOpacity>
       <RBSheet
         ref={ref => {
@@ -115,7 +92,6 @@ const BottomSheetSelect = ({title, data, setData, array}) => {
         }}
         closeOnDragDown={true}
         dragFromTopOnly={true}
-
         openDuration={250}
         customStyles={{
           container: {
@@ -124,22 +100,23 @@ const BottomSheetSelect = ({title, data, setData, array}) => {
             overflow: 'hidden',
           },
         }}>
-
-         
         <WheelPicker
+          
           selectedIndicatorStyle={{
             backgroundColor: '#eeee',
-            width: 250,
+            width: windowWidth,
             alignSelf: 'center',
-            borderRadius: 50,
+            // fontSize:moderateScale(25,.6),
+            // borderRadius: 50,
           }}
-          selectedIndex={[null , '' ,undefined].includes(data) ? 0 : array.indexOf(data)}
+          itemTextStyle={{fontSize: moderateScale(15, 0.6)}}
+          selectedIndex={
+            [null, '', undefined].includes(data) ? 0 : array.indexOf(data)
+          }
           options={array}
           onChange={index => setData(array[index])}
-          
         />
-        
-      
+
         {/* <FlatList
           ref = {flatListRef}
           nestedScrollEnabled={true}
@@ -225,7 +202,7 @@ const styles = ScaledSheet.create({
   },
   notSelected: {
     color: Color.veryLightGray,
-    fontSize: moderateScale(12, 0.6),
+    fontSize: moderateScale(15, 0.6),
     width: '100%',
     textAlign: 'center',
     paddingVertical: moderateScale(5, 0.3),
