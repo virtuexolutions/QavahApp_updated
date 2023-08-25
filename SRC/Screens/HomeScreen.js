@@ -94,7 +94,7 @@ const HomeScreen = () => {
     setIsLoadingApi(false);
     if (response != undefined) {
       setPhotoCards(response?.data?.peoples);
-      // console.log(response?.data?.peoples);
+      console.log(response?.data?.peoples);
     }
   };
  
