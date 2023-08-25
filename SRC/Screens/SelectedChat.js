@@ -45,6 +45,7 @@ const SelectedChat = ({route}) => {
           console.log(actionType);
         }}
         navigation={navigation}
+        
 
       />
     ) : null}

@@ -1,15 +1,13 @@
-import React from 'react';
-import * as Animatable from 'react-native-animatable';
+import React, { useRef,useEffect } from 'react';
 import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import ScreenBoiler from '../Components/ScreenBoiler';
-import LinearGradient from 'react-native-linear-gradient';
-import {ImageBackground} from 'react-native';
 import {View} from 'native-base';
 
 const SplashScreen = () => {
+
   return (
     <ScreenBoiler
       statusBarBackgroundColor={'white'}

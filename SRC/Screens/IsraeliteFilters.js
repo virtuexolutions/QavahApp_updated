@@ -165,6 +165,7 @@ const IsraeliteFilters = props => {
   const [type, setType] = useState('passions');
   const [isLoading, setIsLoading] = useState(false);
   const [checked, setIsCecked] = useState(false);
+  const [campMember, setCampMember] = useState('')
   // console.log(
   //   '🚀 ~ file: IsraeliteFilters.js:101 ~ IsraeliteFilters ~ checked:',
   //   checked,
@@ -278,7 +279,7 @@ const IsraeliteFilters = props => {
     'History Buff',
     'Jazz',
   ];
-  const kingdomArray =[
+  const kingdomArray = [
     'House keeping',
     'cooking',
     'wellness planning',
@@ -334,7 +335,7 @@ const IsraeliteFilters = props => {
     'Community Law Enforcement',
     'I Know Gun Safety',
     'I Can Shoot And Teach Shooting',
-  ]
+  ];
 
   const IsraelitesPractise = [
     'None',
@@ -362,7 +363,7 @@ const IsraeliteFilters = props => {
     'Of the southern tribe',
   ];
 
-  const yearsInTruthArray =  [
+  const yearsInTruthArray = [
     'None',
     '1 years',
     '2 years',
@@ -406,7 +407,7 @@ const IsraeliteFilters = props => {
     '66 , apocrypha and any other considered (lost books)',
   ];
 
-  const studyBibleArray =  [
+  const studyBibleArray = [
     'none',
     'king james version',
     '1611 King James W/Apocrypha',
@@ -418,7 +419,7 @@ const IsraeliteFilters = props => {
     'Other',
   ];
 
-  const SpiritualbackgroundArray =  [
+  const SpiritualbackgroundArray = [
     'none',
     'i came out of the christian church',
     'i came out of islam',
@@ -428,6 +429,9 @@ const IsraeliteFilters = props => {
     'i was an orthodox jew',
     'ask me later',
   ];
+  const campMemberArray = [
+    'I.U.I.C','G.O.C.C','Dimona','The light of zion','Sicarri','Other'
+  ]
 
   const completeBody = {
     ...twoStepsData,
@@ -438,6 +442,7 @@ const IsraeliteFilters = props => {
       studyHabits: studyHabits,
       studyBible: studyBible,
       anyAffiliation: anyAffiliation,
+      MemberType:campMember,
       yearsInTruth: yearsInTruth,
       isrealitePracticeKeeping: israelitePractise,
       spiritualBackground: spiritualBgc,
@@ -479,7 +484,6 @@ const IsraeliteFilters = props => {
       });
     }
   };
-
 
   useEffect(() => {
     if (check != undefined) {
@@ -577,6 +581,14 @@ const IsraeliteFilters = props => {
           data={anyAffiliation}
           array={affiliationArray}
         />
+        {anyAffiliation == 'i am a member of a camp or group' && (
+          <BottomSheetSelect
+            title={'Member Type'}
+            setData={setCampMember}
+            data={campMember}
+            array={campMemberArray}
+          />
+        )}
 
         <CustomText
           style={[styles.heading, {marginTop: moderateScale(15, 0.3)}]}>
@@ -589,7 +601,7 @@ const IsraeliteFilters = props => {
             {
               marginTop: moderateScale(15, 0.3),
               width: windowWidth * 0.9,
-              fontSize: moderateScale(12, 0.6),
+              fontSize: moderateScale(13, 0.6),
             },
           ]}>
           Israelites Practice Keeping*
@@ -733,7 +745,7 @@ const IsraeliteFilters = props => {
                     }}>
                     <CustomText
                       style={{
-                        fontSize: moderateScale(9, 0.6),
+                        fontSize: moderateScale(10, 0.6),
                         color: Color.themeColor,
                       }}>
                       {item}
@@ -766,7 +778,7 @@ const IsraeliteFilters = props => {
                     }}>
                     <CustomText
                       style={{
-                        fontSize: moderateScale(9, 0.6),
+                        fontSize: moderateScale(10, 0.6),
                         color: Color.themeColor,
                       }}>
                       {item}
@@ -856,7 +868,7 @@ const IsraeliteFilters = props => {
         <CustomText
           style={[
             styles.text,
-            {width: windowWidth * 0.7, marginTop: moderateScale(10, 0.3)},
+            {width: windowWidth * 0.7, marginTop: moderateScale(11, 0.3)},
           ]}>
           Let everyone know what you're passionate about by adding it to your
           profile.
@@ -960,7 +972,7 @@ const styles = ScaledSheet.create({
     color: Color.black,
   },
   text: {
-    fontSize: moderateScale(10, 0.6),
+    fontSize: moderateScale(12, 0.6),
     color: Color.black,
     lineHeight: moderateScale(15, 0.6),
   },

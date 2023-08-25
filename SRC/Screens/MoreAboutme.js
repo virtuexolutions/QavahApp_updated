@@ -391,11 +391,11 @@ const MoreAboutme = props => {
           ]}>
           {`Characters : ${description?.length}/2000`}
         </CustomText>
-        <CustomText style={[styles.text, {marginTop: moderateScale(15, 0.3)}]}>
+        <CustomText style={[styles.text, {marginTop: moderateScale(15, 0.3), fontSize:moderateScale(11,.6)}]}>
           {
             <CustomText
               isBold
-              style={{fontSize: moderateScale(13, 0.3), color: Color.red}}>
+              style={{fontSize: moderateScale(15, 0.3), color: Color.red}}>
               *Attention:
             </CustomText>
           }{' '}
@@ -597,7 +597,7 @@ const styles = ScaledSheet.create({
     width: windowWidth * 0.9,
   },
   text: {
-    fontSize: moderateScale(9, 0.6),
+    fontSize: moderateScale(11, 0.6),
     color: Color.black,
     width: windowWidth * 0.9,
     lineHeight: moderateScale(15, 0.6),

@@ -306,7 +306,7 @@ const ProfilePictures = props => {
           {
             <CustomText
               isBold
-              style={{fontSize: moderateScale(13, 0.3), color: Color.red}}>
+              style={{fontSize: moderateScale(15, 0.3), color: Color.red}}>
               *Attention:
             </CustomText>
           }{' '}
@@ -416,7 +416,7 @@ const styles = ScaledSheet.create({
     justifyContent: 'space-between',
   },
   text: {
-    fontSize: moderateScale(9, 0.6),
+    fontSize: moderateScale(11, 0.6),
     color: Color.black,
     width: windowWidth * 0.9,
     lineHeight: moderateScale(15, 0.6),

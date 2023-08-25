@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {Icon} from 'native-base';
 import {
   View,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ToastAndroid,
+  AppState,
 } from 'react-native';
 import SuperLikeModal from '../Components/SuperLikeModal';
 import {
@@ -28,7 +29,11 @@ import Modal from 'react-native-modal';
 import NotificationComponent from '../Components/NotificationComponent';
 import {useDispatch, useSelector} from 'react-redux';
 import {imageUrl} from '../Config';
-import {setUserLogout, setUserLogoutAuth} from '../Store/slices/auth';
+import {
+  setIsLocationEnabled,
+  setUserLogout,
+  setUserLogoutAuth,
+} from '../Store/slices/auth';
 import LinearGradient from 'react-native-linear-gradient';
 import navigationService from '../navigationService';
 import DrawerOptions from './DrawerOptions';
@@ -45,18 +50,25 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import SubscriptionListing from './SubscriptionListing';
 import {Pusher} from '@pusher/pusher-websocket-react-native';
 import MatchModal from './MatchModal';
-import { setIsMatched, setIsSubscribed, setPusherInstance } from '../Store/slices/socket';
+import {
+  setIsMatched,
+  setIsSubscribed,
+  setPusherInstance,
+} from '../Store/slices/socket';
+import RNSettings from 'react-native-settings';
 
 const Header = props => {
   const dispatch = useDispatch();
   const focused = useIsFocused();
   const token = useSelector(state => state.authReducer.token);
-const match = useSelector(state => state.socketReducer.matched);
-// console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
-const user = useSelector(state => state.commonReducer.userData);
-const userRole = useSelector(state => state.commonReducer.selectedRole);
-const pusherInstance = useSelector(state => state.socketReducer.pusherInstance);
-// console.log("🚀 ~ file: Header.js:320 ~ Header ~ pusherInstance:", pusherInstance)
+  const match = useSelector(state => state.socketReducer.matched);
+  // console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
+  const user = useSelector(state => state.commonReducer.userData);
+  const userRole = useSelector(state => state.commonReducer.selectedRole);
+  const pusherInstance = useSelector(
+    state => state.socketReducer.pusherInstance,
+  );
+  // console.log("🚀 ~ file: Header.js:320 ~ Header ~ pusherInstance:", pusherInstance)
 
   const [isLoveNotesVisible, setLoveNotesVisible] = useState(false);
   const notification = useSelector(state => state.commonReducer.notification);
@@ -64,7 +76,7 @@ const pusherInstance = useSelector(state => state.socketReducer.pusherInstance);
   const [drawerModal, setDrawerModal] = useState(false);
   const [discreteModal, setDiscreteModal] = useState(false);
   const userData = useSelector(state => state.commonReducer.userData);
-  const [otherData , setotherData] = useState({})
+  const [otherData, setotherData] = useState({});
   const DrawerArray = [
     {
       key: 1,
@@ -246,7 +258,6 @@ const pusherInstance = useSelector(state => state.socketReducer.pusherInstance);
     }
   };
 
- 
   const notification2 = [
     {
       image: require('../Assets/Images/woman1.jpeg'),
@@ -282,23 +293,34 @@ const pusherInstance = useSelector(state => state.socketReducer.pusherInstance);
     rightType,
   } = props;
 
+  
+  // useEffect(() => {
+  //   RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
+  //     if (result == RNSettings.ENABLED) {
 
+  //       console.log('location is enabled');
+  //       dispatch(setIsLocationEnabled(true));
 
-
-
+  //     } else {
+  //       console.log('location is not enabled');
+  //       dispatch(setIsLocationEnabled(false));
+  //     }
+  //   });
+  //   // dispatch(setAppState(false))
+  //   // setFingerPrintModal(false)
+  // }, []);
 
   useEffect(() => {
     rightName == 'bell' && getNotifications();
   }, [focused]);
 
-
-  const unsubscribePusher = async()=>{
+  const unsubscribePusher = async () => {
     await pusherInstance.unsubscribe({
       channelName: `match-popup-${userData?.id}`,
     });
-    dispatch(setIsSubscribed(false))
-    dispatch(setPusherInstance(null))
-  }
+    dispatch(setIsSubscribed(false));
+    dispatch(setPusherInstance(null));
+  };
 
   return (
     <View style={styles.header2}>
@@ -403,7 +425,7 @@ const pusherInstance = useSelector(state => state.socketReducer.pusherInstance);
             }}
             activeOpacity={0.8}
             onPress={() => {
-              unsubscribePusher()
+              unsubscribePusher();
               dispatch(setUserLogoutAuth());
               dispatch(setUserLogOut());
             }}>
@@ -612,7 +634,11 @@ const pusherInstance = useSelector(state => state.socketReducer.pusherInstance);
       <MatchModal
         isVisible={match}
         // otherUserData={otherData}
-        profileImage={Object.keys(user).length > 0 ? {uri :  user?.profile_images && user?.profile_images[0]?.url} : require('../Assets/Images/banner3.jpg')}
+        profileImage={
+          Object.keys(user).length > 0
+            ? {uri: user?.profile_images && user?.profile_images[0]?.url}
+            : require('../Assets/Images/banner3.jpg')
+        }
         // setIsVisible={setMatchModalVisible}
       />
     </View>

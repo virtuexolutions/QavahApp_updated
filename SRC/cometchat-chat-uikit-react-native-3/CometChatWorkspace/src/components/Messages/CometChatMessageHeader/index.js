@@ -14,6 +14,7 @@ import detailPaneIcon from './resources/detailpane.png';
 import { logger } from '../../../utils/common';
 import { CometChat } from '@cometchat-pro/react-native-chat';
 import { CometChatContext } from '../../../utils/CometChatContext';
+import navigationService from '../../../../../../navigationService';
 class CometChatMessageHeader extends React.Component {
   static contextType = CometChatContext;
   constructor(props) {
@@ -268,7 +269,10 @@ class CometChatMessageHeader extends React.Component {
     let image;
     let userName;
     let presence;
+    let item ;
     if (this.props.type === CometChat.RECEIVER_TYPE.USER) {
+  console.log('user=========>>>>>', this.props.item)
+      item = this.props.item
       image = this.props.item.avatar;
       userName = this.props.item.name;
       presence = (
@@ -363,7 +367,14 @@ class CometChatMessageHeader extends React.Component {
           />
         </TouchableOpacity>
         <View style={styles.headerDetailContainer}>
-          <View
+          <TouchableOpacity
+          onPress={()=>{
+            this.props.actionGenerated(actions.SHOW_PROFILE)
+            // navigationService.navigate('UserDetail',{
+            //   item: {...item,url:item?.avatar, },
+            //   fromSearch: true,
+            // })
+          }}
             style={[
               styles.avatarContainer,
               {
@@ -378,13 +389,24 @@ class CometChatMessageHeader extends React.Component {
               name={userName}
             />
             {presence}
-          </View>
-          <View style={styles.itemDetailContainer}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.itemDetailContainer} 
+          onPress={
+            ()=>{ 
+              this.props.actionGenerated(actions.SHOW_PROFILE)
+            //   navigationService.navigate('UserDetail',{
+            //   item: item,
+            //   fromSearch: true,
+            // })
+          }
+          }
+            
+            >
             <Text style={styles.itemNameText} numberOfLines={1}>
               {this.props.item.name}
             </Text>
             {status}
-          </View>
+          </TouchableOpacity>
           {videoCallBtn}
           {audioCallBtn}
           {info}

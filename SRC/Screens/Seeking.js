@@ -254,8 +254,6 @@ const Seeking = (props) => {
       />
       <Header
         showLeft={true}
-        showRight={true}
-        rightName={'menufold'}
         title={seekingType}
         leftName={'left'}
         rightType={AntDesign}

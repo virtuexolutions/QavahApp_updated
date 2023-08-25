@@ -46,15 +46,19 @@ const UserDetail = props => {
   const token = useSelector(state => state.authReducer.token);
   const navigation = useNavigation();
   const user = useSelector(state => state.commonReducer.userData);
-  console.log(
-    '🚀 ~ file: UserDetail.js:39 ~ UserDetail ~ user:',
-    user?.subscription,
-  );
+  console.log("🚀 ~ file: UserDetail.js:49 ~ UserDetail ~ user:", user)
+  // console.log(
+  //   '🚀 ~ file: UserDetail.js:39 ~ UserDetail ~ user:',
+  //   user?.subscription,
+  // );
   const item = props?.route?.params?.item;
+  console.log("🚀 ~ file: UserDetail.js:55 ~ UserDetail ~ item:", item)
   const fromSearch = props?.route?.params?.fromSearch;
+  console.log("🚀 ~ file: UserDetail.js:57 ~ UserDetail ~ fromSearch:", fromSearch)
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setUserData] = useState(fromSearch ? item : user);
+  // console.log("🚀 ~ file: UserDetail.js:58 ~ UserDetail ~ userData:", userData)
   const [reported, setReported] = useState(false);
   const [loveNoteModal, setLoveNoteModal] = useState(false);
   const [reason, setReason] = useState('');
@@ -606,17 +610,18 @@ const UserDetail = props => {
                 styles.btn,
                 {
                   backgroundColor:
-                    userData?.fetch_user_report.some(
-                      (item, index) => item?.user_id == user?.id,
-                    ) || reported
-                      ? Color.veryLightGray
-                      : Color.themeColor,
+                    // userData?.fetch_user_report.some(
+                    //   (item, index) => item?.user_id == user?.id,
+                    // ) || reported
+                    //   ? Color.veryLightGray
+                    //   :
+                       Color.themeColor,
                 },
               ]}
               onPress={() => {
-                !userData?.fetch_user_report.some(
-                  (item, index) => item?.user_id == user?.id,
-                ) &&
+                // !userData?.fetch_user_report.some(
+                //   (item, index) => item?.user_id == user?.id,
+                // ) &&
                   !reported &&
                   setReportModalVisible(true);
               }}>
@@ -627,15 +632,17 @@ const UserDetail = props => {
                   marginRight: moderateScale(10, 0.3),
                 }}
                 onPress={() => {
-                  !userData?.fetch_user_report.some(
-                    (item, index) => item?.user_id == user?.id,
-                  ) &&
+                  // !userData?.fetch_user_report.some(
+                  //   (item, index) => item?.user_id == user?.id,
+                  // ) &&
                     !reported &&
                     setReportModalVisible(true);
                 }}>
-                {userData?.fetch_user_report.some(
-                  (item, index) => item?.user_id == user?.id,
-                ) && !reported
+                {
+                // userData?.fetch_user_report.some(
+                //   (item, index) => item?.user_id == user?.id,
+                // ) &&
+                 !reported
                   ? 'Already Reported'
                   : 'Report/Flag User'}
               </CustomText>

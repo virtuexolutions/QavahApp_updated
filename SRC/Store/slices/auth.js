@@ -3,6 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
   token: null,
   isLoggedIn: false,
+  locationEnabled: true,
   fcmToken: null,
   isVerified: false,
   userWalkThrough: false,
@@ -36,6 +37,9 @@ const AuthSlice = createSlice({
     setIsLoggedIn(state,action){
       state.isLoggedIn = true;
     },
+    setIsLocationEnabled(state, action){
+      state.locationEnabled = action.payload
+    }
   
   },
 });
@@ -48,6 +52,7 @@ export const {
   SetFCMToken,
   setWalkThrough,
   setIsLoggedIn,
+  setIsLocationEnabled
   
 } = AuthSlice.actions;
 

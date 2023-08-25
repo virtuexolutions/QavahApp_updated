@@ -57,6 +57,9 @@ elevation: 9,
         props.marginBottom &&{
           marginBottom : props.marginBottom
         },
+        props.disable && {
+          backgroundColor : Color.lightGrey
+        },
             props.autoCapitalize &&{
               textTransform : props.autoCapitalize
             },
@@ -181,6 +184,7 @@ elevation: 9,
             },
             props.disable && {
               color: Color.gray,
+              
             },
             props.multiline && {
               paddingTop: moderateScale(10, 0.5),
@@ -233,7 +237,7 @@ const styles = ScaledSheet.create({
   inputBox: {
     paddingLeft: moderateScale(8, 0.6),
     borderRadius: 8,
-    fontSize: moderateScale(12, 0.3),
+    fontSize: moderateScale(14, 0.3),
     // textTransform: 'capitalize',
 
     // fontFamily: 'PlusJakartaDisplay-Regular',

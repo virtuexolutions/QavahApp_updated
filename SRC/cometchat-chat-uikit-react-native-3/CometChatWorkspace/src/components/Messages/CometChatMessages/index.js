@@ -82,6 +82,8 @@ class CometChatMessages extends React.PureComponent {
   }
 
   componentDidMount() {
+
+    console.log('state.user======>>>>',this.state.user)
     this.checkRestrictions();
     new CometChatManager()
       .getLoggedInUser()
@@ -219,7 +221,7 @@ class CometChatMessages extends React.PureComponent {
     switch (action) {
       case actions.CUSTOM_MESSAGE_RECEIVED:
       case actions.MESSAGE_RECEIVED:
-        {
+        {actionHandler
           const message = messages[0];
           if (message.parentMessageId) {
             this.updateReplyCount(messages);
@@ -321,9 +323,10 @@ class CometChatMessages extends React.PureComponent {
         // }
         break;
       case actions.MENU_CLICKED:
-        // console.log('action' , action)
+        console.log('action' , action)
         // case actions.JOIN_DIRECT_CALL:
         params.actionGenerated(action);
+        // this.setState({})
         break;
       case actions.SEND_REACTION:
         this.toggleReaction(true);

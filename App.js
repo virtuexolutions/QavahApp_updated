@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {PermissionsAndroid, Platform} from 'react-native';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider, useDispatch, useSelector} from 'react-redux';
@@ -23,6 +23,9 @@ import {
 import SplashScreen from './SRC/Screens/SplashScreen';
 import AppNavigator, {DrawerRoot} from './SRC/appNavigation';
 import { CometChat } from "@cometchat-pro/react-native-chat";
+import { AppState } from 'react-native';
+import { setIsLocationEnabled } from './SRC/Store/slices/auth';
+import RNSettings from 'react-native-settings';
 
 
 const App = () => {
@@ -141,6 +144,45 @@ const MainContainer = () => {
   //     console.warn(err);
   //   }
   // };
+
+
+  const appState = useRef(AppState.currentState);
+
+  const _handleAppStateChange = nextAppState => {
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      console.log('App has come to the foreground!');
+      RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
+        if (result == RNSettings.ENABLED) {
+          console.log('location is enabled');
+          dispatch(setIsLocationEnabled(true));
+          
+        } else {
+          console.log('location is not enabled');
+          dispatch(setIsLocationEnabled(false));
+        }
+      });
+    } else {
+      console.log('App has come to the background!');
+    }
+
+    appState.current = nextAppState;
+    // setAppStateVisible(appState.current);
+    console.log('AppState', appState.current);
+  };
+
+  useEffect(() => {
+    AppState.addEventListener('change', _handleAppStateChange);
+
+    return () => {
+      AppState.removeEventListener('change', _handleAppStateChange);
+    };
+  }, []);
+
+
+
 
   useEffect(() => {
     async function GetPermission() {

@@ -51,6 +51,8 @@ import {
 } from './cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
 import SelectedChat from './Screens/SelectedChat';
 import CallScreen from './Screens/CallScreen';
+import LocationEnabler from './Screens/LocationEnabler';
+// import LocationEnabler from './Screens/LocationEnabler';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -59,13 +61,14 @@ const AppNavigator = () => {
   const isVerified = useSelector(state => state.authReducer.isVerified);
   const token = useSelector(state => state.authReducer.token);
   const isLoggedIn = useSelector(state => state.authReducer.isLoggedIn);
+  const locationEnabled = useSelector(
+    state => state.authReducer.locationEnabled,
+  );
+  console.log("🚀 ~ file: appNavigation.js:67 ~ AppNavigator ~ locationEnabled:", locationEnabled)
   console.log(
     '🚀 ~ file: appNavigation.js:55 ~ AppNavigator ~ isLoggedIn:',
     isLoggedIn,
   );
-
-  // console.log('token>>>>', token);
-  // console.log('isVerified', isGoalCreated);
 
   const RootNav = createSharedElementStackNavigator();
   const options = {
@@ -80,8 +83,12 @@ const AppNavigator = () => {
   };
 
   const AppNavigatorContainer = () => {
-    const firstScreen =
-      token != null && isLoggedIn ? 'TabNavigation' : 'LandingPage';
+    const firstScreen = 
+      !locationEnabled
+      ? 'LocationEnabler'
+      : token != null && isLoggedIn
+      ? 'TabNavigation'
+      : 'LandingPage';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
@@ -107,6 +114,7 @@ const AppNavigator = () => {
           />
           <RootNav.Screen name="Passions" component={Passions} />
           <RootNav.Screen name="Israeliteinfo" component={Israeliteinfo} />
+          <RootNav.Screen name="LocationEnabler" component={LocationEnabler} />
           <RootNav.Screen name="TabNavigation" component={TabNavigation} />
           <RootNav.Screen name="UserDetail" component={UserDetail} />
           <RootNav.Screen name="Profile" component={Profile} />
@@ -198,7 +206,7 @@ export const TabNavigation = () => {
           );
         },
         tabBarShowLabel: false,
-       
+
         tabBarStyle: {
           shadowColor: '#000',
           shadowOffset: {
@@ -214,7 +222,7 @@ export const TabNavigation = () => {
           height: windowHeight * 0.07,
         },
       })}>
-      <Tabs.Screen name={'HomeScreen'} component={HomeScreen}  />
+      <Tabs.Screen name={'HomeScreen'} component={HomeScreen} />
       <Tabs.Screen name={'SearchFilterScreen'} component={SearchFilterScreen} />
       <Tabs.Screen name={'Wishlist'} component={Wishlist} />
       <Tabs.Screen name={'ChatScreen'} component={ChatScreen} />
