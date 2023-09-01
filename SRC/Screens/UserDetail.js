@@ -58,7 +58,7 @@ const UserDetail = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setUserData] = useState(fromSearch ? item : user);
-  // console.log("🚀 ~ file: UserDetail.js:58 ~ UserDetail ~ userData:", userData)
+  console.log("🚀 ~ file: UserDetail.js:58 ~ UserDetail ~ userData:",  userData?.user_profile_verified)
   const [reported, setReported] = useState(false);
   const [loveNoteModal, setLoveNoteModal] = useState(false);
   const [reason, setReason] = useState('');
@@ -417,9 +417,48 @@ const UserDetail = props => {
               />
             </View>
           )}
+          <View style={{
+            flexDirection : 'row',
+            // backgroundColor : 'red',
+            alignItems : 'center',   marginTop: moderateScale(20, 0.3),
+  }}>
+
+          
           <CustomText style={styles.heading}>
             {`${userData?.profileName}`}
           </CustomText>
+          {
+            
+              fromSearch && userData?.user_profile_verified?.status == 1 ?
+              <CustomImage 
+              source={require('../Assets/Images/verified.png')}
+              style={[{
+                width : moderateScale(15,0.6),
+              height : moderateScale(15,0.6),
+              marginLeft : moderateScale(5,0.3)
+
+            }
+          ]}
+            />
+            :
+          userData?.user_profile_verified != null && userData?.user_profile_verified?.status != 0 &&
+          
+              <CustomImage 
+              source={require('../Assets/Images/verified.png')}
+              style={[{
+                width : moderateScale(15,0.6),
+              height : moderateScale(15,0.6),
+              marginLeft : moderateScale(5,0.3)
+
+            },
+            userData?.user_profile_verified?.status == 2 && {
+              tintColor : Color.veryLightGray
+            }
+          ]}
+            />
+            
+          }
+          </View>
           <View
             style={{
               width: windowWidth * 0.9,
@@ -826,7 +865,7 @@ const styles = ScaledSheet.create({
     fontSize: moderateScale(24, 0.6),
     color: Color.themeBlack,
     marginLeft: moderateScale(20, 0.3),
-    marginTop: moderateScale(20, 0.3),
+ 
   },
   btn: {
     width: windowWidth * 0.9,

@@ -8,7 +8,10 @@ const initialState = {
   isVerified: false,
   userWalkThrough: false,
   isGoalCreated : false ,
-
+  emailVerified : false,
+  numberVerified : false,
+  profileVerified : null ,
+ 
 };
 
 const AuthSlice = createSlice({
@@ -39,6 +42,15 @@ const AuthSlice = createSlice({
     },
     setIsLocationEnabled(state, action){
       state.locationEnabled = action.payload
+    },
+    setIsMobileVerified(state, action){
+      state.numberVerified = action.payload
+    },
+    setIsEmailVerified(state, action){
+      state.emailVerified = action.payload
+    },
+    setIsProfileVerified(state, action){
+      state.profileVerified = action.payload
     }
   
   },
@@ -52,7 +64,10 @@ export const {
   SetFCMToken,
   setWalkThrough,
   setIsLoggedIn,
-  setIsLocationEnabled
+  setIsLocationEnabled,
+  setIsMobileVerified,
+  setIsEmailVerified,
+  setIsProfileVerified
   
 } = AuthSlice.actions;
 

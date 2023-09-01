@@ -53,7 +53,7 @@ const CreatePortfolio = () => {
 
   //Step 2
   const [email, setEmail] = useState('');
-  const [emailCode, setEmailCode] = useState('');
+  // const [emailCode, setEmailCode] = useState('');
   const [emailAvailble, setEmailAvailble] = useState(false);
 
   //Step 3
@@ -84,6 +84,7 @@ const CreatePortfolio = () => {
     subregion: 'North America',
   });
   const [number, setNumber] = useState('');
+  console.log("🚀 ~ file: CreatePortfolio.js:87 ~ CreatePortfolio ~ number:", number)
 
   //step 8
   const [code, setCode] = useState('');
@@ -177,7 +178,7 @@ const CreatePortfolio = () => {
     step1: {
       profileName: profileName,
       governmentName: governmentName,
-      phone: `${country?.callingCode}${number}`,
+      phone: `${number}`,
       email: email,
       password: password,
       confirmPassword: confirmPassword,
@@ -187,7 +188,7 @@ const CreatePortfolio = () => {
         inches: inch,
       },
       iAm: gender,
-      seeking: gender == 'woman' ? 'man' : 'woman',
+      seeking:  gender.toLocaleLowerCase() == 'woman' ? 'man' : 'woman',
       zipcode: '10001',
       location: {
         zipcode: '11230',
@@ -430,9 +431,9 @@ const CreatePortfolio = () => {
                   fontSize: moderateScale(35, 0.6),
                 }}
                 border={1}
-                disable={emailAvailble}
+                // disable={emailAvailble}
               />
-              {emailAvailble &&
+              {/* {emailAvailble &&
               <View style={{
                 alignItems : 'center'
               }}>
@@ -472,7 +473,7 @@ const CreatePortfolio = () => {
                 *Enter Verification Code sent to your email
               </CustomText>
 </View>
-              }
+              } */}
             </>
           ) : currentStep == 2 ? (
             <>
@@ -828,29 +829,8 @@ const CreatePortfolio = () => {
           )}
         </View>
         {/* Button */}
-        {currentStep == 1 && !emailAvailble ?
-          <CustomButton
-          text={
-            isLoading ? (
-              <ActivityIndicator color={'#FFFFFF'} size={'small'} />
-            ) : (
-              'Submit'
-            )
-          }
-          textColor={Color.white}
-          width={windowWidth * 0.9}
-          height={windowHeight * 0.09}
-          disabled={isLoading}
-          onPress={() => {
-            emailExists(email)
-            // Alert.alert('verification api will be hit')
-            // setEmailAvailble(true)
-          }}
-          bgColor={Color.themeColor}
-          borderRadius={moderateScale(15, 0.3)}
-          elevation
-        />
-        :
+       
+    
 
         
         <CustomButton
@@ -870,8 +850,8 @@ const CreatePortfolio = () => {
               profileName != '' &&
               governmentName != '' &&
               email != '' &&
-              currentStep == 1 &&
-              emailCode != ''
+              currentStep == 1 
+              // emailCode != ''
               
              
             ) {
@@ -883,14 +863,6 @@ const CreatePortfolio = () => {
                 setCurrentStep(prev=> prev+1)
                  setProgress(prev => prev + windowWidth / 6);
               }
-              // else if (!emailExists(email.trim())) {
-              //   return Platform.OS == 'android'
-              //     ? ToastAndroid.show(
-              //         'Email is already taken',
-              //         ToastAndroid.SHORT,
-              //       )
-              //     : Alert.alert('Email is already taken');
-              // }
             } else if (gender != '' && currentStep == 2) {
               setCurrentStep(prev => prev + 1);
               setProgress(prev => prev + windowWidth / 6);
@@ -932,19 +904,21 @@ const CreatePortfolio = () => {
               setCurrentStep(prev => prev + 1);
               setProgress(prev => prev + windowWidth / 6);
             } else if (countryCode != '' && number != '' && currentStep == 5) {
-              setCurrentStep(prev => prev + 1);
-              settimerLabel('ReSend in '), settime(120);
-              setProgress(prev => prev + windowWidth / 6);
-            } else if (currentStep == 6) {
+              console.log('data ===>' , currentStep)
               setSteps(3);
-              clearTimeout(timeOutId);
+              // clearTimeout(timeOutId);
               // setSteps(steps+1)
               navigationService.navigate('MoreAboutme', {
                 data: ProfileBody,
                 steps: 3,
                 // signup: true,
               });
-            } else {
+              setProgress(prev => prev + windowWidth / 6);
+            }
+            //  else if (currentStep == 6) {
+            
+            // } 
+            else {
               Platform.OS == 'android'
                 ? ToastAndroid.show(
                     'Required Field is Empty',
@@ -957,7 +931,6 @@ const CreatePortfolio = () => {
           borderRadius={moderateScale(15, 0.3)}
           elevation
         />
-}
         <DatePicker
           maximumDate={new Date()}
           modal

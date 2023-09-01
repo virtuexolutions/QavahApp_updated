@@ -454,13 +454,13 @@ const IsraeliteFilters = props => {
 
   const Registration = async () => {
     const url = 'auth/register/app';
-    // console.log( ' body ================== ? ? ?? ',completeBody)
+    console.log( ' body ================== ? ? ?? ',completeBody)
     setIsLoading(true);
     const response = await Post(url, completeBody, apiHeader());
-    // console.log(
-    //   '🚀 ~ file: IsraeliteFilters.js:342 ~ Registration ~ completeBody:',
-    //   completeBody,
-    // );
+    console.log(
+      '🚀 ~ file: IsraeliteFilters.js:342 ~ Registration ~ completeBody:',
+      JSON.stringify(completeBody,null,2),
+    );
     setIsLoading(false);
     if (response != undefined) {
       //  console.log('User registered =-======>' , response?.data)
