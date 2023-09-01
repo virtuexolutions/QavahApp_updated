@@ -24,7 +24,10 @@ const WhoViewedMe = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [whoViewedMe, setWhoViewedMe] = useState([]);
-  console.log("🚀 ~ file: WhoViewedMe.js:239 ~ WhoViewedMe ~ whoViewedMe:", whoViewedMe)
+  console.log(
+    '🚀 ~ file: WhoViewedMe.js:239 ~ WhoViewedMe ~ whoViewedMe:',
+    whoViewedMe,
+  );
 
   const getFavouredYouPosts = async id => {
     // console.log('get favoured posts');
@@ -121,8 +124,35 @@ const WhoViewedMe = () => {
                 height: windowHeight * 0.6,
                 justifyContent: 'center',
                 alignItems: 'center',
+              
               }}>
-              <NullDataComponent />
+              <Icon
+                name={'eye'}
+                as={FontAwesome}
+                color={Color.black}
+                size={moderateScale(30, 0.3)}
+              />
+
+              <CustomText
+                style={{
+                  fontSize: moderateScale(18, 0.6),
+                  textAlign:'center',
+                  color:Color.black
+                }}>
+                No Views Yet
+              </CustomText>
+              <CustomText
+                numberOfLines={2}
+                style={{
+                  width:windowWidth*0.75,
+                  paddingVertical:moderateScale(5,0.6),
+                  fontSize: moderateScale(12, 0.6),
+                  textAlign:'center',
+                  color:Color.veryLightGray
+                }}>
+                Give a Little, get a little send some like to people who've
+                caught your eye
+              </CustomText>
             </View>
           );
         }}

@@ -361,11 +361,11 @@ const CreatePortfolio = () => {
                 inputWidth={0.86}
                 borderColor={Color.veryLightGray}
                 backgroundColor={'#FFFFFF'}
-                placeholderColor={Color.themeLightGray}
+                placeholderColor={Color.black}
                 borderRadius={moderateScale(10, 0.3)}
                 titleStlye={{
                   color: Color.themeBlack,
-                  fontSize: moderateScale(35, 0.6),
+                  fontSize: moderateScale(36, 0.6),
                 }}
                 border={1}
                 marginTop={moderateScale(-40, 0.3)}
@@ -373,7 +373,7 @@ const CreatePortfolio = () => {
               <CustomText
                 style={{
                   fontSize: moderateScale(11, 0.6),
-                  color: Color.themeLightGray,
+                  color: Color.black,
                   width: windowWidth * 0.9,
                   lineHeight: moderateScale(15, 0.6),
                   marginTop: moderateScale(6, 0.3),
@@ -393,11 +393,11 @@ const CreatePortfolio = () => {
                 inputWidth={0.86}
                 borderColor={Color.veryLightGray}
                 backgroundColor={'#FFFFFF'}
-                placeholderColor={Color.themeLightGray}
+                placeholderColor={Color.black}
                 borderRadius={moderateScale(10, 0.3)}
                 titleStlye={{
                   color: Color.themeBlack,
-                  fontSize: moderateScale(35, 0.6),
+                  fontSize: moderateScale(36, 0.6),
                   // marginTop: moderateScale(0, 0.3),
                 }}
                 border={1}
@@ -405,7 +405,7 @@ const CreatePortfolio = () => {
               <CustomText
                 style={{
                   fontSize: moderateScale(11, 0.6),
-                  color: Color.themeLightGray,
+                  color: Color.black,
                   width: windowWidth * 0.9,
                   lineHeight: moderateScale(15, 0.6),
                   marginTop: moderateScale(6, 0.3),
@@ -424,11 +424,11 @@ const CreatePortfolio = () => {
                 inputWidth={0.86}
                 borderColor={Color.veryLightGray}
                 backgroundColor={'#FFFFFF'}
-                placeholderColor={Color.themeLightGray}
+                placeholderColor={Color.black}
                 borderRadius={moderateScale(10, 0.3)}
                 titleStlye={{
                   color: Color.themeBlack,
-                  fontSize: moderateScale(35, 0.6),
+                  fontSize: moderateScale(36, 0.6),
                 }}
                 border={1}
                 // disable={emailAvailble}

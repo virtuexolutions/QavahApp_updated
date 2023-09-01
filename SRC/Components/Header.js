@@ -637,15 +637,45 @@ const Header = props => {
                 );
               })
             ) : (
-              <View
+            
+                 <View
+              style={{
+                width: windowWidth*0.7,
+                height: windowHeight * 0.6,
+                justifyContent: 'center',
+                alignItems: 'center',
+
+              
+              }}>
+              <Icon
+                name={'eye'}
+                as={FontAwesome}
+                color={Color.black}
+                size={moderateScale(30, 0.3)}
+              />
+
+              <CustomText
                 style={{
-                  // width: windowWidth * 0.5,
-                  height: windowHeight * 0.6,
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  fontSize: moderateScale(18, 0.6),
+                  textAlign:'center',
+                  color:Color.black
                 }}>
-                <NullDataComponent width={windowWidth * 0.7} />
-              </View>
+                No Notification Yet
+              </CustomText>
+              <CustomText
+                numberOfLines={2}
+                style={{
+                  width:windowWidth*0.75,
+                  paddingVertical:moderateScale(5,0.6),
+                  fontSize: moderateScale(12, 0.6),
+                  textAlign:'center',
+                  color:Color.veryLightGray
+                }}>
+                Give a Little, get a little send some like to people who've
+                caught your eye
+              </CustomText>
+            </View>
+         
             )
           ) : (
             notification2.map((item, index) => {

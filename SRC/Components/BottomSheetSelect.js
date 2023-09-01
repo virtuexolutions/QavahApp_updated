@@ -59,7 +59,7 @@ const BottomSheetSelect = ({title, data, setData, array}) => {
         <CustomText
           style={[
             {
-              color: Color.veryLightGray,
+              color: Color.black,
               fontSize: moderateScale(14, 0.3),
               marginBottom: moderateScale(5, 0.3),
               width: windowWidth * 0.9,
@@ -73,7 +73,7 @@ const BottomSheetSelect = ({title, data, setData, array}) => {
           <CustomText
             style={{
               fontSize: moderateScale(12, 0.6),
-              color: data ? Color.black : Color.veryLightGray,
+              color: data ? Color.black : Color.black,
               width: '95%',
             }}>
             {data ? data : 'Please select an Option'}
@@ -109,7 +109,7 @@ const BottomSheetSelect = ({title, data, setData, array}) => {
             // fontSize:moderateScale(25,.6),
             // borderRadius: 50,
           }}
-          itemTextStyle={{fontSize: moderateScale(15, 0.6)}}
+          itemTextStyle={{fontSize: moderateScale(15, 0.6) , color : Color.black,fontWeight:'bold'}}
           selectedIndex={
             [null, '', undefined].includes(data) ? 0 : array.indexOf(data)
           }
