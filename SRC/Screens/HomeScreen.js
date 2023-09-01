@@ -36,6 +36,7 @@ import {
   setPusherInstance,
   setotherData,
 } from '../Store/slices/socket';
+import { setIsProfileVerified } from '../Store/slices/auth';
 
 
 
@@ -94,7 +95,20 @@ const HomeScreen = () => {
     setIsLoadingApi(false);
     if (response != undefined) {
       setPhotoCards(response?.data?.peoples);
-      console.log(response?.data?.peoples);
+      // console.log(response?.data?.peoples);
+    }
+  };
+  const getMe = async () => {
+    const url = `me`;
+
+    setIsLoadingApi(true);
+    const response = await Get(url, token);
+    setIsLoadingApi(false);
+    if (response != undefined) {
+      // setPhotoCards(response?.data?.peoples);
+      console.log(response?.data?.user);
+      dispatch(setUserData(response?.data?.user));
+      dispatch(setIsProfileVerified(response?.data?.user?.user_profile_verified))
     }
   };
  
@@ -251,6 +265,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     getUsers();
+    getMe()
     setLogData([]);
   }, [focused]);
 

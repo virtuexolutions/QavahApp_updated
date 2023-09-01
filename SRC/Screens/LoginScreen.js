@@ -22,7 +22,10 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import {validateEmail} from '../Config';
 import {
+  setIsEmailVerified,
   setIsLoggedIn,
+  setIsMobileVerified,
+  setIsProfileVerified,
   setUserLogin,
   setUserToken,
   setWalkThrough,
@@ -75,6 +78,9 @@ const LoginScreen = ({route}) => {
     
       // return console.log('response ========>' , response?.data?.user)
       dispatch(setUserData(response?.data?.user));
+      dispatch(setIsMobileVerified(response?.data?.user?.mobile_verified ==  1 ? true : false))
+      dispatch(setIsEmailVerified(response?.data?.user?.email_verified  ==  1 ? true : false))
+      dispatch(setIsProfileVerified(response?.data?.user?.user_profile_verified))
       dispatch(setUserToken({token: response?.data?.token}));
       dispatch(setIsLoggedIn());
       LoginUser(response?.data?.user?.uid)

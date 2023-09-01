@@ -84,6 +84,7 @@ const CreatePortfolio = () => {
     subregion: 'North America',
   });
   const [number, setNumber] = useState('');
+  console.log("🚀 ~ file: CreatePortfolio.js:87 ~ CreatePortfolio ~ number:", number)
 
   //step 8
   const [code, setCode] = useState('');
@@ -177,7 +178,7 @@ const CreatePortfolio = () => {
     step1: {
       profileName: profileName,
       governmentName: governmentName,
-      phone: `${country?.callingCode}${number}`,
+      phone: `${number}`,
       email: email,
       password: password,
       confirmPassword: confirmPassword,
@@ -187,7 +188,7 @@ const CreatePortfolio = () => {
         inches: inch,
       },
       iAm: gender,
-      seeking: gender == 'woman' ? 'man' : 'woman',
+      seeking:  gender.toLocaleLowerCase() == 'woman' ? 'man' : 'woman',
       zipcode: '10001',
       location: {
         zipcode: '11230',
@@ -903,19 +904,21 @@ const CreatePortfolio = () => {
               setCurrentStep(prev => prev + 1);
               setProgress(prev => prev + windowWidth / 6);
             } else if (countryCode != '' && number != '' && currentStep == 5) {
-              setCurrentStep(prev => prev + 1);
-              settimerLabel('ReSend in '), settime(120);
-              setProgress(prev => prev + windowWidth / 6);
-            } else if (currentStep == 6) {
+              console.log('data ===>' , currentStep)
               setSteps(3);
-              clearTimeout(timeOutId);
+              // clearTimeout(timeOutId);
               // setSteps(steps+1)
               navigationService.navigate('MoreAboutme', {
                 data: ProfileBody,
                 steps: 3,
                 // signup: true,
               });
-            } else {
+              setProgress(prev => prev + windowWidth / 6);
+            }
+            //  else if (currentStep == 6) {
+            
+            // } 
+            else {
               Platform.OS == 'android'
                 ? ToastAndroid.show(
                     'Required Field is Empty',

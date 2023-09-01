@@ -457,10 +457,10 @@ const IsraeliteFilters = props => {
     console.log( ' body ================== ? ? ?? ',completeBody)
     setIsLoading(true);
     const response = await Post(url, completeBody, apiHeader());
-    // console.log(
-    //   '🚀 ~ file: IsraeliteFilters.js:342 ~ Registration ~ completeBody:',
-    //   completeBody,
-    // );
+    console.log(
+      '🚀 ~ file: IsraeliteFilters.js:342 ~ Registration ~ completeBody:',
+      JSON.stringify(completeBody,null,2),
+    );
     setIsLoading(false);
     if (response != undefined) {
       //  console.log('User registered =-======>' , response?.data)
@@ -477,7 +477,7 @@ const IsraeliteFilters = props => {
       dispatch(setUserData(response?.data?.user));
       dispatch(setUserToken({token: response?.data?.token}));
 
-      navigationService.navigate('VerificationScreen', {
+      navigationService.navigate('ProfilePictures', {
         // token: response?.data?.token,
         // userData: response?.data?.user,
         steps: steps,

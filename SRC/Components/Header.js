@@ -30,7 +30,9 @@ import NotificationComponent from '../Components/NotificationComponent';
 import {useDispatch, useSelector} from 'react-redux';
 import {imageUrl} from '../Config';
 import {
+  setIsEmailVerified,
   setIsLocationEnabled,
+  setIsMobileVerified,
   setUserLogout,
   setUserLogoutAuth,
 } from '../Store/slices/auth';
@@ -62,13 +64,14 @@ const Header = props => {
   const focused = useIsFocused();
   const token = useSelector(state => state.authReducer.token);
   const match = useSelector(state => state.socketReducer.matched);
-  // console.log("🚀 ~ file: Header.js:54 ~ Header ~ match:", match)
   const user = useSelector(state => state.commonReducer.userData);
   const userRole = useSelector(state => state.commonReducer.selectedRole);
+  const profileVerified = useSelector(state => state.authReducer.profileVerified);
+  console.log("🚀 ~ file: Header.js:70 ~ Header ~ profileVerified:", profileVerified)
+
   const pusherInstance = useSelector(
     state => state.socketReducer.pusherInstance,
   );
-  // console.log("🚀 ~ file: Header.js:320 ~ Header ~ pusherInstance:", pusherInstance)
 
   const [isLoveNotesVisible, setLoveNotesVisible] = useState(false);
   const notification = useSelector(state => state.commonReducer.notification);
@@ -82,14 +85,14 @@ const Header = props => {
       key: 1,
       title: 'My Accounts',
       onPress: null,
-      nestedMenu: [
-        // {
-        //   key: 2,
-        //   title: 'Personal info',
-        //   onPress: () => {
-        //     navigationService.navigate('PersonalInfo'), setDrawerModal(false);
-        //   },
-        // },
+      nestedMenu: profileVerified == null || profileVerified?.status != 1 ? [
+         {
+          key: 2,
+          title: 'Verify Yourself',
+          onPress: () => {
+            navigationService.navigate('VerifyYourself'), setDrawerModal(false);
+          },
+        },
         {
           key: 3,
           title: 'Change Password',
@@ -120,7 +123,40 @@ const Header = props => {
               setDrawerModal(false);
           },
         },
-      ],
+      ] :
+      [
+       
+       {
+         key: 3,
+         title: 'Change Password',
+         onPress: () => {
+           navigationService.navigate('ChangePassword'), setDrawerModal(false);
+         },
+       },
+       {
+         key: 4,
+         title: 'Profile',
+         onPress: () => {
+           navigationService.navigate('UserDetail'), setDrawerModal(false);
+         },
+       },
+       {
+         key: 11,
+         title: 'Israelite Info',
+         onPress: () => {
+           navigationService.navigate('IsraeliteFilters', {edit: true}),
+             setDrawerModal(false);
+         },
+       },
+       {
+         key: 12,
+         title: 'More About Me',
+         onPress: () => {
+           navigationService.navigate('MoreAboutme', {edit: true}),
+             setDrawerModal(false);
+         },
+       },
+     ],
     },
     // {key: 4, title: 'Legal', onPress: () => alert('Action needed')},
     {
@@ -428,6 +464,8 @@ const Header = props => {
               unsubscribePusher();
               dispatch(setUserLogoutAuth());
               dispatch(setUserLogOut());
+              dispatch(setIsEmailVerified(false));
+              dispatch(setIsMobileVerified(false));
             }}>
             <CustomText
               style={{

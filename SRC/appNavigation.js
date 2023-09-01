@@ -53,6 +53,7 @@ import SelectedChat from './Screens/SelectedChat';
 import CallScreen from './Screens/CallScreen';
 import LocationEnabler from './Screens/LocationEnabler';
 import VerificationScreen from './Screens/VerificationScreen';
+import VerifyYourself from './Screens/VerifyYourself';
 // import LocationEnabler from './Screens/LocationEnabler';
 
 const AppNavigator = () => {
@@ -61,11 +62,23 @@ const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
   const isVerified = useSelector(state => state.authReducer.isVerified);
   const token = useSelector(state => state.authReducer.token);
+  // console.log("🚀 ~ file: appNavigation.js:64 ~ AppNavigator ~ token:", token)
   const isLoggedIn = useSelector(state => state.authReducer.isLoggedIn);
+  const emailVerified = useSelector(state => state.authReducer.emailVerified);
+  console.log(
+    '🚀 ~ file: appNavigation.js:66 ~ AppNavigator ~ emailVerified:',
+    emailVerified,
+  );
+  const numberVerified = useSelector(state => state.authReducer.numberVerified);
+  console.log(
+    '🚀 ~ file: appNavigation.js:68 ~ AppNavigator ~ numberVerified:',
+    numberVerified,
+  );
+
   const locationEnabled = useSelector(
     state => state.authReducer.locationEnabled,
   );
-  console.log("🚀 ~ file: appNavigation.js:67 ~ AppNavigator ~ locationEnabled:", locationEnabled)
+  // console.log("🚀 ~ file: appNavigation.js:67 ~ AppNavigator ~ locationEnabled:", locationEnabled)
   console.log(
     '🚀 ~ file: appNavigation.js:55 ~ AppNavigator ~ isLoggedIn:',
     isLoggedIn,
@@ -84,18 +97,19 @@ const AppNavigator = () => {
   };
 
   const AppNavigatorContainer = () => {
-    const firstScreen = 
-      !locationEnabled
+    const firstScreen = !locationEnabled
       ? 'LocationEnabler'
-      : token != null && isLoggedIn
+      : token != null && isLoggedIn && emailVerified && numberVerified
       ? 'TabNavigation'
+      :  isLoggedIn && (!emailVerified || !numberVerified)
+      ? 'VerificationScreen'
       : 'LandingPage';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
           headerMode="none"
-          initialRouteName={'VerificationScreen'}
+          initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LandingPage" component={LandingPage} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
@@ -125,7 +139,14 @@ const AppNavigator = () => {
           <RootNav.Screen name="WhoViewedMe" component={WhoViewedMe} />
           <RootNav.Screen name="Subscription" component={Subscription} />
           <RootNav.Screen name="CallScreen" component={CallScreen} />
-          <RootNav.Screen name="VerificationScreen" component={VerificationScreen} />
+          <RootNav.Screen
+            name="VerificationScreen"
+            component={VerificationScreen}
+          />
+           <RootNav.Screen
+            name="VerifyYourself"
+            component={VerifyYourself}
+          />
 
           <RootNav.Screen
             name="TermsAndConditions"
