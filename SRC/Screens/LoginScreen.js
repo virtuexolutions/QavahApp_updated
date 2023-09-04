@@ -48,7 +48,7 @@ const LoginScreen = ({route}) => {
   const [firstSection, setFirstSection] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
-  const authKey = '07ba629476752645dbce6a6c4aad7b2fc680b511';
+  const authKey = '6a92b20a05b6218d7c36d6027e01c728733eaa49';
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
