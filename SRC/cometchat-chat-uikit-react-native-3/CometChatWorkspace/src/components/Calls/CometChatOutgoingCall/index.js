@@ -50,20 +50,22 @@ class CometChatOutgoingCall extends React.PureComponent {
     );
     try {
       if (
-        prevProps.outgoingCall !== this.props.outgoingCall &&
+        // prevProps.outgoingCall !== this.props.outgoingCall &&
         this.props.outgoingCall
       ) {
         this.playOutgoingAlert();
 
-        // const call = this.props.outgoingCall  ;
-        // console.log('call is what', call)
+        const call2 = this.props.outgoingCall;
+        console.log('callScreen manager =========>>>>',CallScreenManager)
+        console.log('call is what', this.props?.item?.uid, this.props?.type)
         // var recieverId = reciverInfo?.uid;
-        var callType = this.props?.type == 'audio' ? CallScreenManager.CALL_TYPE.AUDIO : CallScreenManager.CALL_TYPE.VIDEO;
-        var recieverType = CallScreenManager.RECEIVER_TYPE.USER;
-        var call = new CallScreenManager.Call(this.props?.item?.uid, callType, 'user');
-        CallScreenManager.initiateCall(call).then(
+        var callType = this.props?.type == 'audio' ?  CometChat.CALL_TYPE.AUDIO: CometChat.CALL_TYPE.VIDEO;
+        console.log('error for audio type')
+        var recieverType = CometChat.RECEIVER_TYPE.USER;
+        var call = new CometChat.Call(this.props?.item?.uid, callType, 'user');
+        CometChat.initiateCall(call).then(
           (outGointCall) => {
-            console.log('Call initiated Successfully');
+            console.log('Call initiated Successfully',outGointCall);
           },
           (error) => {
             console.log('Call initialization failed with exception', error);
@@ -363,6 +365,7 @@ class CometChatOutgoingCall extends React.PureComponent {
     try {
       this.pauseOutgoingAlert();
       console.log('Session id is', this.props?.item?.uid);
+      this.setState({callsettings:null, outgoingCallScreen:false})
 // break point of the call 
       CometChatManager.rejectCall(
         this.props?.item?.uid,
@@ -425,6 +428,7 @@ class CometChatOutgoingCall extends React.PureComponent {
       }
 
       if (this.state.outgoingCallScreen) {
+        console.log('Outgoing call screen rendered===============')
         callScreen = (
           <Modal animated animationType="fade">
             <View style={style.container}>
