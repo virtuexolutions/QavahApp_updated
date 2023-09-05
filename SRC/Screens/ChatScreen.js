@@ -32,7 +32,7 @@ const ChatScreen = ({navigation}) => {
   console.log("🚀 ~ file: ChatScreen.js:32 ~ ChatScreen ~ commetChatUser:", commetChatUser)
   // console.log("🚀 ~ file: ChatScreen.js:31 ~ ChatScreen ~ userinfo:", userinfo)
   
-  const appID = "2442246993cbe602";
+  const appID = "2092182aee051e28";
   const region = "US";
   const appSetting = new CometChat.AppSettingsBuilder()
   .subscribePresenceForAllUsers()
