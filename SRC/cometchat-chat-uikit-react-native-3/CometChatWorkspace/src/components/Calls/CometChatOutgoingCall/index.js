@@ -433,8 +433,9 @@ class CometChatOutgoingCall extends React.PureComponent {
           <Modal animated animationType="fade">
             <View style={style.container}>
               <View style={style.header}>
-                <Text style={style.headerLabel}>Calling...</Text>
+               
                 <Text style={style.headerName}>{this.props?.item?.name}</Text>
+                 <Text style={style.headerLabel}>Ringing...</Text>
               </View>
               <View style={style.thumbnail}>
                 <CometChatAvatar
