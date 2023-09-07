@@ -6,7 +6,7 @@ import {
   Platform,
   ToastAndroid,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from './CustomImage';
@@ -40,6 +40,7 @@ const UserCard = ({
 
   const token = useSelector(state => state.authReducer.token);
   const userData = useSelector(state => state.commonReducer.userData);
+  const [liked, setLiked] = useState(false)
 
   // console.log("🚀 ~ file: UserCard.js:19 ~ UserCard ~ favoredYouPost:", favoredYouPost)
   // const profile_image = item?.profile_images[0]?.url;
@@ -68,7 +69,7 @@ const UserCard = ({
       );
       console.log("🚀 ~ file: UserCard.js:71 ~ sendDislike ~ filteredData2:", filteredData2)
 
-      setFavoredYouPost(filteredData2 ? filteredData2 : []);
+      // setFavoredYouPost(filteredData2 ? filteredData2 : []);
     } 
     // else {
     //   console.log('in else');
@@ -92,12 +93,13 @@ const UserCard = ({
         '🚀 ~ file: UserCard.js:65 ~ sendLike ~ response:',
         response?.data,
       );
+      setLiked(true)
 
-      setFavoredYouPost(
-        favoredYouPost.filter(
-          (data, index) => response?.data?.peoples?.match_id != data?.id,
-        ),
-      );
+      // setFavoredYouPost(
+      //   favoredYouPost.filter(
+      //     (data, index) => response?.data?.peoples?.match_id != data?.id,
+      //   ),
+      // );
     } else {
       Platform.OS == 'android'
         ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
@@ -247,7 +249,7 @@ const UserCard = ({
             onPress={() => sendDislike(item)}
           />
           <BtnContainer
-            backgroundColor={Color.themeColor}
+            backgroundColor={liked ?Color.red :Color.themeColor}
             color={Color.white}
             name={'heart-o'}
             type={FontAwesome}

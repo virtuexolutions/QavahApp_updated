@@ -565,9 +565,9 @@ const SearchFilterScreen = () => {
     }
   };
 
-  useEffect(() => {
-    getSearchResult()
-  }, [isFocused])
+  // useEffect(() => {
+  //   getSearchResult()
+  // }, [isFocused])
   
 
   return (
