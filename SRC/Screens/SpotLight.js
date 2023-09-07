@@ -638,7 +638,7 @@ const SpotLight = () => {
                       numberOfLines={2}
                       style={{
                         color: Color.white,
-                        fontSize: moderateScale(11, 0.6),
+                        fontSize: moderateScale(12, 0.6),
                         width: '90%',
                       }}>
                       {`${item?.profileName},${item?.location?.city}`}
@@ -658,7 +658,7 @@ const SpotLight = () => {
                         isBold
                         style={{
                           color: Color.white,
-                          fontSize: moderateScale(10, 0.6),
+                          fontSize: moderateScale(11, 0.6),
                         }}>{`5 Ml`}</CustomText>
                     </View>
                   </LinearGradient>
@@ -864,7 +864,7 @@ const SpotLight = () => {
                       numberOfLines={2}
                       style={{
                         color: Color.white,
-                        fontSize: moderateScale(11, 0.6),
+                        fontSize: moderateScale(12, 0.6),
                         width: '90%',
                       }}>
                       {`${x?.profileName} , ${x?.location.city}`}
@@ -884,7 +884,7 @@ const SpotLight = () => {
                         isBold
                         style={{
                           color: Color.white,
-                          fontSize: moderateScale(10, 0.6),
+                          fontSize: moderateScale(11, 0.6),
                         }}>{`5 Ml`}</CustomText>
                     </View>
                   </LinearGradient>
@@ -1061,7 +1061,7 @@ const styles = ScaledSheet.create({
     // textShadowRadius: moderateScale(30, 0.6),
   },
   text1: {
-    fontSize: moderateScale(15, 0.6),
+    fontSize: moderateScale(16, 0.6),
     color: Color.veryLightGray,
     textShadowColor: Color.black,
     // textShadowRadius: moderateScale(30, 0.6),

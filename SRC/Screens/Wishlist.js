@@ -398,7 +398,7 @@ const styles = ScaledSheet.create({
   text: {
     width: '50%',
     textAlign: 'center',
-    fontSize: moderateScale(11, 0.6),
+    fontSize: moderateScale(12, 0.6),
     color: Color.themeColor,
     paddingVertical: moderateScale(10, 0.6),
   },

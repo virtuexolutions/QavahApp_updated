@@ -32,48 +32,12 @@ const MatchModal = ({isVisible, profileImage}) => {
   const user = useSelector(state => state.commonReducer.userData);
   const token = useSelector(state=> state.authReducer.token)
   // console.log('🚀 ~ file: MatchModal.js:19 ~ MatchModal ~ user:', user);
+
   const [isLoading, setIsLoading] = useState(false);
   const [loveNoteModal, setLoveNoteModal] = useState(false);
   const [loveNoteData, setLoveNoteData] = useState('');
   const dispatch = useDispatch();
 
-  // const sendLoveNote = async () => {
-  //   const url = 'send-love-note';
-  //   const body = {
-  //     targetUid: otherUserData?.id,
-  //     love_note: loveNoteData,
-  //   };
-  //   console.log('🚀 ~ file: UserDetail.js:123 ~ sendLoveNote ~ body:', body);
-  //   if (loveNoteData == '') {
-  //     return Platform.OS == 'android'
-  //       ? ToastAndroid.show('Please send some message', ToastAndroid.SHORT)
-  //       : alert('Please send some message');
-  //   }
-  //   setIsLoading(true);
-  //   const response = await Post(url, body, apiHeader(token));
-
-  //   if (response?.data?.status) {
-  //     setIsLoading(false);
-  //     Platform.OS == 'android'
-  //       ? ToastAndroid.show('Lovenote has been send', ToastAndroid.SHORT)
-  //       : alert('Lovenote has been sent');
-
-  //     console.log('response ===>>', response?.data);
-  //     setLoveNoteModal(false);
-  //     dispatch(setIsMatched(false));
-  //     navigation.navigate('ChatScreen');
-  //   } else {
-  //     setIsLoading(false);
-  //     // Platform.OS == 'android'
-  //     //   ? ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT)
-  //     //   : alert(response?.data?.message);
-
-  //     console.log('response ===>>', response?.data);
-  //     setLoveNoteModal(false);
-  //     dispatch(setIsMatched(false));
-  //     navigation.navigate('ChatScreen');
-  //   }
-  // };
 
   const skipNote = async (skip) => {
     const url = 'send-love-note';

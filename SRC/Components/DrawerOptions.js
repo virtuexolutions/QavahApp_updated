@@ -54,7 +54,7 @@ const DrawerOptions = ({item}) => {
         <CustomText
           style={{
             color: Color.black,
-            fontSize: moderateScale(14, 0.6),
+            fontSize: moderateScale(16, 0.6),
             // backgroundColor : 'red',
             width: '70%',
           }}>
@@ -123,7 +123,7 @@ const DrawerOptions = ({item}) => {
               <CustomText
                 style={{
                   color: Color.veryLightGray,
-                  fontSize: moderateScale(12, 0.6),
+                  fontSize: moderateScale(14, 0.6),
                   marginLeft: moderateScale(15, 0.3),
                 }}>
                 {x?.title}

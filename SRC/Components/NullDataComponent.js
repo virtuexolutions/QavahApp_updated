@@ -68,7 +68,7 @@ const NullDataComponent = ({style , width}) => {
             color: 'gray',
             fontSize: style?.fontSize
               ? style?.fontSize - 5
-              : moderateScale(12, 0.6),
+              : moderateScale(13, 0.6),
             marginTop: moderateScale(3, 0.3),
             width: width ? width : windowWidth * 0.8,
             textAlign: 'center',

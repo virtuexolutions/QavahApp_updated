@@ -59,7 +59,9 @@ const UserDetail = props => {
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setUserData] = useState(fromSearch ? item : user);
   console.log("🚀 ~ file: UserDetail.js:58 ~ UserDetail ~ userData:",  userData?.user_profile_verified)
-  const [reported, setReported] = useState(false);
+  // const [reported, setReported] = useState(item?.fetch_user_report ? item?.fetch_user_report?.some(item => item?.user_id == user?.user_id): false);
+  const [reported, setReported] = useState(false)
+  console.log("🚀 ~ file: UserDetail.js:63 ~ UserDetail ~ reported:", reported)
   const [loveNoteModal, setLoveNoteModal] = useState(false);
   const [reason, setReason] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -99,6 +101,9 @@ const UserDetail = props => {
       // console.log("🚀 ~ file: UserDetail.js:64 ~ reportUser ~ response:", response
       setReported(response?.data?.status);
       setReportModalVisible(false);
+      Platform.OS == 'android'
+        ? ToastAndroid.show('User reported', ToastAndroid.SHORT)
+        : alert('User reported');
     } else {
       // console.log('reported ======>' , response?.data)
       Platform.OS == 'android'
@@ -514,7 +519,7 @@ const UserDetail = props => {
             />
           </View>
           <CustomText
-            style={[styles.heading, {fontSize: moderateScale(13, 0.6)}]}>
+            style={[styles.heading, {fontSize: moderateScale(15, 0.6), marginTop:moderateScale(10,.3)}]}>
             About Me
           </CustomText>
           <CustomText
@@ -525,7 +530,7 @@ const UserDetail = props => {
                 marginLeft: moderateScale(20, 0.3),
                 marginTop: moderateScale(10, 0.3),
                 lineHeight: moderateScale(20, 0.6),
-                fontSize: moderateScale(10, 0.6),
+                fontSize: moderateScale(13, 0.6),
                 // backgroundColor : 'red'
               },
             ]}>
@@ -541,7 +546,7 @@ const UserDetail = props => {
             }}>
             <CustomText
               style={[
-                {fontSize: moderateScale(13, 0.6), color: Color.themeBlack},
+                {fontSize: moderateScale(15, 0.6), color: Color.themeBlack},
               ]}>
               Gallery
             </CustomText>
@@ -562,14 +567,14 @@ const UserDetail = props => {
               <CustomText
                 style={{
                   color: Color.themeColor,
-                  fontSize: moderateScale(10, 0.6),
+                  fontSize: moderateScale(12, 0.6),
                 }}>
                 See All
               </CustomText>
               <Icon
                 name={'arrow-forward'}
                 as={Ionicons}
-                size={moderateScale(15, 0.6)}
+                size={moderateScale(16, 0.6)}
                 color={Color.themeColor}
                 style={{
                   marginLeft: moderateScale(5, 0.3),
@@ -649,18 +654,17 @@ const UserDetail = props => {
                 styles.btn,
                 {
                   backgroundColor:
-                    // userData?.fetch_user_report.some(
-                    //   (item, index) => item?.user_id == user?.id,
-                    // ) || reported
-                    //   ? Color.veryLightGray
-                    //   :
-                       Color.themeColor,
+                    userData?.fetch_user_report.some(
+                      (item, index) => item?.user_id == user?.id,
+                    ) || reported
+                      ? Color.veryLightGray
+                      :Color.themeColor,
                 },
               ]}
               onPress={() => {
-                // !userData?.fetch_user_report.some(
-                //   (item, index) => item?.user_id == user?.id,
-                // ) &&
+                !userData?.fetch_user_report.some(
+                  (item, index) => item?.user_id == user?.id,
+                ) &&
                   !reported &&
                   setReportModalVisible(true);
               }}>
@@ -671,17 +675,18 @@ const UserDetail = props => {
                   marginRight: moderateScale(10, 0.3),
                 }}
                 onPress={() => {
-                  // !userData?.fetch_user_report.some(
-                  //   (item, index) => item?.user_id == user?.id,
-                  // ) &&
+                  !userData?.fetch_user_report.some(
+                    (item, index) => item?.user_id == user?.id,
+                  ) &&
                     !reported &&
                     setReportModalVisible(true);
                 }}>
                 {
-                // userData?.fetch_user_report.some(
-                //   (item, index) => item?.user_id == user?.id,
-                // ) &&
-                 !reported
+                userData?.fetch_user_report.some(
+                  (item, index) => item?.user_id == user?.id,
+                ) ||
+                
+                 reported
                   ? 'Already Reported'
                   : 'Report/Flag User'}
               </CustomText>

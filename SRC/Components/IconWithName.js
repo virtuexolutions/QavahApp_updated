@@ -43,7 +43,7 @@ const IconWithName = ({
             width: windowWidth * 0.25,
             color: Color.veryLightGray,
            
-            fontSize : moderateScale(11,0.6)
+            fontSize : moderateScale(13,0.6)
             // backgroundColor : 'red'
           },
         ]}>

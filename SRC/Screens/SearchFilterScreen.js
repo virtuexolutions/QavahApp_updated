@@ -690,7 +690,7 @@ const SearchFilterScreen = () => {
                   />
                   <CustomText
                     style={{
-                      fontSize: moderateScale(10, 0.6),
+                      fontSize: moderateScale(12, 0.6),
                       color:
                         item?.text == option ? Color.white : Color.themeColor,
                     }}>
@@ -1391,7 +1391,7 @@ const SearchFilterScreen = () => {
             onPress={() => {
               getSearchResult();
             }}
-            fontSize={moderateScale(12, 0.6)}
+            fontSize={moderateScale(14, 0.6)}
             bgColor={Color.themeColor}
             // borderColor={Color.white}
             // borderWidth={2}
@@ -1428,7 +1428,7 @@ const SearchFilterScreen = () => {
                 return (
                   <CustomText
                     style={{
-                      fontSize: moderateScale(10, 0.6),
+                      fontSize: moderateScale(11, 0.6),
                       color: 'white',
                       paddingHorizontal: 5,
                       paddingVertical: 5,
@@ -1454,7 +1454,7 @@ const SearchFilterScreen = () => {
                 setBody([]), setFiltersOn([]);
               }}
               style={{
-                fontSize: moderateScale(11, 0.6),
+                fontSize: moderateScale(12, 0.6),
                 color: Color.themeColor,
               }}>
               clear all
@@ -1507,7 +1507,7 @@ const SearchFilterScreen = () => {
             <CustomText
               style={{
                 color: Color.themeColor,
-                fontSize: moderateScale(10, 0.6),
+                fontSize: moderateScale(11, 0.6),
               }}>
               See All
             </CustomText>
@@ -1605,7 +1605,7 @@ const SearchFilterScreen = () => {
                 <CustomText
                   // isBold
                   style={{
-                    fontSize: moderateScale(10, 0.6),
+                    fontSize: moderateScale(12, 0.6),
                     color: Color.black,
                   }}>
                   Try using different settings and filters
@@ -1653,7 +1653,7 @@ const styles = ScaledSheet.create({
   text: {
     // width: windowWidth * 0.17,
     textAlign: 'center',
-    fontSize: moderateScale(10, 0.6),
+    fontSize: moderateScale(11, 0.6),
     color: Color.themeColor,
     // backgroundColor: Color.red,
   },
@@ -1693,7 +1693,7 @@ const Silder = ({
       }}>
       <CustomText
         style={{
-          fontSize: moderateScale(13, 0.6),
+          fontSize: moderateScale(14, 0.6),
           color: Color.black,
         }}>
         {title}
@@ -1752,7 +1752,7 @@ const Silder = ({
           style={{
             marginLeft: moderateScale(10, 0.3),
             color: Color.veryLightGray,
-            fontSize: moderateScale(11, 0.6),
+            fontSize: moderateScale(12, 0.6),
           }}>
           {multi ? `${state1}-${state2}` : `${state1} ML`}
         </CustomText>

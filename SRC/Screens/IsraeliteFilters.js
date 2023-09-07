@@ -667,7 +667,7 @@ const IsraeliteFilters = props => {
                 {
                   marginTop: moderateScale(35, 0.3),
                   // width: windowWidth * 0.9,
-                  fontSize: moderateScale(12, 0.6),
+                  fontSize: moderateScale(13, 0.6),
                 },
               ]}>
               Passions
@@ -697,7 +697,7 @@ const IsraeliteFilters = props => {
                 {
                   marginTop: moderateScale(35, 0.3),
                   // width: windowWidth * 0.9,
-                  fontSize: moderateScale(12, 0.6),
+                  fontSize: moderateScale(13, 0.6),
                 },
               ]}>
               kingdom Gifts

@@ -58,26 +58,10 @@ const PersonalInfo = () => {
   const [scrollEnabled , setScrollEnabled] = useState(true)
   const [newMultiImages, setNewMultiImages] = useState([])
 
-    // useEffect(() => {
-    //   setTempMultiImages([])
-    //     if(multiImages.length >0){
-    //       setTempMultiImages(multiImages)
-    //     }
-    
-    // }, [multiImages])
-    
-    
     const onDragRelease = (itemOrder) => {
       setScrollEnabled(true)
-      // console.log(value)
-      // setMultiImages([])
-      // // value?.itemOrder.map((item, index) => {
-        // //   return ( setMultiImages((prev)=>[...prev , tempMultiImages[item?.key] ]))
-        // // });
         const newItems = value?.itemOrder.map((item) => multiImages[item.key]);
-        // console.log("🚀 ~ file: PersonalInfo.js:59 ~ onDragRelease ~ newItems:", newItems)
         setMultiImages(newItems)
-        // console.log("🚀 ~ file: PersonalInfo.js:35 ~ PersonalInfo ~ multiImages:", multiImages)
       };
 
       const updatePortfolio = async () =>{
@@ -91,16 +75,7 @@ const PersonalInfo = () => {
           
         })
         
-        // console.log("🚀 ~ file: PersonalInfo.js:84 ~ updatePortfolio ~ formData:", formData)
-        // const body = {
-        //   // targetsUid: user?.id,
-        //   profileName : profileName,
-        //   // Birthday: moment(dob).format('YYYY-MM-DD'),
-        //   // Gender:gender,
-        //   galleryImages:multiImages
-          
-        //   };
-        // console.log("🚀 ~ file: PersonalInfo.js:81 ~ updatePortfolio ~ body:", body)
+        
         const response = await Post(url, formData,apiHeader(token))
     
         if(response?.data?.status){
@@ -109,7 +84,6 @@ const PersonalInfo = () => {
           dispatch(setUserData(response?.data?.user));
           Platform.OS == 'android' ? ToastAndroid.show('Profile Updated Successfully',ToastAndroid.SHORT) :
           Alert('Profile Updated Successfully')
-          
           
         }
       }
@@ -143,7 +117,7 @@ const PersonalInfo = () => {
         <CustomText
           style={{
             marginTop: moderateScale(20, 0.3),
-            fontSize: moderateScale(11, 0.6),
+            fontSize: moderateScale(13, 0.6),
             color: Color.themeBlack,
             width: windowWidth * 0.8,
             textAlign: 'center',
@@ -170,7 +144,7 @@ const PersonalInfo = () => {
           borderRadius={moderateScale(0, 0.3)}
           titleStlye={{
             color: Color.veryLightGray,
-            fontSize: moderateScale(11, 0.6),
+            fontSize: moderateScale(13, 0.6),
             marginTop: moderateScale(40, 0.3),
           }}
           border={1}
@@ -195,7 +169,7 @@ const PersonalInfo = () => {
           borderRadius={moderateScale(0, 0.3)}
           titleStlye={{
             color: Color.veryLightGray,
-            fontSize: moderateScale(11, 0.6),
+            fontSize: moderateScale(13, 0.6),
             marginTop: moderateScale(20, 0.3),
           }}
           border={1}
@@ -222,7 +196,7 @@ const PersonalInfo = () => {
           borderRadius={moderateScale(0, 0.3)}
           titleStlye={{
             color: Color.veryLightGray,
-            fontSize: moderateScale(11, 0.6),
+            fontSize: moderateScale(13, 0.6),
             marginTop: moderateScale(20, 0.3),
           }}
           inputColor={Color.themeLightGray}
@@ -249,7 +223,7 @@ const PersonalInfo = () => {
           borderRadius={moderateScale(0, 0.3)}
           titleStlye={{
             color: Color.veryLightGray,
-            fontSize: moderateScale(11, 0.6),
+            fontSize: moderateScale(13, 0.6),
             marginTop: moderateScale(20, 0.3),
           }}
           border={1}

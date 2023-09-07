@@ -109,7 +109,7 @@ const ChangePassword = () => {
           borderRadius={moderateScale(0, 0.3)}
           titleStlye={{
             color: Color.veryLightGray,
-            fontSize: moderateScale(11, 0.6),
+            fontSize: moderateScale(13, 0.6),
             marginTop: moderateScale(50, 0.3),
           }}
           border={1}
@@ -131,7 +131,7 @@ const ChangePassword = () => {
           borderRadius={moderateScale(0, 0.3)}
           titleStlye={{
             color: Color.veryLightGray,
-            fontSize: moderateScale(11, 0.6),
+            fontSize: moderateScale(13, 0.6),
             marginTop: moderateScale(20, 0.3),
           }}
           border={1}
@@ -153,7 +153,7 @@ const ChangePassword = () => {
           borderRadius={moderateScale(0, 0.3)}
           titleStlye={{
             color: Color.veryLightGray,
-            fontSize: moderateScale(11, 0.6),
+            fontSize: moderateScale(13, 0.6),
             marginTop: moderateScale(20, 0.3),
           }}
           border={1}

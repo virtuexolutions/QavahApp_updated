@@ -206,7 +206,7 @@ const Profile = props => {
           style={[
             {
               color: Color.veryLightGray,
-              fontSize: moderateScale(11, 0.6),
+              fontSize: moderateScale(13, 0.6),
               marginTop: moderateScale(6, 0.3),
             },
           ]}>
@@ -216,7 +216,7 @@ const Profile = props => {
           style={[
             {
               color: Color.veryLightGray,
-              fontSize: moderateScale(11, 0.6),
+              fontSize: moderateScale(13, 0.6),
               marginTop: moderateScale(2, 0.3),
             },
           ]}>
