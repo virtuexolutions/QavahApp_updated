@@ -148,7 +148,7 @@ const MatchModal = ({isVisible, profileImage}) => {
             }}>
             <CustomImage
               style={{width: '100%', height: '100%'}}
-              source={require('../Assets/Images/banner.jpg')}
+              source={{uri : otherUserData?.profile_image?.uri}}
             />
           </View>
         </View>
