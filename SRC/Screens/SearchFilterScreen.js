@@ -557,7 +557,9 @@ const SearchFilterScreen = () => {
     const response = await Post(url, dataBody, apiHeader(token));
     setIsLoading(false);
     if (response != undefined) {
+      console.log('Search result Response fsdfsdfsd f', response?.data?.peoples[0]?.useractions);
       console.log('Search result Response', response?.data?.peoples);
+
       console.log('Search result Response', response?.data);
 
       // console.log('Search result Response', response?.data?.peoples);

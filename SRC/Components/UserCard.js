@@ -40,7 +40,8 @@ const UserCard = ({
 
   const token = useSelector(state => state.authReducer.token);
   const userData = useSelector(state => state.commonReducer.userData);
-  const [liked, setLiked] = useState(false)
+  const [liked, setLiked] = useState(item?.useractions?.liked == 1 ? true : false)
+  console.log("🚀 ~ file: UserCard.js:44 ~ liked:", liked)
 
   // console.log("🚀 ~ file: UserCard.js:19 ~ UserCard ~ favoredYouPost:", favoredYouPost)
   // const profile_image = item?.profile_images[0]?.url;
@@ -250,6 +251,7 @@ const UserCard = ({
           />
           <BtnContainer
             backgroundColor={liked ?Color.red :Color.themeColor}
+            // backgroundColor={Color.white}
             color={Color.white}
             name={'heart-o'}
             type={FontAwesome}
