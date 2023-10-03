@@ -19,8 +19,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomImage from '../Components/CustomImage';
 import {CometChatConversationListWithMessages, CometChatUI} from '../cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
 import {CometChat} from '@cometchat-pro/react-native-chat';
-
-// import { CometChatUI } from '../../SRC/cometchat-chat-uikit-react-native-3';
+// import CometChatUI from '../cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
+// import { CometChatUI } from '../cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
 
 const ChatScreen = ({navigation}) => {
   console.log("🚀 ~ file: ChatScreen.js:26 ~ ChatScreen ~ navigation:", navigation)

@@ -111,6 +111,17 @@ const HomeScreen = () => {
       dispatch(setIsProfileVerified(response?.data?.user?.user_profile_verified))
     }
   };
+
+  const unsubscribePusher = async () => {
+    console.log('unsubscribed happend')
+
+    await pusher.unsubscribe({
+      channelName: `match-popup-${user?.id}`,
+    });
+    dispatch(setIsSubscribed(false));
+    dispatch(setPusherInstance(null));
+    console.log('unsubscribed successfully')
+  };
  
   useEffect(() => {
     console.log('useEffect runs'); 
@@ -148,6 +159,9 @@ const HomeScreen = () => {
             );
             dispatch(setotherData(dataString?.message?.user));
           },
+          onSubscriptionError : (error)=>{
+            console.log('data ------========== >' , error)
+          }
         });
         // await pusher.subscribe({ channelName });
         await pusher.connect();
@@ -155,8 +169,14 @@ const HomeScreen = () => {
         console.log(`ERROR: ${e}`);
       }
     }
+    const disconnectPusher = async()=>{
+      const result = await pusher.disconnect();
+      console.log("🚀 ~ file: HomeScreen.js:163 ~ disconnectPusher ~ result:", result)
+    }
     if (!isSubscribed) {
       connectPusher();
+      // disconnectPusher()
+      // unsubscribePusher()
     }
   }, [focused]);
 

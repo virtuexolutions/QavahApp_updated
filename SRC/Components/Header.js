@@ -394,7 +394,21 @@ const Header = props => {
         />
       )}
       {showRight &&
-        (rightName ? (
+        (rightName ? (<>
+          <Icon
+            name={'ios-chatbubble-ellipses-sharp'}
+            as={ Ionicons}
+            size={moderateScale(22, 0.3)}
+            color={Color.themeLightGray}
+            onPress={()=>{
+              navigationService.navigate('ChatScreen')}
+            }
+            style={{
+              position: 'absolute',
+              right: moderateScale(10, 0.3),
+              zIndex: 1,
+            }}
+          />
           <Icon
             name={rightName}
             as={rightType ? rightType : FontAwesome}
@@ -409,10 +423,10 @@ const Header = props => {
             }
             style={{
               position: 'absolute',
-              right: moderateScale(10, 0.3),
+              right: moderateScale(35, 0.3),
               zIndex: 1,
             }}
-          />
+          /></>
         ) : (
           <View
             style={{

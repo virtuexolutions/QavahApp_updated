@@ -36,7 +36,7 @@ const SelectedChat = ({route}) => {
   
   return (
     <View style={{flex: 1}}>
-    {localUser ? (
+    {/* {localUser ? (
       <CometChatMessages
         type={'user'}
         item={item}//The object will be of user or group depending on type
@@ -48,7 +48,7 @@ const SelectedChat = ({route}) => {
         
 
       />
-    ) : null}
+    ) : null} */}
   </View>
   ) 
 }

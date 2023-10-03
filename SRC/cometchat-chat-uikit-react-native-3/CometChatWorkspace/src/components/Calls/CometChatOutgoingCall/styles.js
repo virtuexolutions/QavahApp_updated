@@ -21,7 +21,6 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     textTransform: 'capitalize',
-    color:'black'
   },
   thumbnailWrapper: {
     width: 200,

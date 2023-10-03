@@ -31,8 +31,8 @@ export class UIKitSettings {
     this.chats = true;
     this.calls = false;
     this.users = true;
-    this.groups = false;
-    this.userSettings = false;
+    this.groups = true;
+    this.userSettings = true;
 
     this.searchUsers = true;
     this.searchGroups = true;
@@ -64,9 +64,9 @@ export class UIKitSettings {
     this.enableSoundForCalls = true;
 
     this.userVideoCall = true;
-    this.groupVideoCall = false;
+    this.groupVideoCall = true;
     this.userAudioCall = true;
-    this.groupAudioCall = false;
+    this.groupAudioCall = true;
 
     this.sendTypingIndicator = true;
     this.showUserPresence = true;

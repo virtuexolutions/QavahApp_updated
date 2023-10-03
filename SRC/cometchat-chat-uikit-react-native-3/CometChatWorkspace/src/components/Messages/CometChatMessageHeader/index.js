@@ -14,7 +14,6 @@ import detailPaneIcon from './resources/detailpane.png';
 import { logger } from '../../../utils/common';
 import { CometChat } from '@cometchat-pro/react-native-chat';
 import { CometChatContext } from '../../../utils/CometChatContext';
-import navigationService from '../../../../../../navigationService';
 class CometChatMessageHeader extends React.Component {
   static contextType = CometChatContext;
   constructor(props) {
@@ -269,10 +268,7 @@ class CometChatMessageHeader extends React.Component {
     let image;
     let userName;
     let presence;
-    let item ;
     if (this.props.type === CometChat.RECEIVER_TYPE.USER) {
-  console.log('user=========>>>>>', this.props.item)
-      item = this.props.item
       image = this.props.item.avatar;
       userName = this.props.item.name;
       presence = (
@@ -358,7 +354,7 @@ class CometChatMessageHeader extends React.Component {
     return (
       <View style={styles.headerContainer}>
         <TouchableOpacity
-          onPress={() => this.props.GoBack()}
+          onPress={() => this.props.actionGenerated(actions.GO_BACK)}
           style={styles.backButtonContainer}>
           <Icon
             name="chevron-back-sharp"
@@ -367,14 +363,7 @@ class CometChatMessageHeader extends React.Component {
           />
         </TouchableOpacity>
         <View style={styles.headerDetailContainer}>
-          <TouchableOpacity
-          onPress={()=>{
-            this.props.actionGenerated(actions.SHOW_PROFILE)
-            // navigationService.navigate('UserDetail',{
-            //   item: {...item,url:item?.avatar, },
-            //   fromSearch: true,
-            // })
-          }}
+          <View
             style={[
               styles.avatarContainer,
               {
@@ -389,24 +378,13 @@ class CometChatMessageHeader extends React.Component {
               name={userName}
             />
             {presence}
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.itemDetailContainer} 
-          onPress={
-            ()=>{ 
-              this.props.actionGenerated(actions.SHOW_PROFILE)
-            //   navigationService.navigate('UserDetail',{
-            //   item: item,
-            //   fromSearch: true,
-            // })
-          }
-          }
-            
-            >
+          </View>
+          <View style={styles.itemDetailContainer}>
             <Text style={styles.itemNameText} numberOfLines={1}>
               {this.props.item.name}
             </Text>
             {status}
-          </TouchableOpacity>
+          </View>
           {videoCallBtn}
           {audioCallBtn}
           {info}

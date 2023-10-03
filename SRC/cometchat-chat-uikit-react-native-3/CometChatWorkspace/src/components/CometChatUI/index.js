@@ -39,7 +39,6 @@ function CometChatUI() {
   };
   return (
     <CometChatContextProvider ref={contextRef}>
-      {/* }{CometChatConversationListWithMessages} */}
       {tabs ? (
         <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -75,26 +74,14 @@ function CometChatUI() {
                 />
               );
             },
-            tabBarActiveTintColor: "#3399ff",
-            tabBarInactiveTintColor: "rgba(0,0,0,0.5)",
-            tabBarActiveBackgroundColor: "#fff",
-            tabBarInactiveBackgroundColor: "#fff",
-            tabBarStyle : {
-              fontSize: 12
-            }
-            // tabBarLabelStyle: {
-            //   fontSize: 12
-            // },  
           })}
-
-          // screenOptions={{
-          //   activeTintColor: theme.color.blue,
-          //   inactiveTintColor: 'rgba(0,0,0,0.5)',
-          //   activeBackgroundColor: theme.color.white,
-          //   inactiveBackgroundColor: theme.color.white,
-          //   labelStyle: { fontSize: 12 },
-          // }}
-          >
+          tabBarOptions={{
+            activeTintColor: theme.color.blue,
+            inactiveTintColor: 'rgba(0,0,0,0.5)',
+            activeBackgroundColor: theme.color.white,
+            inactiveBackgroundColor: theme.color.white,
+            labelStyle: { fontSize: 12 },
+          }}>
           {tabs.isChatEnabled && (
             <Tab.Screen
               name="Chats"
@@ -107,12 +94,12 @@ function CometChatUI() {
               component={CometChatUserListWithMessages}
             />
           )}
-          {tabs.isGroupListEnabled && (
+          {/* {tabs.isGroupListEnabled && (
             <Tab.Screen
               name="Groups"
               component={CometChatGroupListWithMessages}
             />
-          )}
+          )} */}
           {tabs.isUserSettingsEnabled && (
             <Tab.Screen name="More" component={CometChatUserProfile} />
           )}
