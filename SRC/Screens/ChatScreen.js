@@ -156,7 +156,7 @@ const ChatScreen = ({navigation}) => {
 
 
       <View style={{flex: 1}}>
-      <CometChatConversationListWithMessages navigation={navigation} />
+      <CometChatUI />
       </View>
      
     
