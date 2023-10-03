@@ -47,6 +47,7 @@ import PrivacyPolicy from './Screens/PrivacyPolicy';
 import PaymentModal from './Components/PaymentModal';
 import {
   CometChatConversationListWithMessages,
+  CometChatMessages,
   CometChatUserListWithMessages,
 } from './cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
 import SelectedChat from './Screens/SelectedChat';
@@ -112,6 +113,7 @@ const AppNavigator = () => {
           initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LandingPage" component={LandingPage} />
+          <RootNav.Screen name="CometChatMessages" component={CometChatMessages} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="CreatePortfolio" component={CreatePortfolio} />
 
@@ -134,6 +136,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="UserDetail" component={UserDetail} />
           <RootNav.Screen name="Profile" component={Profile} />
           <RootNav.Screen name="Seeking" component={Seeking} />
+          <RootNav.Screen name="ChatScreen" component={ChatScreen} />
           <RootNav.Screen name="PersonalInfo" component={PersonalInfo} />
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
           <RootNav.Screen name="WhoViewedMe" component={WhoViewedMe} />
@@ -248,7 +251,7 @@ export const TabNavigation = () => {
       <Tabs.Screen name={'HomeScreen'} component={HomeScreen} />
       <Tabs.Screen name={'SearchFilterScreen'} component={SearchFilterScreen} />
       <Tabs.Screen name={'Wishlist'} component={Wishlist} />
-      <Tabs.Screen name={'ChatScreen'} component={ChatScreen} />
+      {/* <Tabs.Screen name={'ChatScreen'} component={ChatScreen} /> */}
       {/* <Tabs.Screen name="UserListWithMessages" component={CometChatUserListWithMessages} /> */}
       {/* <Tabs.Screen name="ConversationListWithMessages" component={CometChatConversationListWithMessages} /> */}
 

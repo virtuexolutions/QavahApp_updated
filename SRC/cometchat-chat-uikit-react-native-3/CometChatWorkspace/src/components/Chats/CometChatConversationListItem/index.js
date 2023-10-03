@@ -9,13 +9,10 @@ import {
 } from '../../Shared';
 
 import styles from './styles';
-import { View, TouchableOpacity, Text, Image } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 import { Platform } from 'react-native';
 import { logger } from '../../../utils/common';
 import { CometChatContext } from '../../../utils/CometChatContext';
-import Modal from 'react-native-modal';
-import { moderateScale } from 'react-native-size-matters';
-import { windowHeight, windowWidth } from '../../../../../../Utillity/utils';
 
 const conversation = 'conversation';
 const lastMessage = 'lastMessage';
@@ -32,7 +29,6 @@ class CometChatConversationListItem extends React.Component {
       lastMessageTimestamp: '',
       isThreaded: false,
       restrictions: null,
-      modalVisible:false
     };
   }
 
@@ -378,7 +374,7 @@ class CometChatConversationListItem extends React.Component {
               this.props.conversationKey,
             )
           }>
-          <TouchableOpacity style={styles.itemThumbnailStyle} onPress={()=>{this.setState({modalVisible:true})}}>
+          <View style={styles.itemThumbnailStyle}>
             <CometChatAvatar
               image={this.getAvatar()}
               cornerRadius={25}
@@ -387,7 +383,7 @@ class CometChatConversationListItem extends React.Component {
               name={this.props.conversation.conversationWith.name}
             />
             {presence}
-          </TouchableOpacity>
+          </View>
           <View
             style={[
               styles.itemDetailsContainer,
@@ -428,28 +424,6 @@ class CometChatConversationListItem extends React.Component {
             </View>
           </View>
         </TouchableOpacity>
-        <Modal isVisible={this.state.modalVisible} onBackdropPress={()=>{
-          this.setState({modalVisible:false})
-        }} style={{
-          width:170,height:170,
-          alignSelf:'center',
-          // alignItems:'center',
-          top:-100,
-          justifyContent:'center',
-          // height:moderateScale(10,.6), 
-          // backgroundColor:'white'
-        }}>
-          <View>
-          <View style={{width:windowWidth*0.7, position:'absolute', zIndex:1, backgroundColor:'rgba(0,0,0,0.4)', top:0, padding:moderateScale(3,.6)}}>
-            <Text style={{color:'white',}}>{this.props.conversation.conversationWith.name}</Text>
-          </View>
-           <View style={{width:windowWidth*0.7,height:windowHeight*0.3, backgroundColor:'white'}}>
-            <Image style={{width:'100%', height:'100%'}}  source={this.getAvatar()}/>
-
-            
-          </View>
-          </View>
-        </Modal>
       </View>
     );
   }

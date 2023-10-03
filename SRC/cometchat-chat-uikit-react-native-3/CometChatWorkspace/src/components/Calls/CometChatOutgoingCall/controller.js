@@ -3,15 +3,11 @@ import { CometChat } from '@cometchat-pro/react-native-chat';
 import * as enums from '../../../utils/enums';
 
 export class CallScreenManager {
- 
- 
-  // callListenerId = `callscreen_${new Date().getTime()}`;
-  
+  callListenerId = `callscreen_${new Date().getTime()}`;
 
   attachListeners(callback) {
-    // console.log('call Screen here ==============>>>>>>>>')
     CometChat.addCallListener(
-      '5k8vnxoupgoo7lk',
+      this.callListenerId,
       new CometChat.CallListener({
         onOutgoingCallAccepted: (call) => {
           callback(enums.OUTGOING_CALL_ACCEPTED, call);
@@ -27,7 +23,6 @@ export class CallScreenManager {
   }
 
   removeListeners() {
-    // CometChat.removeCallListener(this.callListenerId);
-    CometChat.removeCallListener('5k8vnxoupgoo7lk');
+    CometChat.removeCallListener(this.callListenerId);
   }
 }

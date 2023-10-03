@@ -403,6 +403,7 @@ class CometChatConversationList extends React.Component {
   updateUser = (user) => {
     try {
       const conversationList = [...this.state.conversationList];
+      console.log("🚀 ~ file: index.js:406 ~ CometChatConversationList ~ conversationList:", conversationList)
       const conversationKey = conversationList.findIndex(
         (conversationObj) =>
           conversationObj.conversationType === 'user' &&

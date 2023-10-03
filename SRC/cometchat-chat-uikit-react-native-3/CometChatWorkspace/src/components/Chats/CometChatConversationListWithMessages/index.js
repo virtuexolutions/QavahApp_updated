@@ -177,7 +177,6 @@ class CometChatConversationListWithMessages extends React.Component {
         this.appendCallMessage(item);
         break;
       case actions.VIEW_ACTUAL_IMAGE:
-        console.log('image')
         this.toggleImageView(item);
         break;
       case actions.MEMBERS_ADDED:
@@ -282,7 +281,6 @@ class CometChatConversationListWithMessages extends React.Component {
    * @param
    */
   audioCall = () => {
-    console.log('here in the audio call ===== >> ')
     try {
       let receiverId;
       let receiverType;

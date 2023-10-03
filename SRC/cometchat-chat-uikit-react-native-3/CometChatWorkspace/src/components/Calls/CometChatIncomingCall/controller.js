@@ -13,7 +13,6 @@ export class CallAlertManager {
           callback(enums.INCOMING_CALL_RECEIVED, call);
         },
         onIncomingCallCancelled: (call) => {
-          console.log('INCOMING_CALL_CANCELLED======>>>>>')
           callback(enums.INCOMING_CALL_CANCELLED, call);
         },
       }),

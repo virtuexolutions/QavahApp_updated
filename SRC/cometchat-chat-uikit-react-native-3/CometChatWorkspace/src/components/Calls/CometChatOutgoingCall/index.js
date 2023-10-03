@@ -8,7 +8,7 @@ import KeepAwake from 'react-native-keep-awake';
 import { outgoingCallAlert } from '../../../resources/audio';
 import { CometChatManager } from '../../../utils/controller';
 import { CallScreenManager } from './controller';
-import * as consts from '../../../utils/consts';
+import * as consts from '../../../utils/consts'
 import CometChatAvatar from '../../Shared/CometChatAvatar';
 
 import * as enums from '../../../utils/enums';
@@ -29,7 +29,6 @@ class CometChatOutgoingCall extends React.PureComponent {
       callInProgress: null,
       outgoingCallScreen: false,
     };
-    console.log('props data', props);
 
     this.callScreenManager = null;
     this.theme = { ...theme, ...this.props.theme };
@@ -40,41 +39,21 @@ class CometChatOutgoingCall extends React.PureComponent {
   componentDidMount() {
     this.callScreenManager = new CallScreenManager();
     this.callScreenManager.attachListeners(this.callScreenUpdated);
-    console.log('==============================================');
   }
 
   componentDidUpdate(prevProps) {
-    console.log(
-      '🚀 ~ file: index.js:46 ~ CometChatOutgoingCall ~ componentDidUpdate ~ prevProps:',
-      prevProps,
-    );
     try {
       if (
-        // prevProps.outgoingCall !== this.props.outgoingCall &&
+        prevProps.outgoingCall !== this.props.outgoingCall &&
         this.props.outgoingCall
       ) {
         this.playOutgoingAlert();
 
-        const call2 = this.props.outgoingCall;
-        console.log('callScreen manager =========>>>>',CallScreenManager)
-        console.log('call is what', this.props?.item?.uid, this.props?.type)
-        // var recieverId = reciverInfo?.uid;
-        var callType = this.props?.type == 'audio' ?  CometChat.CALL_TYPE.AUDIO: CometChat.CALL_TYPE.VIDEO;
-        console.log('error for audio type')
-        var recieverType = CometChat.RECEIVER_TYPE.USER;
-        var call = new CometChat.Call(this.props?.item?.uid, callType, 'user');
-        CometChat.initiateCall(call).then(
-          (outGointCall) => {
-            console.log('Call initiated Successfully',outGointCall);
-          },
-          (error) => {
-            console.log('Call initialization failed with exception', error);
-          },
-        );
+        const call = this.props.outgoingCall;
 
         this.setState({
           outgoingCallScreen: true,
-          callInProgress: this?.props?.item,
+          callInProgress: call,
           errorScreen: false,
           errorMessage: null,
         });
@@ -114,15 +93,12 @@ class CometChatOutgoingCall extends React.PureComponent {
     try {
       switch (key) {
         case enums.INCOMING_CALL_CANCELLED:
-          console.log('audio call cancelled here===============,,,,,,,, ');
           this.incomingCallCancelled(call);
           break;
         case enums.OUTGOING_CALL_ACCEPTED: // occurs at the caller end
-          console.log('audio call rejected here===============,,,,,,,, ');
           this.outgoingCallAccepted(call);
           break;
         case enums.OUTGOING_CALL_REJECTED: // occurs at the caller end, callee rejects the call
-          console.log('audio call rejected here===============,,,,,,,, ');
           this.outgoingCallRejected(call);
           break;
         default:
@@ -157,7 +133,6 @@ class CometChatOutgoingCall extends React.PureComponent {
         this.pauseOutgoingAlert();
 
         this.setState({ outgoingCallScreen: false, callInProgress: call });
-        console.log(this.state.callInProgress);
         this.startCall(call);
       }
     } catch (error) {
@@ -209,7 +184,6 @@ class CometChatOutgoingCall extends React.PureComponent {
           errorScreen: false,
           errorMessage: null,
         });
-        console.log('accepted call', this.state.callInProgress);
 
         this.startCall(call);
       })
@@ -226,10 +200,6 @@ class CometChatOutgoingCall extends React.PureComponent {
    * @param call - call object
    */
   startCall = (call) => {
-    console.log(
-      '🚀 ~ file: index.js:211 ~ CometChatOutgoingCall ~ call:',
-      call,
-    );
     try {
       const { sessionId } = call;
       const callType = call.type;
@@ -282,7 +252,6 @@ class CometChatOutgoingCall extends React.PureComponent {
           }
         },
         onCallEnded: (endedCall) => {
-          console.log('onCallEnded====>>>>>>>>>>>>>,,,,');
           this.setState({
             outgoingCallScreen: false,
             callInProgress: null,
@@ -335,8 +304,8 @@ class CometChatOutgoingCall extends React.PureComponent {
     try {
       this.outgoingAlert.setCurrentTime(0);
       this.outgoingAlert.setNumberOfLoops(-1);
-      this.outgoingAlert.play(() => {});
-      Vibration.vibrate(consts.PATTERN, true);
+      this.outgoingAlert.play(()=>{});
+      Vibration.vibrate(consts.PATTERN,true);
     } catch (error) {
       logger(error);
     }
@@ -348,7 +317,6 @@ class CometChatOutgoingCall extends React.PureComponent {
    */
   pauseOutgoingAlert = () => {
     try {
-      console.log('canceled call fsgsgse');
       this.outgoingAlert.pause();
       Vibration.cancel();
     } catch (error) {
@@ -361,18 +329,14 @@ class CometChatOutgoingCall extends React.PureComponent {
    * @param
    */
   cancelCall = () => {
-    console.log('Here i am declining call');
     try {
       this.pauseOutgoingAlert();
-      console.log('Session id is', this.props?.item?.uid);
-      this.setState({callsettings:null, outgoingCallScreen:false})
-// break point of the call 
+
       CometChatManager.rejectCall(
-        this.props?.item?.uid,
+        this.state.callInProgress.sessionId,
         CometChat.CALL_STATUS.CANCELLED,
       )
         .then((call) => {
-          console.log('Here===============>>>>>>>>>>>>>>>>>>>>>');
           this.props.actionGenerated(actions.OUTGOING_CALL_CANCELLED, call);
           this.setState({
             outgoingCallScreen: false,
@@ -381,7 +345,6 @@ class CometChatOutgoingCall extends React.PureComponent {
           });
         })
         .catch((error) => {
-          console.log('here I am in the catch ');
           this.props.actionGenerated(actions.CALL_ERROR, error);
           this.setState({
             outgoingCallScreen: false,
@@ -390,19 +353,12 @@ class CometChatOutgoingCall extends React.PureComponent {
           });
         });
     } catch (error) {
-      console.log('Here canceled call');
-      console.log( 'error in rejecting outgoing call === >> ', error)
-
       logger(error);
     }
   };
 
   render() {
     if (this.state.callSettings) {
-      // console.log(
-      //   '🚀 ~ file: index.js:378 ~ CometChatOutgoingCall ~ render ~ callSettings:',
-      //   this.state.callSettings,
-      // );
       return (
         <Modal animated animationType="fade">
           <View style={{ height: '100%', width: '100%', position: 'relative' }}>
@@ -428,14 +384,14 @@ class CometChatOutgoingCall extends React.PureComponent {
       }
 
       if (this.state.outgoingCallScreen) {
-        console.log('Outgoing call screen rendered===============')
         callScreen = (
           <Modal animated animationType="fade">
             <View style={style.container}>
               <View style={style.header}>
-               
-                <Text style={style.headerName}>{this.props?.item?.name}</Text>
-                 <Text style={style.headerLabel}>Ringing...</Text>
+                <Text style={style.headerLabel}>Calling...</Text>
+                <Text style={style.headerName}>
+                  {this.state.callInProgress.receiver.name}
+                </Text>
               </View>
               <View style={style.thumbnail}>
                 <CometChatAvatar
@@ -443,8 +399,8 @@ class CometChatOutgoingCall extends React.PureComponent {
                   borderColor={this.theme.color.secondary}
                   borderWidth={0}
                   textFontSize={60}
-                  image={{ uri: this.props?.item?.avatar }}
-                  name={this.props?.item?.name}
+                  image={{ uri: this.state.callInProgress.receiver.avatar }}
+                  name={this.state.callInProgress.receiver.name}
                 />
               </View>
               {errorScreen}
