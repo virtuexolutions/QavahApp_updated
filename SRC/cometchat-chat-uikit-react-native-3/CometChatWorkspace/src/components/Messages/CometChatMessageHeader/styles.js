@@ -54,6 +54,7 @@ export default StyleSheet.create({
     flex: 1,
   },
   itemNameText: {
+    color:'black',
     fontSize: 18,
     fontWeight: '500',
   },
