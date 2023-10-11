@@ -83,7 +83,7 @@ const LoginScreen = ({route}) => {
       dispatch(setIsProfileVerified(response?.data?.user?.user_profile_verified))
       dispatch(setUserToken({token: response?.data?.token}));
       dispatch(setIsLoggedIn());
-      LoginUser(response?.data?.user?.uid)
+    
     } else {
       console.log(response?.data?.message);
       Platform.OS == 'android'
@@ -91,29 +91,6 @@ const LoginScreen = ({route}) => {
         : alert(response?.data?.message);
     }
   };
-
-  const LoginUser = (uid) => {
-    console.log('In login commet chat==============????')
-    CometChat.login(uid, authKey).then(
-      user => {
-        console.log('Login Successful:', {user});
-        dispatch(setCommetChatUserData(true))
-      },
-      error => {
-        console.log('Login failed with exception:', {error});
-      },
-    );
-  };
-
-  // useEffect(() => {
-  //   // configureCometChat()
-  //   LoginUser();
-
-  //   return()=>{
-  //     setUserData(false)
-  //   }
-  // }, [])
-
 
 
   return (

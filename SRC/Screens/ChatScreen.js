@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View , ActivityIndicator} from 'react-native';
+import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import React, {useEffect} from 'react';
 import ScreenBoiler from '../Components/ScreenBoiler';
 import moment from 'moment';
@@ -12,33 +12,42 @@ import CustomText from '../Components/CustomText';
 import SearchContainer from '../Components/SearchContainer';
 import {useState} from 'react';
 import ChatCard from '../Components/ChatCard';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomImage from '../Components/CustomImage';
-import {CometChatConversationListWithMessages, CometChatUI} from '../cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
+import {
+  CometChatConversationListWithMessages,
+  CometChatUI,
+} from '../cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
 import {CometChat} from '@cometchat-pro/react-native-chat';
-// import CometChatUI from '../cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
-// import { CometChatUI } from '../cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
+import {setCommetChatUserData} from '../Store/slices/common';
 
 const ChatScreen = ({navigation}) => {
-  console.log("🚀 ~ file: ChatScreen.js:26 ~ ChatScreen ~ navigation:", navigation)
+  const dispatch = useDispatch();
   const userData = useSelector(state => state.commonReducer.userData);
-  // console.log("🚀 ~ file: ChatScreen.js:27 ~ ChatScreen ~ userData:", userData?.uid)
+  console.log(
+    '🚀 ~ file: ChatScreen.js:27 ~ ChatScreen ~ userData:',
+    userData?.uid,
+  );
   const [searchData, setSearchData] = useState('');
-  // const [userinfo , setUserData] = useState(false)
-  const commetChatUser = useSelector(state=> state.commonReducer.commetChatUserData)
-  console.log("🚀 ~ file: ChatScreen.js:32 ~ ChatScreen ~ commetChatUser:", commetChatUser)
+  const commetChatUser = useSelector(
+    state => state.commonReducer.commetChatUserData,
+  );
+  console.log(
+    '🚀 ~ file: ChatScreen.js:32 ~ ChatScreen ~ commetChatUser:',
+    commetChatUser,
+  );
   // console.log("🚀 ~ file: ChatScreen.js:31 ~ ChatScreen ~ userinfo:", userinfo)
-  
-  const appID = "2092182aee051e28";
-  const region = "US";
-  const appSetting = new CometChat.AppSettingsBuilder()
-  .subscribePresenceForAllUsers()
-  .setRegion(region)
-  .build();
+  const [userLoggedIn, setUserLogin] = useState(false);
 
+  const appID = '2092182aee051e28';
+  const region = 'US';
+  const appSetting = new CometChat.AppSettingsBuilder()
+    .subscribePresenceForAllUsers()
+    .setRegion(region)
+    .build();
 
   const chatListingData = [
     {
@@ -128,152 +137,58 @@ const ChatScreen = ({navigation}) => {
     },
   ];
 
-  const configureCometChat = async()=>{
-    console.log('here is the chat configuration')
+  const configureCometChat = async () => {
+    console.log('here is the chat configuration');
     CometChat.init(appID, appSetting).then(
       () => {
-        console.log("Initialization completed successfully");
-       
+        console.log('Initialization completed successfully');
+
         // You can now call login function.
       },
-      (error) => {
-        console.log("Initialization failed with error:", error);
+      error => {
+        console.log('Initialization failed with error:', error);
         // Check the reason for error and take appropriate action.
-      }
+      },
     );
-  }
+  };
 
-  // useEffect(() => {
-    
-  
-  // }, []);
- 
- 
-  
- 
+  const LoginUser = () => {
+    console.log('In login commet chat==============????');
+    CometChat.login(
+      userData?.uid,
+      '07ba629476752645dbce6a6c4aad7b2fc680b511',
+    ).then(
+      user => {
+        console.log('Login Successful:', {user});
+        dispatch(setCommetChatUserData(true));
+        setUserLogin(true);
+      },
+      error => {
+        console.log('Login failed with exception:', {error});
+      },
+    );
+  };
 
-  return (
+  useEffect(() => {
+    LoginUser();
+  }, []);
 
-
-      <View style={{flex: 1}}>
+  return !userLoggedIn ? (
+    <View
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: windowHeight,
+      }}>
+      <ActivityIndicator
+        color={Color.themeColor}
+        size={moderateScale(60, 0.6)}
+      />
+    </View>
+  ) : (
+    <View style={{flex: 1}}>
       <CometChatUI />
-      </View>
-     
-    
-
-    // <>
-    //   <CustomStatusBar
-    //     backgroundColor={Color.white}
-    //     barStyle={'dark-content'}
-    //   />
-    //   <Header
-    //     showLeft={true}
-    //     showRight={true}
-    //     rightName={'bell'}
-    //     title={'SpotLight'}
-    //     leftName={'menufold'}
-    //     leftType={AntDesign}
-    //     textStyle={{
-    //       color: Color.veryLightGray,
-    //     }}
-    //   />
-    //   <LinearGradient
-    //     style={
-    //       {
-    //         // width: windowWidth,
-    //         // height: windowHeight,
-    //       }
-    //     }
-    //     start={{x: 0, y: 0}}
-    //     end={{x: 1, y: 0}}
-    //     colors={[Color.white, Color.white]}>
-    //     <SearchContainer
-    //       width={windowWidth * 0.9}
-    //       input
-    //       inputStyle={{
-    //         height: windowHeight * 0.05,
-    //       }}
-    //       style={{
-    //         height: windowHeight * 0.06,
-    //         marginTop: moderateScale(20, 0.3),
-    //         borderRadius: moderateScale(5, 0.3),
-    //         alignSelf: 'center',
-    //       }}
-    //       data={searchData}
-    //       setData={setSearchData}
-    //     />
-    //     <CustomText
-    //       style={[
-    //         styles.header,
-    //         {
-    //           marginLeft: moderateScale(20, 0.3),
-    //           marginVertical: moderateScale(15, 0.3),
-    //         },
-    //       ]}>
-    //       New Matches
-    //     </CustomText>
-    //     <FlatList
-    //       data={chatListingData}
-    //       horizontal
-    //       showsHorizontalScrollIndicator={false}
-    //       contentContainerStyle={{
-    //         paddingHorizontal: moderateScale(20, 0.3),
-    //         paddingVertical : moderateScale(5,0.6)
-    //         // alignItems: 'center',
-    //       }}
-    //       style={{
-    //         flexGrow: 0,
-    //         marginBottom : moderateScale(20,0.3)
-    //         // height: windowHeight * 0.4,
-    //         // backgroundColor : Color.themeColor
-    //       }}
-    //       renderItem={({item, index}) => {
-    //         return (
-    //           <CustomImage
-    //             source={item?.image}
-    //             style={{
-    //               width: moderateScale(50, 0.6),
-    //               height: moderateScale(50, 0.6),
-    //               borderRadius: moderateScale(25, 0.6),
-    //               marginRight: moderateScale(10, 0.3),
-    //             }}
-    //           />
-    //         );
-    //       }}
-    //     />
-    //       <CustomText  style={[styles.header ,  {
-    //           marginLeft: moderateScale(20, 0.3),
-    //         },]}>
-    //             Messages
-    //           </CustomText>
-    //     <FlatList
-    //       data={chatListingData}
-    //       showsVerticalScrollIndicator={false}
-    //       contentContainerStyle={{
-    //         paddingBottom: moderateScale(100, 0.3),
-    //         paddingTop: moderateScale(20, 0.3),
-    //         alignItems: 'center',
-    //       }}
-    //       style={{
-    //         height: windowHeight * 0.65,
-    //         // backgroundColor : Color.themeColor
-    //       }}
-    //       renderItem={({item, index}) => {
-    //         return (
-    //           <ChatCard
-    //             date={item?.time}
-    //             image={item?.image}
-    //             lastmessage={item?.lastMessage}
-    //             name={item?.name}
-    //             // unread={item?.unread}
-    //             // unreadCount={item?.unreadCount}
-    //           />
-    //         );
-    //       }}
-
-    //     />
-    //   </LinearGradient>
-    // </>
+    </View>
   );
 };
 

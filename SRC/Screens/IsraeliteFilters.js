@@ -31,14 +31,12 @@ import {
   setUserData,
 } from '../Store/slices/common';
 import {setIsLoggedIn, setUserToken} from '../Store/slices/auth';
+import { CometChat } from '@cometchat-pro/react-native-chat';
 // import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const IsraeliteFilters = props => {
   const check = props?.route?.params?.check;
-  // console.log(
-  //   '🚀 ~ file: IsraeliteFilters.js:33 ~ IsraeliteFilters ~ check:',
-  //   check,
-  // );
+  
   const edit = props?.route?.params?.edit;
   const twoStepsData = props?.route?.params?.twoStepsData;
   const user = useSelector(state => state.commonReducer.userData);
@@ -46,11 +44,7 @@ const IsraeliteFilters = props => {
   const israeliteFilter = useSelector(
     state => state?.commonReducer?.israeliteFilterRegister,
   );
-  // console.log(
-  //   '🚀 ~ file: IsraeliteFilters.js:40 ~ IsraeliteFilters ~ israeliteFilter:',
-  //   israeliteFilter,
-  // );
-
+  
   const steps = props?.route?.params?.steps;
   const navigation = useNavigation();
 
@@ -467,15 +461,11 @@ const IsraeliteFilters = props => {
       Platform.OS == 'android'
         ? ToastAndroid.show('User Registered Successfully', ToastAndroid.SHORT)
         : alert('User Registered Successfully');
-      // registerUserCometChat(response?.data?.user);
-      console.log(
-        '🚀 ~ file: IsraeliteFilters.js:441 ~ Registration ~ user:',
-        response?.data?.user,
-      );
-      dispatch(setMoreAboutMeRegister([]));
-      dispatch(setIsraeliteInfoRegister([]));
-      dispatch(setUserData(response?.data?.user));
-      dispatch(setUserToken({token: response?.data?.token}));
+        
+        dispatch(setMoreAboutMeRegister([]));
+        dispatch(setIsraeliteInfoRegister([]));
+        dispatch(setUserData(response?.data?.user));
+        dispatch(setUserToken({token: response?.data?.token}));
 
       navigationService.navigate('ProfilePictures', {
         // token: response?.data?.token,
