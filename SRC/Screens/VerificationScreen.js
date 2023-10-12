@@ -185,11 +185,8 @@ const VerificationScreen = () => {
   };
 
   const registerUserCometChat = async user => {
-    console.log(
-      '🚀 ~ file: IsraeliteFilters.js:455 ~ registerUserCometChat ~ user:',
-      user,
-    );
-    let cometChatUser = new CometChat.User(user?.uid);
+    try{
+      let cometChatUser = new CometChat.User(user?.uid);
     cometChatUser.setName(user?.profileName);
     // cometChatUser.setre
     cometChatUser.avatar = user?.profile_images[0]?.url;
@@ -200,11 +197,18 @@ const VerificationScreen = () => {
       '07ba629476752645dbce6a6c4aad7b2fc680b511',
       // '07ba629476752645dbce6a6c4aad7b2fc680b511',
     );
-    dispatch(setUserRegisteredComet(true))
+    // dispatch(setUserRegisteredComet(true))
     console.log(
       '🚀 ~ file: LoginScreen.js:88 ~ registerUserCometChat ~ cometChatRegisteredUser:',
       cometChatRegisteredUser,
     );
+
+    }catch(error){
+      if(error == 'ERR_UID_ALREADY_EXISTS')
+      console.log('User alraedy exists')
+    }
+   
+    
    
 
     // dispatchCometAction({
@@ -214,13 +218,9 @@ const VerificationScreen = () => {
   };
 
   useEffect(() => {
-
-    if(!userRegisterStatus){
-
       registerUserCometChat(userData);
-    }
-  
-    
+      // dispatch(setIsEmailVerified(true))
+      // dispatch(setIsMobileVerified(true))
   }, [])
   
 

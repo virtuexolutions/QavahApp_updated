@@ -66,8 +66,13 @@ const Header = props => {
   const match = useSelector(state => state.socketReducer.matched);
   const user = useSelector(state => state.commonReducer.userData);
   const userRole = useSelector(state => state.commonReducer.selectedRole);
-  const profileVerified = useSelector(state => state.authReducer.profileVerified);
-  console.log("🚀 ~ file: Header.js:70 ~ Header ~ profileVerified:", profileVerified)
+  const profileVerified = useSelector(
+    state => state.authReducer.profileVerified,
+  );
+  console.log(
+    '🚀 ~ file: Header.js:70 ~ Header ~ profileVerified:',
+    profileVerified,
+  );
 
   const pusherInstance = useSelector(
     state => state.socketReducer.pusherInstance,
@@ -85,78 +90,84 @@ const Header = props => {
       key: 1,
       title: 'My Accounts',
       onPress: null,
-      nestedMenu: profileVerified == null || profileVerified?.status != 1 ? [
-         {
-          key: 2,
-          title: 'Verify Yourself',
-          onPress: () => {
-            navigationService.navigate('VerifyYourself'), setDrawerModal(false);
-          },
-        },
-        {
-          key: 3,
-          title: 'Change Password',
-          onPress: () => {
-            navigationService.navigate('ChangePassword'), setDrawerModal(false);
-          },
-        },
-        {
-          key: 4,
-          title: 'Profile',
-          onPress: () => {
-            navigationService.navigate('UserDetail'), setDrawerModal(false);
-          },
-        },
-        {
-          key: 11,
-          title: 'Israelite Info',
-          onPress: () => {
-            navigationService.navigate('IsraeliteFilters', {edit: true}),
-              setDrawerModal(false);
-          },
-        },
-        {
-          key: 12,
-          title: 'More About Me',
-          onPress: () => {
-            navigationService.navigate('MoreAboutme', {edit: true}),
-              setDrawerModal(false);
-          },
-        },
-      ] :
-      [
-       
-       {
-         key: 3,
-         title: 'Change Password',
-         onPress: () => {
-           navigationService.navigate('ChangePassword'), setDrawerModal(false);
-         },
-       },
-       {
-         key: 4,
-         title: 'Profile',
-         onPress: () => {
-           navigationService.navigate('UserDetail'), setDrawerModal(false);
-         },
-       },
-       {
-         key: 11,
-         title: 'Israelite Info',
-         onPress: () => {
-           navigationService.navigate('IsraeliteFilters', {edit: true}),
-             setDrawerModal(false);
-         },
-       },
-       {
-         key: 12,
-         title: 'More About Me',
-         onPress: () => {
-           navigationService.navigate('MoreAboutme', {edit: true}),
-             setDrawerModal(false);
-         },
-       },
-     ],
+      nestedMenu:
+        profileVerified == null || profileVerified?.status != 1
+          ? [
+              {
+                key: 2,
+                title: 'Verify Yourself',
+                onPress: () => {
+                  navigationService.navigate('VerifyYourself'),
+                    setDrawerModal(false);
+                },
+              },
+              {
+                key: 3,
+                title: 'Change Password',
+                onPress: () => {
+                  navigationService.navigate('ChangePassword'),
+                    setDrawerModal(false);
+                },
+              },
+              {
+                key: 4,
+                title: 'Profile',
+                onPress: () => {
+                  navigationService.navigate('UserDetail'),
+                    setDrawerModal(false);
+                },
+              },
+              {
+                key: 11,
+                title: 'Israelite Info',
+                onPress: () => {
+                  navigationService.navigate('IsraeliteFilters', {edit: true}),
+                    setDrawerModal(false);
+                },
+              },
+              {
+                key: 12,
+                title: 'More About Me',
+                onPress: () => {
+                  navigationService.navigate('MoreAboutme', {edit: true}),
+                    setDrawerModal(false);
+                },
+              },
+            ]
+          : [
+              {
+                key: 3,
+                title: 'Change Password',
+                onPress: () => {
+                  navigationService.navigate('ChangePassword'),
+                    setDrawerModal(false);
+                },
+              },
+              {
+                key: 4,
+                title: 'Profile',
+                onPress: () => {
+                  navigationService.navigate('UserDetail'),
+                    setDrawerModal(false);
+                },
+              },
+              {
+                key: 11,
+                title: 'Israelite Info',
+                onPress: () => {
+                  navigationService.navigate('IsraeliteFilters', {edit: true}),
+                    setDrawerModal(false);
+                },
+              },
+              {
+                key: 12,
+                title: 'More About Me',
+                onPress: () => {
+                  navigationService.navigate('MoreAboutme', {edit: true}),
+                    setDrawerModal(false);
+                },
+              },
+            ],
     },
     // {key: 4, title: 'Legal', onPress: () => alert('Action needed')},
     {
@@ -329,7 +340,6 @@ const Header = props => {
     rightType,
   } = props;
 
-  
   // useEffect(() => {
   //   RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
   //     if (result == RNSettings.ENABLED) {
@@ -394,39 +404,75 @@ const Header = props => {
         />
       )}
       {showRight &&
-        (rightName ? (<>
-          <Icon
-            name={'ios-chatbubble-ellipses-sharp'}
-            as={ Ionicons}
-            size={moderateScale(22, 0.3)}
-            color={Color.themeLightGray}
-            onPress={()=>{
-              navigationService.navigate('ChatScreen')}
-            }
-            style={{
-              position: 'absolute',
-              right: moderateScale(10, 0.3),
-              zIndex: 1,
-            }}
-          />
-          <Icon
-            name={rightName}
-            as={rightType ? rightType : FontAwesome}
-            size={moderateScale(22, 0.3)}
-            color={Color.themeLightGray}
-            onPress={
-              rightName == 'bell'
-                ? () => {
-                    setIsVisible(true);
+        (rightName ? (
+          <>
+            <View
+              style={{
+                position: 'absolute',
+                right: moderateScale(15, 0.3),
+                // zIndex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                width: windowWidth * 0.17,
+                // backgroundColor:'red'
+              }}>
+             
+              <View
+                style={{
+                  width: windowWidth * 0.08,
+                  height: windowWidth * 0.08,
+                  borderRadius: (windowWidth * 0.08) / 2,
+                  backgroundColor: Color.veryLightGray,
+                  justifyContent:'center',alignItems:'center'
+                }}>
+              <Icon
+                name={rightName}
+                as={rightType ? rightType : FontAwesome}
+                size={moderateScale(21, 0.3)}
+                color={Color.darkGray}
+                onPress={
+                  rightName == 'bell'
+                    ? () => {
+                        setIsVisible(true);
+                      }
+                    : rightPress
+                }
+                style={
+                  {
+                    // position: 'absolute',
+                    // right: moderateScale(35, 0.3),
+                    // zIndex: 1,
                   }
-                : rightPress
-            }
-            style={{
-              position: 'absolute',
-              right: moderateScale(35, 0.3),
-              zIndex: 1,
-            }}
-          /></>
+                }
+              />
+              </View>
+              <View
+                style={{
+                  width: windowWidth * 0.08,
+                  height: windowWidth * 0.08,
+                  borderRadius: (windowWidth * 0.08) / 2,
+                  backgroundColor: Color.veryLightGray,
+                  justifyContent:'center',alignItems:'center'
+                }}>
+                <Icon
+                  name={'ios-chatbubble-ellipses-sharp'}
+                  as={Ionicons}
+                  size={moderateScale(22, 0.3)}
+                  color={Color.darkGray}
+                  onPress={() => {
+                    navigationService.navigate('ChatScreen');
+                  }}
+                  style={
+                    {
+                      // position: 'absolute',
+                      // right: moderateScale(10, 0.3),
+                      // zIndex: 1,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </>
         ) : (
           <View
             style={{
@@ -651,45 +697,41 @@ const Header = props => {
                 );
               })
             ) : (
-            
-                 <View
-              style={{
-                width: windowWidth*0.7,
-                height: windowHeight * 0.6,
-                justifyContent: 'center',
-                alignItems: 'center',
-
-              
-              }}>
-              <Icon
-                name={'eye'}
-                as={FontAwesome}
-                color={Color.black}
-                size={moderateScale(30, 0.3)}
-              />
-
-              <CustomText
+              <View
                 style={{
-                  fontSize: moderateScale(18, 0.6),
-                  textAlign:'center',
-                  color:Color.black
+                  width: windowWidth * 0.7,
+                  height: windowHeight * 0.6,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
-                No Notification Yet
-              </CustomText>
-              <CustomText
-                numberOfLines={2}
-                style={{
-                  width:windowWidth*0.75,
-                  paddingVertical:moderateScale(5,0.6),
-                  fontSize: moderateScale(12, 0.6),
-                  textAlign:'center',
-                  color:Color.veryLightGray
-                }}>
-                Give a Little, get a little send some like to people who've
-                caught your eye
-              </CustomText>
-            </View>
-         
+                <Icon
+                  name={'eye'}
+                  as={FontAwesome}
+                  color={Color.black}
+                  size={moderateScale(30, 0.3)}
+                />
+
+                <CustomText
+                  style={{
+                    fontSize: moderateScale(18, 0.6),
+                    textAlign: 'center',
+                    color: Color.black,
+                  }}>
+                  No Notification Yet
+                </CustomText>
+                <CustomText
+                  numberOfLines={2}
+                  style={{
+                    width: windowWidth * 0.75,
+                    paddingVertical: moderateScale(5, 0.6),
+                    fontSize: moderateScale(12, 0.6),
+                    textAlign: 'center',
+                    color: Color.veryLightGray,
+                  }}>
+                  Give a Little, get a little send some like to people who've
+                  caught your eye
+                </CustomText>
+              </View>
             )
           ) : (
             notification2.map((item, index) => {
