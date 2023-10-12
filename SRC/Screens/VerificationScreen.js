@@ -27,15 +27,17 @@ import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {Icon} from 'native-base';
-import {setUserLogOut} from '../Store/slices/common';
+import {setUserLogOut, setUserRegisteredComet} from '../Store/slices/common';
 import {
   setIsEmailVerified,
   setIsMobileVerified,
   setUserLogoutAuth,
 } from '../Store/slices/auth';
+import { CometChat } from '@cometchat-pro/react-native-chat';
 
 const VerificationScreen = () => {
   const dispatch = useDispatch();
+  const userRegisterStatus = useSelector(state => state.commonReducer.cometRegistrationStatus)
   const userData = useSelector(state => state.commonReducer.userData);
   const token = useSelector(state => state.authReducer.token);
   console.log(
@@ -182,6 +184,50 @@ const VerificationScreen = () => {
     }
   };
 
+  const registerUserCometChat = async user => {
+    console.log(
+      '🚀 ~ file: IsraeliteFilters.js:455 ~ registerUserCometChat ~ user:',
+      user,
+    );
+    let cometChatUser = new CometChat.User(user?.uid);
+    cometChatUser.setName(user?.profileName);
+    // cometChatUser.setre
+    cometChatUser.avatar = user?.profile_images[0]?.url;
+    
+    console.log("🚀 ~ file: IsraeliteFilters.js:489 ~ registerUserCometChat ~ cometChatUser:", cometChatUser)
+    const cometChatRegisteredUser = await CometChat.createUser(
+      cometChatUser,
+      '07ba629476752645dbce6a6c4aad7b2fc680b511',
+      // '07ba629476752645dbce6a6c4aad7b2fc680b511',
+    );
+    dispatch(setUserRegisteredComet(true))
+    console.log(
+      '🚀 ~ file: LoginScreen.js:88 ~ registerUserCometChat ~ cometChatRegisteredUser:',
+      cometChatRegisteredUser,
+    );
+   
+
+    // dispatchCometAction({
+    //   type: 'COMETCHAT_REGISTER',
+    //   user: {...cometChatRegisteredUser},
+    // });
+  };
+
+  useEffect(() => {
+
+    if(!userRegisterStatus){
+
+      registerUserCometChat(userData);
+    }
+  
+    
+  }, [])
+  
+
+
+
+
+
   useEffect(() => {
     if (number && number.length < 12) {
       const formattedNumber = formatPhoneNumber(number);
@@ -289,24 +335,20 @@ const VerificationScreen = () => {
               style={{
                 height: '100%',
                 width: `${
-                  mobileVerified && emailVerified
+                  mobileVerified
                     ? 100
-                    : mobileVerified
-                    ? 50
-                    : emailVerified
-                    ? 50
                     : 0
                 }%`,
                 borderTopRightRadius: moderateScale(10, 0.3),
                 borderBottomRightRadius: moderateScale(10, 0.3),
               }}></LinearGradient>
           </View>
-          <Icon
+          {/* <Icon
             name={!emailVerified ? 'lock' : 'unlock'}
             as={FontAwesome}
             size={moderateScale(15, 0.6)}
             color={Color.veryLightGray}
-          />
+          /> */}
           <Icon
             name={!mobileVerified ? 'lock' : 'unlock'}
             as={FontAwesome}
@@ -317,11 +359,12 @@ const VerificationScreen = () => {
 
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
+            // flexDirection: 'row',
+            // justifyContent: 'space-between',
             width: windowWidth * 0.85,
+            alignItems:'center'
           }}>
-          <CustomButton
+          {/* <CustomButton
             text={
               loading ? (
                 <ActivityIndicator color={'#FFFFFF'} size={'small'} />
@@ -345,7 +388,7 @@ const VerificationScreen = () => {
               // setLoader(prev=> prev == 0 ?50 : 0)
             }}
             disabled={emailVerified}
-          />
+          /> */}
           <CustomButton
             text={
               loading ? (
@@ -357,7 +400,7 @@ const VerificationScreen = () => {
               )
             }
             textColor={Color.white}
-            width={windowWidth * 0.4}
+            width={windowWidth * 0.8}
             height={windowHeight * 0.06}
             marginTop={moderateScale(20, 0.3)}
             bgColor={Color.themeColor}

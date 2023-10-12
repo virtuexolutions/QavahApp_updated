@@ -9,6 +9,7 @@ const initialState = {
   moreAboutMeRegister: [],
   israeliteFilterRegister: [],
   commetChatUserData:false,
+  cometRegistrationStatus: false,
   servicesArray: [
     {id: 'Auto repair', name: 'Auto repair'},
     {id: 'plumbing Projects', name: 'plumbing Projects'},
@@ -88,6 +89,9 @@ const CommonSlice = createSlice({
      setCommetChatUserData(state, action) {
       state.commetChatUserData = action.payload;
     },
+    setUserRegisteredComet(state, action){
+      state.cometRegistrationStatus=action.payload
+    }
     // setImagesTemp(state , action){
 
     //   state.image =
@@ -105,7 +109,8 @@ export const {
   setSelectedRole,
   setIsraeliteInfoRegister,
   setMoreAboutMeRegister,
-  setCommetChatUserData
+  setCommetChatUserData,
+  setUserRegisteredComet
 } = CommonSlice.actions;
 
 export default CommonSlice.reducer;

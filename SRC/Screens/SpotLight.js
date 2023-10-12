@@ -615,7 +615,7 @@ const SpotLight = () => {
                       width: '100%',
                       height: '100%',
                     }}
-                    source={item?.profile_images[0]?.url}
+                    source={{uri:item?.profile_images[0].url}}
                   />
                   <LinearGradient
                     start={{ x: 0, y: 0 }}
@@ -841,7 +841,7 @@ const SpotLight = () => {
                       width: '100%',
                       height: '100%',
                     }}
-                    source={x?.profile_images.url}
+                    source={{uri:x?.profile_images[0].url}}
                   />
                   <LinearGradient
                     start={{ x: 0, y: 0 }}
@@ -908,7 +908,7 @@ const SpotLight = () => {
                         const url = 'swap/disliked';
                         const response = await Post(
                           url,
-                          { targetsUid: item?.id },
+                          { targetsUid: x?.id },
                           apiHeader(token),
                         );
                         // console.log("🚀 ~ file: SpotLight.js:655 ~ onPress={ ~ response:", response?.data)
@@ -949,7 +949,7 @@ const SpotLight = () => {
                         // console.log({targetsUid: selectedId});
                         const response = await Post(
                           url,
-                          { targetsUid: item?.id },
+                          { targetsUid: x?.id },
                           apiHeader(token),
                         );
                         if (response?.data?.status) {

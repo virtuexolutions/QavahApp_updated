@@ -31,7 +31,7 @@ import {CometChat} from '@cometchat-pro/react-native-chat';
 import {Easing} from 'react-native-reanimated';
 import { Post } from '../Axios/AxiosInterceptorFunction';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserData } from '../Store/slices/common';
+import { setCommetChatUserData, setUserData } from '../Store/slices/common';
 
 const ProfilePictures = props => {
   // const profileBody = props?.route?.params?.data;
@@ -40,6 +40,7 @@ const ProfilePictures = props => {
   console.log("🚀 ~ file: ProfilePictures.js:37 ~ ProfilePictures ~ user:", user)
   // const token = props?.route?.params?.token;
   console.log("🚀 ~ file: ProfilePictures.js:37 ~ ProfilePictures ~ token:", token)
+  const authKey = '07ba629476752645dbce6a6c4aad7b2fc680b511';
   // const user = props?.route?.params?.userData;
   // const steps = props?.route?.params?.steps;
 
@@ -102,33 +103,35 @@ const ProfilePictures = props => {
   ];
 
 
-  const registerUserCometChat = async user => {
-    console.log(
-      '🚀 ~ file: IsraeliteFilters.js:455 ~ registerUserCometChat ~ user:',
-      user,
-    );
-    let cometChatUser = new CometChat.User(user?.uid);
-    cometChatUser.setName(user?.profileName);
-    cometChatUser.setre
-    cometChatUser.avatar = user?.profile_images[0]?.url;
+  // const registerUserCometChat = async user => {
+  //   console.log(
+  //     '🚀 ~ file: IsraeliteFilters.js:455 ~ registerUserCometChat ~ user:',
+  //     user,
+  //   );
+  //   let cometChatUser = new CometChat.User(user?.uid);
+  //   cometChatUser.setName(user?.profileName);
+  //   // cometChatUser.setre
+  //   cometChatUser.avatar = user?.profile_images[0]?.url;
     
-    console.log("🚀 ~ file: IsraeliteFilters.js:489 ~ registerUserCometChat ~ cometChatUser:", cometChatUser)
-    const cometChatRegisteredUser = await CometChat.createUser(
-      cometChatUser,
-      '07ba629476752645dbce6a6c4aad7b2fc680b511',
-      // '07ba629476752645dbce6a6c4aad7b2fc680b511',
-    );
-    console.log(
-      '🚀 ~ file: LoginScreen.js:88 ~ registerUserCometChat ~ cometChatRegisteredUser:',
-      cometChatRegisteredUser,
-    );
-    navigationService.navigate('ProfileCreated')
+  //   console.log("🚀 ~ file: IsraeliteFilters.js:489 ~ registerUserCometChat ~ cometChatUser:", cometChatUser)
+  //   const cometChatRegisteredUser = await CometChat.createUser(
+  //     cometChatUser,
+  //     '07ba629476752645dbce6a6c4aad7b2fc680b511',
+  //     // '07ba629476752645dbce6a6c4aad7b2fc680b511',
+  //   );
+  //   console.log(
+  //     '🚀 ~ file: LoginScreen.js:88 ~ registerUserCometChat ~ cometChatRegisteredUser:',
+  //     cometChatRegisteredUser,
+  //   );
+   
 
-    // dispatchCometAction({
-    //   type: 'COMETCHAT_REGISTER',
-    //   user: {...cometChatRegisteredUser},
-    // });
-  };
+  //   // dispatchCometAction({
+  //   //   type: 'COMETCHAT_REGISTER',
+  //   //   user: {...cometChatRegisteredUser},
+  //   // });
+  // };
+
+  
 
 
   const sendImages =async ()=>{
@@ -146,17 +149,11 @@ const ProfilePictures = props => {
     const response = await Post(url,formData, apiHeader(token) )
     setisloading(false)
     if(response != undefined){
+      dispatch(setUserData(response?.data?.user))
       
       console.log("🚀 ~ file: ProfilePictures.js:95 ~ sendImages ~ response:", response?.data?.user)
-      
-      dispatch(setUserData(response?.data?.user))
-      registerUserCometChat(response?.data?.user);
-
-      
- 
-       
-
-      
+      navigationService.navigate('ProfileCreated')
+      // registerUserCometChat(response?.data?.user);
 
     }
     

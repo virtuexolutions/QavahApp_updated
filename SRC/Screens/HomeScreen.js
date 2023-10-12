@@ -112,16 +112,16 @@ const HomeScreen = () => {
     }
   };
 
-  const unsubscribePusher = async () => {
-    console.log('unsubscribed happend')
+  // const unsubscribePusher = async () => {
+  //   console.log('unsubscribed happend')
 
-    await pusher.unsubscribe({
-      channelName: `match-popup-${user?.id}`,
-    });
-    dispatch(setIsSubscribed(false));
-    dispatch(setPusherInstance(null));
-    console.log('unsubscribed successfully')
-  };
+  //   await pusher.unsubscribe({
+  //     channelName: `match-popup-${user?.id}`,
+  //   });
+  //   dispatch(setIsSubscribed(false));
+  //   dispatch(setPusherInstance(null));
+  //   console.log('unsubscribed successfully')
+  // };
  
   useEffect(() => {
     console.log('useEffect runs'); 
