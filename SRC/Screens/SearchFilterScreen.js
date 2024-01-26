@@ -39,7 +39,7 @@ const SearchFilterScreen = () => {
 
   const [location, setLocation] = useState('Jakarta, Indonesia');
   const [distance, setDistance] = useState(20);
-  console.log("🚀 ~ file: SearchFilterScreen.js:40 ~ distance:", Array.isArray(distance))
+  // console.log("🚀 ~ file: SearchFilterScreen.js:40 ~ distance:", Array.isArray(distance))
 
   const [age1, setAge] = useState(20);
   const [age2, setAge2] = useState(40);
@@ -48,10 +48,10 @@ const SearchFilterScreen = () => {
   const [scrollEnabled, setScrollEnabled] = useState(true);
   const [people, setPeople] = useState([]);
   const [body, setBody] = useState([]);
-  console.log(
-    '🚀 ~ file: SearchFilterScreen.js:61 ~ SearchFilterScreen ~ body:',
-    body,
-  );
+  // console.log(
+  //   '🚀 ~ file: SearchFilterScreen.js:61 ~ SearchFilterScreen ~ body:',
+  //   body,
+  // );
 
   const [nestedOptions, setNestedOptions] = useState([
     (Visibility = true),

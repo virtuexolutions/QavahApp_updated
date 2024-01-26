@@ -33,7 +33,9 @@ import {
   setIsMobileVerified,
   setUserLogoutAuth,
 } from '../Store/slices/auth';
-import { CometChat } from '@cometchat-pro/react-native-chat';
+import { CometChat } from '@cometchat/chat-sdk-react-native';
+import { CometChatUIKit } from '@cometchat/chat-uikit-react-native';
+// import { CometChat } from '@cometchat-pro/react-native-chat';
 
 const VerificationScreen = () => {
   const dispatch = useDispatch();
@@ -189,10 +191,10 @@ const VerificationScreen = () => {
       let cometChatUser = new CometChat.User(user?.uid);
     cometChatUser.setName(user?.profileName);
     // cometChatUser.setre
-    cometChatUser.avatar = user?.profile_images[0]?.url;
+    cometChatUser.setAvatar( user?.profile_images[0]?.url)
     
     console.log("🚀 ~ file: IsraeliteFilters.js:489 ~ registerUserCometChat ~ cometChatUser:", cometChatUser)
-    const cometChatRegisteredUser = await CometChat.createUser(
+    const cometChatRegisteredUser = await CometChatUIKit.createUser(
       cometChatUser,
       '07ba629476752645dbce6a6c4aad7b2fc680b511',
       // '07ba629476752645dbce6a6c4aad7b2fc680b511',

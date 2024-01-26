@@ -28,7 +28,7 @@ import TextInputWithTitle from './TextInputWithTitle';
 const MatchModal = ({isVisible, profileImage}) => {
   const navigation = useNavigation();
   const otherUserData = useSelector(state => state.socketReducer.otherData)
-  console.log("🚀 ~ file: MatchModal.js:18 ~ MatchModal ~ otherUserData:", otherUserData)
+  // console.log("🚀 ~ file: MatchModal.js:18 ~ MatchModal ~ otherUserData:", otherUserData)
   const user = useSelector(state => state.commonReducer.userData);
   const token = useSelector(state=> state.authReducer.token)
   // console.log('🚀 ~ file: MatchModal.js:19 ~ MatchModal ~ user:', user);

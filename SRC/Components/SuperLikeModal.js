@@ -141,7 +141,7 @@ const SuperLikeModal = ({isVisible, setIsVisible}) => {
                     color:
                       selectedIndex == index ? Color.themeColor : Color.themeBlack,
                     fontSize: moderateScale(11, 0.6),
-                  }}>{`PKR${item.cash}/ea`}</CustomText>
+                  }}>{`${item.cash}/ea`}</CustomText>
               </TouchableOpacity>
             );
           })}

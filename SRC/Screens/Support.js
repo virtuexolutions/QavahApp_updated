@@ -30,6 +30,7 @@ import CustomStatusBar from '../Components/CustomStatusBar';
 import { Icon } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Header from '../Components/Header';
+import { validateEmail } from '../Config';
 
 const Support = () => {
   const navigationN = useNavigation()
@@ -75,6 +76,17 @@ const Support = () => {
       subject: subject,
       description: message,
     };
+
+    if(!validateEmail(email)){
+      return Platform.OS == 'android'
+      ? ToastAndroid.show(`enter a valid email `, ToastAndroid.SHORT)
+      : alert(`enter a valid email`);
+    }
+    if(isNaN(phone)){
+      return Platform.OS == 'android'
+      ? ToastAndroid.show(`enter a valid phone number`, ToastAndroid.SHORT)
+      : alert(`enter a valid phone number`);
+    }
     // console.log("🚀 ~ file: Support.js:76 ~ sendQuestion ~ body:", body)
     for (let key in body) {
       if (body[key] === '') {

@@ -297,6 +297,7 @@ const Header = props => {
     const response = await Get(url, token);
 
     if (response?.data?.status) {
+      console.log("🚀 ~ file: Header.js:300 ~ getNotifications ~ response:", response?.data)
       // console.log(
       //   '🚀 ~ file: Header.js:171 ~ getNotifications ~ response:',
       //   JSON.stringify(response?.data, null, 2),
@@ -357,7 +358,7 @@ const Header = props => {
   // }, []);
 
   useEffect(() => {
-    rightName == 'bell' && getNotifications();
+    // rightName == 'bell' && getNotifications();
   }, [focused]);
 
   const unsubscribePusher = async () => {
