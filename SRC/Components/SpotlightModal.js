@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, TouchableOpacity, FlatList , ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Modal from 'react-native-modal';
 import {
@@ -18,49 +25,56 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
 import CustomModal from './CustomModal';
-import { Get } from '../Axios/AxiosInterceptorFunction';
-import { useSelector } from 'react-redux';
+import {Get} from '../Axios/AxiosInterceptorFunction';
+import {useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 
 const SpotLightModal = ({isVisible, setIsVisible}) => {
   const [selectedIndex, setSelecetedIndex] = useState(0);
   const token = useSelector(state => state.authReducer.token);
-  const [packages, setPackages] = useState([])
+  const [packages, setPackages] = useState([]);
   const [arrayForDeck, setArrayForDeck] = useState([1]);
   // console.log("🚀 ~ file: SpotlightModal.js:27 ~ SpotLightModal ~ arrayForDeck:", arrayForDeck)
-  
+
   const getSubscriptionPlan = async () => {
-    const url = 'packages';
+    const url = `packages?title=premium`;
     const response = await Get(url, token);
     if (response != undefined) {
-      // console.log(JSON.stringify(response?.data, null, 2));
-      const newData = response?.data;
-      return console.log(
-        '🚀 ~ file: GetSuperLike.js:43 ~ getSubscriptionPlan ~ newData:',
-        newData,
-        );
-        setPackages(newData?.premium)
-      }
-    };
-    const dummyData = [
-      {boost: '1', cash: packages[0]?.price, savingPercent: '10%', slogon: null},
-      {boost: '5', cash: packages[1]?.price, savingPercent: '21%', slogon: 'popular'},
-      {boost: '10', cash: packages[2]?.price, savingPercent: '25%', slogon: 'best value'},
-    ];
-    
-    useEffect(() => {
-      getSubscriptionPlan()
-      
-    }, [])
-  
+      console.log(JSON.stringify(response?.data, null, 2));
+      const newData = response?.data?.packages;
+      // return console.log(
+      //   '🚀 ~ file: GetSuperLike.js:43 ~ getSubscriptionPlan ~ newData:',
+      //   newData,
+      //   );
+      setPackages(newData);
+    }
+  };
+  const dummyData = [
+    {
+      boost: '1',
+      cash: packages[0] ? packages[0]?.price : 10,
+      savingPercent: '10%',
+      slogon: null,
+    },
+    {
+      boost: '5',
+      cash: packages[1] ? packages[1]?.price : 20,
+      savingPercent: '21%',
+      slogon: 'popular',
+    },
+    {
+      boost: '10',
+      cash: packages[2] ? packages[2]?.price : 25,
+      savingPercent: '25%',
+      slogon: 'best value',
+    },
+  ];
 
-
-
-
-
+  useEffect(() => {
+    getSubscriptionPlan();
+  }, []);
 
   const onViewableItemsChanged = ({viewableItems}) => {
-   
     setSelecetedIndex(viewableItems[0]?.index);
   };
   const viewabilityConfigCallbackPairs = useRef([{onViewableItemsChanged}]);
@@ -94,113 +108,113 @@ const SpotLightModal = ({isVisible, setIsVisible}) => {
     //   }}
     //   >
     <CustomModal
-    isVisible={isVisible}
-    setIsVisible={setIsVisible}
-    container={{
-      width: windowWidth,
-      minHeight: windowHeight,
-      backgroundColor: Color.white,
-    }}
-    contentContainerStyle={{
-      paddingBottom: moderateScale(50, 0.6),
-      alignItems: 'center',
-    }}
-    >
-        <TouchableOpacity style={styles.closeContainer}>
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
+      container={{
+        width: windowWidth,
+        minHeight: windowHeight,
+        backgroundColor: Color.white,
+      }}
+      contentContainerStyle={{
+        paddingBottom: moderateScale(50, 0.6),
+        alignItems: 'center',
+      }}>
+      <TouchableOpacity style={styles.closeContainer}>
         <Icon
           name={'close'}
           as={AntDesign}
           size={moderateScale(15, 0.6)}
           color={Color.black}
-          style={{
-            // position: 'absolute',
-            // left: moderateScale(10, 0.3),
-            // top: moderateScale(10, 0.6),
-            // zIndex: 1,
-          }}
+          style={
+            {
+              // position: 'absolute',
+              // left: moderateScale(10, 0.3),
+              // top: moderateScale(10, 0.6),
+              // zIndex: 1,
+            }
+          }
           onPress={() => {
             setIsVisible(false);
           }}
         />
-        </TouchableOpacity>
-        <View style={styles.image}>
-          <CustomImage
-            source={require('../Assets/Images/spotlight_cover.jpg')}
-            style={{
-              width: '100%',
-              height: '100%',
-            }}
-            resizeMode="stretch"
-          />
-        </View>
-        <CustomText isBold style={{fontSize: moderateScale(15, 0.6)}}>
-          Be Seen
-        </CustomText>
-        <CustomText
+      </TouchableOpacity>
+      <View style={styles.image}>
+        <CustomImage
+          source={require('../Assets/Images/spotlight_cover.jpg')}
           style={{
-            fontSize: moderateScale(12, 0.6),
-            textAlign: 'center',
-            width: '90%',
-            marginTop: moderateScale(10, 0.3),
-          }}>
-          Be a top profile in your area for 30 minutes to get more matches!
-        </CustomText>
-        <FlatList
-          data={dummyData}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          contentContainerStyle={{
+            width: '100%',
+            height: '100%',
+          }}
+          resizeMode="stretch"
+        />
+      </View>
+      <CustomText isBold style={{fontSize: moderateScale(15, 0.6)}}>
+        Be Seen
+      </CustomText>
+      <CustomText
+        style={{
+          fontSize: moderateScale(12, 0.6),
+          textAlign: 'center',
+          width: '90%',
+          marginTop: moderateScale(10, 0.3),
+        }}>
+        Be a top profile in your area for 30 minutes to get more matches!
+      </CustomText>
+      <FlatList
+        data={dummyData}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        pagingEnabled
+        contentContainerStyle={
+          {
             // paddingVertical: moderateScale(5, 0.6),
             // alignItems: 'center',
-          }}
-          viewabilityConfigCallbackPairs={
-            viewabilityConfigCallbackPairs.current
           }
-          style={{
-            flexGrow: 0,
-            // backgroundColor : 'red'
-          }}
-          renderItem={({item, index}) => {
-            return (
-              <View style={styles.containerMOdal}>
-                <View
-                  style={[
-                    styles.mainContainer,
-                    {
-                      borderWidth: moderateScale(3, 0.6),
-                      borderColor: Color.themeColor,
-                    },
-                  ]}>
-                  {item?.slogon && (
-                    <View
-                      style={{
-                        width: '100%',
-                        alignItems: 'center',
-                        paddingVertical: moderateScale(10, 0.6),
-                        backgroundColor: Color.themeColor,
-                      }}>
-                      <CustomText
-                        isBold
-                        style={{
-                          color: Color.white,
-                          fontSize: moderateScale(11, 0.6),
-                          textTransform: 'uppercase',
-                        }}>
-                        {item?.slogon}
-                      </CustomText>
-                    </View>
-                  )}
-                  <CustomText
-                    isBold
-                    style={{marginTop: moderateScale(10, 0.3)}}>
-                    {item?.boost} Boosts
-                  </CustomText>
+        }
+        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+        style={{
+          flexGrow: 0,
+          // backgroundColor : 'red'
+        }}
+        renderItem={({item, index}) => {
+          return (
+            <View style={styles.containerMOdal}>
+              <View
+                style={[
+                  styles.mainContainer,
+                  {
+                    borderWidth: moderateScale(3, 0.6),
+                    borderColor: Color.themeColor,
+                  },
+                ]}>
+                {item?.slogon && (
                   <View
                     style={{
-                      marginTop: moderateScale(10, 0.3),
+                      width: '100%',
+                      alignItems: 'center',
+                      paddingVertical: moderateScale(10, 0.6),
+                      backgroundColor: Color.themeColor,
                     }}>
-                    {selectedIndex > 0 && arrayForDeck.map((item, index) => {
+                    <CustomText
+                      isBold
+                      style={{
+                        color: Color.white,
+                        fontSize: moderateScale(11, 0.6),
+                        textTransform: 'uppercase',
+                      }}>
+                      {item?.slogon}
+                    </CustomText>
+                  </View>
+                )}
+                <CustomText isBold style={{marginTop: moderateScale(10, 0.3)}}>
+                  {item?.boost} Boosts
+                </CustomText>
+                <View
+                  style={{
+                    marginTop: moderateScale(10, 0.3),
+                  }}>
+                  {selectedIndex > 0 &&
+                    arrayForDeck.map((item, index) => {
                       return (
                         <View
                           style={[
@@ -226,141 +240,164 @@ const SpotLightModal = ({isVisible, setIsVisible}) => {
                         />
                       );
                     })}
-                   
-                  
-                    <View style={[styles.singleButton]}>
-                      <Icon
-                        name={'lightning-bolt'}
-                        as={MaterialCommunityIcons}
-                        size={moderateScale(25, 0.6)}
-                        color={Color.themeColor}
-                      />
-                    </View>
+
+                  <View style={[styles.singleButton]}>
+                    <Icon
+                      name={'lightning-bolt'}
+                      as={MaterialCommunityIcons}
+                      size={moderateScale(25, 0.6)}
+                      color={Color.themeColor}
+                    />
                   </View>
-                  <CustomText style={{marginTop: moderateScale(10, 0.3)}}>
-                    $ {item?.cash}
-                  </CustomText>
-                  <CustomText
-                    isBold
-                    style={{
-                      backgroundColor: 'rgba(	196, 164, 132 , 0.5)',
-                      paddingVertical: moderateScale(5, 0.6),
-                      paddingHorizontal: moderateScale(10, 0.6),
-                      fontSize: moderateScale(11, 0.6),
-                      marginTop: moderateScale(10, 0.3),
-                      borderRadius: moderateScale(15, 0.6),
-                      color: Color.themeColor,
-                    }}>
-                    Save {item?.savingPercent}
-                  </CustomText>
-                  <CustomButton
-                    text={'Select'}
-                    textColor={Color.white}
-                    width={windowWidth * 0.35}
-                    height={windowHeight * 0.06}
-                    fontSize={moderateScale(12, 0.6)}
-                    onPress={()=>{
-                      navigationService.navigate('GetSuperLike',{item: packages[index], text:'premium features'}),setIsVisible(false)
-                    }}
-                    bgColor={Color.themeBgColor}
-                    borderRadius={moderateScale(25, 0.3)}
-                    marginTop={moderateScale(20, 0.3)}
-                    elevation
-                    isGradient
-                    isBold
-                  />
                 </View>
+                <CustomText style={{marginTop: moderateScale(10, 0.3)}}>
+                  $ {item?.cash}
+                </CustomText>
+                <CustomText
+                  isBold
+                  style={{
+                    backgroundColor: 'rgba(	196, 164, 132 , 0.5)',
+                    paddingVertical: moderateScale(5, 0.6),
+                    paddingHorizontal: moderateScale(10, 0.6),
+                    fontSize: moderateScale(11, 0.6),
+                    marginTop: moderateScale(10, 0.3),
+                    borderRadius: moderateScale(15, 0.6),
+                    color: Color.themeColor,
+                  }}>
+                  Save {item?.savingPercent}
+                </CustomText>
+                <CustomButton
+                  text={'Select'}
+                  textColor={Color.white}
+                  width={windowWidth * 0.35}
+                  height={windowHeight * 0.06}
+                  fontSize={moderateScale(12, 0.6)}
+                  onPress={() => {
+                    setIsVisible(false),
+                    navigationService.navigate('GetSuperLike', {
+                      // item: packages[index],
+                      text: 'premium',
+                    })
+                  }}
+                  bgColor={Color.themeBgColor}
+                  borderRadius={moderateScale(25, 0.3)}
+                  marginTop={moderateScale(20, 0.3)}
+                  elevation
+                  isGradient
+                  isBold
+                />
               </View>
-            );
+            </View>
+          );
+        }}
+      />
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        {dummyData.map((x, index) => {
+          return (
+            <View
+              style={{
+                width:
+                  selectedIndex == index
+                    ? moderateScale(9, 0.6)
+                    : moderateScale(7, 0.6),
+                height:
+                  selectedIndex == index
+                    ? moderateScale(9, 0.6)
+                    : moderateScale(7, 0.6),
+                borderRadius:
+                  selectedIndex == index
+                    ? moderateScale(4.5, 0.6)
+                    : moderateScale(3.5, 0.6),
+                backgroundColor:
+                  selectedIndex == index
+                    ? Color.themeColor
+                    : Color.themeLightGray,
+                marginRight: moderateScale(8, 0.3),
+              }}></View>
+          );
+        })}
+      </View>
+      <View
+        style={{
+          width: windowWidth * 0.85,
+          flexDirection: 'row',
+          marginTop: moderateScale(10, 0.3),
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <View
+          style={{
+            borderTopWidth: 1,
+            borderColor: Color.veryLightGray,
+            width: windowWidth * 0.4,
           }}
         />
-        <View style={{flexDirection : 'row' , alignItems : 'center'}}>
-
-          {dummyData.map((x , index)=>{
-            return(
-            <View style={{
-              width : selectedIndex == index ? moderateScale(9,0.6) : moderateScale(7,0.6),
-              height : selectedIndex == index ? moderateScale(9,0.6) : moderateScale(7,0.6),
-              borderRadius : selectedIndex == index ? moderateScale(4.5,0.6) : moderateScale(3.5,0.6),
-              backgroundColor : selectedIndex == index ? Color.themeColor : Color.themeLightGray,
-              marginRight : moderateScale(8,0.3),
-              
-              
-            }}></View>
-            )
-          })}
-          </View>
-          <View
+        <CustomText
           style={{
-            width: windowWidth * 0.85,
-            flexDirection: 'row',
-            marginTop: moderateScale(10, 0.3),
-            alignItems : 'center',
-            justifyContent : 'center'
+            textTransform: 'lowercase',
+            color: Color.veryLightGray,
+            marginTop: -moderateScale(5, 0.3),
           }}>
-          <View
+          {' '}
+          or{' '}
+        </CustomText>
+        <View
+          style={{
+            borderTopWidth: 1,
+            borderColor: Color.veryLightGray,
+            width: windowWidth * 0.4,
+          }}
+        />
+      </View>
+      <View style={styles.goldContainer}>
+        <View
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            paddingVertical: moderateScale(10, 0.6),
+            backgroundColor: '#EEEEEE',
+          }}>
+          <CustomText
+            isBold
             style={{
-              borderTopWidth: 1,
-              borderColor: Color.veryLightGray,width : windowWidth * 0.4
-            }}
-          />
-          <CustomText style={{
-            textTransform : 'lowercase' , 
-            color :  Color.veryLightGray , 
-            marginTop : -moderateScale(5,0.3)
-          }}>  or  </CustomText>
-          <View
-            style={{
-              borderTopWidth: 1,
-              borderColor: Color.veryLightGray,width : windowWidth * 0.4
-            }}
-          />
-
+              color: Color.black,
+              fontSize: moderateScale(8, 0.6),
+              textTransform: 'uppercase',
+            }}>
+            1 boost free per month
+          </CustomText>
         </View>
-            <View style={styles.goldContainer}>
-            <View
-                      style={{
-                        width: '100%',
-                        alignItems: 'center',
-                        paddingVertical: moderateScale(10, 0.6),
-                        backgroundColor: '#EEEEEE',
-                      }}>
-                      <CustomText
-                        isBold
-                        style={{
-                          color: Color.black,
-                          fontSize: moderateScale(8, 0.6),
-                          textTransform: 'uppercase',
-                        }}>
-                        1 boost free per month
-                      </CustomText>
-                    </View>
-                    <View style={[styles.row,{
-    width : windowWidth * 0.9 , 
-    marginTop : moderateScale(10,0.3)
-
-                    }]}>
-                      <View style={[styles.row ]}>
-                        <Icon 
-                        name={'fire'}
-                        as={Fontisto}
-                   size={moderateScale(18, 0.6)}
-                        color={'#E25822'}
-
-                        />
-                        <CustomText isBold >Get Qavah Gold</CustomText>
-                      </View>
-                      <CustomText style={{
-                        borderWidth : 1 ,
-                        paddingVertical: moderateScale(5, 0.6),
-                      paddingHorizontal: moderateScale(10, 0.6),
-                      fontSize: moderateScale(11, 0.6),
-                      borderColor : Color.veryLightGray ,
-                      borderRadius : moderateScale(25,0,6),
-                      marginRight : moderateScale(10,0.3)
-                      }}>Select</CustomText>
-                    </View>
-            </View>
+        <View
+          style={[
+            styles.row,
+            {
+              width: windowWidth * 0.9,
+              marginTop: moderateScale(10, 0.3),
+            },
+          ]}>
+          <View style={[styles.row]}>
+            <Icon
+              name={'fire'}
+              as={Fontisto}
+              size={moderateScale(18, 0.6)}
+              color={'#E25822'}
+            />
+            <CustomText isBold>Get Qavah Gold</CustomText>
+          </View>
+          <CustomText
+            style={{
+              borderWidth: 1,
+              paddingVertical: moderateScale(5, 0.6),
+              paddingHorizontal: moderateScale(10, 0.6),
+              fontSize: moderateScale(11, 0.6),
+              borderColor: Color.veryLightGray,
+              borderRadius: moderateScale(25, 0, 6),
+              marginRight: moderateScale(10, 0.3),
+            }}>
+            Select
+          </CustomText>
+        </View>
+      </View>
     </CustomModal>
   );
 };
@@ -381,12 +418,11 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
   },
-  row : { 
-    flexDirection : 'row',
-    justifyContent : 'space-between' ,
-    paddingLeft : moderateScale(20,0.6),
-    alignItems : 'center'
-
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: moderateScale(20, 0.6),
+    alignItems: 'center',
   },
   circle: {
     width: moderateScale(60, 0.6),
@@ -405,16 +441,14 @@ const styles = ScaledSheet.create({
 
     elevation: 9,
   },
-  goldContainer : { 
-    width : windowWidth * 0.9 ,
-    height : windowHeight * 0.12 ,
-    borderRadius : moderateScale(10,0.6),
-    borderWidth : 1, 
-    borderColor : Color.themeLightGray ,
-    overflow : 'hidden',
-    marginTop : moderateScale(5,0.3)
-
-
+  goldContainer: {
+    width: windowWidth * 0.9,
+    height: windowHeight * 0.12,
+    borderRadius: moderateScale(10, 0.6),
+    borderWidth: 1,
+    borderColor: Color.themeLightGray,
+    overflow: 'hidden',
+    marginTop: moderateScale(5, 0.3),
   },
   singleButton: {
     height: moderateScale(50, 0.6),
@@ -448,8 +482,8 @@ const styles = ScaledSheet.create({
     left: moderateScale(10, 0.3),
     top: moderateScale(20, 0.6),
     zIndex: 1,
-    justifyContent : 'center',
-    alignItems : 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   image: {
     width: windowWidth,

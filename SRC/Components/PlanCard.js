@@ -10,8 +10,9 @@ import {windowWidth} from '../Utillity/utils';
 const {height, width} = Dimensions.get('window');
 
 const PlanCard = ({title, description, price, selected, item}) => {
+  console.log('🚀 ~ PlanCard ~ title:', title);
   console.log("🚀 ~ file: PlanCard.js:13 ~ PlanCard ~ item:", item)
-  console.log('🚀 ~ file: PlanCard.js:13 ~ PlanCard ~ selected:', selected);
+  // console.log('🚀 ~ file: PlanCard.js:13 ~ PlanCard ~ selected:', selected);
   const splitedItem = title.split(' ');
   console.log(
     '🚀 ~ file: PlanCard.js:13 ~ PlanCard ~ splitedItem:',
@@ -22,13 +23,10 @@ const PlanCard = ({title, description, price, selected, item}) => {
       style={[
         styles.container,
         {
-          borderColor: selected?.title
-            ? selected?.title === item?.title
+          borderColor: selected?.title == item?.title
               ? Color.themeColor
               : Color.veryLightGray
-            : selected?.pkg_name == item?.title
-            ? Color.themeColor
-            : Color.veryLightGray,
+          
         },
       ]}>
       <View style={styles.iconContainer}>
@@ -40,20 +38,16 @@ const PlanCard = ({title, description, price, selected, item}) => {
               fontSize: moderateScale(22, 0.6),
               width: windowWidth * 0.4,
               // backgroundColor:'red',
-              color: selected?.title
-                ? selected?.title === item?.title
+              color:selected?.title == item?.title
                   ? Color.themeColor
                   : Color.veryLightGray
-                : selected?.pkg_name == item?.title
-                ? Color.themeColor
-                : Color.veryLightGray,
+               
             },
           ]}
           bold>
-          {splitedItem[0] == 'Qavah' ? 'Month To Month' : title}
+          {title}
         </CustomText>
-        {((selected?.pkg_name && selected?.pkg_name == item?.title) ||
-          (selected?.title && selected?.title == item?.title)) && (
+        {(selected?.title == item?.title) && (
           <Icon
             name={'checkcircleo'}
             as={AntDesign}
@@ -76,11 +70,13 @@ const PlanCard = ({title, description, price, selected, item}) => {
             marginTop: moderateScale(20, 0.3),
           },
         ]}>
-        {selected?.pkg_catogery == 'platinum' && splitedItem[0] != 'Qavah' ? item?.description : `Plan Includes \n\n -> ${
-          item?.lovenotes ? item?.lovenotes : '0'
-        } Love Notes \n\n -> ${
-          item?.spotlights ? item?.spotlights : '0'
-        } spot lights \n\n `}
+        {selected?.pkg_catogery == 'platinum' && splitedItem[0] != 'Qavah'
+          ? item?.description
+          : `Plan Includes \n\n -> ${
+              item?.lovenotes ? item?.lovenotes : '0'
+            } Love Notes \n\n -> ${
+              item?.spotlights ? item?.spotlights : '0'
+            } spot lights \n\n `}
       </CustomText>
       <CustomText
         style={[

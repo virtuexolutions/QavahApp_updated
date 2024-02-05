@@ -69,10 +69,10 @@ const Header = props => {
   const profileVerified = useSelector(
     state => state.authReducer.profileVerified,
   );
-  console.log(
-    '🚀 ~ file: Header.js:70 ~ Header ~ profileVerified:',
-    profileVerified,
-  );
+  // console.log(
+  //   '🚀 ~ file: Header.js:70 ~ Header ~ profileVerified:',
+  //   profileVerified,
+  // );
 
   const pusherInstance = useSelector(
     state => state.socketReducer.pusherInstance,

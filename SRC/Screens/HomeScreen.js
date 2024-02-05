@@ -49,7 +49,7 @@ const HomeScreen = () => {
   const pusher = Pusher.getInstance();
 
   const user = useSelector(state => state.commonReducer.userData);
-  console.log("🚀 ~ file: HomeScreen.js:52 ~ user:", user)
+  // console.log("🚀 ~ file: HomeScreen.js:52 ~ user:", user)
   const isSubscribed = useSelector(state => state.socketReducer.isSubscribed);
 
   const token = useSelector(state => state.authReducer.token);
@@ -463,7 +463,8 @@ const HomeScreen = () => {
                         },
                       ],
                     )
-                  : setSpotLightVisible(true);
+                  :
+                   setSpotLightVisible(true);
                 // setMatchModalVisible(true);
               }}
             />
