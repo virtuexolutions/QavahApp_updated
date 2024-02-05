@@ -25,14 +25,10 @@ let startNode;
 
 const Card = memo(({card, height, setCards, cards, fromSpotLight}) => {
   const userData = useSelector(state => state.commonReducer.userData);
-  console.log(
-    '🚀 ~ file: Card.js:27 ~ Card ~ userData:',
-    userData?.subscription?.length,
-  );
+ 
   const [subscription, setSubscription] = useState(
     userData?.subscription?.length > 0 ? true : false,
   );
-  console.log('🚀 ~ file: Card.js:29 ~ Card ~ subscription:', subscription);
 
   useEffect(() => {
     setCards && setCards(card?.id);
@@ -48,7 +44,6 @@ const Card = memo(({card, height, setCards, cards, fromSpotLight}) => {
       }}
       activeOpacity={1}
       style={[styles.card, {height: height}]}>
-      {/* console.log("🚀 ~ file: Card.js:20 ~ card:", card) */}
       {/* <SharedElement id={`item.${card.key}.image_url`}> */}
       <CustomImage
         style={styles.image}
@@ -58,9 +53,9 @@ const Card = memo(({card, height, setCards, cards, fromSpotLight}) => {
             fromSearch: true,
           });
         }}
-        source={{
+        source={ card?.profile_images ? {
           uri: card?.profile_images[0]?.url,
-        }}
+        }  : require('../Assets/Images/user.png')}
         resizeMethod={'stretch'}
       />
       <LinearGradient

@@ -45,11 +45,11 @@ import Support from './Screens/Support';
 import GetSuperLike from './Screens/GetSuperLike';
 import PrivacyPolicy from './Screens/PrivacyPolicy';
 import PaymentModal from './Components/PaymentModal';
-import {
-  CometChatConversationListWithMessages,
-  CometChatMessages,
-  CometChatUserListWithMessages,
-} from './cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
+// import {
+//   CometChatConversationListWithMessages,
+//   CometChatMessages,
+//   CometChatUserListWithMessages,
+// } from './cometchat-chat-uikit-react-native-3/CometChatWorkspace/src';
 import SelectedChat from './Screens/SelectedChat';
 import CallScreen from './Screens/CallScreen';
 import LocationEnabler from './Screens/LocationEnabler';
@@ -66,25 +66,13 @@ const AppNavigator = () => {
   // console.log("🚀 ~ file: appNavigation.js:64 ~ AppNavigator ~ token:", token)
   const isLoggedIn = useSelector(state => state.authReducer.isLoggedIn);
   const emailVerified = useSelector(state => state.authReducer.emailVerified);
-  console.log(
-    '🚀 ~ file: appNavigation.js:66 ~ AppNavigator ~ emailVerified:',
-    emailVerified,
-  );
+  
   const numberVerified = useSelector(state => state.authReducer.numberVerified);
-  console.log(
-    '🚀 ~ file: appNavigation.js:68 ~ AppNavigator ~ numberVerified:',
-    numberVerified,
-  );
-
+ 
   const locationEnabled = useSelector(
     state => state.authReducer.locationEnabled,
   );
-  // console.log("🚀 ~ file: appNavigation.js:67 ~ AppNavigator ~ locationEnabled:", locationEnabled)
-  console.log(
-    '🚀 ~ file: appNavigation.js:55 ~ AppNavigator ~ isLoggedIn:',
-    isLoggedIn,
-  );
-
+ 
   const RootNav = createSharedElementStackNavigator();
   const options = {
     headerBackTitleVisible: false,
@@ -113,7 +101,7 @@ const AppNavigator = () => {
           initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LandingPage" component={LandingPage} />
-          <RootNav.Screen name="CometChatMessages" component={CometChatMessages} />
+          {/* <RootNav.Screen name="CometChatMessages" component={CometChatMessages} /> */}
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="CreatePortfolio" component={CreatePortfolio} />
 

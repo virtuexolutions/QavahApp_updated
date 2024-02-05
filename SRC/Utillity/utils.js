@@ -11,7 +11,7 @@ const requestLocationPermission = async () => {
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       {
         title: 'Location Access Required',
-        message: 'This App needs to Access your location',
+        message: 'Qavah App needs to Access your location',
       },
     );
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
@@ -32,7 +32,7 @@ const requestCameraPermission = async () => {
       {
         title: 'Camera Permission',
         message:
-          'Breakaway App needs access to your camera ' +
+          'Qavah  App needs access to your camera ' +
           'so you can take awesome pictures.',
       },
     );
@@ -45,6 +45,27 @@ const requestCameraPermission = async () => {
     console.warn(err);
   }
 };
+
+const requestAudioPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+      {
+        title: 'Microphone Permission',
+        message:
+          'Qavah needs access to your camera ' +
+          'so you can take awesome pictures.',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('You can use the Camera');
+    } else {
+      console.log('Camera permission denied');
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+}
 
 const requestWritePermission = async () => {
   try {
@@ -116,6 +137,7 @@ export {
   requestLocationPermission,
   requestCameraPermission,
   requestWritePermission,
+  requestAudioPermission,
   apiHeader,
   sleep,
   wait,

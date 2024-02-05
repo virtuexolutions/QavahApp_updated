@@ -11,8 +11,8 @@ import CustomText from '../Components/CustomText'
 import { GiftedChat } from 'react-native-gifted-chat'
 import TextInputWithTitle from '../Components/TextInputWithTitle'
 import { useNavigation } from '@react-navigation/native'
-import { CometChatMessages } from '../cometchat-chat-uikit-react-native-3/CometChatWorkspace/src'
-import { CometChat } from '@cometchat-pro/react-native-chat'
+// import { CometChatMessages } from '../cometchat-chat-uikit-react-native-3/CometChatWorkspace/src'
+// import { CometChat } from '@cometchat-pro/react-native-chat'
 import { useSelector } from 'react-redux'
 
 const SelectedChat = ({route}) => {
@@ -21,18 +21,18 @@ const SelectedChat = ({route}) => {
   console.log("🚀 ~ file: SelectedChat.js:20 ~ SelectedChat ~ item:", item)
   const userData = useSelector(State => State.commonReducer.userData);
   const [localUser, setLocalUser] = useState(null);
-  useEffect(() => {
-    var user = CometChat.getLoggedinUser().then(
-      (user) => {
-        console.log('user details:', {user});
-        setLocalUser(user);
-      },
-      (error) => {
-        console.log('error getting details:', {error});
-      },
-    );
-    console.log("🚀 ~ file: SelectedChat.js:32 ~ useEffect ~ user:", user)
-  }, []);
+  // useEffect(() => {
+  //   var user = CometChat.getLoggedinUser().then(
+  //     (user) => {
+  //       console.log('user details:', {user});
+  //       setLocalUser(user);
+  //     },
+  //     (error) => {
+  //       console.log('error getting details:', {error});
+  //     },
+  //   );
+  //   console.log("🚀 ~ file: SelectedChat.js:32 ~ useEffect ~ user:", user)
+  // }, []);
   
   return (
     <View style={{flex: 1}}>

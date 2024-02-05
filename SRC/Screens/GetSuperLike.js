@@ -7,6 +7,7 @@ import {
   ToastAndroid,
   Platform,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../Components/Header';
@@ -44,7 +45,11 @@ const GetSuperLike = ({route}) => {
   const [selected, setSelected] = useState(
     user?.subscription
       ? user?.subscription.find(
-          item => item?.pkg_catogery.toLowerCase() == (text.toLowerCase()== 'premium features' ? 'premium' : text.toLowerCase())
+          item =>
+            item?.pkg_catogery.toLowerCase() ==
+            (text.toLowerCase() == 'premium features'
+              ? 'premium'
+              : text.toLowerCase()),
         )
       : ' ',
   );
@@ -173,15 +178,13 @@ const GetSuperLike = ({route}) => {
             style={{marginTop: moderateScale(10, 0.3)}}
           />
         ) : (
-          <ScrollView
-            horizontal={true}
+          <>
+            <FlatList
+            horizontal
             showsHorizontalScrollIndicator={false}
-            // style={{marginHorizontal: moderateScale(10, 0.3)}}
-            contentContainerStyle={{
-              paddingHorizontal: moderateScale(10, 0.6),
-            }}>
-            {packages.map((item, index) => (
-              <TouchableOpacity
+             data={packages} 
+             renderItem={({item, index})=>{
+              return(  <TouchableOpacity
                 onPress={() => {
                   setSelected(item);
                   setPrice(item?.price);
@@ -194,9 +197,39 @@ const GetSuperLike = ({route}) => {
                   selected={selected}
                   item={item}
                 />
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+              </TouchableOpacity>)
+             }}
+             ListEmptyComponent={()=>{
+              return(<CustomText >No Plans available</CustomText>)
+             }}
+            
+            />
+
+            {/* <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              // style={{marginHorizontal: moderateScale(10, 0.3)}}
+              contentContainerStyle={{
+                paddingHorizontal: moderateScale(10, 0.6),
+              }}>
+              {packages.map((item, index) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    setSelected(item);
+                    setPrice(item?.price);
+                  }}>
+                  <PlanCard
+                    key={index}
+                    title={item?.title}
+                    description={item?.description}
+                    price={item?.price}
+                    selected={selected}
+                    item={item}
+                  />
+                </TouchableOpacity>
+              ))}
+            </ScrollView> */}
+          </>
         )}
 
         <PointsComponent array={pointsArray} title={'Upgrade your likes'} />

@@ -44,7 +44,7 @@ const NullDataComponent = ({style , width}) => {
             // duration={20}
           /> */}
           <CustomImage
-            source={{uri : user?.profile_images[0]?.url}}
+            source={user?.profile_images ?  {uri : user?.profile_images[0]?.url} :  require('../Assets/Images/user.png')}
             resizeMode={'cover'}
             style={{
               width: style?.width ? style?.width : windowWidth * 0.2,

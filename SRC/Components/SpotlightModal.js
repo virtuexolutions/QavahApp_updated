@@ -34,11 +34,11 @@ const SpotLightModal = ({isVisible, setIsVisible}) => {
     const response = await Get(url, token);
     if (response != undefined) {
       // console.log(JSON.stringify(response?.data, null, 2));
-      const newData = response?.data?.packages;
-      // console.log(
-      //   '🚀 ~ file: GetSuperLike.js:43 ~ getSubscriptionPlan ~ newData:',
-      //   newData?.premium,
-      //   );
+      const newData = response?.data;
+      return console.log(
+        '🚀 ~ file: GetSuperLike.js:43 ~ getSubscriptionPlan ~ newData:',
+        newData,
+        );
         setPackages(newData?.premium)
       }
     };
@@ -60,12 +60,8 @@ const SpotLightModal = ({isVisible, setIsVisible}) => {
 
 
   const onViewableItemsChanged = ({viewableItems}) => {
-    // console.log(
-    //   '🚀 ~ file: Walkthrough.js:62 ~ Walkthrough ~ viewableItems',
-    //   viewableItems[0]?.index,
-    // );
+   
     setSelecetedIndex(viewableItems[0]?.index);
-    // Do stuff
   };
   const viewabilityConfigCallbackPairs = useRef([{onViewableItemsChanged}]);
   useEffect(() => {

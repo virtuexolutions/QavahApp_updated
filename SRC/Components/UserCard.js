@@ -163,7 +163,7 @@ const UserCard = ({
         source={
           item?.profile_images[0]?.url
             ? {uri: item?.profile_images[0]?.url}
-            : require('../Assets/Images/woman1.jpeg')
+            : require('../Assets/Images/user.png')
         }
         style={[
           {
