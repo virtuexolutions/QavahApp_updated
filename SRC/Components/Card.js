@@ -53,9 +53,9 @@ const Card = memo(({card, height, setCards, cards, fromSpotLight}) => {
             fromSearch: true,
           });
         }}
-        source={{
+        source={ card?.profile_images ? {
           uri: card?.profile_images[0]?.url,
-        }}
+        }  : require('../Assets/Images/user.png')}
         resizeMethod={'stretch'}
       />
       <LinearGradient
