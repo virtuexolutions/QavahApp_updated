@@ -102,7 +102,6 @@ const Subscription = () => {
    
    
   ];
-  console.log("🚀 ~ Subscription ~ subscriptions:", subscriptions?.length)
 
   const pointsArray = [
     {lock: false, text: 'Unlimited Likes'},
@@ -121,10 +120,7 @@ const Subscription = () => {
     {lock: false, text: 'Top Picks'},
   ];
   const onViewableItemsChanged = ({viewableItems}) => {
-    console.log(
-      '🚀 ~ file: Walkthrough.js:62 ~ Walkthrough ~ viewableItems',
-      viewableItems,
-    );
+   
     setIndex(viewableItems[0]?.index);
     setItemPrice(viewableItems[0]?.item?.price);
     setItemColor(viewableItems[0]?.item?.color);
@@ -132,7 +128,6 @@ const Subscription = () => {
     // Do stuff
   };
   const viewabilityConfigCallbackPairs = useRef([{onViewableItemsChanged}]);
-  console.log("🚀 ~ Subscription ~ viewabilityConfigCallbackPairs:", viewabilityConfigCallbackPairs)
 
   return (
     <>

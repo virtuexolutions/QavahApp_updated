@@ -29,25 +29,17 @@ const {height, width} = Dimensions.get('window');
 const GetSuperLike = ({route}) => {
   const token = useSelector(State => State.authReducer.token);
   const user = useSelector(state => state.commonReducer.userData);
+  console.log('🚀 ~ GetSuperLike ~ user:', user?.subscription);
   const {text} = route.params;
-  console.log("🚀 ~ GetSuperLike ~ text:", text)
+  // console.log('🚀 ~ GetSuperLike ~ text:', text);
 
   const [packages, setPackages] = useState([]);
-  console.log("🚀 ~ GetSuperLike ~ packages:", packages)
+  // console.log("🚀 ~ GetSuperLike ~ packages:", packages)
 
   const [loading, setLoading] = useState(false);
 
-  const [selected, setSelected] = useState(
-    user?.subscription
-      ? user?.subscription.find(
-          item =>
-            item?.pkg_catogery.toLowerCase() ==
-            (text.toLowerCase() == 'premium features'
-              ? 'premium'
-              : text.toLowerCase()),
-        )
-      : ' ',
-  );
+  const [selected, setSelected] = useState({});
+  console.log('🚀 ~ GetSuperLike ~ selected:', selected);
 
   const [price, setPrice] = useState(0);
   const [paymentModalVisible, setPaymentModalVisible] = useState(false);
@@ -56,11 +48,11 @@ const GetSuperLike = ({route}) => {
       return item?.pkg_name;
     }),
   );
-  // console.log("🚀 ~ GetSuperLike ~ packagesName:", packagesName)
+  console.log('🚀 ~ GetSuperLike ~ packagesName:', packagesName);
   const pkg_category = user?.subscription.map(item => {
     return item?.pkg_catogery;
   });
-  // console.log("🚀 ~ GetSuperLike ~ pkg_category:", pkg_category)
+  // console.log('🚀 ~ GetSuperLike ~ pkg_category:', pkg_category);
 
   const pointsArray = [
     {lock: false, text: 'Unlimited Likes'},
@@ -70,32 +62,26 @@ const GetSuperLike = ({route}) => {
 
   const getSubscriptionPlan = async () => {
     const url = `packages?title=${text}`;
-    console.log("🚀 ~ getSubscriptionPlan ~ url:", url)
+    // console.log('🚀 ~ getSubscriptionPlan ~ url:', url);
     setLoading(true);
     const response = await Get(url, token);
     setLoading(false);
     if (response != undefined) {
       //  return console.log( text,JSON.stringify(response?.data, null, 2));
       const newData = response?.data?.packages;
-      // console.log(
-      //   '🚀 ~ getSubscriptionPlan ~ newData:',
-      //   newData?.month_to_month[0],
-      // );
+      // console.log('🚀 ~ getSubscriptionPlan ~ newData:', newData);
 
-      // text.toLowerCase() == 'platinum'.toLowerCase()
-      // ? console.log('platinum runs')
-      // : text.toLowerCase() == 'premium features'.toLowerCase()
-      // ? console.log('premium runs')
-      // : console.log('gold runs');
-
-    //  // text.toLowerCase() == 'platinum'.toLowerCase()
-    //     ? setPackages([newData?.platinum])
-    //     : text.toLowerCase() == 'Month to Month'.toLowerCase()
-    //     ? setPackages(newData?.month_to_month)
-    //     :text.toLowerCase() == 'premium'.toLowerCase()
-    //     ? setPackages(newData?.premium)
-    //     :
-         setPackages(newData);
+      setPackages(newData);
+      // user?.subscription &&
+      //   newData?.map((data, index) => {
+      //     return user?.subscription.map(item => {
+      //       return (
+      //         item?.pkg_catogery.toLowerCase() == text.toLowerCase() &&
+      //         item?.pkg_name.toLowerCase() == data?.title.toLowerCase() &&
+      //         setSelected(prev => [...prev, data])
+      //       );
+      //     });
+      //   });
     }
   };
 
@@ -116,9 +102,6 @@ const GetSuperLike = ({route}) => {
         // title={'Home'}
         leftName={'left'}
         leftType={AntDesign}
-        // textStyle={{
-        //   color: Color.veryLightGray,
-        // }}
       />
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -126,15 +109,12 @@ const GetSuperLike = ({route}) => {
           backgroundColor: Color.white,
         }}
         contentContainerStyle={{
-          // height: windowHeight * 0.95,
-
           alignItems: 'center',
           paddingBottom: moderateScale(80, 0.6),
         }}>
         <View
           style={{
             marginTop: moderateScale(20, 0.3),
-            // marginLeft:moderateScale(10,.3),
             marginHorizontal: moderateScale(20, 0.3),
           }}>
           <CustomText
@@ -148,7 +128,6 @@ const GetSuperLike = ({route}) => {
             isBold>
             {`${text} Packages`}
           </CustomText>
-         
         </View>
 
         {loading ? (
@@ -159,21 +138,20 @@ const GetSuperLike = ({route}) => {
           />
         ) : (
           <>
-          {
-            packages?.length > 0 &&
-           <CustomText
-           isBold
-           style={[
-             styles.Txt1,
-             {
-                // margin: moderateScale(20, 0.3),
-                fontSize: moderateScale(13, 0.6),
-                // left:moderateScale(-130,0.3)
-              },
-            ]}>
-            Select a plan
-          </CustomText>
-            }
+            {packages?.length > 0 && (
+              <CustomText
+                isBold
+                style={[
+                  styles.Txt1,
+                  {
+                    // margin: moderateScale(20, 0.3),
+                    fontSize: moderateScale(13, 0.6),
+                    // left:moderateScale(-130,0.3)
+                  },
+                ]}>
+                Select a plan
+              </CustomText>
+            )}
             <FlatList
               horizontal
               showsHorizontalScrollIndicator={false}
@@ -192,6 +170,7 @@ const GetSuperLike = ({route}) => {
                       price={item?.price}
                       selected={selected}
                       item={item}
+                      text={text}
                     />
                   </TouchableOpacity>
                 );
@@ -228,13 +207,15 @@ const GetSuperLike = ({route}) => {
         width={width * 0.8}
         height={height * 0.07}
         onPress={() => {
-          if (selected == '') {
+          if (Object.keys(selected).length == 0) {
             Platform.OS == 'android'
               ? ToastAndroid.show('Please select a package', ToastAndroid.SHORT)
               : alert('Please select a package');
           } else {
             if (
-              packagesName?.includes('Qavah Platinum') &&
+              (pkg_category?.includes('platinum') ||
+                pkg_category?.includes('Month to Month') ||
+                pkg_category?.includes('gold')) &&
               text.toLowerCase() != 'premium features'.toLowerCase()
             ) {
               Platform.OS == 'android'
@@ -243,18 +224,6 @@ const GetSuperLike = ({route}) => {
                     ToastAndroid.SHORT,
                   )
                 : alert(`You have already subscribed to ${text}`);
-            } else if (
-              pkg_category?.includes('platinum') &&
-              text.toLowerCase() == 'gold'.toLowerCase()
-            ) {
-              Platform.OS == 'android'
-                ? ToastAndroid.show(
-                    'You already have subscribed platinum so you cannot buy gold ',
-                    ToastAndroid.SHORT,
-                  )
-                : alert(
-                    'You already have subscribed platinum so you cannot buy gold',
-                  );
             } else if (text.toLowerCase() == 'premium features'.toLowerCase()) {
               if (packagesName.includes(selected?.title)) {
                 return Platform.OS == 'android'
