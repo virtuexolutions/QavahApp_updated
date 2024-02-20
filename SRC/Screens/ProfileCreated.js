@@ -18,7 +18,7 @@ const ProfileCreated = (props) => {
   const userData = useSelector(state=> state?.commonReducer?.userData)
   const token = useSelector(state=> state?.authReducer?.token)
   console.log("🚀 ~ file: ProfileCreated.js:16 ~ ProfileCreated ~ token:", userData)
-  console.log("🚀 ~ file: ProfileCreated.js:16 ~ ProfileCreated ~ token:", userData?.profile_images[0]?.url)
+  // console.log("🚀 ~ file: ProfileCreated.js:16 ~ ProfileCreated ~ token:", userData?.profile_images[0]?.url)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const ProfileCreated = (props) => {
           </CustomText>
           <CustomImage
             style={styles.image}
-            source={userData?.profile_images[0]?.url ? {uri : userData?.profile_images[0]?.url }:  require('../Assets/Images/dummyman6.png')}
+            source={userData?.profile_images[0]?.url ? {uri : userData?.profile_images[0]?.url }:  require('../Assets/Images/user.png')}
 
           />
         {/* </View> */}

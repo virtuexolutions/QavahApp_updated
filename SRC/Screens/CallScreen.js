@@ -6,8 +6,6 @@ import React, {useState, useEffect} from 'react';
 // import FastImage from 'react-native-fast-image';
 // import {TouchableOpacity} from 'react-native-gesture-handler';
 // import {CometChat} from '@cometchat-pro/react-native-chat';
-import { CometChatMessages } from '../cometchat-chat-uikit-react-native-3/CometChatWorkspace/src'
-import { CometChatOutgoingCall } from '../cometchat-chat-uikit-react-native-3/CometChatWorkspace/src/components/Calls';
 
 const CallScreen = (props) => {
 
@@ -134,7 +132,10 @@ const CallScreen = (props) => {
     //     <CometChat.CallingComponent callsettings={callSettings} />
     //   )}
     // </View>
-    <CometChatOutgoingCall />
+    // <CometChatOutgoingCall />
+    <View>
+      <Text>Hello</Text>
+    </View>
     
   );
 };

@@ -37,6 +37,7 @@ const Subscription = () => {
 
   const subscriptions = [
     {
+      id : 1,
       text: 'platinum',
       color: ['#acacac', '#e1e1e1'],
       price: 350,
@@ -53,6 +54,7 @@ const Subscription = () => {
       ],
     },
     {
+      id : 2,
       text: 'gold',
       color: ['#B78628', '#FCC201', '#DBA514', '#B78628'],
       price: 450,
@@ -68,12 +70,37 @@ const Subscription = () => {
       ],
     },
     {
-      text: 'premium features',
-      color: [  '#ACACAC','#181818'],
-      price: 350,
-      details: '',
-      features: [],
+      id : 3,
+      text: 'Month to Month',
+      color: ['#022F40', '#38AECC'],
+      price: 120,
+      details: 'These month to month plan includes customize plans',
+      features: [
+        'Sojourn',
+        'Say what?',
+        'Messaging',
+        'Fancys',
+        'Super Fancys 4 per month',
+        'Spotlight Me 4 per month',
+        'Read Receipts',
+      ],
     },
+   
+    {
+      id : 5,
+      text: 'premium',
+      color: [  '#ACACAC','#0e0e0e'],
+      price: 350,
+      details: 'These Premium plan includes customize plans',
+      features: [
+        'love notes',
+        'discreete modes',
+        'spotlights'
+      ],
+    },
+    
+   
+   
   ];
 
   const pointsArray = [
@@ -93,10 +120,7 @@ const Subscription = () => {
     {lock: false, text: 'Top Picks'},
   ];
   const onViewableItemsChanged = ({viewableItems}) => {
-    console.log(
-      '🚀 ~ file: Walkthrough.js:62 ~ Walkthrough ~ viewableItems',
-      viewableItems,
-    );
+   
     setIndex(viewableItems[0]?.index);
     setItemPrice(viewableItems[0]?.item?.price);
     setItemColor(viewableItems[0]?.item?.color);
@@ -128,22 +152,29 @@ const Subscription = () => {
         contentContainerStyle={{
           // height: windowHeight * 0.95,
           alignItems: 'center',
-          paddingBottom: moderateScale(80, 0.6),
+          // paddingBottom: moderateScale(80, 0.6),
         }}>
         <FlatList
           data={subscriptions}
           horizontal
           showsHorizontalScrollIndicator={false}
-          pagingEnabled
+          // pagingEnabled
+          keyExtractor={(item)=>item?.id}
           contentContainerStyle={{
             alignItems: 'center',
+            paddingRight : moderateScale(30,0.6),
+          }}
+          style={{
+            // backgroundColor : 'red'
           }}
           viewabilityConfigCallbackPairs={
             viewabilityConfigCallbackPairs.current
           }
-          // onViewableItemsChanged={()=>{
-          //   console.log('')
-          // }}
+          
+          viewabilityConfig={{
+            viewAreaCoveragePercentThreshold: 90, // Adjust as needed
+          }}  
+         
           renderItem={({item, index}) => {
             return (
               <CustomButton
@@ -158,6 +189,7 @@ const Subscription = () => {
                 borderRadius={moderateScale(10, 0.6)}
                 marginTop={moderateScale(40, 0.6)}
                 marginBottom={moderateScale(10, 0.6)}
+                
                 elevation
                 isBold
                 isGradient
@@ -246,17 +278,7 @@ const Subscription = () => {
       </ScrollView>
 
       <CustomButton
-        // disabled={
-        //   pkg_catogery == 'gold' && text == 'Platinum'
-        //     ? false
-        //     : pkg_catogery == 'gold' && text == 'gold'
-        //     ? true
-        //     : pkg_catogery == 'platinum' && text == 'Platinum'
-        //     ? true
-        //     : pkg_catogery == 'platinum' && text == 'Gold'
-        //     ? true
-        //     : false
-        // }
+       
         text={itemPrice == 0 ? 'Continue' : `${itemPrice}$`}
         textColor={Color.white}
         width={windowWidth * 0.8}

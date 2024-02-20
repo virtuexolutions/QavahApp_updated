@@ -10,7 +10,12 @@ import {
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Header from '../Components/Header';
 import CustomStatusBar from '../Components/CustomStatusBar';
-import {apiHeader, requestLocationPermission, windowHeight, windowWidth} from '../Utillity/utils';
+import {
+  apiHeader,
+  requestLocationPermission,
+  windowHeight,
+  windowWidth,
+} from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
 import Swiper from 'react-native-deck-swiper';
 import Card from '../Components/Card';
@@ -36,10 +41,7 @@ import {
   setPusherInstance,
   setotherData,
 } from '../Store/slices/socket';
-import { setIsProfileVerified } from '../Store/slices/auth';
-
-
-
+import {setIsProfileVerified} from '../Store/slices/auth';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -47,23 +49,12 @@ const HomeScreen = () => {
   const pusher = Pusher.getInstance();
 
   const user = useSelector(state => state.commonReducer.userData);
-  // console.log("🚀 ~ file: HomeScreen.js:44 ~ user:", user)
+  console.log("🚀 ~ file: HomeScreen.js:52 ~ user:", user)
   const isSubscribed = useSelector(state => state.socketReducer.isSubscribed);
-  console.log('🚀 ~ file: HomeScreen.js:45 ~ isSubscribed:', isSubscribed);
 
-  console.log(
-    '🚀 ~ file: HomeScreen.js:40 ~ user:',
-    user?.id,
-    user?.profileName,
-  );
-  // console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
-  console.log("🚀 ~ file: HomeScreen.js:35 ~ token:", token)
   const [swiperRef, setSwiperRef] = useState();
-  console.log(
-    '🚀 ~ file: HomeScreen.js:53 ~ swiperRef:',
-    swiperRef?.state?.swipeBackXYPositions?.length,
-  );
+
   const [xAxis, setXAxis] = useState(0);
   const [yAxis, setYAxis] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -73,19 +64,11 @@ const HomeScreen = () => {
   const [isSpotLightVisible, setSpotLightVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [photoCards, setPhotoCards] = useState([]);
-  console.log('🚀 ~ file: HomeScreen.js:62 ~ photoCards:', photoCards.length);
   const [matchModalVisible, setMatchModalVisible] = useState(false);
 
-  // console.log("🚀 ~ file: HomeScreen.js:45 ~ photoCards:", photoCards)
-
   const [LogData, setLogData] = useState([]);
-  console.log('🚀 ~ file: HomeScreen.js:67 ~ LogData:', LogData);
-  console.log('🚀 ~ file: HomeScreen.js:67 ~ LogData:', LogData.length);
-  // console.log("🚀 ~ file: HomeScreen.js:56 ~ LogData:", LogData)
 
   const [drawerType, setDrawerType] = useState('notification');
-  
-
 
   const getUsers = async () => {
     const url = `discover/getPeople/${user?.uid}/${user?.seeking}/${user?.location?.latitude}/${user?.location?.longitude}/${user?.location?.city}/${user?.location?.zipcode}`;
@@ -95,7 +78,6 @@ const HomeScreen = () => {
     setIsLoadingApi(false);
     if (response != undefined) {
       setPhotoCards(response?.data?.peoples);
-      // console.log(response?.data?.peoples);
     }
   };
   const getMe = async () => {
@@ -105,10 +87,10 @@ const HomeScreen = () => {
     const response = await Get(url, token);
     setIsLoadingApi(false);
     if (response != undefined) {
-      // setPhotoCards(response?.data?.peoples);
-      console.log(response?.data?.user);
       dispatch(setUserData(response?.data?.user));
-      dispatch(setIsProfileVerified(response?.data?.user?.user_profile_verified))
+      dispatch(
+        setIsProfileVerified(response?.data?.user?.user_profile_verified),
+      );
     }
   };
 
@@ -122,9 +104,8 @@ const HomeScreen = () => {
   //   dispatch(setPusherInstance(null));
   //   console.log('unsubscribed successfully')
   // };
- 
+
   useEffect(() => {
-    console.log('useEffect runs'); 
     async function connectPusher() {
       try {
         await pusher.init({
@@ -138,10 +119,7 @@ const HomeScreen = () => {
           onSubscriptionSucceeded: (channelName, data) => {
             dispatch(setPusherInstance(pusher));
             dispatch(setIsSubscribed(true));
-            console.log(
-              '🚀 ~ file: SelectedChat.js:77 ~ connectPusher ~ myChannel:',
-              myChannel,
-            );
+
             console.log('Subscribed to ', channelName);
             console.log(
               `And here are the channel members: ${myChannel.members}`,
@@ -153,15 +131,12 @@ const HomeScreen = () => {
             // console.log('Got channel event:', JSON.parse(event.data));
 
             const dataString = JSON.parse(event.data);
-            console.log(
-              '🚀 ~ file: HomeScreen.js:108 ~ connectPusher ~ dataString:',
-              dataString?.message?.user,
-            );
+
             dispatch(setotherData(dataString?.message?.user));
           },
-          onSubscriptionError : (error)=>{
-            console.log('data ------========== >' , error)
-          }
+          onSubscriptionError: error => {
+            console.log('data ------========== >', error);
+          },
         });
         // await pusher.subscribe({ channelName });
         await pusher.connect();
@@ -169,10 +144,9 @@ const HomeScreen = () => {
         console.log(`ERROR: ${e}`);
       }
     }
-    const disconnectPusher = async()=>{
+    const disconnectPusher = async () => {
       const result = await pusher.disconnect();
-      console.log("🚀 ~ file: HomeScreen.js:163 ~ disconnectPusher ~ result:", result)
-    }
+    };
     if (!isSubscribed) {
       connectPusher();
       // disconnectPusher()
@@ -186,7 +160,6 @@ const HomeScreen = () => {
     const response = await Post(url, {}, apiHeader(token));
     setIsLoading(false);
     if (response?.data?.status) {
-      console.log(response?.data);
       Platform.OS == 'android'
         ? ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT)
         : alert(response?.data?.message);
@@ -208,8 +181,6 @@ const HomeScreen = () => {
   const handleOnSwipedRight = async () => {
     swiperRef.swipeRight();
   };
-
-
 
   const notificaitonArray = [
     {
@@ -253,39 +224,31 @@ const HomeScreen = () => {
         targetsUid: LogData[LogData?.length - 1]?.targetsId,
         targetName: LogData[LogData?.length - 1]?.targetsName,
       };
-      console.log('🚀 ~ file: HomeScreen.js:207 ~ UndoLog ~ body:', body);
       setIsLoading(true);
 
       const response = await Post(url, body, apiHeader(token));
-      console.log(
-        '🚀 ~ file: HomeScreen.js:212 ~ UndoLog ~ response:',
-        response?.data,
-      );
 
       if (response?.data?.status) {
         setIsLoading(false);
 
-        console.log('Here');
+        // console.log('Here');
 
         LogData.pop();
-        console.log('after Pop');
+        // console.log('after Pop');
 
         await swiperRef.swipeBack();
       }
     }
-
-   
   };
 
   const setXY = useCallback((x, y) => {
-    console.log(x, y);
     setXAxis(x);
     setYAxis(y);
   }, []);
 
   useEffect(() => {
     getUsers();
-    getMe()
+    getMe();
     setLogData([]);
   }, [focused]);
 
@@ -355,11 +318,21 @@ const HomeScreen = () => {
                   apiHeader(token),
                 );
                 if (response?.data?.status) {
-                  console.log(
-                    '🚀 ~ file: HomeScreen.js:294 ~ onSwipedLeft={async ~ response?.data:',
-                    response?.data,
-                  );
-
+                  setLogData(prev => [
+                    ...prev,
+                    {targetsId: item?.id, targetsName: item?.profileName},
+                  ]);
+                }
+              }}
+              onSwipedTop={async (index, item) => {
+                const url = 'swap/superLiked';
+                const response = await Post(
+                  url,
+                  {targetsUid: item?.id},
+                  apiHeader(token),
+                );
+                if (response?.data?.status) {
+                  console.log("🚀 ~ file: HomeScreen.js:334 ~ onSwipedTop={ ~ response:", response?.data)
                   setLogData(prev => [
                     ...prev,
                     {targetsId: item?.id, targetsName: item?.profileName},
@@ -382,7 +355,7 @@ const HomeScreen = () => {
                 }
               }}
               swipeBack={async index => {
-                console.log('index============>>>>>>>>', index);
+                // console.log('index============>>>>>>>>', index);
               }}
               disableBottomSwipe={true}
               onSwipedAll={() => {
@@ -490,7 +463,8 @@ const HomeScreen = () => {
                         },
                       ],
                     )
-                  : setSpotLightVisible(true);
+                  :
+                   setSpotLightVisible(true);
                 // setMatchModalVisible(true);
               }}
             />

@@ -1,34 +1,43 @@
 import {StyleSheet, Text, View, Dimensions} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import CustomText from './CustomText';
 import Color from '../Assets/Utilities/Color';
 import {moderateScale} from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Icon} from 'native-base';
 import {windowWidth} from '../Utillity/utils';
+import {useSelector} from 'react-redux';
+import CustomImage from './CustomImage';
 
 const {height, width} = Dimensions.get('window');
 
-const PlanCard = ({title, description, price, selected, item}) => {
-  console.log("🚀 ~ file: PlanCard.js:13 ~ PlanCard ~ item:", item)
-  console.log('🚀 ~ file: PlanCard.js:13 ~ PlanCard ~ selected:', selected);
+const PlanCard = ({title, price, selected, item, text}) => {
+  console.log('🚀 ~ PlanCard ~ item:', item);
+  const user = useSelector(state => state.commonReducer.userData);
+  const [subscribed, setSubscribed] = useState({});
+
   const splitedItem = title.split(' ');
-  console.log(
-    '🚀 ~ file: PlanCard.js:13 ~ PlanCard ~ splitedItem:',
-    splitedItem,
-  );
+
+  useEffect(() => {
+    if (user?.subscription) {
+      let result = user?.subscription?.find(
+        (data, index) =>
+        data?.pkg_catogery.toLowerCase() == text.toLowerCase() &&
+        data?.pkg_name.toLowerCase() == item?.title.toLowerCase()
+        )
+        setSubscribed([undefined , null , ''].includes(result) ? {} : result);
+    }
+  }, []);
+
   return (
     <View
       style={[
         styles.container,
         {
-          borderColor: selected?.title
-            ? selected?.title === item?.title
+          borderColor:
+            selected?.title == item?.title
               ? Color.themeColor
-              : Color.veryLightGray
-            : selected?.pkg_name == item?.title
-            ? Color.themeColor
-            : Color.veryLightGray,
+              : Color.veryLightGray,
         },
       ]}>
       <View style={styles.iconContainer}>
@@ -40,29 +49,40 @@ const PlanCard = ({title, description, price, selected, item}) => {
               fontSize: moderateScale(22, 0.6),
               width: windowWidth * 0.4,
               // backgroundColor:'red',
-              color: selected?.title
-                ? selected?.title === item?.title
+              color:
+                selected?.title == item?.title
                   ? Color.themeColor
-                  : Color.veryLightGray
-                : selected?.pkg_name == item?.title
-                ? Color.themeColor
-                : Color.veryLightGray,
+                  : Color.veryLightGray,
             },
           ]}
           bold>
-          {splitedItem[0] == 'Qavah' ? 'Month To Month' : title}
+          {title}
         </CustomText>
-        {((selected?.pkg_name && selected?.pkg_name == item?.title) ||
-          (selected?.title && selected?.title == item?.title)) && (
+        {/* <CustomText>{subscribed ? 'yes' : 'no '}</CustomText>
+         */}
+         {/* <View style={{
+          width:"100%", height:"100%",
+          borderColor: Color.red, borderWidth:2}}>
+            </View> */}
+
+{
+  Object.keys(subscribed).length > 0 && <CustomImage
+         source={require('../Assets/Images/subscribed.png')}
+         resizeMode="cover"
+         
+         style={{width:60, height:60,
+         
+        position:"absolute", top:-10,  right:-30, left:-48 }}
+         />
+}
+        {selected?.title == item?.title && (
           <Icon
             name={'checkcircleo'}
             as={AntDesign}
             size={moderateScale(22, 0.3)}
             color={Color.themeColor}
             style={{top: -5}}
-            onPress={() => {
-              //   navigationN.goBack()
-            }}
+            onPress={() => {}}
           />
         )}
       </View>
@@ -76,11 +96,16 @@ const PlanCard = ({title, description, price, selected, item}) => {
             marginTop: moderateScale(20, 0.3),
           },
         ]}>
-        {selected?.pkg_catogery == 'platinum' && splitedItem[0] != 'Qavah' ? item?.description : `Plan Includes \n\n -> ${
-          item?.lovenotes ? item?.lovenotes : '0'
-        } Love Notes \n\n -> ${
-          item?.spotlights ? item?.spotlights : '0'
-        } spot lights \n\n `}
+        {
+          // selected?.pkg_catogery == 'platinum' && splitedItem[0] != 'Qavah'
+          //   ? item?.description
+          //   :
+          `Plan Includes \n\n -> ${
+            item?.lovenotes ? item?.lovenotes : '0'
+          } Love Notes \n\n -> ${
+            item?.spotlights ? item?.spotlights : '0'
+          } spot lights \n\n `
+        }
       </CustomText>
       <CustomText
         style={[
@@ -92,7 +117,7 @@ const PlanCard = ({title, description, price, selected, item}) => {
               ? selected?.title == item?.title
                 ? Color.themeColor
                 : 'black'
-              : selected?.pkg_name == item?.title
+              : selected?.title == item?.title
               ? Color.themeColor
               : 'black',
             position: 'absolute',

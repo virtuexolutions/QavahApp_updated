@@ -68,11 +68,11 @@ const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
         auto_renew: false,
         voucher: '',
       };
-      console.log(JSON.stringify(body,null ,2));
+      console.log( 'dadasdasdadad',JSON.stringify(body,null ,2));
       const responseApi = await Post(url, body, apiHeader(token));
       setIsLoading(false);
       if (responseApi?.status) {
-        console.log('data ======>>' , JSON.stringify(responseApi?.data?.response,null ,2))
+      console.log('data ======>>' , JSON.stringify(responseApi?.data?.response,null ,2))
         dispatch(setUserData(responseApi?.data?.response))
         Platform.OS == 'android'
           ? ToastAndroid.show('payment done', ToastAndroid.SHORT)
@@ -113,7 +113,7 @@ const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
             backgroundColor: Color.themeColor,
             // marginLeft:moderateScale(10,.3),
           }}>
-          {paymentType == '' ? (
+          {/* {paymentType == '' ? (
             <></>
           ) : (
             <Icon
@@ -130,7 +130,7 @@ const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
                 setPaymentType('');
               }}
             />
-          )}
+          )} */}
           <CustomText
             style={[
               {
@@ -142,7 +142,7 @@ const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
             Payment
           </CustomText>
         </View>
-        {paymentType == 'stripe' ? (
+        {/* {paymentType == 'stripe' ? ( */}
           <View>
             <CardField
               postalCodeEnabled={false}
@@ -187,7 +187,7 @@ const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
               }}
             />
           </View>
-        ) : paymentType == 'paypal' ? (
+        {/* ) : paymentType == 'paypal' ? (
           <CustomText>paypal intgeration left</CustomText>
         ) : (
           <>
@@ -205,8 +205,8 @@ const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
               onPress={() => {
                 setPaymentType('stripe');
               }}
-            />
-            <CustomButton
+            /> */}
+            {/* <CustomButton
               text={'pay through Paypal'}
               textColor={Color.white}
               width={windowWidth * 0.65}
@@ -218,9 +218,9 @@ const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
               // isGradient
               fontSize={moderateScale(12, 0.6)}
               onPress={() => {}}
-            />
-          </>
-        )}
+            /> */}
+          {/* </>
+        )} */}
       </View>
     </Modal>
   );

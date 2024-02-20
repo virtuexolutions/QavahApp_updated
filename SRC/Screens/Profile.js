@@ -42,7 +42,7 @@ const Profile = props => {
   const [type, setType] = useState('photos');
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setuserData] = useState(fromSearch ? data : user);
-  console.log("🚀 ~ file: Profile.js:45 ~ Profile ~ userData:", userData?.profile_images)
+  // console.log("🚀 ~ file: Profile.js:45 ~ Profile ~ userData:", userData?.profile_images)
   const [postRef , setPostRef] = useState(null
   )
   const [images , setImages] = useState(userData ? userData?.gallery_images :  [
@@ -167,7 +167,7 @@ const Profile = props => {
            fromSearch ?
             <CustomImage
               style={styles.image}
-              source={userData?.profile_images[0]?.url ? {uri : userData?.profile_images[0]?.url}:  require('../Assets/Images/image1.jpeg')}
+              source={userData?.profile_images[0]?.url ? {uri : userData?.profile_images[0]?.url}:  require('../Assets/Images/user.png')}
             />
             :
             <View>
@@ -176,7 +176,7 @@ const Profile = props => {
             ) : (
               <CustomImage
                 style={styles.image}
-                source={userData?.profile_images?.length > 0 ? {uri:userData?.profile_images[0]?.url} : require('../Assets/Images/dummyman6.png')}
+                source={userData?.profile_images?.length > 0 ? {uri:userData?.profile_images[0]?.url} : require('../Assets/Images/user.png')}
               />
             )}
             <TouchableOpacity

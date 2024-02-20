@@ -1,10 +1,10 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+// /**
+//  * Sample React Native App
+//  * https://github.com/facebook/react-native
+//  *
+//  * @format
+//  * @flow strict-local
+//  */
 
 import React, {useEffect, useRef, useState} from 'react';
 import {PermissionsAndroid, Platform} from 'react-native';
@@ -16,22 +16,28 @@ import {NativeBaseProvider} from 'native-base';
 import {store, persistor} from './SRC/Store/index';
 import {stripeKey} from './SRC/Config';
 import {
+  requestAudioPermission,
   requestCameraPermission,
   requestLocationPermission,
   requestWritePermission,
 } from './SRC/Utillity/utils';
 import SplashScreen from './SRC/Screens/SplashScreen';
 import AppNavigator, {DrawerRoot} from './SRC/appNavigation';
-import { CometChat } from "@cometchat-pro/react-native-chat";
-import { AppState } from 'react-native';
-import { setIsLocationEnabled } from './SRC/Store/slices/auth';
+
+import {AppState} from 'react-native';
+import {setIsLocationEnabled} from './SRC/Store/slices/auth';
 import RNSettings from 'react-native-settings';
 
+import {
+  CometChatConversationsWithMessages,
+  CometChatUIKit,
+  UIKitSettings,
+} from '@cometchat/chat-uikit-react-native';
+import {CometChat} from '@cometchat/chat-sdk-react-native';
+import {ConversationTypeConstants} from '@cometchat/chat-uikit-react-native/src/shared/constants/UIKitConstants';
 
 const App = () => {
   const [publishableKey, setPublishableKey] = useState('');
-   
-  
 
   const fetchPublishableKey = async () => {
     const key = await fetchKey(); // fetch key from your server here
@@ -61,15 +67,13 @@ const App = () => {
 const MainContainer = () => {
   const dispatch = useDispatch();
   const authKey = '07ba629476752645dbce6a6c4aad7b2fc680b511';
-  const appID = "2092182aee051e28";
-  const region = "US";
-  const appSetting = new CometChat.AppSettingsBuilder()
-    .subscribePresenceForAllUsers()
-    .setRegion(region)
-    .build();
+  const appID = '2092182aee051e28';
+  const region = 'US';
+  // const appSetting = new CometChat.AppSettingsBuilder()
+  //   .subscribePresenceForAllUsers()
+  //   .setRegion(region)
+  //   .build();
 
-
-  
   // fcm
   //  useEffect(() => {
   //    Notifications.registerRemoteNotifications();
@@ -123,7 +127,6 @@ const MainContainer = () => {
   //  }, []);
   // fcm ends
 
-
   // const requestVibratePermission = async () => {
   //   try {
   //     const granted = await PermissionsAndroid.request(
@@ -132,7 +135,7 @@ const MainContainer = () => {
   //         title: 'Vibrate Permission',
   //         message:
   //           'Qavah App needs access to your vibration sensor '
-           
+
   //       },
   //     );
   //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
@@ -145,7 +148,6 @@ const MainContainer = () => {
   //   }
   // };
 
-
   const appState = useRef(AppState.currentState);
 
   const _handleAppStateChange = nextAppState => {
@@ -156,11 +158,10 @@ const MainContainer = () => {
       console.log('App has come to the foreground!');
       RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
         if (result == RNSettings.ENABLED) {
-          console.log('location is enabled');
+          // console.log('location is enabled');
           dispatch(setIsLocationEnabled(true));
-          
         } else {
-          console.log('location is not enabled');
+          // console.log('location is not enabled');
           dispatch(setIsLocationEnabled(false));
         }
       });
@@ -181,19 +182,28 @@ const MainContainer = () => {
     };
   }, []);
 
-
-
-
+ 
+  
+  
+  
+  
+  
   useEffect(() => {
     async function GetPermission() {
       await requestCameraPermission();
       await requestWritePermission();
       await requestLocationPermission();
+      await requestAudioPermission();
       // await requestVibratePermission();
     }
     GetPermission();
     // configureCometChat()
   }, []);
+
+
+
+
+
   // useEffect(() => {
   //   console.log('useEffect runs');
   //   async function connectPusher() {
@@ -249,24 +259,30 @@ const MainContainer = () => {
   //     });
   //   };
   // }, [focused]);
-  const configureCometChat = async()=>{
-    console.log('here is the chat configuration')
-    CometChat.init(appID, appSetting).then(
+  const configureCometChat = async () => {
+    // console.log('here is the chat configuration');
+
+    let uikitSettings : UIKitSettings= {
+      appId: appID,
+      authKey:authKey,
+      region: 'US',
+      disableCalling : false,
+    };
+
+    CometChatUIKit.init(uikitSettings).then(
       () => {
-        console.log("Initialization completed successfully");
-       
-        // You can now call login function.
+        console.log('Initialization completed successfully');
+
       },
-      (error) => {
-        console.log("Initialization failed with error:", error);
+      error => {
+        console.log('Initialization failed with error:', error);
         // Check the reason for error and take appropriate action.
-      }
+      },
     );
-  }
+  };
 
   useEffect(() => {
-    configureCometChat()
-  
+    configureCometChat();
   }, []);
 
   const [isloading] = useloader(true);
@@ -285,3 +301,56 @@ const useloader = value => {
   return [isloading];
 };
 export default App;
+
+// import {View, Text} from 'react-native';
+// import React, {useEffect} from 'react';
+// import {PermissionsAndroid} from 'react-native';
+// import {Platform} from 'react-native';
+// import {
+//   CometChatConversationsWithMessages,
+//   CometChatUIKit,
+// } from '@cometchat/chat-uikit-react-native';
+// import {CometChat} from '@cometchat/chat-sdk-react-native';
+// import {ConversationTypeConstants} from '@cometchat/chat-uikit-react-native/src/shared/constants/UIKitConstants';
+
+// const getPermissions = () => {
+//   if (Platform.OS === 'android') {
+//     PermissionsAndroid.requestMultiple([
+//       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+//       PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+//       PermissionsAndroid.PERMISSIONS.CAMERA,
+//       PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+//     ]);
+//   }
+// };
+
+// // You can create ConversationRequestBuilder as per your requirement
+// let conversationsRequestBuilder = new CometChat.ConversationsRequestBuilder()
+//   .setLimit(20)
+//   .setConversationType(ConversationTypeConstants.both);
+
+// const App = () => {
+//   useEffect(() => {
+//     getPermissions();
+//     setTimeout(() => {
+//       CometChatUIKit.login({uid: 'superhero1'})
+//         .then(user => {
+//           console.log('User logged in successfully', user.getName());
+//         })
+//         .catch(error => {
+//           console.log('Login failed with exception:', error.stack);
+//         });
+//     }, 100);
+//   }, []);
+//   return (
+//     <View style={{flex: 1}}>
+//       <CometChatConversationsWithMessages
+//         conversationsConfiguration={{
+//           conversationsRequestBuilder: conversationsRequestBuilder,
+//         }}
+//       />
+//     </View>
+//   );
+// };
+
+// export default App;

@@ -252,7 +252,7 @@ const UserDetail = props => {
             source={
               userData?.profile_images[0]?.url
                 ? {uri: userData?.profile_images[0]?.url}
-                : require('../Assets/Images/image1.jpeg')
+                : require('../Assets/Images/user.png')
               // : require('../Assets/Images/image1.jpeg')
             }
             resizeMode={'contain'}
