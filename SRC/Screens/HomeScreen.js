@@ -58,7 +58,7 @@ const HomeScreen = () => {
   );
   // console.log("🚀 ~ file: HomeScreen.js:35 ~ HomeScreen ~ user:", user)
   const token = useSelector(state => state.authReducer.token);
-  // console.log("🚀 ~ file: HomeScreen.js:35 ~ token:", token)
+  console.log("🚀 ~ file: HomeScreen.js:35 ~ token:", token)
   const [swiperRef, setSwiperRef] = useState();
   console.log(
     '🚀 ~ file: HomeScreen.js:53 ~ swiperRef:',
