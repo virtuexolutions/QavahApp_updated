@@ -46,9 +46,10 @@ const App = () => {
 
   console.reportErrorsAsExceptions = false;
   return (
+    // 'pk_test_51NVdg5B4BhSb7ee19fHAwxa1HGilNbVP0oPB5xpGwyoT8ovw8S6xMGzm1ncxlO0N2oUwyuI4G3I4KDtbJvpagmSR00GQ7j5B7A'
     <StripeProvider
       publishableKey={
-        'pk_test_51NVdg5B4BhSb7ee19fHAwxa1HGilNbVP0oPB5xpGwyoT8ovw8S6xMGzm1ncxlO0N2oUwyuI4G3I4KDtbJvpagmSR00GQ7j5B7A'
+        'pk_live_51KqgoBIvyDpn13UA0fmEN4aeq4ifL2zGkbY6IVw1wonpnIqLXFFBRTyMC9O23JwmFFet4Qc7yf1xLyMmdUMBRt4K00c1C2vv4r'
       }
       // merchantIdentifier="merchant.identifier" // required for Apple Pay
       // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
@@ -182,12 +183,6 @@ const MainContainer = () => {
     };
   }, []);
 
- 
-  
-  
-  
-  
-  
   useEffect(() => {
     async function GetPermission() {
       await requestCameraPermission();
@@ -199,10 +194,6 @@ const MainContainer = () => {
     GetPermission();
     // configureCometChat()
   }, []);
-
-
-
-
 
   // useEffect(() => {
   //   console.log('useEffect runs');
@@ -262,17 +253,16 @@ const MainContainer = () => {
   const configureCometChat = async () => {
     // console.log('here is the chat configuration');
 
-    let uikitSettings : UIKitSettings= {
+    let uikitSettings: UIKitSettings = {
       appId: appID,
-      authKey:authKey,
+      authKey: authKey,
       region: 'US',
-      disableCalling : false,
+      disableCalling: false,
     };
 
     CometChatUIKit.init(uikitSettings).then(
       () => {
         console.log('Initialization completed successfully');
-
       },
       error => {
         console.log('Initialization failed with error:', error);

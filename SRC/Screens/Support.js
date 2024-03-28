@@ -55,10 +55,11 @@ const Support = () => {
     setLoading(false);
     // console.log('Support response======>>>>>>>>>>>',response?.data);
     if (response != undefined) {
-      console.log(response?.data?.data)
+      console.log('admin info ============> here',response?.data?.data)
         setSupportData(response?.data?.data);
     }
   };
+
   useEffect(() => {
     GetSupportData();
     // setFullName('');
@@ -67,6 +68,7 @@ const Support = () => {
     // setSubject('');
     // setMessage('');
   }, [isFocused]);
+
   const sendQuestion = async () => {
     const url = 'support';
     const body = {

@@ -52,12 +52,16 @@ const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
     });
     console.log(
     '🚀 ~ file: AddCard.js:90 ~ addCard ~ responseData',
-      JSON.stringify(responseData?.paymentMethod?.id, null, 2),
+      JSON.stringify(responseData, null, 2),
     );
 
     if (responseData.error) {
       setIsLoading(false);
       console.log(responseData.error);
+     return Platform.OS == 'android'
+      ? ToastAndroid.show(responseData.error?.localizedMessage, ToastAndroid.SHORT)
+      : alert(responseData.error?.localizedMessage);
+      
     }
     if (responseData != undefined) {
       const url = 'subscribion/recurring'

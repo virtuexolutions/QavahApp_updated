@@ -237,12 +237,12 @@ const MoreAboutme = props => {
 
   const MaritialArray = [
     'Never Married',
-    'currently seperated',
-    'widowed',
-    'divorced',
-    'put away',
-    'its complicated',
-    'Poly Marriage',
+    'Currently seperated',
+    'Widowed',
+    'Divorced',
+    'Put away',
+    'Its complicated',
+    'Biblical Polygyny Marriage',
   ];
   const LivingSituation =[
     'None',
@@ -256,24 +256,24 @@ const MoreAboutme = props => {
     'Prefer not to say',
   ];
   const childrenArray = [
-    `yes - they don't live at home`,
-    'yes - they sometimes live at home',
-    'yes - they live at home',
+    `Yes - they don't live at home`,
+    'Yes - they sometimes live at home',
+    'Yes - they live at home',
     'No',
   ];
 
-  const moreChildArray =['yes', 'not sure', 'no'];
+  const moreChildArray =['Yes', 'Not sure', 'No'];
   const seekingArray = [
-    'spouse',
-    'community',
-    `sister's wife`,
-    'friendship',
-    'study partner',
-    'My Poly Family Is Available For Courtship',
-    'Concubine',
-    'non-working wife to manage home affairs',
-    'working wife',
-    'husband - allows me to run business',
+    'Spouse',
+    'Community',
+    `Sister wife`,
+    'Friendship',
+    'Study partner',
+    'My Polygyny Family Is Available For Courtship',
+    'Biblical Concubine',
+    'Non-working wife to manage home affairs',
+    'Working wife',
+    'Husband - allows me to run business',
   ];
 
   const bodyTypeArray = [
@@ -285,6 +285,7 @@ const MoreAboutme = props => {
     'Full Figured',
     'Large and lovely',
     'Big teddy bear',
+    "N/A"
   ];
   const ExersiceArray = [
     'I don’t exercise regularly',
@@ -294,27 +295,26 @@ const MoreAboutme = props => {
     'No answer',
   ];
   const HavePetsArray = [
-    'birds',
-    'cats',
-    'exotic pets',
-    'dogs',
-    'fish',
-    'horses',
-    'no',
-    'i am allergic',
-    'others',
+    'Birds',
+    'Cats',
+    'Exotic pets',
+    'Dogs',
+    'Fish',
+    'Horses',
+    'No i am allergic',
+    'Others',
   ];
   const doyouDrinkArray = [
-    'dont drink',
-    'i drink socially',
-    'on special occasions',
-    'i will drink by myself',
+    'Don’t drink',
+    'I drink socially',
+    'On special occasions',
+    'I will drink by myself',
   ];
   const doyouSmokeArray =  [
-    'i dont smoke',
-    'occasionally smoke',
-    'only cannabis',
-    'only cigars',
+    'I don’t smoke',
+    'Occasionally smoke',
+    'Only cannabis',
+    'Only cigars',
   ];
 
   const employmentArray = [
@@ -329,12 +329,12 @@ const MoreAboutme = props => {
   ];
 
   const willingToRelocateArray = [
-    'willing to relocate within my state',
-    'Willing To Relocate Out Of State',
-    'not willing to relocate',
-    'not sure about relocating',
+    'Willing to relocate within my state',
+    // 'Willing To Relocate Out Of State',
+    'Willing to relocate out of state',
+    'Not willing to relocate',
+    'Not sure about relocating',
   ];
-
   return (
     <>
       <CustomStatusBar

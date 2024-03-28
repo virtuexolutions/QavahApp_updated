@@ -371,34 +371,36 @@ const IsraeliteFilters = props => {
     '10+ years',
   ];
 
-  const spritualArray = ['none', 'messianic', 'non-messianic'];
+  const spritualArray = [
+    'None',
+   'Messianic', 'Non-Messianic'];
   const maritialBeliefArray = [
-    'none',
-    'monogamy',
-    'polygyny',
-    'still on the fence',
-    `i believe in polygyny but don't practice it`,
+    'None',
+    'Monogamy',
+    'Polygyny',
+    'Still on the fence',
+    `I believe in polygyny but don't practice it`,
   ];
 
   const affiliationArray = [
     'None',
-    'No, I Study Alone',
-    'i am a member of an online org',
-    'i am a member of a camp or group',
-    'i go to an assembley',
+    'No- i study alone',
+    'I am a member of an online org',
+    'I am a member of a camp or group',
+    'I go to an assembley',
     'I Follow A Social I Attend An Assembly',
-    'i follow a ministry on social media',
-    'ask me when we talk',
-    'i am  seeking a fellowship',
+    'I follow a ministry on social media',
+    'Ask me when we talk',
+    'I am seeking a fellowship',
   ];
 
   const studyHabitsArray = [
-    'none',
-    'torah only',
+    'None',
+    'Torah only',
     'torah and tanakh',
-    '66 only',
-    '66 and apocrypha',
-    '66 , apocrypha and any other considered (lost books)',
+    '66 Only',
+    '66 And Apocrypha',
+    '66, Apocrypha, and any other considered (Lost books)',
   ];
 
   const studyBibleArray = [
@@ -414,19 +416,18 @@ const IsraeliteFilters = props => {
   ];
 
   const SpiritualbackgroundArray = [
-    'none',
-    'i came out of the christian church',
-    'i came out of islam',
+    'None',
+    'I came out of the christian church',
+    'I came out of islam',
     'I Came Out Of The Nation Of Islam',
-    'i did not believe in anything',
+    'I did not believe in anything',
     'I Came Out Of Pan - Africanism',
-    'i was an orthodox jew',
-    'ask me later',
+    'I was orthodox jew',
+    'Ask me later',
   ];
   const campMemberArray = [
     'I.U.I.C','G.O.C.C','Dimona','The light of zion','Sicarri','Other'
   ]
-
   const completeBody = {
     ...twoStepsData,
     step3: {

@@ -67,7 +67,7 @@ const GetSuperLike = ({route}) => {
     const response = await Get(url, token);
     setLoading(false);
     if (response != undefined) {
-      //  return console.log( text,JSON.stringify(response?.data, null, 2));
+       return console.log( text,JSON.stringify(response?.data, null, 2));
       const newData = response?.data?.packages;
       // console.log('🚀 ~ getSubscriptionPlan ~ newData:', newData);
 

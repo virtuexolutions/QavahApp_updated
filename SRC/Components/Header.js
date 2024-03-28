@@ -575,7 +575,7 @@ const Header = props => {
                 textColor={'purple'}
                 onPress={() => {
                   navigationService.navigate('GetSuperLike', {
-                    text: 'premium features',
+                    text: 'premium',
                   });
                   // setSpotLightVisible(true);
                   setDrawerModal(false);
@@ -588,7 +588,7 @@ const Header = props => {
                 textColor={'#AA336A'}
                 onPress={() => {
                   navigationService.navigate('GetSuperLike', {
-                    text: 'premium features',
+                    text: 'premium',
                   });
                   // setLoveNotesVisible(true);
                   setDrawerModal(false);
@@ -602,7 +602,7 @@ const Header = props => {
                 textColor={'#286086'}
                 onPress={() => {
                   navigationService.navigate('GetSuperLike', {
-                    text: 'premium features',
+                    text: 'premium',
                   });
                   // setDiscreteModal(true);
                   setDrawerModal(false);
@@ -651,7 +651,7 @@ const Header = props => {
               {heartHand ? 'Love Notes' : 'Notification'}
             </CustomText>
 
-            <Icon
+            {/* <Icon
               name={'hand-heart'}
               as={MaterialCommunityIcons}
               size={moderateScale(25, 0.6)}
@@ -669,7 +669,7 @@ const Header = props => {
                     : alert('Subscription needed');
                 }
               }}
-            />
+            /> */}
             <Icon
               name={'bell'}
               as={FontAwesome}
