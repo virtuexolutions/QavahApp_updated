@@ -42,26 +42,16 @@ import TextInputWithTitle from '../Components/TextInputWithTitle';
 
 const UserDetail = props => {
   const focused = useIsFocused();
-  console.log('🚀 ~ file: UserDetail.js:45 ~ UserDetail ~ focused:', focused);
   const token = useSelector(state => state.authReducer.token);
   const navigation = useNavigation();
   const user = useSelector(state => state.commonReducer.userData);
-  console.log("🚀 ~ file: UserDetail.js:49 ~ UserDetail ~ user:", user)
-  // console.log(
-  //   '🚀 ~ file: UserDetail.js:39 ~ UserDetail ~ user:',
-  //   user?.subscription,
-  // );
   const item = props?.route?.params?.item;
-  console.log("🚀 ~ file: UserDetail.js:55 ~ UserDetail ~ item:", item)
   const fromSearch = props?.route?.params?.fromSearch;
-  console.log("🚀 ~ file: UserDetail.js:57 ~ UserDetail ~ fromSearch:", fromSearch)
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setUserData] = useState(fromSearch ? item : user);
-  console.log("🚀 ~ file: UserDetail.js:58 ~ UserDetail ~ userData:",  userData?.user_profile_verified)
   // const [reported, setReported] = useState(item?.fetch_user_report ? item?.fetch_user_report?.some(item => item?.user_id == user?.user_id): false);
   const [reported, setReported] = useState(false)
-  console.log("🚀 ~ file: UserDetail.js:63 ~ UserDetail ~ reported:", reported)
   const [loveNoteModal, setLoveNoteModal] = useState(false);
   const [reason, setReason] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -72,10 +62,7 @@ const UserDetail = props => {
       ? userData?.gallery_images?.slice(0, 5)
       : userData?.gallery_images,
   );
-  console.log(
-    '🚀 ~ file: UserDetail.js:69 ~ UserDetail ~ galleryImages:',
-    userData?.gallery_images?.length,
-  );
+ 
   const [reportModalVisible, setReportModalVisible] = useState(false);
   const [loveNoteData, setLoveNoteData] = useState('');
 
@@ -96,16 +83,13 @@ const UserDetail = props => {
       apiHeader(token),
     );
 
-    console.log('reported ======>', response?.data);
     if (response?.data?.status) {
-      // console.log("🚀 ~ file: UserDetail.js:64 ~ reportUser ~ response:", response
       setReported(response?.data?.status);
       setReportModalVisible(false);
       Platform.OS == 'android'
         ? ToastAndroid.show('User reported', ToastAndroid.SHORT)
         : alert('User reported');
     } else {
-      // console.log('reported ======>' , response?.data)
       Platform.OS == 'android'
         ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
         : alert(response?.data?.error);
@@ -118,7 +102,7 @@ const UserDetail = props => {
       targetUid: userData?.id,
       love_note: loveNoteData,
     };
-    console.log('🚀 ~ file: UserDetail.js:123 ~ sendLoveNote ~ body:', body);
+ console.log('🚀 ~ file: UserDetail.js:123 ~ sendLoveNote ~ body:', body);
     if (loveNoteData == '') {
       return Platform.OS == 'android'
         ? ToastAndroid.show('Please send some message', ToastAndroid.SHORT)
@@ -150,9 +134,7 @@ const UserDetail = props => {
 
 
   // const images = [require('../Assets/Images/woman1.jpeg')];
-  // console.log('🚀 ~ file: UserDetail.js:50 ~ UserDetail ~ images:', images);
   const [image, setImage] = useState([]);
-  console.log('🚀 ~ file: UserDetail.js:65 ~ UserDetail ~ image:', image);
 
   const handleLike = async () => {
     const url = 'swap/liked';
@@ -194,10 +176,9 @@ const UserDetail = props => {
       targetuid : userData?.id,
       uid : user?.uid
     }
-    console.log("🚀 ~ file: UserDetail.js:149 ~ viewSomeOneProfile ~ body:", body)
+    
     const response = await Post(url, body, apiHeader(token));
     if (response != undefined) {
-     console.log('response data for viewing profile   =>>>>>>>>>>>>>>', response?.data);
     //  ToastAndroid.show('response')
     //  setWhoViewedMe(response?.data?.peoples);
     }

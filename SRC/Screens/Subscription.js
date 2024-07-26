@@ -147,12 +147,12 @@ const Subscription = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
-          backgroundColor: Color.white,
+          backgroundColor: Color.white,     
         }}
         contentContainerStyle={{
           // height: windowHeight * 0.95,
           alignItems: 'center',
-          // paddingBottom: moderateScale(80, 0.6),
+          paddingBottom: moderateScale(80, 0.6),
         }}>
         <FlatList
           data={subscriptions}

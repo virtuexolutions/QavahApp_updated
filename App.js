@@ -46,9 +46,10 @@ const App = () => {
 
   console.reportErrorsAsExceptions = false;
   return (
-    // 'pk_test_51NVdg5B4BhSb7ee19fHAwxa1HGilNbVP0oPB5xpGwyoT8ovw8S6xMGzm1ncxlO0N2oUwyuI4G3I4KDtbJvpagmSR00GQ7j5B7A'
     <StripeProvider
-      publishableKey={
+    
+    publishableKey={
+        // 'pk_test_51NVdg5B4BhSb7ee19fHAwxa1HGilNbVP0oPB5xpGwyoT8ovw8S6xMGzm1ncxlO0N2oUwyuI4G3I4KDtbJvpagmSR00GQ7j5B7A'
         'pk_live_51KqgoBIvyDpn13UA0fmEN4aeq4ifL2zGkbY6IVw1wonpnIqLXFFBRTyMC9O23JwmFFet4Qc7yf1xLyMmdUMBRt4K00c1C2vv4r'
       }
       // merchantIdentifier="merchant.identifier" // required for Apple Pay

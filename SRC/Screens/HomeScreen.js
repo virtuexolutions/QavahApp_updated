@@ -49,7 +49,7 @@ const HomeScreen = () => {
   const pusher = Pusher.getInstance();
 
   const user = useSelector(state => state.commonReducer.userData);
-  console.log("🚀 ~ file: HomeScreen.js:52 ~ user:", user)
+  console.log("🚀 ~ kamal=====================", JSON.stringify(user?.subscription,null,2))
   const isSubscribed = useSelector(state => state.socketReducer.isSubscribed);
 
   const token = useSelector(state => state.authReducer.token);
@@ -87,6 +87,7 @@ const HomeScreen = () => {
     const response = await Get(url, token);
     setIsLoadingApi(false);
     if (response != undefined) {
+      console.log('=================>',response?.data?.user)
       dispatch(setUserData(response?.data?.user));
       dispatch(
         setIsProfileVerified(response?.data?.user?.user_profile_verified),
@@ -162,13 +163,13 @@ const HomeScreen = () => {
     if (response?.data?.status) {
       Platform.OS == 'android'
         ? ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT)
-        : alert(response?.data?.message);
+        : Alert.alert(response?.data?.message);
       response?.data?.message != 'spotlight already activated' &&
         dispatch(setUserData(response?.data?.resp));
     } else {
       Platform.OS == 'android'
         ? ToastAndroid.show(response?.data?.error, ToastAndroid.SHORT)
-        : alert(response?.data?.error);
+        : Alert.alert(response?.data?.error);
     }
   };
   const handleOnSwipedLeft = async () => {
@@ -446,7 +447,7 @@ const HomeScreen = () => {
               name={'lightning-bolt'}
               type={MaterialCommunityIcons}
               onPress={() => {
-                user?.subscription.some((item, index) => item.spotlights > 0)
+                user?.subscription.some((item, index) => item.user_spotlights[0]?.remain_spotlights > 0)
                   ? Alert.alert(
                       'Confirmation',
                       'Are you sure you want to Active the spotlight?',

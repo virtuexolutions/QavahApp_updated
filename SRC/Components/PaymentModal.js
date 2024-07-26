@@ -24,10 +24,11 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Icon} from 'native-base';
-import { setUserData } from '../Store/slices/common';
+import {setUserData} from '../Store/slices/common';
 
-const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
-  const dispatch = useDispatch()
+const PaymentModal = ({isVisible, setIsVisible, item, setpackagesName}) => {
+  // console.log("🚀 ~ item===================>:", item)
+  const dispatch = useDispatch();
   const [selectedIndex, setSelecetedIndex] = useState(1);
   const token = useSelector(state => state.authReducer.token);
   // console.log("🚀 ~ file: PaymentModal.js:31 ~ token:", token)
@@ -41,53 +42,55 @@ const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
   //   stripeToken,
   // );
 
-
-
   const PayUsingStripe = async () => {
     setIsLoading(true);
 
     const responseData = await createPaymentMethod({
       paymentMethodType: 'Card',
+
       // billingDetails: {
     });
     console.log(
-    '🚀 ~ file: AddCard.js:90 ~ addCard ~ responseData',
+      '🚀 ~ file: AddCard.js:90 ~ addCard ~ responseData',
       JSON.stringify(responseData, null, 2),
     );
 
     if (responseData.error) {
       setIsLoading(false);
-      console.log(responseData.error);
-     return Platform.OS == 'android'
-      ? ToastAndroid.show(responseData.error?.localizedMessage, ToastAndroid.SHORT)
-      : alert(responseData.error?.localizedMessage);
-      
+      console.log('====================>',responseData.error);
+      return Platform.OS == 'android'
+        ? ToastAndroid.show(
+            responseData.error?.localizedMessage,
+            ToastAndroid.SHORT,
+          )
+        : alert(responseData.error?.localizedMessage);
     }
     if (responseData != undefined) {
-      const url = 'subscribion/recurring'
-      body = {
+      const url = 'subscribion/recurring';
+      const body = {
         payment_method: responseData?.paymentMethod?.id,
         package_detail: item,
-
         auto_renew: false,
         voucher: '',
       };
-      console.log( 'dadasdasdadad',JSON.stringify(body,null ,2));
+      // return console.log('dadasdasdadad', JSON.stringify(body, null, 2));
       const responseApi = await Post(url, body, apiHeader(token));
       setIsLoading(false);
       if (responseApi?.status) {
-      console.log('data ======>>' , JSON.stringify(responseApi?.data?.response,null ,2))
-        dispatch(setUserData(responseApi?.data?.response))
+        console.log(
+          'data ======>>',
+          JSON.stringify(responseApi?.data?.response, null, 2),
+        );
+        dispatch(setUserData(responseApi?.data?.response));
         Platform.OS == 'android'
           ? ToastAndroid.show('payment done', ToastAndroid.SHORT)
           : alert('payment done');
-          setIsVisible(false)
-          setpackagesName(
-            responseApi?.data?.response?.subscription?.map(item=>{
-              return(item?.pkg_name)
-            })
-          )
-
+        setIsVisible(false);
+        setpackagesName(
+          responseApi?.data?.response?.subscription?.map(item => {
+            return item?.pkg_name;
+          }),
+        );
       }
     }
   };
@@ -140,57 +143,57 @@ const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
               {
                 color: Color.white,
                 fontSize: moderateScale(15, 0.3),
-               },
+              },
             ]}
             isBold>
             Payment
           </CustomText>
         </View>
         {/* {paymentType == 'stripe' ? ( */}
-          <View>
-            <CardField
-              postalCodeEnabled={false}
-              placeholders={{
-                number: '4242 4242 4242 4242',
-              }}
-              cardStyle={{
-                backgroundColor: '#FFFFFF',
-                textColor: '#000000',
-              }}
-              style={{
-                width: '100%',
-                height: 50,
-                marginVertical: 30,
-              }}
-              onCardChange={cardDetails => {
-                console.log('cardDetails', cardDetails);
-                setCardDetails(cardDetails);
-              }}
-              onFocus={focusedField => {
-                console.log('focusField', focusedField);
-              }}
-            />
-            <CustomButton
-              text={
-                isLoading ? (
-                  <ActivityIndicator color={'#ffffff'} size={'small'} />
-                ) : (
-                  'Submit'
-                )
-              }
-              textColor={Color.white}
-              width={windowWidth * 0.65}
-              height={windowHeight * 0.06}
-              marginTop={moderateScale(20, 0.3)}
-              bgColor={Color.themeColor}
-              borderRadius={moderateScale(25, 0.3)}
-              elevation
-              fontSize={moderateScale(12, 0.6)}
-              onPress={() => {
-                PayUsingStripe();
-              }}
-            />
-          </View>
+        <View>
+          <CardField
+            postalCodeEnabled={false}
+            placeholders={{
+              number: '4242 4242 4242 4242',
+            }}
+            cardStyle={{
+              backgroundColor: '#FFFFFF',
+              textColor: '#000000',
+            }}
+            style={{
+              width: '100%',
+              height: 50,
+              marginVertical: 30,
+            }}
+            onCardChange={cardDetails => {
+              console.log('cardDetails', cardDetails);
+              setCardDetails(cardDetails);
+            }}
+            onFocus={focusedField => {
+              console.log('focusField', focusedField);
+            }}
+          />
+          <CustomButton
+            text={
+              isLoading ? (
+                <ActivityIndicator color={'#ffffff'} size={'small'} />
+              ) : (
+                'Submit'
+              )
+            }
+            textColor={Color.white}
+            width={windowWidth * 0.65}
+            height={windowHeight * 0.06}
+            marginTop={moderateScale(20, 0.3)}
+            bgColor={Color.themeColor}
+            borderRadius={moderateScale(25, 0.3)}
+            elevation
+            fontSize={moderateScale(12, 0.6)}
+            onPress={() => {
+              PayUsingStripe();
+            }}
+          />
+        </View>
         {/* ) : paymentType == 'paypal' ? (
           <CustomText>paypal intgeration left</CustomText>
         ) : (
@@ -210,7 +213,7 @@ const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
                 setPaymentType('stripe');
               }}
             /> */}
-            {/* <CustomButton
+        {/* <CustomButton
               text={'pay through Paypal'}
               textColor={Color.white}
               width={windowWidth * 0.65}
@@ -223,7 +226,7 @@ const PaymentModal = ({isVisible, setIsVisible, item , setpackagesName}) => {
               fontSize={moderateScale(12, 0.6)}
               onPress={() => {}}
             /> */}
-          {/* </>
+        {/* </>
         )} */}
       </View>
     </Modal>

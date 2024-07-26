@@ -29,12 +29,12 @@ const {height, width} = Dimensions.get('window');
 const GetSuperLike = ({route}) => {
   const token = useSelector(State => State.authReducer.token);
   const user = useSelector(state => state.commonReducer.userData);
-  console.log('🚀 ~ GetSuperLike ~ user:', user?.subscription);
+  console.log('🚀 ~ GetSuperLike ~ user:', JSON.stringify(user?.subscription,null ,2));
   const {text} = route.params;
   // console.log('🚀 ~ GetSuperLike ~ text:', text);
 
   const [packages, setPackages] = useState([]);
-  // console.log("🚀 ~ GetSuperLike ~ packages:", packages)
+  console.log("🚀 ~ GetSuperLike ~ =================> packages:", packages)
 
   const [loading, setLoading] = useState(false);
 
@@ -67,7 +67,7 @@ const GetSuperLike = ({route}) => {
     const response = await Get(url, token);
     setLoading(false);
     if (response != undefined) {
-       return console.log( text,JSON.stringify(response?.data, null, 2));
+        console.log('herer ============================>', text,JSON.stringify(response?.data, null, 2));
       const newData = response?.data?.packages;
       // console.log('🚀 ~ getSubscriptionPlan ~ newData:', newData);
 

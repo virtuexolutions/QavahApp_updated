@@ -19,7 +19,6 @@ import CustomStatusBar from '../Components/CustomStatusBar';
 import CustomButton from '../Components/CustomButton';
 
 const PrivacyPolicy = () => {
-
   const [isLoading, setIsLoading] = useState(false);
   const [termsData, setTermsData] = useState('');
 
@@ -53,114 +52,105 @@ const PrivacyPolicy = () => {
 
   return (
     <>
-    <CustomStatusBar
-      backgroundColor={Color.white}
-      barStyle={'dark-content'}
-    />
-    <Header
-      showLeft={true}
-      title={'privacy policy'}
-      leftName={'left'}
-      textStyle={{
-        color: Color.veryLightGray,
-      }}
-    />
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      style={{
-        backgroundColor: Color.white,
-      }}
-      contentContainerStyle={{
-        // height: windowHeight * 0.95,
+      <CustomStatusBar
+        backgroundColor={Color.white}
+        barStyle={'dark-content'}
+      />
+      <Header
+        showLeft={true}
+        title={'privacy policy'}
+        leftName={'left'}
+        textStyle={{
+          color: Color.veryLightGray,
+        }}
+      />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{
+          backgroundColor: Color.white,
+        }}
+        contentContainerStyle={{
+          // height: windowHeight * 0.95,
 
-        alignItems: 'center',
-        paddingBottom: moderateScale(80, 0.6),
-      }}>
-         <CustomText
-                style={[
-                  {marginTop: moderateScale(8, 0.3),
-                    color:Color.themeColor,
-                    fontWeight: 'bold',
-                  },
-                ]}>{`Effective Date : ${moment(termsData?.updated_at).format(
-                'll',
-              )}`}</CustomText>
+          alignItems: 'center',
+          paddingBottom: moderateScale(80, 0.6),
+        }}>
         <CustomText
-                style={[
-                  {
-                    // backgroundColor: 'red',
-                    color: Color.black,
-                    textAlign: 'left',
-                    margin: moderateScale(20, 0.3),
-                    lineHeight: moderateScale(18, 0.3),
-                    fontSize: moderateScale(15, 0.3),
-                  },
-                ]}>
-                Lorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorvLorem Ipsum dolorLorem Ipsum dolorLorem
-                Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor
-                Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum
-                
-              </CustomText>
-              <CustomText
-                style={[
-                  {
-                    // backgroundColor: 'red',
-                    color: Color.black,
-                    textAlign: 'left',
-                    margin: moderateScale(20, 0.3),
-                    lineHeight: moderateScale(18, 0.3),
-                    fontSize: moderateScale(15, 0.3),
-                  },
-                ]}>
-               
-               
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
-                
-              </CustomText>
-              <CustomText
-                style={[
-                  {
-                    // backgroundColor: 'red',
-                    color: Color.black,
-                    textAlign: 'left',
-                    margin: moderateScale(20, 0.3),
-                    lineHeight: moderateScale(18, 0.3),
-                    fontSize: moderateScale(15, 0.3),
-                  },
-                ]}>
-               
-                dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem
-                Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
-                dolorLorem Ipsum dolor helloo
-              </CustomText>
-             
-     
-    </ScrollView>
-    {/* <CustomButton
+          style={[
+            {
+              marginTop: moderateScale(8, 0.3),
+              color: Color.themeColor,
+              fontWeight: 'bold',
+            },
+          ]}>{`Effective Date : ${moment(termsData?.updated_at).format(
+          'll',
+        )}`}</CustomText>
+        <CustomText
+          style={[
+            {
+              // backgroundColor: 'red',
+              color: Color.black,
+              textAlign: 'left',
+              margin: moderateScale(20, 0.3),
+              lineHeight: moderateScale(18, 0.3),
+              fontSize: moderateScale(15, 0.3),
+            },
+          ]}>
+          Lorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorvLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolor Lorem Ipsum
+        </CustomText>
+        <CustomText
+          style={[
+            {
+              // backgroundColor: 'red',
+              color: Color.black,
+              textAlign: 'left',
+              margin: moderateScale(20, 0.3),
+              lineHeight: moderateScale(18, 0.3),
+              fontSize: moderateScale(15, 0.3),
+            },
+          ]}>
+          Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
+          Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem
+          Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
+          Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem
+          Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
+          Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
+          Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem
+          Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
+          Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem
+        </CustomText>
+        <CustomText
+          style={[
+            {
+              // backgroundColor: 'red',
+              color: Color.black,
+              textAlign: 'left',
+              margin: moderateScale(20, 0.3),
+              lineHeight: moderateScale(18, 0.3),
+              fontSize: moderateScale(15, 0.3),
+            },
+          ]}>
+          dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum
+          dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor helloo
+        </CustomText>
+      </ScrollView>
+      {/* <CustomButton
                 text={'Accept'}
                 textColor={Color.white}
                 width={windowWidth * 0.8}
@@ -200,8 +190,7 @@ const PrivacyPolicy = () => {
                 bottom : moderateScale(5,0.3)
               }}
             /> */}
-  </>
- 
+    </>
   );
 };
 
